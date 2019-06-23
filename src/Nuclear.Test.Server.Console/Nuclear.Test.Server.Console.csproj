@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <DebugType>embedded</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+    <NestedBuild>$(TargetDir)\nestedBuild\</NestedBuild>
+    <StartupObject>Nuclear.Test.Server.Console.Program</StartupObject>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+  </PropertyGroup>
+  
+  <Import Project="..\Configurations.targets" />
+  
+  <ItemGroup>
+    <BootStrapFiles Include="$(NestedBuild)hostpolicy.dll;$(NestedBuild)$(ProjectName).exe;$(NestedBuild)hostfxr.dll" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Nuclear.Test.Server\Nuclear.Test.Server.csproj" />
+  </ItemGroup>
+  
+  <Target Name="GenerateNetcoreExe" AfterTargets="Build" Condition="$(IsNestedBuild) != true">
+    <RemoveDir Directories="$(NestedBuild)" />
+    <Exec ConsoleToMSBuild="true" Command="dotnet build $(ProjectPath) --configuration $(Configuration) --runtime win-x64 --output $(NestedBuild) /p:CopyLocalLockFileAssemblies=false;IsNestedBuild=true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
+    <Copy SourceFiles="@(BootStrapFiles)" DestinationFolder="$(OutputPath)" />
+    <RemoveDir Directories="$(NestedBuild)" />
+  </Target>
+
+</Project>

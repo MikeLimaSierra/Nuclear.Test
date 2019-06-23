@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Nuclear.Test.Server.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "-d ../../../../../../ -i Debug;obj -v 2 --diagnostic-output --worker-base-dir ../../../../publish/Nuclear.Test.Client.Worker/"
+    }
+  }
+}

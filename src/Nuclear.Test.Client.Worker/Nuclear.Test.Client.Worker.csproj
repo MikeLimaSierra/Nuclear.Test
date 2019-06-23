@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Nuclear.Test.Client.Worker</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+    <StartupObject>Nuclear.Test.Client.Worker.Program</StartupObject>
+  </PropertyGroup>
+  
+  <Import Project="..\Configurations.targets" />
+  
+  <ItemGroup>
+    <ProjectReference Include="..\Nuclear.Test.Client\Nuclear.Test.Client.csproj" />
+  </ItemGroup>
+
+</Project>
