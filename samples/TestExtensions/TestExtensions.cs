@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Nuclear.TestSite.Tests;
 
-namespace NetStandardSample {
+namespace TestExtensions {
     public static class TestExtensions {
 
         public static void IsHelloWorld(this ConditionalTest _this, String value, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)

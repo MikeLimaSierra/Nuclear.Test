@@ -1,12 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <Platforms>AnyCPU;x64;x86</Platforms>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.1;net461</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nuclear" Version="1.0.2" />
     <PackageReference Include="Nuclear.TestSite" Version="1.0.0" />
   </ItemGroup>
 

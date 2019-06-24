@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using NetStandardSample;
 using Nuclear.TestSite.Tests;
+using Sample;
 
 namespace NetStandardSampleTests {
     internal static class GenericTests {
