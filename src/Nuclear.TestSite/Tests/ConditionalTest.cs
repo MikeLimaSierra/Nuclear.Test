@@ -7,6 +7,10 @@ using Nuclear.Exceptions;
 using Nuclear.TestSite.Results;
 
 namespace Nuclear.TestSite.Tests {
+
+    /// <summary>
+    /// Supplies conditional throw instructions to improve exception throwing.
+    /// </summary>
     public partial class ConditionalTest {
 
         #region fields
@@ -68,6 +72,7 @@ namespace Nuclear.TestSite.Tests {
         #region hidden methods
 
         [EditorBrowsable(EditorBrowsableState.Never)]
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public new Boolean Equals(Object obj) => throw new MethodAccessException("This method is currently out of order.");
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -75,6 +80,7 @@ namespace Nuclear.TestSite.Tests {
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new String ToString() => throw new MethodAccessException("This method is currently out of order.");
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -95,7 +101,7 @@ namespace Nuclear.TestSite.Tests {
             String testInstructionName = String.Format("Test.{0}.{1}", _invert ? "IfNot" : "If", String.IsNullOrWhiteSpace(testInstructionOverride) ? testInstruction : testInstructionOverride);
             TestResult result = new TestResult(adjustedCondition, testInstructionName, message);
 
-            Results.CollectResult(result, Architecture, AssemblyName, Path.GetFileNameWithoutExtension(_file), _method);
+            Results.CollectResult(result, AssemblyName, Architecture, Path.GetFileNameWithoutExtension(_file), _method);
         }
 
         #endregion

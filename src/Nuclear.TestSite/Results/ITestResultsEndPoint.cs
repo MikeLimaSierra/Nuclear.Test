@@ -32,7 +32,7 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_assembly">The assembly name.</param>
         /// <param name="_class">The test class name (actually the filename of the test method source).</param>
         /// <param name="_method">The test method name.</param>
-        void CollectResult(TestResult result, ProcessorArchitecture architecture, String _assembly, String _class, String _method);
+        void CollectResult(TestResult result, String _assembly, ProcessorArchitecture architecture, String _class, String _method);
 
         /// <summary>
         /// Sets an entire test method to failed with an <see cref="Exception"/>.

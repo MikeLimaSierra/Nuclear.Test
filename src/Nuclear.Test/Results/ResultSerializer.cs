@@ -23,7 +23,7 @@ namespace Nuclear.Test.Results {
 
         public static TestResultMap Deserialize(Byte[] buffer) {
             using(MemoryStream ms = new MemoryStream(buffer)) {
-                return new TestResultMap(new BinaryFormatter().Deserialize(ms) as KeyValuePair<Tuple<ProcessorArchitecture, String, String, String>, TestResultCollection>[]);
+                return new TestResultMap(new BinaryFormatter().Deserialize(ms) as KeyValuePair<Tuple<String, ProcessorArchitecture, String, String>, TestResultCollection>[]);
             }
         }
 

@@ -11,7 +11,9 @@ namespace Nuclear.TestSite.Tests {
         /// <typeparam name="TType">The type to be checked for.</typeparam>
         /// <param name="_object">The object to be checked.</param>
         public void OfType<TType>(Object _object,
+#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(_object != null && _object is TType,
                 String.Format("Object is '{0}'. Given type is '{1}'.", _object != null ? _object.GetType().FullName : "null", typeof(TType).FullName),
                 _file, _method);
@@ -22,7 +24,9 @@ namespace Nuclear.TestSite.Tests {
         /// <typeparam name="TType">The type to be checked for.</typeparam>
         /// <param name="_object">The object to be checked.</param>
         public void OfExactType<TType>(Object _object,
+#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(_object != null && _object.GetType().Equals(typeof(TType)),
                 String.Format("Object is '{0}'. Given type is '{1}'.", _object != null ? _object.GetType().FullName : "null", typeof(TType).FullName),
                 _file, _method);

@@ -81,10 +81,10 @@ namespace Nuclear.Test.Server.Console {
             if((_arguments.TryGetSwitch("v", out arg) || _arguments.TryGetSwitch("verbosity", out arg)) && arg.HasValue && Int32.TryParse(arg.Value, out Int32 vLevel)) {
                 switch(vLevel) {
                     case 1:
-                        _config.OutputConfiguration.Verbosity = Verbosity.Architecture;
+                        _config.OutputConfiguration.Verbosity = Verbosity.Assembly;
                         break;
                     case 2:
-                        _config.OutputConfiguration.Verbosity = Verbosity.Assembly;
+                        _config.OutputConfiguration.Verbosity = Verbosity.Architecture;
                         break;
                     case 3:
                         _config.OutputConfiguration.Verbosity = Verbosity.Class;

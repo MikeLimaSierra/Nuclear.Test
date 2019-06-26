@@ -50,15 +50,18 @@ namespace Nuclear.TestSite.Tests {
 
         public void Clear() => ResultMap.Clear();
 
-        public void CollectResult(TestResult result, ProcessorArchitecture _architecture, String _assembly, String _class, String _method) {
-            Tuple<ProcessorArchitecture, String, String, String> key = Tuple.Create(_architecture, _assembly, _class, _method);
+        public void CollectResult(TestResult result, String _assembly, ProcessorArchitecture _architecture, String _class, String _method) {
+            Tuple<String, ProcessorArchitecture, String, String> key = Tuple.Create(_assembly, _architecture, _class, _method);
 
             ResultMap.GetOrAdd(key, new TestResultCollection()).Add(result);
         }
 
         public void FailTestMethod(MethodInfo _method, Exception ex) {
-            Tuple<ProcessorArchitecture, String, String, String> key =
-                Tuple.Create(_method.DeclaringType.Assembly.GetName().ProcessorArchitecture, _method.DeclaringType.Assembly.GetName().Name, _method.DeclaringType.Name, _method.Name);
+            Tuple<String, ProcessorArchitecture, String, String> key = Tuple.Create(
+                _method.DeclaringType.Assembly.GetName().Name,
+                _method.DeclaringType.Assembly.GetName().ProcessorArchitecture,
+                _method.DeclaringType.Name,
+                _method.Name);
 
             ResultMap.GetOrAdd(key, new TestResultCollection()).Exception = ex;
         }

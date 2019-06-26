@@ -3,6 +3,10 @@ using System.Reflection;
 using Nuclear.Exceptions;
 
 namespace Nuclear.TestSite.Results {
+
+    /// <summary>
+    /// A test results sink implementation.
+    /// </summary>
     public class TestResults : ITestResultsEndPoint {
 
         #region properties
@@ -42,8 +46,8 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_assembly">The assembly name.</param>
         /// <param name="_class">The test class name (actually the filename of the test method source).</param>
         /// <param name="_method">The test method name.</param>
-        public void CollectResult(TestResult result, ProcessorArchitecture _architecture, String _assembly, String _class, String _method) {
-            Tuple<ProcessorArchitecture, String, String, String> key = Tuple.Create(_architecture, _assembly, _class, _method);
+        public void CollectResult(TestResult result, String _assembly, ProcessorArchitecture _architecture, String _class, String _method) {
+            Tuple<String, ProcessorArchitecture, String, String> key = Tuple.Create(_assembly, _architecture, _class, _method);
 
             ResultMap.GetOrAdd(key, new TestResultCollection()).Add(result);
         }
@@ -54,8 +58,11 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
         /// <param name="ex">The <see cref="Exception"/> that was thrown.</param>
         public void FailTestMethod(MethodInfo _method, Exception ex) {
-            Tuple<ProcessorArchitecture, String, String, String> key =
-                Tuple.Create(_method.DeclaringType.Assembly.GetName().ProcessorArchitecture, _method.DeclaringType.Assembly.GetName().Name, _method.DeclaringType.Name, _method.Name);
+            Tuple<String, ProcessorArchitecture, String, String> key = Tuple.Create(
+                _method.DeclaringType.Assembly.GetName().Name,
+                _method.DeclaringType.Assembly.GetName().ProcessorArchitecture,
+                _method.DeclaringType.Name,
+                _method.Name);
 
             ResultMap.GetOrAdd(key, new TestResultCollection()).Exception = ex;
         }

@@ -50,7 +50,7 @@ namespace Nuclear.Test.Server.Execution {
             (sender as TestItem).TestsCompleted -= OnTestsCompleted;
 
             if(e.Results != null) {
-                foreach(KeyValuePair<Tuple<ProcessorArchitecture, String, String, String>, TestResultCollection> kvp in e.Results) {
+                foreach(KeyValuePair<Tuple<String, ProcessorArchitecture, String, String>, TestResultCollection> kvp in e.Results) {
                     kvp.Value.ForEach(result => _results.CollectResult(result, kvp.Key.Item1, kvp.Key.Item2, kvp.Key.Item3, kvp.Key.Item4));
                 }
             }

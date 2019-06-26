@@ -2,7 +2,7 @@
   "profiles": {
     "Nuclear.Test.Server.Console": {
       "commandName": "Project",
-      "commandLineArgs": "-d ../../../../../../ -i Debug;obj -v 2 --diagnostic-output --worker-base-dir ../../../../publish/Nuclear.Test.Client.Worker/"
+      "commandLineArgs": "-d ../../../../../../ -i Debug;obj -v 2 --diagnostic-output --worker-base-dir ../../../../publish/Nuclear.Test.Server.Console/Nuclear.Test.Client.Worker/ -p *Tests*.dll"
     }
   }
 }

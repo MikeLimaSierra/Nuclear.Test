@@ -10,7 +10,7 @@ namespace Nuclear.TestSite.Results {
     /// Implements a threadsafe collection of <see cref="TestResultCollection"/> that maps to <see cref="ProcessorArchitecture"/>, assembly name, class name and method name.
     /// </summary>
     [Serializable]
-    public class TestResultMap : ConcurrentDictionary<Tuple<ProcessorArchitecture, String, String, String>, TestResultCollection>, IResultAggregation {
+    public class TestResultMap : ConcurrentDictionary<Tuple<String, ProcessorArchitecture, String, String>, TestResultCollection>, IResultAggregation {
 
         #region properties
 
@@ -47,7 +47,7 @@ namespace Nuclear.TestSite.Results {
         /// Creates a new instance of <see cref="TestResultMap"/>.
         /// </summary>
         /// <param name="collection">The initial collection.</param>
-        public TestResultMap(IEnumerable<KeyValuePair<Tuple<ProcessorArchitecture, String, String, String>, TestResultCollection>> collection) : base(collection) { }
+        public TestResultMap(IEnumerable<KeyValuePair<Tuple<String, ProcessorArchitecture, String, String>, TestResultCollection>> collection) : base(collection) { }
 
         #endregion
 
@@ -57,104 +57,104 @@ namespace Nuclear.TestSite.Results {
         /// Gets the total number of results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(Tuple<ProcessorArchitecture> key) => GetResultsTotal(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, null, null, null));
+        public Int32 GetResultsTotal(Tuple<String> key) => GetResultsTotal(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, ProcessorArchitecture.None, null, null));
 
         /// <summary>
         /// Gets the total number of results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(Tuple<ProcessorArchitecture, String> key) => GetResultsTotal(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, key.Item2, null, null));
+        public Int32 GetResultsTotal(Tuple<String, ProcessorArchitecture> key) => GetResultsTotal(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, key.Item2, null, null));
 
         /// <summary>
         /// Gets the total number of results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(Tuple<ProcessorArchitecture, String, String> key) => GetResultsTotal(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, key.Item2, key.Item3, null));
+        public Int32 GetResultsTotal(Tuple<String, ProcessorArchitecture, String> key) => GetResultsTotal(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, key.Item2, key.Item3, null));
 
         /// <summary>
         /// Gets the total number of results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(Tuple<ProcessorArchitecture, String, String, String> key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsTotal);
+        public Int32 GetResultsTotal(Tuple<String, ProcessorArchitecture, String, String> key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsTotal);
 
 
         /// <summary>
         /// Gets the number of successful results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(Tuple<ProcessorArchitecture> key) => GetResultsOk(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, null, null, null));
+        public Int32 GetResultsOk(Tuple<String> key) => GetResultsOk(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, ProcessorArchitecture.None, null, null));
 
         /// <summary>
         /// Gets the number of successful results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(Tuple<ProcessorArchitecture, String> key) => GetResultsOk(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, key.Item2, null, null));
+        public Int32 GetResultsOk(Tuple<String, ProcessorArchitecture> key) => GetResultsOk(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, key.Item2, null, null));
 
         /// <summary>
         /// Gets the number of successful results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(Tuple<ProcessorArchitecture, String, String> key) => GetResultsOk(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, key.Item2, key.Item3, null));
+        public Int32 GetResultsOk(Tuple<String, ProcessorArchitecture, String> key) => GetResultsOk(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, key.Item2, key.Item3, null));
 
         /// <summary>
         /// Gets the number of successful results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(Tuple<ProcessorArchitecture, String, String, String> key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsOk);
+        public Int32 GetResultsOk(Tuple<String, ProcessorArchitecture, String, String> key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsOk);
 
 
         /// <summary>
         /// Gets the number of failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(Tuple<ProcessorArchitecture> key) => GetResultsFailed(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, null, null, null));
+        public Int32 GetResultsFailed(Tuple<String> key) => GetResultsFailed(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, ProcessorArchitecture.None, null, null));
 
         /// <summary>
         /// Gets the number of failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(Tuple<ProcessorArchitecture, String> key) => GetResultsFailed(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, key.Item2, null, null));
+        public Int32 GetResultsFailed(Tuple<String, ProcessorArchitecture> key) => GetResultsFailed(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, key.Item2, null, null));
 
         /// <summary>
         /// Gets the number of failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(Tuple<ProcessorArchitecture, String, String> key) => GetResultsFailed(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, key.Item2, key.Item3, null));
+        public Int32 GetResultsFailed(Tuple<String, ProcessorArchitecture, String> key) => GetResultsFailed(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, key.Item2, key.Item3, null));
 
         /// <summary>
         /// Gets the number of failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(Tuple<ProcessorArchitecture, String, String, String> key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsFailed);
+        public Int32 GetResultsFailed(Tuple<String, ProcessorArchitecture, String, String> key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsFailed);
 
 
         /// <summary>
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(Tuple<ProcessorArchitecture> key) => HasFailedTests(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, null, null, null));
+        public Boolean HasFailedTests(Tuple<String> key) => HasFailedTests(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, ProcessorArchitecture.None, null, null));
 
         /// <summary>
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(Tuple<ProcessorArchitecture, String> key) => HasFailedTests(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, key.Item2, null, null));
+        public Boolean HasFailedTests(Tuple<String, ProcessorArchitecture> key) => HasFailedTests(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, key.Item2, null, null));
 
         /// <summary>
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(Tuple<ProcessorArchitecture, String, String> key) => HasFailedTests(Tuple.Create<ProcessorArchitecture, String, String, String>(key.Item1, key.Item2, key.Item3, null));
+        public Boolean HasFailedTests(Tuple<String, ProcessorArchitecture, String> key) => HasFailedTests(Tuple.Create<String, ProcessorArchitecture, String, String>(key.Item1, key.Item2, key.Item3, null));
 
         /// <summary>
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(Tuple<ProcessorArchitecture, String, String, String> key) => FilterResults(key).Where(kvp => kvp.Value.Exception != null).Count() > 0;
+        public Boolean HasFailedTests(Tuple<String, ProcessorArchitecture, String, String> key) => FilterResults(key).Where(kvp => kvp.Value.Exception != null).Count() > 0;
 
 
-        private IEnumerable<KeyValuePair<Tuple<ProcessorArchitecture, String, String, String>, TestResultCollection>> FilterResults(Tuple<ProcessorArchitecture, String, String, String> key)
-            => this.Where(kvp => kvp.Key.Item1 == key.Item1).Where(kvp => key.Item2 == null || kvp.Key.Item2 == key.Item2)
+        private IEnumerable<KeyValuePair<Tuple<String, ProcessorArchitecture, String, String>, TestResultCollection>> FilterResults(Tuple<String, ProcessorArchitecture, String, String> key)
+            => this.Where(kvp => key.Item1 == null || kvp.Key.Item1 == key.Item1).Where(kvp => key.Item2 == ProcessorArchitecture.None || kvp.Key.Item2 == key.Item2)
             .Where(kvp => key.Item3 == null || kvp.Key.Item3 == key.Item3).Where(kvp => key.Item4 == null || kvp.Key.Item4 == key.Item4);
 
         #endregion

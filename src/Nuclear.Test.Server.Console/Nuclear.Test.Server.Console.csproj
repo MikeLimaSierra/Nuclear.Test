@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <DebugType>embedded</DebugType>
@@ -24,6 +24,13 @@
   <ItemGroup>
     <ProjectReference Include="..\Nuclear.Test.Server\Nuclear.Test.Server.csproj" />
   </ItemGroup>
+  
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="rmdir /S /Q ..\publish" />
+    <Exec Command="dotnet publish --self-contained true -r win-x64 -c Release -o ..\publish\Nuclear.Test.Server.Console\Nuclear.Test.Client.Worker\Amd64\netcore\ ..\Nuclear.Test.Client.Worker\Nuclear.Test.Client.Worker.csproj" />
+    <Exec Command="dotnet publish --self-contained true -r win-x86 -c Release -o ..\publish\Nuclear.Test.Server.Console\Nuclear.Test.Client.Worker\X86\netcore\ ..\Nuclear.Test.Client.Worker\Nuclear.Test.Client.Worker.csproj" />
+    <Exec Command="copy /Y $(OutDir)* ..\publish\Nuclear.Test.Server.Console\" />
+  </Target>
   
   <Target Name="GenerateNetcoreExe" AfterTargets="Build" Condition="$(IsNestedBuild) != true">
     <RemoveDir Directories="$(NestedBuild)" />

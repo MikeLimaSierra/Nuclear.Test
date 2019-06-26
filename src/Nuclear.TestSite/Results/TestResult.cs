@@ -3,6 +3,9 @@ using Nuclear.Exceptions;
 
 namespace Nuclear.TestSite.Results {
 
+    /// <summary>
+    /// Represents the result of one exectued test instruction.
+    /// </summary>
     [Serializable]
     public class TestResult {
 

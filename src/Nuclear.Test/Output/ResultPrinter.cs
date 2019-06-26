@@ -33,7 +33,7 @@ namespace Nuclear.Test.Output {
             PrintColoredState(!results.HasFails);
 
             if(results.HasFails || Configuration.Verbosity > Verbosity.Collapsed) {
-                List<ProcessorArchitecture> keys = results.Keys
+                List<String> keys = results.Keys
                     .GroupBy(_key => _key.Item1)
                     .Select(_group => _group.Key)
                     .ToList();
@@ -48,13 +48,13 @@ namespace Nuclear.Test.Output {
         #region private methods
 
         // architecture
-        private void PrintResults(TestResultMap results, Tuple<ProcessorArchitecture> key) {
+        private void PrintResults(TestResultMap results, Tuple<String> key) {
             Console.Write("{0}: [{1}/{2}] ", key.Item1, results.GetResultsOk(key), results.GetResultsTotal(key));
             Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
             PrintColoredState(!hasFails);
 
-            if(hasFails || Configuration.Verbosity > Verbosity.Architecture) {
-                List<String> keys = results.Keys
+            if(hasFails || Configuration.Verbosity > Verbosity.Assembly) {
+                List<ProcessorArchitecture> keys = results.Keys
                     .Where(_key => _key.Item1 == key.Item1)
                     .GroupBy(_key => _key.Item2)
                     .Select(_group => _group.Key)
@@ -65,12 +65,12 @@ namespace Nuclear.Test.Output {
         }
 
         // Test assemblies
-        private void PrintResults(TestResultMap results, Tuple<ProcessorArchitecture, String> key) {
+        private void PrintResults(TestResultMap results, Tuple<String, ProcessorArchitecture> key) {
             Console.Write("  {0}: [{1}/{2}] ", key.Item2, results.GetResultsOk(key), results.GetResultsTotal(key));
             Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
             PrintColoredState(!hasFails);
 
-            if(hasFails || Configuration.Verbosity > Verbosity.Assembly) {
+            if(hasFails || Configuration.Verbosity > Verbosity.Architecture) {
                 List<String> keys = results.Keys
                     .Where(_key => _key.Item1 == key.Item1 && _key.Item2 == key.Item2)
                     .GroupBy(_key => _key.Item3)
@@ -82,7 +82,7 @@ namespace Nuclear.Test.Output {
         }
 
         // Test classes
-        private void PrintResults(TestResultMap results, Tuple<ProcessorArchitecture, String, String> key) {
+        private void PrintResults(TestResultMap results, Tuple<String, ProcessorArchitecture, String> key) {
             Console.Write("    {0}: [{1}/{2}] ", key.Item3, results.GetResultsOk(key), results.GetResultsTotal(key));
             Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
             PrintColoredState(!hasFails);
@@ -99,7 +99,7 @@ namespace Nuclear.Test.Output {
         }
 
         // Test methods
-        private void PrintResults(TestResultMap results, Tuple<ProcessorArchitecture, String, String, String> key) {
+        private void PrintResults(TestResultMap results, Tuple<String, ProcessorArchitecture, String, String> key) {
             TestResultCollection result = results[key];
 
             Console.Write("      {0}: [{1}/{2}] ", key.Item4, result.ResultsOk, result.ResultsTotal);

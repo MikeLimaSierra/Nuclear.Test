@@ -26,8 +26,8 @@ namespace Nuclear.TestSite {
 
         #region methods
 
-        internal static Tuple<ProcessorArchitecture, String, String, String> GetKey([CallerFilePath] String _class = null, [CallerMemberName] String _method = null)
-            => Tuple.Create(Architecture, AssemblyName, _class.Substring(0, _class.Length - 3).Substring(_class.LastIndexOf('\\') + 1), _method);
+        internal static Tuple<String, ProcessorArchitecture, String, String> GetKey([CallerFilePath] String _class = null, [CallerMemberName] String _method = null)
+            => Tuple.Create(AssemblyName, Architecture, _class.Substring(0, _class.Length - 3).Substring(_class.LastIndexOf('\\') + 1), _method);
 
         internal static TestResultCollection GetResults(ITestResultsEndPoint results, [CallerFilePath] String _class = null, [CallerMemberName] String _method = null)
             => results.ResultMap.GetOrAdd(GetKey(_class, _method), new TestResultCollection());

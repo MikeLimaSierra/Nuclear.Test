@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Threading;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
@@ -140,6 +141,8 @@ namespace Nuclear.Test.Server.Execution {
                 remoteResults = ResultSerializer.Deserialize(buffer);
                 DiagnosticOutput.Log(_config, "Pipe [{0}]: received {1} ({2} Bytes) results from worker: '{3}'", _pipeName, remoteResults.ResultsTotal, buffer.Length, _file.FullName);
 
+            } catch(SerializationException se) {
+                DiagnosticOutput.LogError("Could not deserialize results from: '{0}'", _file.FullName, se);
             } catch(Exception ex) {
                 DiagnosticOutput.LogError("An exception was thrown while running tests in '{0}': {1}", _file.FullName, ex);
 

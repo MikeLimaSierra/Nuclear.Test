@@ -15,7 +15,9 @@ namespace Nuclear.TestSite.Tests {
         /// <param name="sender">Contains the sender if event is raised.</param>
         /// <param name="e">Contains the <see cref="PropertyChangedEventArgs"/> if event is raised.</param>
         public void RaisesPropertyChangedEvent(INotifyPropertyChanged _object, Action action, out Object sender, out PropertyChangedEventArgs e,
+#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => RaisesEvent(_object, "PropertyChanged", action, out sender, out e,
                 _file, _method, conditionTestOverride: "RaisesPropertyChangedEvent");
 
@@ -29,7 +31,9 @@ namespace Nuclear.TestSite.Tests {
         /// <param name="sender">Contains the sender if event is raised.</param>
         /// <param name="e">Contains the <see cref="PropertyChangedEventArgs"/> if event is raised.</param>
         public void RaisesEvent<TEventArgs>(Object _object, String eventName, Action action, out Object sender, out TEventArgs e,
+#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null, String conditionTestOverride = null)
+#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TEventArgs : EventArgs {
 
             sender = null;

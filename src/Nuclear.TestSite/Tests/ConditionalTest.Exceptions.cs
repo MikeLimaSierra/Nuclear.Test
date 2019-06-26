@@ -10,7 +10,9 @@ namespace Nuclear.TestSite.Tests {
         /// <param name="action">The action to be executed.</param>
         /// <param name="exception">Contains the exception if thrown.</param>
         public void ThrowsException(Action action, out Exception exception,
+#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             exception = null;
 
@@ -31,7 +33,9 @@ namespace Nuclear.TestSite.Tests {
         /// <param name="action">The action to be executed.</param>
         /// <param name="exception">Contains the exception if thrown.</param>
         public void ThrowsException<TException>(Action action, out TException exception,
+#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TException : Exception {
 
             exception = null;

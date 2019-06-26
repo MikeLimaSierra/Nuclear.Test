@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Nuclear.TestSite.Results {
 
+    /// <summary>
+    /// Represents the results of a number of executed test instructions (e.g. executed test method).
+    /// </summary>
     [Serializable]
     public class TestResultCollection : List<TestResult>, IResultAggregation {
 
