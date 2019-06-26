@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using Nuclear.TestSite.Tests;
 using Sample;
 
-namespace NetStandardSampleTests {
+namespace SampleTests {
     internal static class GenericTests {
 
         internal static void TestCtorGeneric(String content, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {

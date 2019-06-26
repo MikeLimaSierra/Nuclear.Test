@@ -5,17 +5,11 @@ using Nuclear.TestSite.Tests;
 using Sample;
 using TestExtensions;
 
-namespace NetStandardSampleTests {
+namespace SampleTests {
     class MyClassTests {
 
         [TestMethod]
-#if NETFRAMEWORK
-        void TestImplementationFramework() {
-#elif NETCOREAPP
-        void TestImplementationCore() {
-#elif NETSTANDARD
-        void TestImplementationStandard() {
-#endif
+        void TestImplementation() {
 
             Test.If.TypeImplements<MyClass, INotifyPropertyChanged>();
             Test.IfNot.TypeImplements<MyClass, IDisposable>();
@@ -23,13 +17,7 @@ namespace NetStandardSampleTests {
         }
 
         [TestMethod]
-#if NETFRAMEWORK
-        void TestConstructorsFramework() {
-#elif NETCOREAPP
-        void TestConstructorsCore() {
-#elif NETSTANDARD
-        void TestConstructorsStandard() {
-#endif
+        void TestConstructors() {
 
             MyClass obj = null;
 
@@ -47,13 +35,7 @@ namespace NetStandardSampleTests {
         }
 
         [TestMethod]
-#if NETFRAMEWORK
-        void TestConstructorsAnotherWayFramework() {
-#elif NETCOREAPP
-        void TestConstructorsAnotherWayCore() {
-#elif NETSTANDARD
-        void TestConstructorsAnotherWayStandard() {
-#endif
+        void TestConstructorsAnotherWay() {
 
             GenericTests.TestCtorGeneric("The quick brown fox");
             GenericTests.TestCtorGeneric("jumped over the lazy dog.");
@@ -64,13 +46,7 @@ namespace NetStandardSampleTests {
         }
 
         [TestMethod]
-#if NETFRAMEWORK
-        void TestUsingTestExtensionsFramework() {
-#elif NETCOREAPP
-        void TestUsingTestExtensionsCore() {
-#elif NETSTANDARD
-        void TestUsingTestExtensionsStandard() {
-#endif
+        void TestUsingTestExtensions() {
 
             Test.If.IsHelloWorld("Hello World!");
             Test.IfNot.IsHelloWorld("Good bye World!");
@@ -78,13 +54,7 @@ namespace NetStandardSampleTests {
         }
 
         [TestMethod]
-#if NETFRAMEWORK
-        void TestContentPropertyFramework() {
-#elif NETCOREAPP
-        void TestContentPropertyCore() {
-#elif NETSTANDARD
-        void TestContentPropertyStandard() {
-#endif
+        void TestContentProperty() {
 
             MyClass obj = new MyClass("asdf");
 
@@ -95,13 +65,7 @@ namespace NetStandardSampleTests {
         }
 
         [TestMethod]
-#if NETFRAMEWORK
-        void TestPropertyChangedFramework() {
-#elif NETCOREAPP
-        void TestPropertyChangedCore() {
-#elif NETSTANDARD
-        void TestPropertyChangedStandard() {
-#endif
+        void TestPropertyChanged() {
 
             MyClass obj = new MyClass("asdf");
 
