@@ -203,6 +203,20 @@ namespace Nuclear.TestSite.Tests {
                 _file, _method);
 
         /// <summary>
+        /// Tests if a <see cref="String"/> contains a specific <see cref="String"/>.
+        /// </summary>
+        /// <param name="_string"></param>
+        /// <param name="value"></param>
+        /// <param name="_file"></param>
+        /// <param name="_method"></param>
+        public void StringContains(String _string, String value,
+#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+            => InternalTest(_string.Contains(value), String.Format("[String = '{0}'; Value = '{1}']", _string ?? "null", value),
+                    _file, _method);
+
+        /// <summary>
         /// Tests if a <see cref="String"/> starts with a specific <see cref="Char"/>.
         /// </summary>
         /// <param name="_string">The <see cref="String"/> to be checked.</param>
@@ -212,7 +226,7 @@ namespace Nuclear.TestSite.Tests {
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
 #pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(_string != null && _string.StartsWith(value), String.Format("[String = '{0}'; Value = '{1}']", _string ?? "null", value),
-                _file, _method);
+                    _file, _method);
 
         /// <summary>
         /// Tests if a <see cref="String"/> starts with a specific <see cref="String"/>.

@@ -3,8 +3,8 @@ using System.Reflection;
 using Nuclear.Exceptions;
 using Nuclear.TestSite.Results;
 
-namespace Nuclear.Test.Client.Execution {
-    public class TestMethod {
+namespace Nuclear.Test.Worker {
+    internal class TestMethod {
 
         #region fields
 
@@ -32,7 +32,12 @@ namespace Nuclear.Test.Client.Execution {
 
         #region ctors
 
-        public TestMethod(ITestResultsEndPoint results, MethodInfo method) {
+        /// <summary>
+        /// Creates a new instance of <see cref="TestMethod"/>.
+        /// </summary>
+        /// <param name="results">The test results sink to use.</param>
+        /// <param name="method">The method to invoke.</param>
+        internal TestMethod(ITestResultsEndPoint results, MethodInfo method) {
             Throw.If.Null(results, "results");
             Throw.If.Null(method, "method");
 
@@ -44,7 +49,10 @@ namespace Nuclear.Test.Client.Execution {
 
         #region public methods
 
-        public void Invoke() {
+        /// <summary>
+        /// Invokes the associated method.
+        /// </summary>
+        internal void Invoke() {
             try {
                 _method.Invoke(CallingObject, new Object[0]);
             } catch(Exception ex) {

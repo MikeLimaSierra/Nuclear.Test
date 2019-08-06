@@ -6,13 +6,12 @@ namespace Nuclear.TestSite.Results {
     /// <summary>
     /// Represents the result of one exectued test instruction.
     /// </summary>
-    [Serializable]
     public class TestResult {
 
         #region fields
 
 #pragma warning disable IDE0032 // Use auto property
-        private Boolean _result;
+        private Boolean? _result;
 
         private String _testInstruction;
 
@@ -25,8 +24,9 @@ namespace Nuclear.TestSite.Results {
 
         /// <summary>
         /// Gets if the corresponding test instruction was successful or not.
+        ///    Null if the result entry is a note.
         /// </summary>
-        public Boolean Result { get => _result; private set => _result = value; }
+        public Boolean? Result { get => _result; private set => _result = value; }
 
         /// <summary>
         /// Gets the name of the corresponding test instruction.
@@ -55,6 +55,20 @@ namespace Nuclear.TestSite.Results {
 
             Result = result;
             TestInstruction = testInstruction;
+            Message = message;
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="TestResult"/> acting as a note.
+        /// </summary>
+        /// <param name="message">The message that is to be displayed as note.</param>
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="message"/> is null.</exception>
+        /// <exception cref="ArgumentException">Throws if <paramref name="message"/> is empty of white space.</exception>
+        public TestResult(String message) {
+            Throw.If.NullOrWhiteSpace(message, "message");
+
+            Result = null;
+            TestInstruction = null;
             Message = message;
         }
 

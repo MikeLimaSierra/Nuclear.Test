@@ -29,10 +29,11 @@ namespace Nuclear.TestSite.Results {
         /// </summary>
         /// <param name="result">The <see cref="TestResult"/> to collect.</param>
         /// <param name="architecture">The <see cref="ProcessorArchitecture"/>.</param>
+        /// <param name="_runtime">The runtime version that is targeted.</param>
         /// <param name="_assembly">The assembly name.</param>
-        /// <param name="_class">The test class name (actually the filename of the test method source).</param>
+        /// <param name="_file">The test class name (actually the filename of the test method source).</param>
         /// <param name="_method">The test method name.</param>
-        void CollectResult(TestResult result, String _assembly, ProcessorArchitecture architecture, String _class, String _method);
+        void CollectResult(TestResult result, String _assembly, ProcessorArchitecture architecture, String _runtime, String _file, String _method);
 
         /// <summary>
         /// Sets an entire test method to failed with an <see cref="Exception"/>.

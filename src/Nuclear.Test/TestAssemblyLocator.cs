@@ -6,16 +6,24 @@ using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
 
 namespace Nuclear.Test {
+
+    /// <summary>
+    /// Implements functionality to search for files within a directory tree.
+    /// </summary>
     public class TestAssemblyLocator {
 
         #region properties
 
-        public AssemblyLocatorConfiguration Configuration { get; private set; }
+        private AssemblyLocatorConfiguration Configuration { get; }
 
         #endregion
 
         #region ctors
 
+        /// <summary>
+        /// Creates a new instance of <see cref="TestAssemblyLocator"/>.
+        /// </summary>
+        /// <param name="config">The <see cref="AssemblyLocatorConfiguration"/> to use.</param>
         public TestAssemblyLocator(AssemblyLocatorConfiguration config) {
             Throw.If.Null(config, "config");
 
@@ -26,6 +34,10 @@ namespace Nuclear.Test {
 
         #region public methods
 
+        /// <summary>
+        /// Get a <see cref="List{FileInfo}"/> by searching for a name pattern in a directory tree.
+        /// </summary>
+        /// <returns>The <see cref="List{FileInfo}"/> containing the found files.</returns>
         public IEnumerable<FileInfo> GetAssemblies() {
             List<FileInfo> files = new List<FileInfo>();
 

@@ -7,7 +7,6 @@ namespace Nuclear.TestSite.Results {
     /// <summary>
     /// Represents the results of a number of executed test instructions (e.g. executed test method).
     /// </summary>
-    [Serializable]
     public class TestResultCollection : List<TestResult>, IResultAggregation {
 
         #region properties
@@ -15,27 +14,27 @@ namespace Nuclear.TestSite.Results {
         /// <summary>
         /// Gets the total number of results.
         /// </summary>
-        public Int32 ResultsTotal => Count;
+        public Int32 ResultsTotal => ResultsOk + ResultsFailed;
 
         /// <summary>
         /// Gets the number of successful results.
         /// </summary>
-        public Int32 ResultsOk => this.Where(result => result.Result).Count();
+        public Int32 ResultsOk => this.Where(result => result.Result.HasValue && result.Result.Value).Count();
 
         /// <summary>
         /// Gets the number of failed results.
         /// </summary>
-        public Int32 ResultsFailed => this.Where(result => !result.Result).Count();
+        public Int32 ResultsFailed => this.Where(result => result.Result.HasValue && !result.Result.Value).Count();
 
         /// <summary>
         /// Gets if the collection contains failed results.
         /// </summary>
-        public Boolean HasFails => Exception != null || ResultsFailed > 0;
+        public Boolean HasFails => !String.IsNullOrWhiteSpace(Exception) || ResultsFailed > 0;
 
         /// <summary>
         /// Gets or sets the <see cref="Exception"/> that was thrown during execution.
         /// </summary>
-        public Exception Exception { get; set; }
+        public String Exception { get; set; } = null;
 
         #endregion
 

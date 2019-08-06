@@ -29,7 +29,7 @@ namespace Nuclear.TestSite.Tests {
         /// <param name="eventName">The name of the event to be raised.</param>
         /// <param name="action">The action to be invoked on <paramref name="_object"/>.</param>
         /// <param name="sender">Contains the sender if event is raised.</param>
-        /// <param name="e">Contains the <see cref="PropertyChangedEventArgs"/> if event is raised.</param>
+        /// <param name="e">Contains the <typeparamref name="TEventArgs"/> if event is raised.</param>
         public void RaisesEvent<TEventArgs>(Object _object, String eventName, Action action, out Object sender, out TEventArgs e,
 #pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null, String conditionTestOverride = null)

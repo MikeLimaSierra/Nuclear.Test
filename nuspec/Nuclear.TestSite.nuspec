@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Nuclear.TestSite</id>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <title>Nuclear.TestSite</title>
     <summary>Unit test adapter for writing nuclear tests.</summary>
     <description>Features test instructions, test result handling and collection, test decorations.</description>
@@ -16,7 +16,7 @@
     <language>en-US</language>
 	<dependencies>
 	  <group>
-	    <dependency id="Nuclear" version="1.0.2" />
+	    <dependency id="Nuclear" version="1.1.0" />
 	  </group>
 	</dependencies>
   </metadata>

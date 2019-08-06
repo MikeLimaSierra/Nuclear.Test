@@ -7,16 +7,24 @@ using Nuclear.Test.Configurations;
 using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Output {
+
+    /// <summary>
+    /// Implements functionality to print out <see cref="TestResultMap"/> to <see cref="Console"/>.
+    /// </summary>
     public class ResultPrinter {
 
         #region properties
 
-        public OutputConfiguration Configuration { get; private set; }
+        private OutputConfiguration Configuration { get; }
 
         #endregion
 
         #region ctors
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ResultPrinter"/>.
+        /// </summary>
+        /// <param name="configuration">The <see cref="OutputConfiguration"/> to use for printing.</param>
         public ResultPrinter(OutputConfiguration configuration) {
             Throw.If.Null(configuration, "configuration");
 
@@ -27,19 +35,20 @@ namespace Nuclear.Test.Output {
 
         #region public methods
 
-        // total
+        /// <summary>
+        /// Prints the contents of a <see cref="TestResultMap"/> to console.
+        /// </summary>
+        /// <param name="results"></param>
         public void PrintResults(TestResultMap results) {
-            Console.Write("Test Run Summary: [{0}/{1}] ", results.ResultsOk, results.ResultsTotal);
-            PrintColoredState(!results.HasFails);
+            PrintSummaryLine(Verbosity.Collapsed, "Test Summary", results.ResultsTotal, results.ResultsOk, results.ResultsFailed, results.HasFails);
 
             if(results.HasFails || Configuration.Verbosity > Verbosity.Collapsed) {
                 List<String> keys = results.Keys
-                    .GroupBy(_key => _key.Item1)
+                    .GroupBy(_key => _key.Assembly)
                     .Select(_group => _group.Key)
                     .ToList();
                 keys.Sort();
-                keys.ForEach(_architecure => PrintResults(results, Tuple.Create(_architecure)));
-
+                keys.ForEach(_assembly => PrintResults(results, new ResultKeyAssemblyLevel(_assembly)));
             }
         }
 
@@ -47,86 +56,160 @@ namespace Nuclear.Test.Output {
 
         #region private methods
 
-        // architecture
-        private void PrintResults(TestResultMap results, Tuple<String> key) {
-            Console.Write("{0}: [{1}/{2}] ", key.Item1, results.GetResultsOk(key), results.GetResultsTotal(key));
+        // assembly level
+        private void PrintResults(TestResultMap results, ResultKeyAssemblyLevel key) {
             Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
-            PrintColoredState(!hasFails);
+
+            if(!hasFails && Configuration.Verbosity < Verbosity.Assembly) { return; }
+
+            PrintSummaryLine(Verbosity.Assembly, key.Assembly, results.GetResultsTotal(key), results.GetResultsOk(key), results.GetResultsFailed(key), hasFails);
 
             if(hasFails || Configuration.Verbosity > Verbosity.Assembly) {
                 List<ProcessorArchitecture> keys = results.Keys
-                    .Where(_key => _key.Item1 == key.Item1)
-                    .GroupBy(_key => _key.Item2)
+                    .Where(_key => _key.Assembly == key.Assembly)
+                    .GroupBy(_key => _key.Architecture)
                     .Select(_group => _group.Key)
                     .ToList();
                 keys.Sort();
-                keys.ForEach(_assembly => PrintResults(results, Tuple.Create(key.Item1, _assembly)));
+                keys.ForEach(_architecture => PrintResults(results, new ResultKeyArchitectureLevel(key, _architecture)));
             }
         }
 
-        // Test assemblies
-        private void PrintResults(TestResultMap results, Tuple<String, ProcessorArchitecture> key) {
-            Console.Write("  {0}: [{1}/{2}] ", key.Item2, results.GetResultsOk(key), results.GetResultsTotal(key));
+        // architecture level
+        private void PrintResults(TestResultMap results, ResultKeyArchitectureLevel key) {
             Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
-            PrintColoredState(!hasFails);
+
+            if(!hasFails && Configuration.Verbosity < Verbosity.Architecture) { return; }
+
+            PrintSummaryLine(Verbosity.Architecture, key.Architecture, results.GetResultsTotal(key), results.GetResultsOk(key), results.GetResultsFailed(key), hasFails);
 
             if(hasFails || Configuration.Verbosity > Verbosity.Architecture) {
                 List<String> keys = results.Keys
-                    .Where(_key => _key.Item1 == key.Item1 && _key.Item2 == key.Item2)
-                    .GroupBy(_key => _key.Item3)
+                    .Where(_key => _key.Assembly == key.Assembly && _key.Architecture == key.Architecture)
+                    .GroupBy(_key => _key.Runtime)
                     .Select(_group => _group.Key)
                     .ToList();
                 keys.Sort();
-                keys.ForEach(_class => PrintResults(results, Tuple.Create(key.Item1, key.Item2, _class)));
+                keys.ForEach(_runtime => PrintResults(results, new ResultKeyRuntimeLevel(key, _runtime)));
             }
         }
 
-        // Test classes
-        private void PrintResults(TestResultMap results, Tuple<String, ProcessorArchitecture, String> key) {
-            Console.Write("    {0}: [{1}/{2}] ", key.Item3, results.GetResultsOk(key), results.GetResultsTotal(key));
+        // runtime level
+        private void PrintResults(TestResultMap results, ResultKeyRuntimeLevel key) {
             Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
-            PrintColoredState(!hasFails);
 
-            if(hasFails || Configuration.Verbosity > Verbosity.Class) {
+            if(!hasFails && Configuration.Verbosity < Verbosity.Runtime) { return; }
+
+            PrintSummaryLine(Verbosity.Runtime, key.Runtime.Replace(",Version=v", " "), results.GetResultsTotal(key), results.GetResultsOk(key), results.GetResultsFailed(key), hasFails);
+
+            if(hasFails || Configuration.Verbosity > Verbosity.Runtime) {
                 List<String> keys = results.Keys
-                    .Where(_key => _key.Item1 == key.Item1 && _key.Item2 == key.Item2 && _key.Item3 == key.Item3)
-                    .GroupBy(_key => _key.Item4)
+                    .Where(_key => _key.Assembly == key.Assembly && _key.Architecture == key.Architecture && _key.Runtime == key.Runtime)
+                    .GroupBy(_key => _key.File)
                     .Select(_group => _group.Key)
                     .ToList();
                 keys.Sort();
-                keys.ForEach(_method => PrintResults(results, Tuple.Create(key.Item1, key.Item2, key.Item3, _method)));
+                keys.ForEach(_file => PrintResults(results, new ResultKeyFileLevel(key, _file)));
             }
         }
 
-        // Test methods
-        private void PrintResults(TestResultMap results, Tuple<String, ProcessorArchitecture, String, String> key) {
+        // file level
+        private void PrintResults(TestResultMap results, ResultKeyFileLevel key) {
+            Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
+
+            if(!hasFails && Configuration.Verbosity < Verbosity.File) { return; }
+
+            PrintSummaryLine(Verbosity.File, key.File, results.GetResultsTotal(key), results.GetResultsOk(key), results.GetResultsFailed(key), hasFails);
+
+            if(hasFails || Configuration.Verbosity > Verbosity.File) {
+                List<String> keys = results.Keys
+                    .Where(_key => _key.Assembly == key.Assembly && _key.Architecture == key.Architecture && _key.Runtime == key.Runtime && _key.File == key.File)
+                    .GroupBy(_key => _key.Method)
+                    .Select(_group => _group.Key)
+                    .ToList();
+                keys.Sort();
+                keys.ForEach(_method => PrintResults(results, new ResultKeyMethodLevel(key, _method)));
+            }
+        }
+
+        // method level
+        private void PrintResults(TestResultMap results, ResultKeyMethodLevel key) {
             TestResultCollection result = results[key];
 
-            Console.Write("      {0}: [{1}/{2}] ", key.Item4, result.ResultsOk, result.ResultsTotal);
-            PrintColoredState(!result.HasFails, result.Exception?.ToString());
+            if(!result.HasFails && Configuration.Verbosity < Verbosity.Method) { return; }
+
+            PrintSummaryLine(Verbosity.Method, key.Method, result.ResultsTotal, result.ResultsOk, result.ResultsFailed, result.HasFails, result.Exception);
 
             if(result.HasFails || Configuration.Verbosity > Verbosity.Method) {
+                Int32 iInstruction = 0;
+
                 for(Int32 i = 0; i < result.Count; i++) {
-                    PrintResults(result[i], i);
+                    PrintResults(result[i], iInstruction);
+
+                    if(result[i].Result.HasValue) {
+                        iInstruction++;
+                    }
                 }
             }
         }
 
         // Test statements
         private void PrintResults(TestResult result, Int32 index) {
-            Console.Write("        #{0}: {1} => ", ++index, result.TestInstruction);
-            PrintColoredState(result.Result, result.Message);
+            if(result.Result.HasValue) {
+                PrintInstructionLine(String.Format("#{0}: {1}", ++index, result.TestInstruction), !result.Result.Value, result.Message);
+            } else {
+                PrintNote(result.Message);
+            }
         }
 
-        private void PrintColoredState(Boolean ok, String errorMessage = null) {
-            if(ok) {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("ok");
-            } else {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("failed{0}{1}", errorMessage != null ? ": " : String.Empty, errorMessage ?? String.Empty);
-            }
+        private void PrintSummaryLine(Verbosity verbosityLevel, Object item, Int32 total, Int32 ok, Int32 failed, Boolean hasFails, String message = null) {
+            PrintLineHead(verbosityLevel, item, hasFails);
+            PrintOutcome(hasFails);
 
+            Console.Write(" [Total: {0}; Ok: ", total);
+            WriteColored(ConsoleColor.Green, "{0}", ok);
+            Console.Write("; Failed: ");
+            if(failed > 0) {
+                WriteColored(ConsoleColor.Red, "{0}", failed);
+            } else {
+                Console.Write(failed);
+            }
+            Console.Write("]");
+
+            PrintMessage(hasFails, message);
+
+            Console.WriteLine();
+        }
+
+        private void PrintInstructionLine(Object item, Boolean hasFails, String message = null) {
+            PrintLineHead(Verbosity.Instruction, item, hasFails);
+            PrintOutcome(hasFails);
+            PrintMessage(hasFails, message);
+            Console.WriteLine();
+        }
+
+        private void PrintNote(String note) {
+            PrintLineHead(Verbosity.Instruction, "Note", false);
+            WriteColored(ConsoleColor.Yellow, "'{0}'", note);
+            Console.WriteLine();
+        }
+
+        private void PrintLineHead(Verbosity verbosityLevel, Object item, Boolean hasFails)
+            => Console.Write("{0}{1} => ", String.Empty.PadLeft((Int32) verbosityLevel * 2), item);
+
+        private void PrintOutcome(Boolean hasFails)
+            => WriteColored(hasFails ? ConsoleColor.Red : ConsoleColor.Green, hasFails ? "failed" : "ok");
+
+        private void PrintMessage(Boolean hasFails, String message) {
+            if(!String.IsNullOrWhiteSpace(message) && hasFails) {
+                Console.Write(": ");
+                WriteColored(ConsoleColor.Red, "{0}", message);
+            }
+        }
+
+        private void WriteColored(ConsoleColor color, String format, params Object[] args) {
+            Console.ForegroundColor = color;
+            Console.Write(format, args);
             Console.ResetColor();
         }
 
