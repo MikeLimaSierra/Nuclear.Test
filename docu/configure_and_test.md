@@ -31,6 +31,7 @@ A list of available options is printed when calling the program without any argu
 | `--diagnostic-output`          | Show diagnostic output.
 | `-v num`                       | Set the minimum verbosity level for a 100% success case. Failing tests will unfold the relevant test tree nodes.<br />Defaults to `-v 0`<br />Use `0` to print all results combined.<br />Use `1` to print results for individual test assemblies.<br />Use `2` to print results for individual architectures.<br />Use `3` to print results for individual runtime versions.<br />Use `4` to print results for individual test classes.<br />Use `5` to print results for individual test methods.<br />Use `6` to print results for individual test instructions.
 | `--verbose num`                | Same as `-v num`
+---
 
 ## Running tests
 Running unit tests using `Nuclear.Test.Console` is done by executing the command in a console.
@@ -55,6 +56,7 @@ Some\Path\To\Nuclear.Test.Console>Nuclear.Test.Console.exe [OPTIONS]
 ║    Architecture: MSIL                                                ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
+---
 
 ## Nuclear.Test.Proxy
 For every test assembly that is found according to the supplied configuration, `Nuclear.Test.Proxy` is started as a child process.
@@ -115,6 +117,7 @@ This can be configured by giving the argument `--test-all-versions` which will r
 ║    [?] Unity 2018.1                                                  ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
+---
 
 ## Nuclear.Test.Worker
 For every matching [Y] marked runtime, `Nuclear.Test.Worker` is started as a child process.
@@ -146,3 +149,4 @@ If the parameter `--show-clients` is provided, `Nuclear.Test.Worker` will print 
 ║    Architecture: Amd64                                               ║
 ╚══════════════════════════════════════════════════════════════════════╝
 ```
+---
