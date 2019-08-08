@@ -1,4 +1,4 @@
-# Extending Nuclear.Test
+# How to extend Nuclear.Test
 `Nuclear.Test` can be extended in several ways by any user.
 This allows for data driven testing as well as increasing the usablility of `Nuclear.Test` with all kinds of environments or requirements.
 
@@ -40,6 +40,7 @@ void TestMultiplicator() {
 
 }
 ```
+
 ---
 
 ## Custom test instructions
@@ -83,4 +84,5 @@ void TestOddNumberGenerator() {
 
 }
 ```
+
 ---

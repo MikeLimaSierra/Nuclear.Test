@@ -4,7 +4,7 @@
 Each test instruction is a `public static void` method that will yield one test result.
 There are two parameters available (`String _file` and `String _method`) on every test instruction which are reserved for internal use only.
 Do not use these parameters within test methods that are decorated with `[TestMethod]`.
-Read [How to extend Nuclear.Test](extending_nuclear_test.md) to learn how to use these instead.
+Read [How to extend Nuclear.Test](how-to-extend.md) to learn how to use these instead.
 For simplicity, both parameters are being omitted in the following document.
 
 ## Null
@@ -21,6 +21,7 @@ public void Null(Object obj);
 ```csharp
 Test.If.Null(obj);
 ```
+
 ---
 
 ## ReferencesEqual
@@ -39,6 +40,7 @@ public void ReferencesEqual(Object obj, Object _other);
 ```csharp
 Test.If.ReferencesEqual(obj1, obj2);
 ```
+
 ---
 
 ## OfType
@@ -55,6 +57,7 @@ public void OfType<TType>(Object _object);
 ```csharp
 Test.If.OfType<MyClass>(obj);
 ```
+
 ---
 
 ## OfExactType
@@ -71,6 +74,7 @@ public void OfExactType<TType>(Object _object);
 ```csharp
 Test.If.OfExactType<MyClass>(obj);
 ```
+
 ---
 
 ## TypeImplements
@@ -84,6 +88,7 @@ public void TypeImplements<TType, TInterface>();
 ```csharp
 Test.If.TypeImplements<MyClass, IDisposable>();
 ```
+
 ---
 
 ## TypeIsSubClass
@@ -97,6 +102,7 @@ public void TypeIsSubClass<TType, TBase>();
 ```csharp
 Test.If.TypeIsSubClass<MyClass, MyBaseClass>();
 ```
+
 ---
 
 ## ThrowsException
@@ -115,6 +121,7 @@ public void ThrowsException(Action action, out Exception exception);
 ```csharp
 Test.If.ThrowsException(() => obj.DoSomething(), out Exception exception);
 ```
+
 ---
 
 Tests if `action` throws an `Exception` of type `TException` when executed.
@@ -132,6 +139,7 @@ public void ThrowsException<TException>(Action action, out TException exception)
 ```csharp
 Test.If.ThrowsException<ArgumentException>(() => obj.DoSomething(), out ArgumentException exception);
 ```
+
 ---
 
 ## RaisesPropertyChangedEvent
@@ -154,6 +162,7 @@ public void RaisesPropertyChangedEvent(INotifyPropertyChanged _object, Action ac
 ```csharp
 Test.If.RaisesPropertyChangedEvent(obj, () => obj.Title = "new content", out Object sender, out PropertyChangedEventArgs e);
 ```
+
 ---
 
 ## RaisesEvent
@@ -178,6 +187,7 @@ public void RaisesEvent<TEventArgs>(Object _object, String eventName, Action act
 ```csharp
 Test.If.RaisesEvent(obj, "MyCustomEvent", () => obj.DoSomething(), out Object sender, out MyCustomEventArgs e);
 ```
+
 ---
 
 ## True
@@ -194,6 +204,7 @@ public void True(Boolean value);
 ```csharp
 Test.If.True(1 + 1 == 2);
 ```
+
 ---
 
 Tests if `value` is true.
@@ -209,6 +220,7 @@ public void True(Boolean? value);
 ```csharp
 Test.If.True(someNullableBoolean);
 ```
+
 ---
 
 ## False
@@ -225,6 +237,7 @@ public void False(Boolean value);
 ```csharp
 Test.If.False(1 + 1 == 2);
 ```
+
 ---
 
 Tests if `value` is false.
@@ -239,6 +252,7 @@ public void False(Boolean? value);
 ```csharp
 Test.If.False(someNullableBoolean);
 ```
+
 ---
 
 ## ValuesEqual
@@ -257,6 +271,7 @@ public void ValuesEqual<T>(T left, T right);
 ```csharp
 Test.If.ValuesEqual(obj1, obj2);
 ```
+
 ---
 
 Tests if two objects are equal by using a supplied `IEqualityComparer{T}`.
@@ -276,6 +291,7 @@ public void ValuesEqual<T>(T left, T right, IEqualityComparer<T> comparer);
 ```csharp
 Test.If.ValuesEqual(obj1, obj2, new MyEqualityComparer());
 ```
+
 ---
 
 Tests if two `Single` values are equal by a margin of `1e-12`.
@@ -293,6 +309,7 @@ public void ValuesEqual(Single left, Single right);
 ```csharp
 Test.If.ValuesEqual(val1, val2);
 ```
+
 ---
 
 Tests if two `Single` values are equal by a `margin`.
@@ -312,6 +329,7 @@ public void ValuesEqual(Single left, Single right, Single margin);
 ```csharp
 Test.If.ValuesEqual(val1, val2, 1e-28f);
 ```
+
 ---
 
 Tests if two `Double` values are equal by a margin of `1e-12`.
@@ -329,6 +347,7 @@ public void ValuesEqual(Double left, Double right);
 ```csharp
 Test.If.ValuesEqual(val1, val2);
 ```
+
 ---
 
 Tests if two `Double` values are equal by a `margin`.
@@ -348,6 +367,7 @@ public void ValuesEqual(Double left, Double right, Double margin);
 ```csharp
 Test.If.ValuesEqual(val1, val2, 1e-28d);
 ```
+
 ---
 
 ## StringIsNullOrEmpty
@@ -364,6 +384,7 @@ public void StringIsNullOrEmpty(String _string);
 ```csharp
 Test.If.StringIsNullOrEmpty(someString);
 ```
+
 ---
 
 ## StringIsNullOrWhiteSpace
@@ -380,6 +401,7 @@ public void StringIsNullOrWhiteSpace(String _string);
 ```csharp
 Test.If.StringIsNullOrWhiteSpace(someString);
 ```
+
 ---
 
 ## StringContains
@@ -398,6 +420,7 @@ public void StringContains(String _string, String value);
 ```csharp
 Test.If.Null(someString, "John Doe");
 ```
+
 ---
 
 ## StringStartsWith
@@ -416,6 +439,7 @@ public void StringStartsWith(String _string, Char value);
 ```csharp
 Test.If.Null(someString, '.');
 ```
+
 ---
 
 Tests if a `String` starts with a specific `String`.
@@ -433,6 +457,7 @@ public void StringStartsWith(String _string, String value);
 ```csharp
 Test.If.Null(someString, "https://");
 ```
+
 ---
 
 ## StringEndsWith
@@ -451,6 +476,7 @@ public void StringEndsWith(String _string, Char value);
 ```csharp
 Test.If.Null(someString, '/');
 ```
+
 ---
 
 Tests if a `String` ends with a specific `String`.
@@ -468,4 +494,5 @@ public void StringEndsWith(String _string, String value);
 ```csharp
 Test.If.Null(someString, ".xml");
 ```
+
 ---
