@@ -127,7 +127,7 @@ namespace Nuclear.TestSite.Tests {
         #region custom numerics
 
         /// <summary>
-        /// Tests if two <see cref="Single"/> values are equal by a margin or 1e-12.
+        /// Tests if two <see cref="Single"/> values are equal by a margin of 1e-12.
         /// </summary>
         /// <param name="left">The first value.</param>
         /// <param name="right">The second value.</param>
@@ -152,7 +152,7 @@ namespace Nuclear.TestSite.Tests {
                 _file, _method);
 
         /// <summary>
-        /// Tests if two <see cref="Double"/> values are equal by a margin or 1e-12.
+        /// Tests if two <see cref="Double"/> values are equal by a margin of 1e-12.
         /// </summary>
         /// <param name="left">The first value.</param>
         /// <param name="right">The second value.</param>
@@ -205,10 +205,8 @@ namespace Nuclear.TestSite.Tests {
         /// <summary>
         /// Tests if a <see cref="String"/> contains a specific <see cref="String"/>.
         /// </summary>
-        /// <param name="_string"></param>
-        /// <param name="value"></param>
-        /// <param name="_file"></param>
-        /// <param name="_method"></param>
+        /// <param name="_string">The <see cref="String"/> to be checked.</param>
+        /// <param name="value">The <see cref="String"/> to check for.</param>
         public void StringContains(String _string, String value,
 #pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
