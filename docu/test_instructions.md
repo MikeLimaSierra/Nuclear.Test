@@ -4,7 +4,7 @@
 Each test instruction is a `public static void` method that will yield one test result.
 There are two parameters available (`String _file` and `String _method`) on every test instruction which are reserved for internal use only.
 Do not use these parameters within test methods that are decorated with `[TestMethod]`.
-Read [How to extend Nuclear.Test](how-to-extend.md) to learn how to use these instead.
+Read [How to extend Nuclear.Test](how_to_extend.md) to learn how to use these instead.
 For simplicity, both parameters are being omitted in the following document.
 
 ## Null
