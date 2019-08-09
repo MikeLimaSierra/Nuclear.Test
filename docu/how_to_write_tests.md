@@ -1,5 +1,7 @@
 # How to write unit tests using `Nuclear.Test`
 Writing unit tests using `Nuclear.Test` is very different from using other unit test platforms.
+It doesn't matter how many things are tested in one test method.
+The programmer can fully focus on writing exhaustive tests in a very compact format that is easy to read and understand.
 
 ## Setting up a test project
 The first step in writing unit tests is to create a new project.
@@ -26,6 +28,11 @@ Therefore `TestMode.Parallel` is the default in every case.
 `TestMode.Sequential` will override that behaviour and will enforce sequential testing in its context no matter what.
 
 It is not possible to enforce parallel testing upon a test class or test method that was configured for sequential testing.
+
+Test methods configured for sequential testing will always be invoked first for every test assembly.
+Test methods configured for parallel testing will always be invoked last.
+There is no way of configuring the number of cpu cores to use in parallel testing.
+The scheduler will decide what is best for the system and `Nuclear.Test` will act accordingly.
 
 ---
 
@@ -60,7 +67,7 @@ class MyClassTests {
 
 
 Please note that a test class must always be named like the file it lives in.
-This is because any test instruction uses the file name to register test results.
+This is because every test instruction uses the file name to register test results.
 Unhandled exceptions within a test method on the other hand will be registered to the class name.
 
 ### Example:
