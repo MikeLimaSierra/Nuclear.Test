@@ -1,10 +1,24 @@
 
 # Nuclear.Test
-Nuclear.Test is a unit testing platform for .Net libraries which was initially written out of curisosity in late 2012.
-Since then it has matured and grown into a somewhat usable piece of software that will hopefully help or at least inspire others.
+`Nuclear.Test` is a unit testing platform for `.NET` initially written some time in late 2012.
+The main motivation behind it was curiosity and finding out how it can be done.
+There have been many changes and improvements to it over the last years and I have used it to unit test my own projects ever since.
 
-## Supported Runtimes
-`Nuclear.Test` currently supports test assemblies targeting `.NetFramework >= 4.6.1`, `.NetStandard >= 2.0` and `.NetCore >= 2.0.`.
+My own experience with the established unit testing platforms is very limited.
+This has resulted in a very different concept of writing and running unit tests.
+It may not be as refined and as solid as the others but it has done its job well so far.
+
+By publishing this code I hope to help or inspire others to think outside the box and break new ground.
+
+~~If~~ When you run into bugs and other problems, please open up an issue to help me fix it.
+
+## Supported target frameworks
+`Nuclear.Test` can run unit tests targeting the following frameworks.
+Tests targeting .NETStandard will run on matching runtimes that implement the targeted version of .NETStandard.
+
+* .NETFramework 4.6.1 or higher
+* .NETCore 2.0 or higher
+* .NETStandard 2.0 or higher
 
 ---
 
