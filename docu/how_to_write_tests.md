@@ -116,16 +116,43 @@ void TestSomething() {
 ## Test instructions
 While test classes are just containers for test methods, test methods are just containers for test instructions.
 These are the actual tests and a test method without at least one test instruction will yield no results.
+
 A test instruction can be called by accessing one of the two properties `If` and `IfNot` on the static class `Nuclear.TestSite.Tests.Test`.
 Every test instruction generates exactly one test result according to its name and intellisense description.
 The test result will be inverted if the instruction was called from `Test.IfNot`.
 
 ### Example:
+```csharp
+[TestMethod]
+void TestTimeStampEvent() {
 
---
+    MyClass obj = new MyClass("asdf");
+    XDocument doc = null;
+
+    Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
+    Test.IfNot.Null(sender);
+    Test.If.ReferencesEqual(sender, obj);
+    Test.IfNot.Null(e);
+    Test.IfNot.Null(e.XmlDoc);
+    Test.IfNot.Null(e.WakeTimeStamp);
+    Test.If.ValuesEqual(e.XmlDoc, doc);
+    Test.If.ReferencesEqual(e.XmlDoc, doc);
+    Test.IfNot.Null(e.CallTimeStamp);
+    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
+    Test.IfNot.Null(e.CallTimeStamp);
+    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
+
+}
+```
+
+### Result:
+![Notes example](media/instructions_example.PNG)
+
+---
 
 ## Note
-Complex test methods can contain many test instructions and figuring out the failing instruction can get very tiring. Test notes can be added to fight excessive counting of lines.
+Complex test methods can contain many test instructions and figuring out the failing instruction can get very tiring.
+Test notes can be added to fight excessive counting of lines.
 A test note is a simple way of inserting a line of free text anywhere within the test instructions.
 
 ```csharp
@@ -150,5 +177,8 @@ void TestConstructorsAnotherWay() {
     GenericTests.TestCtorGeneric("Holy crap, this is not astronomically correct.");
 }
 ```
+
+### Result:
+![Notes example](media/notes_example.PNG)
 
 ---
