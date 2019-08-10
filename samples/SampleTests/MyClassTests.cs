@@ -130,7 +130,7 @@ namespace SampleTests {
     }
 
     // this is a test class with a bad name. test results in this class will be collected wrongly.
-    //[TestClass]
+    [TestClass]
     class MyOtherClassTests {
 
         //[TestMethod]

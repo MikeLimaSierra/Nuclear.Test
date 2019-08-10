@@ -43,6 +43,8 @@ namespace Nuclear.Test.Console {
 
             WaitOnDebug();
 
+            Environment.ExitCode = (Int32) (results.HasFails ? ExitCode.Fail : ExitCode.OK);
+
         }
 
         #endregion

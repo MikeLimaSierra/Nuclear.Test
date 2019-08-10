@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <RootNamespace>Nuclear.Test.Console</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Platform>AnyCPU</Platform>
     <StartupObject>Nuclear.Test.Console.Program</StartupObject>
+    <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
   
   <Import Project="..\Configurations.targets" />

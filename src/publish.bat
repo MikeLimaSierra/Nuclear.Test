@@ -8,6 +8,10 @@ dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.1 -o .
 dotnet publish --self-contained true -r win-x64 -c Release -f netcoreapp2.1 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETCore2.1\ Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
 dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.1 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETCore2.1\ Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
 
+dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.2 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Worker\MSIL\NETCore2.2\ Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
+dotnet publish --self-contained true -r win-x64 -c Release -f netcoreapp2.2 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETCore2.2\ Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
+dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.2 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETCore2.2\ Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
+
 xcopy /Y bin\Nuclear.Test.Worker\AnyCPU\Release\net461\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\MSIL\NETFramework4.6.1\
 xcopy /Y bin\Nuclear.Test.Worker\x64\Release\net461\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.6.1\
 xcopy /Y bin\Nuclear.Test.Worker\x86\Release\net461\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.6.1\
@@ -28,10 +32,14 @@ xcopy /Y bin\Nuclear.Test.Worker\AnyCPU\Release\net472\* publish\Nuclear.Test.Co
 xcopy /Y bin\Nuclear.Test.Worker\x64\Release\net472\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.7.2\
 xcopy /Y bin\Nuclear.Test.Worker\x86\Release\net472\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.7.2\
 
-dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.0 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Proxy\MSIL\ Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj
-dotnet publish --self-contained true -r win-x64 -c Release -f netcoreapp2.0 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Proxy\Amd64\ Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj
-dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.0 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Proxy\X86\ Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj
+xcopy /Y bin\Nuclear.Test.Worker\AnyCPU\Release\net48\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\MSIL\NETFramework4.8\
+xcopy /Y bin\Nuclear.Test.Worker\x64\Release\net48\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.8\
+xcopy /Y bin\Nuclear.Test.Worker\x86\Release\net48\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.8\
 
-dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.0 -o ..\publish\Nuclear.Test.Console\ Nuclear.Test.Console\Nuclear.Test.Console.csproj
+dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.2 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Proxy\MSIL\ Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj
+dotnet publish --self-contained true -r win-x64 -c Release -f netcoreapp2.2 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Proxy\Amd64\ Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj
+dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.2 -o ..\publish\Nuclear.Test.Console\Nuclear.Test.Proxy\X86\ Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj
+
+dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp2.2 -o ..\publish\Nuclear.Test.Console\ Nuclear.Test.Console\Nuclear.Test.Console.csproj
 
 pause
