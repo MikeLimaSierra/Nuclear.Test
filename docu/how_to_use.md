@@ -3,7 +3,9 @@
 `Nuclear.Test.Console` makes use of three different programs that can have visible windows.
 Each program will therefore print a large visible header to help with orientation.
 Test results are collected and printed to console when finished in every visible window.
-Visibility of child processes can be configured.
+Visibility of child processes can be configured (see below).
+
+`Nuclear.Test.Console` will exit with `1` if there is one or more failed test instructions. This can be used to automate unit testing in continuous integration (until there is full msbuild support). If all tests are ok the exit code will be `0`.
 
 ## Configuration options
 `Nuclear.Test.Console` is configured by providing arguments with its call.
