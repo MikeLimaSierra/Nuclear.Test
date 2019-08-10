@@ -22,6 +22,25 @@ Tests targeting .NETStandard will run on matching runtimes that implement the ta
 
 ---
 
+## Why you should (not) use Nuclear.Test
+`Nuclear.Test` offers both advantages and disadvantages over other unit test platforms.
+There are good reasons to use it or not.
+This depends very much on your priorities and on which of the following two lists you feel more at home.
+
+### Good reasons to use Nuclear.Test
+
+* Unit testing functionality for .NETStandard libraries.
+* Processor architecture independent (Any CPU, x86, x64).
+* No more 'One assertion per test' rules. Test as much as you like.
+* Don't know about you but using command line tools with colored output always makes me feel super smart.
+
+### Good reasons to go with something else
+
+* Requires to have no more than one test class per file where both need to have the exact same name.
+* Command line only at the moment without any integration into Visual Studio.
+* Not as sophisticated and will have bugs and stability issues which will take longer to fix.
+* No community to help you with issues other than this place right here.
+
 ## Getting started
 To get started quickly you can check out the tutorials on [How to write tests](docu/how_to_write_tests.md) and [How to run tests](docu/how_to_use.md) using `Nuclear.Test`.
 Some of these tutorials make use of code in the [samples](samples) so you might want to load `samples/Samples.sln` in Visual Studio.
