@@ -70,7 +70,7 @@ This will also give information about on what platform in what version the test 
 By default the lowest possible version of any platform will be used to run tests on.
 This can be configured by giving the argument `--test-all-versions` which will result in running tests on all matching runtimes.
 * Runtimes marked with `[Y]` will be used.
-* Runtimes marked with `[Y]` will not be used.
+* Runtimes marked with `[N]` will not be used.
 * Runtimes marked with `[?]` do not have a worker.
 
 ```
@@ -108,10 +108,10 @@ This can be configured by giving the argument `--test-all-versions` which will r
 ║    [N] NETFramework 4.7                                              ║
 ║    [N] NETFramework 4.7.1                                            ║
 ║    [N] NETFramework 4.7.2                                            ║
-║    [?] NETFramework 4.8                                              ║
+║    [N] NETFramework 4.8                                              ║
 ║    [Y] NETCore 2.0                                                   ║
 ║    [N] NETCore 2.1                                                   ║
-║    [?] NETCore 2.2                                                   ║
+║    [N] NETCore 2.2                                                   ║
 ║    [?] NETCore 3.0                                                   ║
 ║    [?] Mono 5.4                                                      ║
 ║    [?] XamarinIOS 10.14                                              ║
