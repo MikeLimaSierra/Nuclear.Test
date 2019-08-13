@@ -156,7 +156,7 @@ void TestTimeStampEvent() {
 ```
 
 ### Result:
-![Instructions example](media/instructions_example.png)
+![Instructions example](media/instructions_example.PNG)
 
 There is no limit on the number of test instructions within a test method.
 Even a failing instruction will not abort the test.
@@ -189,7 +189,7 @@ void TestTimeStampEvent() {
 ```
 
 ### Result:
-![Instructions fail example](media/instructions_fail_example.png)
+![Instructions fail example](media/instructions_fail_example.PNG)
 
 ---
 
@@ -222,6 +222,6 @@ void TestConstructorsAnotherWay() {
 ```
 
 ### Result:
-![Notes example](media/notes_example.png)
+![Notes example](media/notes_example.PNG)
 
 ---
