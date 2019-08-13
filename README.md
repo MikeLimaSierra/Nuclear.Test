@@ -110,8 +110,8 @@ class RuntimeDifferenceTests {
 		Test.If.ValuesEqual(xAttr.Name, "myAttribute");
 
 		Test.Note(".NETCore uses ToString(\"o\")");
-        // actually this is .NETCore 2.0 only.
-        // .NETCore 2.1+ uses the .NETFramework style below.
+		// actually this is .NETCore 2.0 only.
+		// .NETCore 2.1+ uses the .NETFramework style below.
 		Test.Note("String will be '2042-03-14T08:35:57.1280000'");
 		Test.If.ValuesEqual(xAttr.Value, "2042-03-14T08:35:57.1280000");
 
