@@ -12,6 +12,18 @@ By publishing this code I hope to help or inspire others to think outside the bo
 
 ~~If~~ When you run into bugs and other problems, please open up an issue to help me fix it.
 
+## Table of contents
+* [Supported target frameworks](#supported-target-frameworks)
+* [Many tests per method](#many-tests-per-method)
+* [Multiple test assemblies](#multiple-test-assemblies)
+* [Multi runtime test execution](#multi-runtime-test-execution)
+* [Why you should (not) use Nuclear.Test](#why-you-should-not-use-nucleartest)
+* [Getting started](#getting-started)
+* [Building from source](#building-from-source)
+* [Roadmap](#roadmap)
+
+---
+
 ## Supported target frameworks
 `Nuclear.Test` can run unit tests targeting the following frameworks.
 Tests targeting `.NETStandard` will run on matching runtimes that implement the targeted version of `.NETStandard`.

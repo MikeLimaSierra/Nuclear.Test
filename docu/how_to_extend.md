@@ -2,6 +2,12 @@
 `Nuclear.Test` can be extended in several ways by any user.
 This allows for data driven testing as well as increasing the usablility of `Nuclear.Test` with all kinds of environments or requirements.
 
+## Table of contents
+* [Data driven test methods (DDT)](#data-driven-test-methods-ddt)
+* [Custom test instructions](#custom-test-instructions)
+
+---
+
 ## Data driven test methods (DDT)
 Multiple repeating lines of test instructions can be bundled into data driven test methods or generic test methods.
 DDT methods allow for testing of functionality with varying input parameters without having to copy & paste code.

@@ -3,6 +3,17 @@ Writing unit tests using `Nuclear.Test` is very different from using other unit 
 It doesn't matter how many things are tested in one test method.
 The programmer can fully focus on writing exhaustive tests in a very compact format that is easy to read and understand.
 
+## Table of contents
+* [Setting up a test project](#setting-up-a-test-project)
+* [Setting up a nuclear test site](#setting-up-a-nuclear-test-site)
+* [Test mode (parallel and sequential)](#test-mode-parallel-and-sequential)
+* [Test classes](#test-classes)
+* [Test methods](#test-methods)
+* [Test instructions](#test-instructions)
+* [Note](#note)
+
+---
+
 ## Setting up a test project
 The first step in writing unit tests is to create a new project.
 Ideally there is exactly one test project for every project that needs testing so that there are always a set of two assemblies with one containing only product code and the other containing only test code.

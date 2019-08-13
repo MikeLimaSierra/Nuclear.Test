@@ -7,6 +7,27 @@ Do not use these parameters within test methods that are decorated with `[TestMe
 Read [How to extend Nuclear.Test](how_to_extend.md) to learn how to use these instead.
 For simplicity, both parameters are being omitted in the following document.
 
+## Table of contents
+* [Null](#null)
+* [ReferencesEqual](#referencesequal)
+* [OfType](#oftype)
+* [OfExactType](#ofexacttype)
+* [TypeImplements](#typeimplements)
+* [TypeIsSubClass](#typeissubclass)
+* [ThrowsException](#throwsexception)
+* [RaisesPropertyChangedEvent](#raisespropertychangedevent)
+* [RaisesEvent](#raisesevent)
+* [True](#true)
+* [False](#false)
+* [ValuesEqual](#valuesequal)
+* [StringIsNullOrEmpty](#stringisnullorempty)
+* [StringIsNullOrWhiteSpace](#stringisnullorwhitespace)
+* [StringContains](#stringcontains)
+* [StringStartsWith](#stringstartswith)
+* [StringEndsWith](#stringendswith)
+
+---
+
 ## Null
 Tests if `obj` is null.
 
