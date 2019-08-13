@@ -135,27 +135,28 @@ A more detailed description of all test instructions can be found [here](test_in
 [TestMethod]
 void TestTimeStampEvent() {
 
-    MyClass obj = new MyClass("asdf");
-    XDocument doc = null;
+	MyClass obj = new MyClass("asdf");
+	XDocument doc = null;
 
-    Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
-    Test.IfNot.Null(sender);
-    Test.If.ReferencesEqual(sender, obj);
-    Test.IfNot.Null(e);
-    Test.IfNot.Null(e.XmlDoc);
-    Test.IfNot.Null(e.WakeTimeStamp);
-    Test.If.ValuesEqual(e.XmlDoc, doc);
-    Test.If.ReferencesEqual(e.XmlDoc, doc);
-    Test.IfNot.Null(e.CallTimeStamp);
-    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
-    Test.IfNot.Null(e.CallTimeStamp);
-    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
+	Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
+
+	Test.IfNot.Null(sender);
+	Test.If.ReferencesEqual(sender, obj);
+
+	Test.IfNot.Null(e);
+	Test.IfNot.Null(e.XmlDoc);
+	Test.If.ValuesEqual(e.XmlDoc, doc);
+	Test.If.ReferencesEqual(e.XmlDoc, doc);
+	Test.IfNot.Null(e.CallTimeStamp);
+	Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
+	Test.IfNot.Null(e.WakeTimeStamp);
+	Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
 
 }
 ```
 
 ### Result:
-![Instructions example](media/instructions_example.PNG)
+![Instructions example](media/instructions_example.png)
 
 There is no limit on the number of test instructions within a test method.
 Even a failing instruction will not abort the test.
@@ -166,28 +167,29 @@ All subsequent instructions will be evaluated and logged.
 [TestMethod]
 void TestTimeStampEvent() {
 
-    MyClass obj = new MyClass("asdf");
-    XDocument doc = null;
+	MyClass obj = new MyClass("asdf");
+	XDocument doc = null;
 
-    Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
-    Test.IfNot.Null(sender);
-    Test.If.ReferencesEqual(sender, obj);
-    Test.IfNot.Null(e);
-    Test.IfNot.Null(e.XmlDoc);
-    Test.IfNot.Null(e.WakeTimeStamp);
-    Test.If.ValuesEqual(e.WakeTimeStamp, DateTime.Now.AddDays(1)); // This line is obviously going to fail
-    Test.If.ValuesEqual(e.XmlDoc, doc);
-    Test.If.ReferencesEqual(e.XmlDoc, doc);
-    Test.IfNot.Null(e.CallTimeStamp);
-    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
-    Test.IfNot.Null(e.CallTimeStamp);
-    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
+	Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
+
+	Test.IfNot.Null(sender);
+	Test.If.ReferencesEqual(sender, obj);
+
+	Test.IfNot.Null(e);
+	Test.IfNot.Null(e.XmlDoc);
+	Test.If.ValuesEqual(e.XmlDoc, doc);
+	Test.If.ReferencesEqual(e.XmlDoc, doc);
+	Test.IfNot.Null(e.CallTimeStamp);
+	Test.If.ValuesEqual(e.CallTimeStamp, DateTime.Now.AddDays(1)); // This line is obviously going to fail
+	Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
+	Test.IfNot.Null(e.WakeTimeStamp);
+	Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
 
 }
 ```
 
 ### Result:
-![Instructions fail example](media/instructions_fail_example.PNG)
+![Instructions fail example](media/instructions_fail_example.png)
 
 ---
 
@@ -220,6 +222,6 @@ void TestConstructorsAnotherWay() {
 ```
 
 ### Result:
-![Notes example](media/notes_example.PNG)
+![Notes example](media/notes_example.png)
 
 ---

@@ -125,7 +125,7 @@ This can be configured by giving the argument `--test-all-versions` which will r
 ---
 
 ## Nuclear.Test.Worker
-For every matching [Y] marked runtime, `Nuclear.Test.Worker` is started as a child process.
+For every matching `[Y]` marked runtime, `Nuclear.Test.Worker` is started as a child process.
 If the parameter `--show-clients` is provided, `Nuclear.Test.Worker` will print out information about itself and the test assembly.
 ```
 ╔══════════════════════════════════════════════════════════════════════╗

@@ -113,16 +113,17 @@ namespace SampleTests {
             XDocument doc = null;
 
             Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
+
             Test.IfNot.Null(sender);
             Test.If.ReferencesEqual(sender, obj);
+
             Test.IfNot.Null(e);
             Test.IfNot.Null(e.XmlDoc);
-            Test.IfNot.Null(e.WakeTimeStamp);
             Test.If.ValuesEqual(e.XmlDoc, doc);
             Test.If.ReferencesEqual(e.XmlDoc, doc);
             Test.IfNot.Null(e.CallTimeStamp);
             Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
-            Test.IfNot.Null(e.CallTimeStamp);
+            Test.IfNot.Null(e.WakeTimeStamp);
             Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
 
         }

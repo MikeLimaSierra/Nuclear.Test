@@ -14,11 +14,131 @@ By publishing this code I hope to help or inspire others to think outside the bo
 
 ## Supported target frameworks
 `Nuclear.Test` can run unit tests targeting the following frameworks.
-Tests targeting .NETStandard will run on matching runtimes that implement the targeted version of .NETStandard.
+Tests targeting `.NETStandard` will run on matching runtimes that implement the targeted version of `.NETStandard`.
 
 * .NETFramework 4.6.1 or higher
 * .NETCore 2.0 or higher
 * .NETStandard 2.0 or higher
+
+---
+
+## Many tests per method
+Methods and constructors can have multiple overloads and different input scenarios that need to be tested.
+The call of a setter may change a secondary property under certain circumstances.
+Some actions might raise an event that needs to be checked as well or may throw exceptions that need to be taken care of.
+
+Test methods with any number of test instructions can do all that and more.
+Even a failing test instruction will not abort the test and the following instructions will continue to be evaluated.
+
+## Example:
+```csharp
+[TestMethod]
+void TestConstructors() {
+
+	MyClass obj = null;
+
+	Test.Note("new MyClass(null)");
+	Test.If.ThrowsException(() => obj = new MyClass(null), out ArgumentNullException ex);
+	Test.If.Null(obj);
+	Test.IfNot.Null(ex);
+	Test.If.ValuesEqual(ex.ParamName, "title");
+
+	Test.Note("new MyClass(\"Hello World!\")");
+	Test.IfNot.ThrowsException(() => obj = new MyClass("Hello World!"), out ex);
+	Test.IfNot.Null(obj);
+	Test.If.Null(ex);
+	Test.If.ValuesEqual(obj.Title, "Hello World!");
+
+}
+```
+
+### Result (ok):
+![Constructor example](media/constructor_example.png)
+
+### Result (fail):
+![Constructor fail example](media/constructor_fail_example.png)
+
+---
+
+## Multiple test assemblies
+Some projects are built against multiple target frameworks.
+Others can require third party libraries that only exist in `x86` and `x64` so building against multiple processor architectures may be necessary.
+It only makes sense to run the tests in all resulting output assemblies to make sure everything works as expected.
+
+### Example:
+```
+...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 1
+```
+
+### Result:
+![Assembly level results](media/assembly_level_results.png)
+
+### Example:
+```
+...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 2
+```
+
+![Processor architecture level results](media/architecture_level_results.png)
+
+---
+
+## Multi runtime test execution
+Projects targeting `.NETStandard` don't really have a platform to work with.
+It is useful to run tests on a set of platforms that implement the specific version of `.NETStandard` since there are differences that could matter.
+
+### Example:
+```
+...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 3
+```
+
+### Result (ok):
+![Runtime level results](media/runtime_level_results.png)
+
+### Example:
+```csharp
+class RuntimeDifferenceTests {
+
+	[TestMethod]
+	void TestCoreStyle() {
+
+		DateTime someDate = new DateTime(2042, 3, 14, 8, 35, 57, 128);
+		XAttribute xAttr = null;
+
+		Test.Note("XAttribute(XName, Object) => XContainer.GetStringValue(Object)");
+		Test.IfNot.ThrowsException(() => xAttr = new XAttribute(XName.Get("myAttribute"), someDate), out Exception ex);
+		Test.IfNot.Null(xAttr);
+		Test.If.ValuesEqual(xAttr.Name, "myAttribute");
+
+		Test.Note(".NETCore uses ToString(\"o\")");
+        // actually this is .NETCore 2.0 only.
+        // .NETCore 2.1+ uses the .NETFramework style below.
+		Test.Note("String will be '2042-03-14T08:35:57.1280000'");
+		Test.If.ValuesEqual(xAttr.Value, "2042-03-14T08:35:57.1280000");
+
+	}
+
+	[TestMethod]
+	void TestFrameworkStyle() {
+
+		DateTime someDate = new DateTime(2042, 3, 14, 8, 35, 57, 128);
+		XAttribute xAttr = null;
+
+		Test.Note("XAttribute(XName, Object) => XContainer.GetStringValue(Object)");
+		Test.IfNot.ThrowsException(() => xAttr = new XAttribute(XName.Get("myAttribute"), someDate), out Exception ex);
+		Test.IfNot.Null(xAttr);
+		Test.If.ValuesEqual(xAttr.Name, "myAttribute");
+
+		Test.Note(".NETFramework uses 'yyyy-MM-dd' + 'T' + 'HH:mm:ss.#######'");
+		Test.Note("String will be '2042-03-14T08:35:57.128'");
+		Test.If.ValuesEqual(xAttr.Value, "2042-03-14T08:35:57.128");
+
+	}
+
+}
+```
+
+### Result (fail):
+![Runtime level fail results](media/runtime_level_fail_results.png)
 
 ---
 
@@ -40,6 +160,8 @@ This depends very much on your priorities and on which of the following two list
 * Command line only at the moment without any integration into Visual Studio.
 * Not as sophisticated and will have bugs and stability issues which will take longer to fix.
 * No community to help you with issues other than this place right here.
+
+---
 
 ## Getting started
 To get started quickly you can check out the tutorials on [How to write tests](docu/how_to_write_tests.md) and [How to run tests](docu/how_to_use.md) using `Nuclear.Test`.
@@ -64,12 +186,12 @@ Other versions might work as well but this is what I'm using so I suggest to use
 4. Execute `Nuclear.Test.Console.exe` and configure with arguments (See [How to use Nuclear.Test](docu/how_to_use.md))
 
 ### Running tests on `samples/Samples.sln`
-```csharp
+```
 ...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj
 ```
 
 ### Running tests on `src/Nuclear.Test.sln`
-```csharp
+```
 ...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../bin -i Debug;obj
 ```
 
