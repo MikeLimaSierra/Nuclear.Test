@@ -53,10 +53,10 @@ void TestConstructors() {
 ```
 
 ### Result (ok):
-![Constructor example](media/constructor_example.png)
+![Constructor example](docu/media/constructor_example.png)
 
 ### Result (fail):
-![Constructor fail example](media/constructor_fail_example.png)
+![Constructor fail example](docu/media/constructor_fail_example.png)
 
 ---
 
@@ -71,14 +71,14 @@ It only makes sense to run the tests in all resulting output assemblies to make 
 ```
 
 ### Result:
-![Assembly level results](media/assembly_level_results.png)
+![Assembly level results](docu/media/assembly_level_results.png)
 
 ### Example:
 ```
 ...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 2
 ```
 
-![Processor architecture level results](media/architecture_level_results.png)
+![Processor architecture level results](docu/media/architecture_level_results.png)
 
 ---
 
@@ -92,7 +92,7 @@ It is useful to run tests on a set of platforms that implement the specific vers
 ```
 
 ### Result (ok):
-![Runtime level results](media/runtime_level_results.png)
+![Runtime level results](docu/media/runtime_level_results.png)
 
 ### Example:
 ```csharp
@@ -138,7 +138,7 @@ class RuntimeDifferenceTests {
 ```
 
 ### Result (fail):
-![Runtime level fail results](media/runtime_level_fail_results.png)
+![Runtime level fail results](docu/media/runtime_level_fail_results.png)
 
 ---
 
