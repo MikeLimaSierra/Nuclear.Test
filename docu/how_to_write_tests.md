@@ -104,7 +104,7 @@ class MyOtherClassTests {
 
 ## Test methods
 A method is a test method if it is decorated with the `Nuclear.TestSite.Attributes.TestMethodAttribute`.
-A method without `[TestClass]` will not be invoked by the test runner.
+A method without `[TestMethod]` will not be invoked by the test runner.
 
 If the test method must be invoked sequentially, it can be decorated with `[TestMethod(TestMode.Sequential)]`.
 
