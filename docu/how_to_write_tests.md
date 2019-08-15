@@ -146,22 +146,22 @@ A more detailed description of all test instructions can be found [here](test_in
 [TestMethod]
 void TestTimeStampEvent() {
 
-	MyClass obj = new MyClass("asdf");
-	XDocument doc = null;
+    MyClass obj = new MyClass("asdf");
+    XDocument doc = null;
 
-	Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
+    Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
 
-	Test.IfNot.Null(sender);
-	Test.If.ReferencesEqual(sender, obj);
+    Test.IfNot.Null(sender);
+    Test.If.ReferencesEqual(sender, obj);
 
-	Test.IfNot.Null(e);
-	Test.IfNot.Null(e.XmlDoc);
-	Test.If.ValuesEqual(e.XmlDoc, doc);
-	Test.If.ReferencesEqual(e.XmlDoc, doc);
-	Test.IfNot.Null(e.CallTimeStamp);
-	Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
-	Test.IfNot.Null(e.WakeTimeStamp);
-	Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
+    Test.IfNot.Null(e);
+    Test.IfNot.Null(e.XmlDoc);
+    Test.If.ValuesEqual(e.XmlDoc, doc);
+    Test.If.ReferencesEqual(e.XmlDoc, doc);
+    Test.IfNot.Null(e.CallTimeStamp);
+    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
+    Test.IfNot.Null(e.WakeTimeStamp);
+    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
 
 }
 ```
@@ -178,23 +178,23 @@ All subsequent instructions will be evaluated and logged.
 [TestMethod]
 void TestTimeStampEvent() {
 
-	MyClass obj = new MyClass("asdf");
-	XDocument doc = null;
+    MyClass obj = new MyClass("asdf");
+    XDocument doc = null;
 
-	Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
+    Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
 
-	Test.IfNot.Null(sender);
-	Test.If.ReferencesEqual(sender, obj);
+    Test.IfNot.Null(sender);
+    Test.If.ReferencesEqual(sender, obj);
 
-	Test.IfNot.Null(e);
-	Test.IfNot.Null(e.XmlDoc);
-	Test.If.ValuesEqual(e.XmlDoc, doc);
-	Test.If.ReferencesEqual(e.XmlDoc, doc);
-	Test.IfNot.Null(e.CallTimeStamp);
-	Test.If.ValuesEqual(e.CallTimeStamp, DateTime.Now.AddDays(1)); // This line is obviously going to fail
-	Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
-	Test.IfNot.Null(e.WakeTimeStamp);
-	Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
+    Test.IfNot.Null(e);
+    Test.IfNot.Null(e.XmlDoc);
+    Test.If.ValuesEqual(e.XmlDoc, doc);
+    Test.If.ReferencesEqual(e.XmlDoc, doc);
+    Test.IfNot.Null(e.CallTimeStamp);
+    Test.If.ValuesEqual(e.CallTimeStamp, DateTime.Now.AddDays(1)); // This line is obviously going to fail
+    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
+    Test.IfNot.Null(e.WakeTimeStamp);
+    Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
 
 }
 ```

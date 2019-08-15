@@ -47,19 +47,19 @@ Even a failing test instruction will not abort the test and the following instru
 [TestMethod]
 void TestConstructors() {
 
-	MyClass obj = null;
+    MyClass obj = null;
 
-	Test.Note("new MyClass(null)");
-	Test.If.ThrowsException(() => obj = new MyClass(null), out ArgumentNullException ex);
-	Test.If.Null(obj);
-	Test.IfNot.Null(ex);
-	Test.If.ValuesEqual(ex.ParamName, "title");
+    Test.Note("new MyClass(null)");
+    Test.If.ThrowsException(() => obj = new MyClass(null), out ArgumentNullException ex);
+    Test.If.Null(obj);
+    Test.IfNot.Null(ex);
+    Test.If.ValuesEqual(ex.ParamName, "title");
 
-	Test.Note("new MyClass(\"Hello World!\")");
-	Test.IfNot.ThrowsException(() => obj = new MyClass("Hello World!"), out ex);
-	Test.IfNot.Null(obj);
-	Test.If.Null(ex);
-	Test.If.ValuesEqual(obj.Title, "Hello World!");
+    Test.Note("new MyClass(\"Hello World!\")");
+    Test.IfNot.ThrowsException(() => obj = new MyClass("Hello World!"), out ex);
+    Test.IfNot.Null(obj);
+    Test.If.Null(ex);
+    Test.If.ValuesEqual(obj.Title, "Hello World!");
 
 }
 ```
@@ -110,41 +110,41 @@ It is useful to run tests on a set of platforms that implement the specific vers
 ```csharp
 class RuntimeDifferenceTests {
 
-	[TestMethod]
-	void TestCoreStyle() {
+    [TestMethod]
+    void TestCoreStyle() {
 
-		DateTime someDate = new DateTime(2042, 3, 14, 8, 35, 57, 128);
-		XAttribute xAttr = null;
+        DateTime someDate = new DateTime(2042, 3, 14, 8, 35, 57, 128);
+        XAttribute xAttr = null;
 
-		Test.Note("XAttribute(XName, Object) => XContainer.GetStringValue(Object)");
-		Test.IfNot.ThrowsException(() => xAttr = new XAttribute(XName.Get("myAttribute"), someDate), out Exception ex);
-		Test.IfNot.Null(xAttr);
-		Test.If.ValuesEqual(xAttr.Name, "myAttribute");
+        Test.Note("XAttribute(XName, Object) => XContainer.GetStringValue(Object)");
+        Test.IfNot.ThrowsException(() => xAttr = new XAttribute(XName.Get("myAttribute"), someDate), out Exception ex);
+        Test.IfNot.Null(xAttr);
+        Test.If.ValuesEqual(xAttr.Name, "myAttribute");
 
-		Test.Note(".NETCore uses ToString(\"o\")");
-		// actually this is .NETCore 2.0 only.
-		// .NETCore 2.1+ uses the .NETFramework style below.
-		Test.Note("String will be '2042-03-14T08:35:57.1280000'");
-		Test.If.ValuesEqual(xAttr.Value, "2042-03-14T08:35:57.1280000");
+        Test.Note(".NETCore uses ToString(\"o\")");
+        // actually this is .NETCore 2.0 only.
+        // .NETCore 2.1+ uses the .NETFramework style below.
+        Test.Note("String will be '2042-03-14T08:35:57.1280000'");
+        Test.If.ValuesEqual(xAttr.Value, "2042-03-14T08:35:57.1280000");
 
-	}
+    }
 
-	[TestMethod]
-	void TestFrameworkStyle() {
+    [TestMethod]
+    void TestFrameworkStyle() {
 
-		DateTime someDate = new DateTime(2042, 3, 14, 8, 35, 57, 128);
-		XAttribute xAttr = null;
+        DateTime someDate = new DateTime(2042, 3, 14, 8, 35, 57, 128);
+        XAttribute xAttr = null;
 
-		Test.Note("XAttribute(XName, Object) => XContainer.GetStringValue(Object)");
-		Test.IfNot.ThrowsException(() => xAttr = new XAttribute(XName.Get("myAttribute"), someDate), out Exception ex);
-		Test.IfNot.Null(xAttr);
-		Test.If.ValuesEqual(xAttr.Name, "myAttribute");
+        Test.Note("XAttribute(XName, Object) => XContainer.GetStringValue(Object)");
+        Test.IfNot.ThrowsException(() => xAttr = new XAttribute(XName.Get("myAttribute"), someDate), out Exception ex);
+        Test.IfNot.Null(xAttr);
+        Test.If.ValuesEqual(xAttr.Name, "myAttribute");
 
-		Test.Note(".NETFramework uses 'yyyy-MM-dd' + 'T' + 'HH:mm:ss.#######'");
-		Test.Note("String will be '2042-03-14T08:35:57.128'");
-		Test.If.ValuesEqual(xAttr.Value, "2042-03-14T08:35:57.128");
+        Test.Note(".NETFramework uses 'yyyy-MM-dd' + 'T' + 'HH:mm:ss.#######'");
+        Test.Note("String will be '2042-03-14T08:35:57.128'");
+        Test.If.ValuesEqual(xAttr.Value, "2042-03-14T08:35:57.128");
 
-	}
+    }
 
 }
 ```
