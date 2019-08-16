@@ -1,9 +1,11 @@
 # How to write unit tests using `Nuclear.Test`
+
 Writing unit tests using `Nuclear.Test` is very different from using other unit test platforms.
 It doesn't matter how many things are tested in one test method.
 The programmer can fully focus on writing exhaustive tests in a very compact format that is easy to read and understand.
 
 ## Table of contents
+
 * [Setting up a test project](#setting-up-a-test-project)
 * [Setting up a nuclear test site](#setting-up-a-nuclear-test-site)
 * [Test mode (parallel and sequential)](#test-mode-parallel-and-sequential)
@@ -15,6 +17,7 @@ The programmer can fully focus on writing exhaustive tests in a very compact for
 ---
 
 ## Setting up a test project
+
 The first step in writing unit tests is to create a new project.
 Ideally there is exactly one test project for every project that needs testing so that there are always a set of two assemblies with one containing only product code and the other containing only test code.
 Both assemblies should target the same framework as this makes it a lot easier in the long run.
@@ -27,11 +30,13 @@ It is also a good idea for the test project to use the same root namespace as th
 ---
 
 ## Setting up a nuclear test site
+
 Creating unit tests using `Nuclear.Test` requires to reference `Nuclear.TestSite`, available as a [NuGet package](https://www.nuget.org/packages/Nuclear.TestSite/) or [release](https://github.com/MikeLimaSierra/Nuclear.Test/releases).
 
 ---
 
 ## Test mode (parallel and sequential)
+
 Both test classes and test methods have a test mode that can be configured.
 A proper unit test is supposed to be fully independent of other unit tests.
 
@@ -48,12 +53,14 @@ The scheduler will decide what is best for the system and `Nuclear.Test` will ac
 ---
 
 ## Test classes
+
 A class is a test class if it contains at least one test method or if it is decorated with the `Nuclear.TestSite.Attributes.TestClassAttribute`.
 The attribute `[TestClass]` can be omitted in most cases.
 
 If the entire class must be executed one test method at a time, the class can be decorated with `[TestClass(TestMode.Sequential)]`.
 
 ### Example:
+
 ```csharp
 // this is a test class in parallel test mode
 [TestClass]
@@ -82,6 +89,7 @@ This is because every test instruction uses the file name to register test resul
 Unhandled exceptions within a test method on the other hand will be registered to the class name.
 
 ### Example:
+
 ```csharp
 // file MyClassTests.cs
 
@@ -103,12 +111,14 @@ class MyOtherClassTests {
 ---
 
 ## Test methods
+
 A method is a test method if it is decorated with the `Nuclear.TestSite.Attributes.TestMethodAttribute`.
 A method without `[TestMethod]` will not be invoked by the test runner.
 
 If the test method must be invoked sequentially, it can be decorated with `[TestMethod(TestMode.Sequential)]`.
 
 ### Example:
+
 ```csharp
 // this is a test method in parallel test mode
 [TestMethod]
@@ -132,6 +142,7 @@ void TestSomething() {
 ---
 
 ## Test instructions
+
 While test classes are just containers for test methods, test methods are just containers for test instructions.
 These are the actual tests and a test method without at least one test instruction will yield no results.
 
@@ -142,6 +153,7 @@ The test result will be inverted if the instruction was called from `Test.IfNot`
 A more detailed description of all test instructions can be found [here](test_instructions.md)
 
 ### Example:
+
 ```csharp
 [TestMethod]
 void TestTimeStampEvent() {
@@ -167,6 +179,7 @@ void TestTimeStampEvent() {
 ```
 
 ### Result:
+
 ![Instructions example](media/instructions_example.PNG)
 
 There is no limit on the number of test instructions within a test method.
@@ -174,6 +187,7 @@ Even a failing instruction will not abort the test.
 All subsequent instructions will be evaluated and logged.
 
 ### Example:
+
 ```csharp
 [TestMethod]
 void TestTimeStampEvent() {
@@ -200,11 +214,13 @@ void TestTimeStampEvent() {
 ```
 
 ### Result:
+
 ![Instructions fail example](media/instructions_fail_example.PNG)
 
 ---
 
 ## Note
+
 Complex test methods can contain many test instructions and figuring out the failing instruction can get very tiring.
 Test notes can be added to fight excessive counting of lines.
 A test note is a simple way of inserting a line of free text anywhere within the test instructions.
@@ -214,9 +230,11 @@ public static void Note(String note);
 ```
 
 ### Parameters:
+
 `String note`: The note that will be displayed.
 
 ### Example:
+
 ```csharp
 [TestMethod]
 void TestConstructorsAnotherWay() {
@@ -233,6 +251,7 @@ void TestConstructorsAnotherWay() {
 ```
 
 ### Result:
+
 ![Notes example](media/notes_example.PNG)
 
 ---

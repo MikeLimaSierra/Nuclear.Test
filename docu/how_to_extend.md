@@ -1,14 +1,17 @@
 # How to extend Nuclear.Test
+
 `Nuclear.Test` can be extended in several ways by any user.
 This allows for data driven testing as well as increasing the usablility of `Nuclear.Test` with all kinds of environments or requirements.
 
 ## Table of contents
+
 * [Data driven test methods (DDT)](#data-driven-test-methods-ddt)
 * [Custom test instructions](#custom-test-instructions)
 
 ---
 
 ## Data driven test methods (DDT)
+
 Multiple repeating lines of test instructions can be bundled into data driven test methods or generic test methods.
 DDT methods allow for testing of functionality with varying input parameters without having to copy & paste code.
 
@@ -18,6 +21,7 @@ The parameters `_file` and `_method` must be forwarded to any test instruction c
 When using DDT methods within test methods, the parameters `_file` and `_method` need to be omitted as values are supplied by the compiler at compile time.
 
 ### Example:
+
 ```csharp
 
 // DDT method declaration
@@ -50,6 +54,7 @@ void TestMultiplicator() {
 ---
 
 ## Custom test instructions
+
 Custom test instructions are created by declaring `extension methods` for `Nuclear.TestSite.Tests.ConditionalTest`.
 The extended class `ConditionalTest` provides a hidden method `public void InternalTest(Boolean, String, String, String, String, String)` which is responsible for both inverting and collecting the test result.
 
@@ -60,6 +65,7 @@ There may only be one call to `InternalTest` at any time during execution of cus
 When using custom test instructions within test methods, the parameters `_file` and `_method` need to be omitted as values are supplied by the compiler at compile time.
 
 ### Parameters of InternalTest (internal only omitted):
+
 `Boolean condition`: The condition to check.
 
 `String message`: The message.
@@ -69,6 +75,7 @@ When using custom test instructions within test methods, the parameters `_file` 
 `String _method`: The test method name.
 
 ### Example:
+
 ```csharp
 
 // custom test instruction declaration

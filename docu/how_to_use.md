@@ -1,4 +1,5 @@
 # How to use Nuclear.Test.Console
+
 `Nuclear.Test.Console` is a command line tool used for running tests in one or more test assemblies.
 `Nuclear.Test.Console` makes use of three different programs that can have visible windows.
 Each program will therefore print a large visible header to help with orientation.
@@ -10,6 +11,7 @@ This can be used to automate unit testing in continuous integration (until there
 If all tests are ok the exit code will be `0`.
 
 ## Table of contents
+
 * [Configuration options](#configuration-options)
 * [Running tests](#running-tests)
 * [Nuclear.Test.Proxy](#nucleartestproxy)
@@ -18,6 +20,7 @@ If all tests are ok the exit code will be `0`.
 ---
 
 ## Configuration options
+
 `Nuclear.Test.Console` is configured by providing arguments with its call.
 A list of available options is printed when calling the program without any arguments or by giving `-h` or `--help`
 
@@ -47,6 +50,7 @@ A list of available options is printed when calling the program without any argu
 ---
 
 ## Running tests
+
 Running unit tests using `Nuclear.Test.Console` is done by executing the command in a console.
 
 ```
@@ -73,6 +77,7 @@ Some\Path\To\Nuclear.Test.Console>Nuclear.Test.Console.exe [OPTIONS]
 ---
 
 ## Nuclear.Test.Proxy
+
 For every test assembly that is found according to the supplied configuration, `Nuclear.Test.Proxy` is started as a child process.
 If the parameter `--show-clients` is provided, `Nuclear.Test.Proxy` will print out information about itself and the test assembly.
 This will also give information about on what platform in what version the test assembly can be loaded.
@@ -135,6 +140,7 @@ This can be configured by giving the argument `--test-all-versions` which will r
 ---
 
 ## Nuclear.Test.Worker
+
 For every matching `[Y]` marked runtime, `Nuclear.Test.Worker` is started as a child process.
 If the parameter `--show-clients` is provided, `Nuclear.Test.Worker` will print out information about itself and the test assembly.
 ```
