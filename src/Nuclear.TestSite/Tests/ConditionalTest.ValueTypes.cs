@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.CompilerServices;
-using Nuclear.Extensions;
+using Nuclear.TestSite.Extensions;
 
 namespace Nuclear.TestSite.Tests {
     public partial class ConditionalTest {
