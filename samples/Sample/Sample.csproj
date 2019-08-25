@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Nuclear" Version="1.0.2" />
+    <PackageReference Include="Nuclear.Exceptions" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>

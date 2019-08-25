@@ -12,7 +12,7 @@ namespace Nuclear.Test.Console {
 
         #region fields
 
-        private static IArgumentCollector _arguments = new ArgumentCollector();
+        private static ArgumentCollector _arguments = new ArgumentCollector();
 
         private static AssemblyLocatorConfiguration _assemblyLocatorConfiguration = new AssemblyLocatorConfiguration();
 
@@ -27,7 +27,7 @@ namespace Nuclear.Test.Console {
         static void Main(String[] args) {
             CreateConfig(args);
 
-            if(_arguments.TryGetSwitch("h", out IArgument arg) || _arguments.TryGetSwitch("help", out arg) || _arguments.Arguments.Count == 0) {
+            if(_arguments.TryGetSwitch("h", out Argument arg) || _arguments.TryGetSwitch("help", out arg) || _arguments.Arguments.Count == 0) {
                 PrintHelp();
                 return;
             }
@@ -60,7 +60,7 @@ namespace Nuclear.Test.Console {
         private static void CreateConfig(String[] args) {
             _arguments.Collect(args);
 
-            if((_arguments.TryGetSwitch("d", out IArgument arg) || _arguments.TryGetSwitch("search-dir", out arg)) && arg.HasValue && Directory.Exists(arg.Value)) {
+            if((_arguments.TryGetSwitch("d", out Argument arg) || _arguments.TryGetSwitch("search-dir", out arg)) && arg.HasValue && Directory.Exists(arg.Value)) {
                 _assemblyLocatorConfiguration.SearchDir = new DirectoryInfo(arg.Value);
             } else {
                 _assemblyLocatorConfiguration.SearchDir = new FileInfo(Assembly.GetEntryAssembly().Location).Directory;

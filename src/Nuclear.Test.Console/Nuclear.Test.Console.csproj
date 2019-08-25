@@ -13,6 +13,10 @@
   <Import Project="..\Configurations.targets" />
   
   <ItemGroup>
+    <PackageReference Include="Nuclear.Arguments" Version="1.0.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <ProjectReference Include="..\Nuclear.Test\Nuclear.Test.csproj" />
   </ItemGroup>
 
