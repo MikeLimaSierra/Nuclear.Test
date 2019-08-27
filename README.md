@@ -86,15 +86,19 @@ It only makes sense to run the tests in all resulting output assemblies to make 
 
 ### Example:
 
+Show combined results for every test assembly.
+
 ```
 ...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 1
 ```
 
 ### Result:
 
-![Assembly level results](docu/media/assembly_level_results.png)
+![Assembly level results](docu/media/results_assembly_level.png)
 
 ### Example:
+
+Show combined results for every target runtime of every test assembly.
 
 ```
 ...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 2
@@ -102,7 +106,19 @@ It only makes sense to run the tests in all resulting output assemblies to make 
 
 ### Result:
 
-![Processor architecture level results](docu/media/architecture_level_results.png)
+![Target runtime level results](docu/media/results_target_runtime_level.png)
+
+### Example:
+
+Show combined results for every processor architecture and target runtime of every test assembly.
+
+```
+...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 3
+```
+
+### Result:
+
+![Processor architecture level results](docu/media/results_architecture_level.png)
 
 ---
 
@@ -114,12 +130,12 @@ It is useful to run tests on a set of platforms that implement the specific vers
 ### Example:
 
 ```
-...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 3
+...\src\publish\Nuclear.Test.Console>Nuclear.Test.Console.exe -d ../../../samples -i Debug;obj -v 4
 ```
 
 ### Result (ok):
 
-![Runtime level results](docu/media/runtime_level_results.png)
+![Runtime level results](docu/media/results_execution_runtime_level.png)
 
 ### Example:
 
@@ -167,7 +183,7 @@ class RuntimeDifferenceTests {
 
 ### Result (fail):
 
-![Runtime level fail results](docu/media/runtime_level_fail_results.png)
+![Runtime level fail results](docu/media/results_execution_runtime_level_fail.png)
 
 ---
 

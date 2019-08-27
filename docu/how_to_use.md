@@ -53,26 +53,7 @@ A list of available options is printed when calling the program without any argu
 
 Running unit tests using `Nuclear.Test.Console` is done by executing the command in a console.
 
-```
-Some\Path\To\Nuclear.Test.Console>Nuclear.Test.Console.exe [OPTIONS]
-╔══════════════════════════════════════════════════════════════════════╗
-║     _   _               _                    _____           _       ║
-║    | \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_     ║
-║    |  \| || | | | / __|| | / _ \ / _` || '__| | | / _ \/ __|| __|    ║
-║    | |\  || |_| || (__ | ||  __/| (_| || | _  | ||  __/\__ \| |_     ║
-║    |_| \_| \__,_| \___||_| \___| \__,_||_|(_) |_| \___||___/ \__|    ║
-║      ____                           _                                ║
-║     / ___| ___   _ __   ___   ___  | |  ___                          ║
-║    | |    / _ \ | '_ \ / __| / _ \ | | / _ \                         ║
-║    | |___| (_) || | | |\__ \| (_) || ||  __/                         ║
-║     \____|\___/ |_| |_||___/ \___/ |_| \___|                         ║
-║                                                                      ║
-╠══════════════════════════════════════════════════════════════════════╣
-║        Platform: NETCore                                             ║
-║         Version: 2.0                                                 ║
-║    Architecture: MSIL                                                ║
-╚══════════════════════════════════════════════════════════════════════╝
-```
+![Program header of Nuclear.Test.Console](media/header_console.png)
 
 ---
 
@@ -88,54 +69,7 @@ This can be configured by giving the argument `--test-all-versions` which will r
 * Runtimes marked with `[N]` will not be used.
 * Runtimes marked with `[?]` do not have a worker.
 
-```
-╔══════════════════════════════════════════════════════════════════════╗
-║     _   _               _                    _____           _       ║
-║    | \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_     ║
-║    |  \| || | | | / __|| | / _ \ / _` || '__| | | / _ \/ __|| __|    ║
-║    | |\  || |_| || (__ | ||  __/| (_| || | _  | ||  __/\__ \| |_     ║
-║    |_| \_| \__,_| \___||_| \___| \__,_||_|(_) |_| \___||___/ \__|    ║
-║     ____                                                             ║
-║    |  _ \  _ __  ___ __  __ _   _                                    ║
-║    | |_) || '__|/ _ \\ \/ /| | | |                                   ║
-║    |  __/ | |  | (_) |>  < | |_| |                                   ║
-║    |_|    |_|   \___//_/\_\ \__, |                                   ║
-║                             |___/                                    ║
-║                                                                      ║
-╠══════════════════════════════════════════════════════════════════════╣
-║        Platform: NETCore                                             ║
-║         Version: 2.0                                                 ║
-║    Architecture: MSIL                                                ║
-╚══════════════════════════════════════════════════════════════════════╝
-╔══════════════════════════════════════════════════════════════════════╗
-║                             Test Assembly                            ║
-╠══════════════════════════════════════════════════════════════════════╣
-║            Name: SampleNetStandardTests                              ║
-║        Platform: NETStandard                                         ║
-║         Version: 2.0                                                 ║
-║    Architecture: Amd64                                               ║
-╚══════════════════════════════════════════════════════════════════════╝
-╔══════════════════════════════════════════════════════════════════════╗
-║                       Matching Target Runtimes                       ║
-╠══════════════════════════════════════════════════════════════════════╣
-║    [Y] NETFramework 4.6.1                                            ║
-║    [N] NETFramework 4.6.2                                            ║
-║    [N] NETFramework 4.7                                              ║
-║    [N] NETFramework 4.7.1                                            ║
-║    [N] NETFramework 4.7.2                                            ║
-║    [N] NETFramework 4.8                                              ║
-║    [Y] NETCore 2.0                                                   ║
-║    [N] NETCore 2.1                                                   ║
-║    [N] NETCore 2.2                                                   ║
-║    [?] NETCore 3.0                                                   ║
-║    [?] Mono 5.4                                                      ║
-║    [?] XamarinIOS 10.14                                              ║
-║    [?] XamarinMac 3.8                                                ║
-║    [?] XamarinAndroid 8.0                                            ║
-║    [?] UWP 10.0.16299                                                ║
-║    [?] Unity 2018.1                                                  ║
-╚══════════════════════════════════════════════════════════════════════╝
-```
+![Program header of Nuclear.Test.Proxy](media/header_proxy.png)
 
 ---
 
@@ -143,32 +77,7 @@ This can be configured by giving the argument `--test-all-versions` which will r
 
 For every matching `[Y]` marked runtime, `Nuclear.Test.Worker` is started as a child process.
 If the parameter `--show-clients` is provided, `Nuclear.Test.Worker` will print out information about itself and the test assembly.
-```
-╔══════════════════════════════════════════════════════════════════════╗
-║     _   _               _                    _____           _       ║
-║    | \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_     ║
-║    |  \| || | | | / __|| | / _ \ / _` || '__| | | / _ \/ __|| __|    ║
-║    | |\  || |_| || (__ | ||  __/| (_| || | _  | ||  __/\__ \| |_     ║
-║    |_| \_| \__,_| \___||_| \___| \__,_||_|(_) |_| \___||___/ \__|    ║
-║    __        __            _                                         ║
-║    \ \      / /___   _ __ | | __ ___  _ __                           ║
-║     \ \ /\ / // _ \ | '__|| |/ // _ \| '__|                          ║
-║      \ V  V /| (_) || |   |   <|  __/| |                             ║
-║       \_/\_/  \___/ |_|   |_|\_\\___||_|                             ║
-║                                                                      ║
-╠══════════════════════════════════════════════════════════════════════╣
-║        Platform: NETFramework                                        ║
-║         Version: 4.6.1                                               ║
-║    Architecture: Amd64                                               ║
-╚══════════════════════════════════════════════════════════════════════╝
-╔══════════════════════════════════════════════════════════════════════╗
-║                             Test Assembly                            ║
-╠══════════════════════════════════════════════════════════════════════╣
-║            Name: SampleNetStandardTests                              ║
-║        Platform: NETStandard                                         ║
-║         Version: 2.0                                                 ║
-║    Architecture: Amd64                                               ║
-╚══════════════════════════════════════════════════════════════════════╝
-```
+
+![Program header of Nuclear.Test.Worker](media/header_worker.png)
 
 ---
