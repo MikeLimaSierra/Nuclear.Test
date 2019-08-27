@@ -40,7 +40,11 @@ namespace Nuclear.Test.Worker {
         #region protected methods
 
         protected override void ExecuteInternal() {
-            TestSite.Tests.Test.SetAssemblyInfo(TestAssemblyName.ProcessorArchitecture, TestAssemblyName.Name, Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName);
+            TestSite.Tests.Test.SetAssemblyInfo(
+                TestAssemblyName.Name,
+                TestAssembly.GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName,
+                TestAssemblyName.ProcessorArchitecture,
+                Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName);
 
             CollectTestMethods(TestAssembly, Results, out List<TestMethod> sequential, out List<TestMethod> parallel);
             InvokeTestMethods(sequential, parallel);

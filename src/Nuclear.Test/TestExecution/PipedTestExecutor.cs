@@ -120,6 +120,7 @@ namespace Nuclear.Test.TestExecution {
         /// <param name="pipeStream">The <see cref="PipeStream"/> that will be closed.</param>
         protected virtual void CloseClientPipe(PipeStream pipeStream) {
             pipeStream.Write(TestConfiguration.TEST_FINISHED);
+            pipeStream.WaitForPipeDrain();
             DiagnosticOutput.Log(OutputConfiguration, "Closing pipe stream.");
             pipeStream.Close();
         }
@@ -198,14 +199,15 @@ namespace Nuclear.Test.TestExecution {
         /// Sends the results as the given <see cref="Byte"/> <see cref="Array"/>.
         ///     Message is tagged with <see cref="TestConfiguration.TEST_RESULTS"/>.
         /// </summary>
-        /// <param name="pipe"></param>
-        /// <param name="data"></param>
+        /// <param name="pipe">The <see cref="PipeStream"/> to use for sending.</param>
+        /// <param name="data">The test data in raw form.</param>
         /// <returns></returns>
         protected Boolean TrySendResultData(PipeStream pipe, Byte[] data) {
             try {
                 DiagnosticOutput.Log(OutputConfiguration, "Sending {0} ({1} Bytes) results back to server.", Results.ResultMap.ResultsTotal, data.Length);
                 pipe.Write(TestConfiguration.TEST_RESULTS);
                 pipe.WriteLarge(data);
+                PipeStream.WaitForPipeDrain();
 
             } catch(Exception ex) {
                 // this should work flawlessly

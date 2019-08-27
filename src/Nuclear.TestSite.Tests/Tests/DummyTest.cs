@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using System.Runtime.Versioning;
 using Nuclear.Exceptions;
 using Nuclear.TestSite.Results;
 
@@ -18,13 +17,10 @@ namespace Nuclear.TestSite.Tests {
         #region ctors
 
         static DummyTest() {
-            AssemblyName asmName = Assembly.GetAssembly(typeof(DummyTest)).GetName();
-            If.Architecture = asmName.ProcessorArchitecture;
-            If.AssemblyName = asmName.Name;
-            If.Runtime = Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName;
-            IfNot.Architecture = asmName.ProcessorArchitecture;
-            IfNot.AssemblyName = asmName.Name;
-            IfNot.Runtime = Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName;
+            DummyTestResults.Instance.Architecture = Statics.Architecture;
+            DummyTestResults.Instance.TargetRuntime = Statics.TargetRuntime;
+            DummyTestResults.Instance.AssemblyName = Statics.AssemblyName;
+            DummyTestResults.Instance.ExecutionRuntime = Statics.ExecutionRuntime;
         }
 
         #endregion
@@ -38,6 +34,14 @@ namespace Nuclear.TestSite.Tests {
         public static ITestResultsEndPoint Instance { get; } = new DummyTestResults();
 
         public TestResultMap ResultMap { get; } = new TestResultMap();
+
+        public String AssemblyName { get; set; }
+
+        public String TargetRuntime { get; set; }
+
+        public ProcessorArchitecture Architecture { get; set; }
+
+        public String ExecutionRuntime { get; set; }
 
         #endregion
 
@@ -53,19 +57,13 @@ namespace Nuclear.TestSite.Tests {
 
         public void Clear() => ResultMap.Clear();
 
-        public void CollectResult(TestResult result, String _assembly, ProcessorArchitecture _architecture, String _runtime, String _file, String _method)
-            => ResultMap.GetOrAdd(new ResultKeyMethodLevel(_assembly, _architecture, _runtime, _file, _method), new TestResultCollection()).Add(result);
+        public void CollectResult(TestResult result, String _file, String _method)
+            => ResultMap.GetOrAdd(new ResultKeyMethodLevel(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _file, _method),
+                new TestResultCollection()).Add(result);
 
-        public void FailTestMethod(MethodInfo _method, Exception ex) {
-            ResultKeyMethodLevel key = new ResultKeyMethodLevel(
-                _method.DeclaringType.Assembly.GetName().Name,
-                _method.DeclaringType.Assembly.GetName().ProcessorArchitecture,
-                Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName,
-                _method.DeclaringType.Name,
-                _method.Name);
-
-            ResultMap.GetOrAdd(key, new TestResultCollection()).Exception = ex.ToString();
-        }
+        public void FailTestMethod(MethodInfo _method, Exception ex)
+            => ResultMap.GetOrAdd(new ResultKeyMethodLevel(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
+                new TestResultCollection()).Exception = ex.ToString();
 
         #endregion
 

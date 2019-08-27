@@ -52,6 +52,10 @@ namespace Nuclear.TestSite.Results {
 
         #region methods
 
+        /// <summary>
+        /// Adds the contents of another <see cref="TestResultMap"/> to this collection.
+        /// </summary>
+        /// <param name="results">The other <see cref="TestResultMap"/>.</param>
         public void AddRange(TestResultMap results) {
             foreach(KeyValuePair<ResultKeyMethodLevel, TestResultCollection> result in results) {
                 AddOrUpdate(result.Key, result.Value, (ResultKeyMethodLevel key, TestResultCollection value) => result.Value);
@@ -66,7 +70,13 @@ namespace Nuclear.TestSite.Results {
         /// Gets the total number of results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(ResultKeyAssemblyLevel key) => GetResultsTotal(new ResultKeyMethodLevel(key));
+        public Int32 GetResultsTotal(ResultKeyAssemblyNameLevel key) => GetResultsTotal(new ResultKeyMethodLevel(key));
+
+        /// <summary>
+        /// Gets the total number of results for the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key to filter by.</param>
+        public Int32 GetResultsTotal(ResultKeyTargetRuntimeLevel key) => GetResultsTotal(new ResultKeyMethodLevel(key));
 
         /// <summary>
         /// Gets the total number of results for the given <paramref name="key"/>.
@@ -78,7 +88,7 @@ namespace Nuclear.TestSite.Results {
         /// Gets the total number of results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(ResultKeyRuntimeLevel key) => GetResultsTotal(new ResultKeyMethodLevel(key));
+        public Int32 GetResultsTotal(ResultKeyExecutionRuntimeLevel key) => GetResultsTotal(new ResultKeyMethodLevel(key));
 
         /// <summary>
         /// Gets the total number of results for the given <paramref name="key"/>.
@@ -97,7 +107,13 @@ namespace Nuclear.TestSite.Results {
         /// Gets the number of successful results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(ResultKeyAssemblyLevel key) => GetResultsOk(new ResultKeyMethodLevel(key));
+        public Int32 GetResultsOk(ResultKeyAssemblyNameLevel key) => GetResultsOk(new ResultKeyMethodLevel(key));
+
+        /// <summary>
+        /// Gets the number of successful results for the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key to filter by.</param>
+        public Int32 GetResultsOk(ResultKeyTargetRuntimeLevel key) => GetResultsOk(new ResultKeyMethodLevel(key));
 
         /// <summary>
         /// Gets the number of successful results for the given <paramref name="key"/>.
@@ -109,7 +125,7 @@ namespace Nuclear.TestSite.Results {
         /// Gets the number of successful results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(ResultKeyRuntimeLevel key) => GetResultsOk(new ResultKeyMethodLevel(key));
+        public Int32 GetResultsOk(ResultKeyExecutionRuntimeLevel key) => GetResultsOk(new ResultKeyMethodLevel(key));
 
         /// <summary>
         /// Gets the number of successful results for the given <paramref name="key"/>.
@@ -128,7 +144,13 @@ namespace Nuclear.TestSite.Results {
         /// Gets the number of failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(ResultKeyAssemblyLevel key) => GetResultsFailed(new ResultKeyMethodLevel(key));
+        public Int32 GetResultsFailed(ResultKeyAssemblyNameLevel key) => GetResultsFailed(new ResultKeyMethodLevel(key));
+
+        /// <summary>
+        /// Gets the number of failed results for the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key to filter by.</param>
+        public Int32 GetResultsFailed(ResultKeyTargetRuntimeLevel key) => GetResultsFailed(new ResultKeyMethodLevel(key));
 
         /// <summary>
         /// Gets the number of failed results for the given <paramref name="key"/>.
@@ -140,7 +162,7 @@ namespace Nuclear.TestSite.Results {
         /// Gets the number of failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(ResultKeyRuntimeLevel key) => GetResultsFailed(new ResultKeyMethodLevel(key));
+        public Int32 GetResultsFailed(ResultKeyExecutionRuntimeLevel key) => GetResultsFailed(new ResultKeyMethodLevel(key));
 
         /// <summary>
         /// Gets the number of failed results for the given <paramref name="key"/>.
@@ -159,7 +181,13 @@ namespace Nuclear.TestSite.Results {
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(ResultKeyAssemblyLevel key) => HasFailedTests(new ResultKeyMethodLevel(key));
+        public Boolean HasFailedTests(ResultKeyAssemblyNameLevel key) => HasFailedTests(new ResultKeyMethodLevel(key));
+
+        /// <summary>
+        /// Gets if the collection contains failed results for the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key to filter by.</param>
+        public Boolean HasFailedTests(ResultKeyTargetRuntimeLevel key) => HasFailedTests(new ResultKeyMethodLevel(key));
 
         /// <summary>
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
@@ -171,7 +199,7 @@ namespace Nuclear.TestSite.Results {
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(ResultKeyRuntimeLevel key) => HasFailedTests(new ResultKeyMethodLevel(key));
+        public Boolean HasFailedTests(ResultKeyExecutionRuntimeLevel key) => HasFailedTests(new ResultKeyMethodLevel(key));
 
         /// <summary>
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
@@ -188,8 +216,9 @@ namespace Nuclear.TestSite.Results {
 
         private IEnumerable<KeyValuePair<ResultKeyMethodLevel, TestResultCollection>> FilterResults(ResultKeyMethodLevel key)
             => this.Where(kvp => key.Assembly == null || kvp.Key.Assembly == key.Assembly)
+                   .Where(kvp => key.TargetRuntime == null || kvp.Key.TargetRuntime == key.TargetRuntime)
                    .Where(kvp => key.Architecture == ProcessorArchitecture.None || kvp.Key.Architecture == key.Architecture)
-                   .Where(kvp => key.Runtime == null || kvp.Key.Runtime == key.Runtime)
+                   .Where(kvp => key.ExecutionRuntime == null || kvp.Key.ExecutionRuntime == key.ExecutionRuntime)
                    .Where(kvp => key.File == null || kvp.Key.File == key.File)
                    .Where(kvp => key.Method == null || kvp.Key.Method == key.Method);
 

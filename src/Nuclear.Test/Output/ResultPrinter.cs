@@ -48,7 +48,7 @@ namespace Nuclear.Test.Output {
                     .Select(_group => _group.Key)
                     .ToList();
                 keys.Sort();
-                keys.ForEach(_assembly => PrintResults(results, new ResultKeyAssemblyLevel(_assembly)));
+                keys.ForEach(_assembly => PrintResults(results, new ResultKeyAssemblyNameLevel(_assembly)));
             }
         }
 
@@ -57,7 +57,7 @@ namespace Nuclear.Test.Output {
         #region private methods
 
         // assembly level
-        private void PrintResults(TestResultMap results, ResultKeyAssemblyLevel key) {
+        private void PrintResults(TestResultMap results, ResultKeyAssemblyNameLevel key) {
             Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
 
             if(!hasFails && Configuration.Verbosity < Verbosity.Assembly) { return; }
@@ -65,8 +65,28 @@ namespace Nuclear.Test.Output {
             PrintSummaryLine(Verbosity.Assembly, key.Assembly, results.GetResultsTotal(key), results.GetResultsOk(key), results.GetResultsFailed(key), hasFails);
 
             if(hasFails || Configuration.Verbosity > Verbosity.Assembly) {
+                List<String> keys = results.Keys
+                    .Where(_key => _key.Assembly == key.Assembly)
+                    .GroupBy(_key => _key.TargetRuntime)
+                    .Select(_group => _group.Key)
+                    .ToList();
+                keys.Sort();
+                keys.ForEach(_targetRuntime => PrintResults(results, new ResultKeyTargetRuntimeLevel(key, _targetRuntime)));
+            }
+        }
+
+        // target runtime level
+        private void PrintResults(TestResultMap results, ResultKeyTargetRuntimeLevel key) {
+            Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
+
+            if(!hasFails && Configuration.Verbosity < Verbosity.TargetRuntime) { return; }
+
+            PrintSummaryLine(Verbosity.TargetRuntime, key.TargetRuntime.Replace(",Version=v", " "), results.GetResultsTotal(key), results.GetResultsOk(key), results.GetResultsFailed(key), hasFails);
+
+            if(hasFails || Configuration.Verbosity > Verbosity.TargetRuntime) {
                 List<ProcessorArchitecture> keys = results.Keys
                     .Where(_key => _key.Assembly == key.Assembly)
+                    .Where(_key => _key.TargetRuntime == key.TargetRuntime)
                     .GroupBy(_key => _key.Architecture)
                     .Select(_group => _group.Key)
                     .ToList();
@@ -85,26 +105,31 @@ namespace Nuclear.Test.Output {
 
             if(hasFails || Configuration.Verbosity > Verbosity.Architecture) {
                 List<String> keys = results.Keys
-                    .Where(_key => _key.Assembly == key.Assembly && _key.Architecture == key.Architecture)
-                    .GroupBy(_key => _key.Runtime)
+                    .Where(_key => _key.Assembly == key.Assembly)
+                    .Where(_key => _key.TargetRuntime == key.TargetRuntime)
+                    .Where(_key => _key.Architecture == key.Architecture)
+                    .GroupBy(_key => _key.ExecutionRuntime)
                     .Select(_group => _group.Key)
                     .ToList();
                 keys.Sort();
-                keys.ForEach(_runtime => PrintResults(results, new ResultKeyRuntimeLevel(key, _runtime)));
+                keys.ForEach(_executionRuntime => PrintResults(results, new ResultKeyExecutionRuntimeLevel(key, _executionRuntime)));
             }
         }
 
-        // runtime level
-        private void PrintResults(TestResultMap results, ResultKeyRuntimeLevel key) {
+        // execution runtime level
+        private void PrintResults(TestResultMap results, ResultKeyExecutionRuntimeLevel key) {
             Boolean hasFails = results.GetResultsFailed(key) > 0 || results.HasFailedTests(key);
 
-            if(!hasFails && Configuration.Verbosity < Verbosity.Runtime) { return; }
+            if(!hasFails && Configuration.Verbosity < Verbosity.ExecutionRuntime) { return; }
 
-            PrintSummaryLine(Verbosity.Runtime, key.Runtime.Replace(",Version=v", " "), results.GetResultsTotal(key), results.GetResultsOk(key), results.GetResultsFailed(key), hasFails);
+            PrintSummaryLine(Verbosity.ExecutionRuntime, key.ExecutionRuntime.Replace(",Version=v", " "), results.GetResultsTotal(key), results.GetResultsOk(key), results.GetResultsFailed(key), hasFails);
 
-            if(hasFails || Configuration.Verbosity > Verbosity.Runtime) {
+            if(hasFails || Configuration.Verbosity > Verbosity.ExecutionRuntime) {
                 List<String> keys = results.Keys
-                    .Where(_key => _key.Assembly == key.Assembly && _key.Architecture == key.Architecture && _key.Runtime == key.Runtime)
+                    .Where(_key => _key.Assembly == key.Assembly)
+                    .Where(_key => _key.TargetRuntime == key.TargetRuntime)
+                    .Where(_key => _key.Architecture == key.Architecture)
+                    .Where(_key => _key.ExecutionRuntime == key.ExecutionRuntime)
                     .GroupBy(_key => _key.File)
                     .Select(_group => _group.Key)
                     .ToList();
@@ -123,7 +148,11 @@ namespace Nuclear.Test.Output {
 
             if(hasFails || Configuration.Verbosity > Verbosity.File) {
                 List<String> keys = results.Keys
-                    .Where(_key => _key.Assembly == key.Assembly && _key.Architecture == key.Architecture && _key.Runtime == key.Runtime && _key.File == key.File)
+                    .Where(_key => _key.Assembly == key.Assembly)
+                    .Where(_key => _key.TargetRuntime == key.TargetRuntime)
+                    .Where(_key => _key.Architecture == key.Architecture)
+                    .Where(_key => _key.ExecutionRuntime == key.ExecutionRuntime)
+                    .Where(_key => _key.File == key.File)
                     .GroupBy(_key => _key.Method)
                     .Select(_group => _group.Key)
                     .ToList();

@@ -111,8 +111,9 @@ namespace Nuclear.Test.Console {
 
                 switch(verbosity) {
                     case Verbosity.Assembly:
+                    case Verbosity.TargetRuntime:
                     case Verbosity.Architecture:
-                    case Verbosity.Runtime:
+                    case Verbosity.ExecutionRuntime:
                     case Verbosity.File:
                     case Verbosity.Method:
                     case Verbosity.Instruction:
@@ -175,11 +176,12 @@ namespace Nuclear.Test.Console {
             System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 2, ' '), "Defaults to -v 0");
             System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 0 to print all results combined.");
             System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 1 to print results for individual test assemblies.");
-            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 2 to print results for individual architectures.");
-            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 3 to print results for individual runtime versions.");
-            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 4 to print results for individual test classes.");
-            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 5 to print results for individual test methods.");
-            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 6 to print results for individual test instructions.");
+            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 2 to print results for individual target runtime versions.");
+            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 3 to print results for individual architectures.");
+            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 4 to print results for individual execution runtime versions.");
+            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 5 to print results for individual test classes.");
+            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 6 to print results for individual test methods.");
+            System.Console.WriteLine("  {0} {1}", String.Empty.PadRight(colWidth + 4, ' '), "Use 7 to print results for individual test instructions.");
             System.Console.WriteLine("  {0} {1}", "--verbose num".PadRight(colWidth, ' '), "Same as -v num");
 
         }

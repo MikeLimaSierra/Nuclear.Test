@@ -15,6 +15,26 @@ namespace Nuclear.TestSite.Results {
         /// </summary>
         TestResultMap ResultMap { get; }
 
+        /// <summary>
+        /// Gets or sets the assembly name.
+        /// </summary>
+        String AssemblyName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the targeted runtime.
+        /// </summary>
+        String TargetRuntime { get; set; }
+
+        /// <summary>
+        /// Gets or sets the processor architecture.
+        /// </summary>
+        ProcessorArchitecture Architecture { get; set; }
+
+        /// <summary>
+        /// Gets or sets the executed runtime.
+        /// </summary>
+        String ExecutionRuntime { get; set; }
+
         #endregion
 
         #region methods
@@ -28,12 +48,9 @@ namespace Nuclear.TestSite.Results {
         /// Collects a given <see cref="TestResult"/> and maps that to the combination of architecture, assembly, class and method.
         /// </summary>
         /// <param name="result">The <see cref="TestResult"/> to collect.</param>
-        /// <param name="architecture">The <see cref="ProcessorArchitecture"/>.</param>
-        /// <param name="_runtime">The runtime version that is targeted.</param>
-        /// <param name="_assembly">The assembly name.</param>
         /// <param name="_file">The test class name (actually the filename of the test method source).</param>
         /// <param name="_method">The test method name.</param>
-        void CollectResult(TestResult result, String _assembly, ProcessorArchitecture architecture, String _runtime, String _file, String _method);
+        void CollectResult(TestResult result, String _file, String _method);
 
         /// <summary>
         /// Sets an entire test method to failed with an <see cref="Exception"/>.

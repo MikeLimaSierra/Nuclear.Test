@@ -16,11 +16,13 @@ namespace Nuclear.TestSite.Tests {
 
         private static ITestResultsEndPoint _results;
 
-        private static ProcessorArchitecture _architecture;
-
         private static String _assemblyName;
 
-        private static String _runtime;
+        private static String _targetRuntime;
+
+        private static ProcessorArchitecture _architecture;
+
+        private static String _executionRuntime;
 
         #endregion
 
@@ -49,31 +51,33 @@ namespace Nuclear.TestSite.Tests {
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 #pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             TestResult result = new TestResult(note);
-            _results.CollectResult(result, _assemblyName, _architecture, _runtime, Path.GetFileNameWithoutExtension(_file), _method);
+            _results.CollectResult(result, Path.GetFileNameWithoutExtension(_file), _method);
         }
 
         /// <summary>
         /// Sets the name and <see cref="ProcessorArchitecture"/> of the targeted assembly. Should only ever be used by test client implementations.
         /// </summary>
-        /// <param name="architecture">The processor architecture.</param>
         /// <param name="assemblyName">The assembly name.</param>
-        /// <param name="runtime">The runtime version.</param>
+        /// <param name="targetRuntime">The target runtime.</param>
+        /// <param name="architecture">The processor architecture.</param>
+        /// <param name="executionRuntime">The execution runtime.</param>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="assemblyName"/> is null.</exception>
-        /// <exception cref="ArgumentNullException">Throws if <paramref name="runtime"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="targetRuntime"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">Throws if <paramref name="executionRuntime"/> is null.</exception>
         /// <exception cref="ArgumentException">Throws if <paramref name="assemblyName"/> is empty of white space.</exception>
-        /// <exception cref="ArgumentException">Throws if <paramref name="runtime"/> is empty of white space.</exception>
+        /// <exception cref="ArgumentException">Throws if <paramref name="targetRuntime"/> is empty of white space.</exception>
+        /// <exception cref="ArgumentException">Throws if <paramref name="executionRuntime"/> is empty of white space.</exception>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void SetAssemblyInfo(ProcessorArchitecture architecture, String assemblyName, String runtime) {
-            _architecture = architecture;
+        public static void SetAssemblyInfo(String assemblyName, String targetRuntime, ProcessorArchitecture architecture, String executionRuntime) {
             _assemblyName = assemblyName;
-            _runtime = runtime;
+            _targetRuntime = targetRuntime;
+            _architecture = architecture;
+            _executionRuntime = executionRuntime;
 
-            If.Architecture = _architecture;
-            If.AssemblyName = _assemblyName;
-            If.Runtime = _runtime;
-            IfNot.Architecture = _architecture;
-            IfNot.AssemblyName = _assemblyName;
-            IfNot.Runtime = _runtime;
+            _results.AssemblyName = _assemblyName;
+            _results.TargetRuntime = _targetRuntime;
+            _results.Architecture = _architecture;
+            _results.ExecutionRuntime = _executionRuntime;
         }
 
         /// <summary>

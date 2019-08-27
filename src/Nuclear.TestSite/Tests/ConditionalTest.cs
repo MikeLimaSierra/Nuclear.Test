@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using Nuclear.Exceptions;
 using Nuclear.TestSite.Results;
@@ -17,10 +16,6 @@ namespace Nuclear.TestSite.Tests {
 
         private ITestResultsEndPoint _results;
 
-        private String _assemblyName;
-
-        private String _runtime;
-
         private Boolean _invert;
 
         #endregion
@@ -33,24 +28,6 @@ namespace Nuclear.TestSite.Tests {
                 Throw.If.Null(value, "value");
 
                 _results = value;
-            }
-        }
-
-        internal String AssemblyName {
-            get => _assemblyName;
-            set {
-                Throw.If.NullOrWhiteSpace(value, "value");
-                _assemblyName = value;
-            }
-        }
-
-        internal ProcessorArchitecture Architecture { get; set; }
-
-        internal String Runtime {
-            get => _runtime;
-            set {
-                Throw.If.NullOrWhiteSpace(value, "value");
-                _runtime = value;
             }
         }
 
@@ -111,7 +88,7 @@ namespace Nuclear.TestSite.Tests {
             String testInstructionName = String.Format("Test.{0}.{1}", _invert ? "IfNot" : "If", String.IsNullOrWhiteSpace(testInstructionOverride) ? testInstruction : testInstructionOverride);
             TestResult result = new TestResult(adjustedCondition, testInstructionName, message);
 
-            Results.CollectResult(result, AssemblyName, Architecture, Runtime, Path.GetFileNameWithoutExtension(_file), _method);
+            Results.CollectResult(result, Path.GetFileNameWithoutExtension(_file), _method);
         }
 
         #endregion

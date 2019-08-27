@@ -2,7 +2,7 @@
   "profiles": {
     "Nuclear.Test.Server.Console": {
       "commandName": "Project",
-      "commandLineArgs": "-d ../../../../ -i Debug;obj -v 3 --diagnostic-output --worker-base-dir ../../../../../publish/Nuclear.Test.Console/Nuclear.Test.Worker/ --proxy-base-dir ../../../../../publish/Nuclear.Test.Console/Nuclear.Test.Proxy/ -p *tests.dll --show-clients"
+      "commandLineArgs": "-d ../../../../ -i Debug;obj -v 4 --diagnostic-output --worker-base-dir ../../../../../publish/Nuclear.Test.Console/Nuclear.Test.Worker/ --proxy-base-dir ../../../../../publish/Nuclear.Test.Console/Nuclear.Test.Proxy/ -p *tests.dll --show-clients"
     }
   }
 }

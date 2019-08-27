@@ -13,9 +13,11 @@ namespace Nuclear.TestSite {
 
         internal static String AssemblyName { get; }
 
+        internal static String TargetRuntime { get; }
+
         internal static ProcessorArchitecture Architecture { get; }
 
-        internal static String Runtime { get; }
+        internal static String ExecutionRuntime { get; }
 
         #endregion
 
@@ -23,8 +25,9 @@ namespace Nuclear.TestSite {
 
         static Statics() {
             AssemblyName = typeof(Statics).Assembly.GetName().Name;
+            TargetRuntime = typeof(Statics).Assembly.GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName;
             Architecture = typeof(Statics).Assembly.GetName().ProcessorArchitecture;
-            Runtime = Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName;
+            ExecutionRuntime = Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName;
         }
 
         #endregion
@@ -32,7 +35,7 @@ namespace Nuclear.TestSite {
         #region methods
 
         internal static ResultKeyMethodLevel GetKey([CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => new ResultKeyMethodLevel(AssemblyName, Architecture, Runtime, Path.GetFileNameWithoutExtension(_file), _method);
+            => new ResultKeyMethodLevel(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, Path.GetFileNameWithoutExtension(_file), _method);
 
         internal static TestResultCollection GetResults(ITestResultsEndPoint results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results.ResultMap.GetOrAdd(GetKey(_file, _method), new TestResultCollection());

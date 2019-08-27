@@ -8,6 +8,10 @@ using Nuclear.Test.NetVersions;
 using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.TestExecution {
+
+    /// <summary>
+    /// Implements the base functionality of any test client.
+    /// </summary>
     public class TestExecutor {
 
         #region properties
@@ -69,6 +73,11 @@ namespace Nuclear.Test.TestExecution {
 
         #region print methods
 
+        /// <summary>
+        /// Prints an information panel to console that details the currently running executor instance.
+        /// </summary>
+        /// <param name="asmName"></param>
+        /// <param name="targetRuntime"></param>
         protected void PrintProcessInfo(AssemblyName asmName, (NetPlatforms platform, Version version) targetRuntime) {
 
             StringBuilder sb = new StringBuilder();
@@ -86,6 +95,11 @@ namespace Nuclear.Test.TestExecution {
             Console.Write(sb);
         }
 
+        /// <summary>
+        /// Prints an information panel to console that details the currently loaded test assembly.
+        /// </summary>
+        /// <param name="asmName"></param>
+        /// <param name="targetRuntime"></param>
         protected void PrintAssemblyInfo(AssemblyName asmName, (NetPlatforms platform, Version version) targetRuntime) {
             StringBuilder sb = new StringBuilder();
 

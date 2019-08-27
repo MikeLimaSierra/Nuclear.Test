@@ -11,10 +11,17 @@ using Nuclear.Test.Results;
 using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.TestExecution {
+
+    /// <summary>
+    /// Implements the base functionality of any remote control for test clients using named pipes for ipc.
+    /// </summary>
     public class PipedTestExecutorRemote {
 
         #region events
 
+        /// <summary>
+        /// Is raised when test data is received from the attached test client.
+        /// </summary>
         public event TestDataAvailableEventHandler TestDataAvailable;
 
         #endregion
@@ -65,6 +72,14 @@ namespace Nuclear.Test.TestExecution {
 
         #region ctors
 
+        /// <summary>
+        /// Creates a new instance of <see cref="PipedTestExecutorRemote"/>.
+        /// </summary>
+        /// <param name="results">The test results sink to use.</param>
+        /// <param name="executable">The test client executable to start.</param>
+        /// <param name="file">The test assembly file.</param>
+        /// <param name="testConfig">The test configuration.</param>
+        /// <param name="outputConfig">The output configuration.</param>
         public PipedTestExecutorRemote(ITestResultsEndPoint results, FileInfo executable, FileInfo file, TestConfiguration testConfig, OutputConfiguration outputConfig) {
             Throw.If.Null(results, "results");
             Throw.If.Null(executable, "executable");
@@ -84,6 +99,9 @@ namespace Nuclear.Test.TestExecution {
 
         #region public methods
 
+        /// <summary>
+        /// Creates the process, thread and pipe required to remote control the test client.
+        /// </summary>
         public void Execute() {
             if(Executable != null && Executable.Exists) {
                 if(!_processStarted) {
@@ -104,6 +122,9 @@ namespace Nuclear.Test.TestExecution {
             }
         }
 
+        /// <summary>
+        /// Waits until all test results have been received and stored.
+        /// </summary>
         public void WaitToExit() => _exitEvent.Wait();
 
         #endregion
@@ -134,6 +155,7 @@ namespace Nuclear.Test.TestExecution {
                 pipeStream.Write(TestConfiguration);
                 pipeStream.Write(TestConfiguration.FILE_PATH);
                 pipeStream.Write(File.FullName);
+                pipeStream.WaitForPipeDrain();
 
                 while(pipeStream.ReadString() == TestConfiguration.TEST_RESULTS) {
                     if(TryReceiveResultData(pipeStream, out Byte[] data)) {
