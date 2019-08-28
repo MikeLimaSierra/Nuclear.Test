@@ -8,7 +8,7 @@ using Nuclear.TestSite.Results;
 namespace Nuclear.TestSite.Tests {
 
     /// <summary>
-    /// Supplies conditional throw instructions to improve exception throwing.
+    /// Supplies conditional test instructions.
     /// </summary>
     public partial class ConditionalTest {
 

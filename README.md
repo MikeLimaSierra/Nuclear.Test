@@ -70,11 +70,11 @@ void TestConstructors() {
 
 ### Result (ok):
 
-![Constructor example](docu/media/constructor_example.png)
+![Constructor example](doc/media/constructor_example.png)
 
 ### Result (fail):
 
-![Constructor fail example](docu/media/constructor_fail_example.png)
+![Constructor fail example](doc/media/constructor_fail_example.png)
 
 ---
 
@@ -94,7 +94,7 @@ Show combined results for every test assembly.
 
 ### Result:
 
-![Assembly level results](docu/media/results_assembly_level.png)
+![Assembly level results](doc/media/results_assembly_level.png)
 
 ### Example:
 
@@ -106,7 +106,7 @@ Show combined results for every target runtime of every test assembly.
 
 ### Result:
 
-![Target runtime level results](docu/media/results_target_runtime_level.png)
+![Target runtime level results](doc/media/results_target_runtime_level.png)
 
 ### Example:
 
@@ -118,7 +118,7 @@ Show combined results for every processor architecture and target runtime of eve
 
 ### Result:
 
-![Processor architecture level results](docu/media/results_architecture_level.png)
+![Processor architecture level results](doc/media/results_architecture_level.png)
 
 ---
 
@@ -135,7 +135,7 @@ It is useful to run tests on a set of platforms that implement the specific vers
 
 ### Result (ok):
 
-![Runtime level results](docu/media/results_execution_runtime_level.png)
+![Runtime level results](doc/media/results_execution_runtime_level.png)
 
 ### Example:
 
@@ -183,7 +183,7 @@ class RuntimeDifferenceTests {
 
 ### Result (fail):
 
-![Runtime level fail results](docu/media/results_execution_runtime_level_fail.png)
+![Runtime level fail results](doc/media/results_execution_runtime_level_fail.png)
 
 ---
 
@@ -211,15 +211,15 @@ This depends very much on your priorities and on which of the following two list
 
 ## Getting started
 
-To get started quickly you can check out the tutorials on [How to write tests](docu/how_to_write_tests.md) and [How to run tests](docu/how_to_use.md) using `Nuclear.Test`.
+To get started quickly you can check out the tutorials on [How to write tests](doc/how_to_write_tests.md) and [How to run tests](doc/how_to_use.md) using `Nuclear.Test`.
 Some of these tutorials make use of code in the [samples](samples) so you might want to load `samples/Samples.sln` in Visual Studio.
 Building the samples from source may require you to execute `dotnet restore` and `NuGet restore` on the samples solution.
 
 To execute your test assemblies you can either download the latest [release](https://github.com/MikeLimaSierra/Nuclear.Test/releases) or build the software from source.
 
-A complete list of all available test instructions can be found [here](docu/test_instructions.md).
+A complete list of all available test instructions can be found [here](doc/test_instructions.md).
 
-A detailed guide to writing test extensions and data driven tests can be found [here](docu/how_to_extend.md).
+A detailed guide to writing test extensions and data driven tests can be found [here](doc/how_to_extend.md).
 
 ---
 
@@ -231,7 +231,7 @@ Other versions might work as well but this is what I'm using so I suggest to use
 1. In Visual Studio build the solution for all `release` configurations (`Any Cpu`, `x86` and `x64`). Do not use `Batch Build` as this will not currently work.
 2. Execute `src/publish.bat` to publish all binaries to `src/publish/Nuclear.Test.Console/`.
 3. Navigate to `src/publish/Nuclear.Test.Console/`.
-4. Execute `Nuclear.Test.Console.exe` and configure with arguments (See [How to use Nuclear.Test](docu/how_to_use.md))
+4. Execute `Nuclear.Test.Console.exe` and configure with arguments (See [How to use Nuclear.Test](doc/how_to_use.md))
 
 ### Running tests on `samples/Samples.sln`
 
