@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using Nuclear.Exceptions;
 using Nuclear.TestSite.Results;
 
@@ -21,6 +23,15 @@ namespace Nuclear.TestSite.Tests {
             DummyTestResults.Instance.TargetRuntime = Statics.TargetRuntime;
             DummyTestResults.Instance.AssemblyName = Statics.AssemblyName;
             DummyTestResults.Instance.ExecutionRuntime = Statics.ExecutionRuntime;
+        }
+
+        #endregion
+
+        #region methods
+
+        public static void Note(String note, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+            TestResult result = new TestResult(note);
+            DummyTestResults.Instance.CollectResult(result, Path.GetFileNameWithoutExtension(_file), _method);
         }
 
         #endregion

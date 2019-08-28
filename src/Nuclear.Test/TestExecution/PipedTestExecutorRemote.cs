@@ -171,9 +171,14 @@ namespace Nuclear.Test.TestExecution {
                 DiagnosticOutput.LogError("An exception was thrown while running tests in '{0}': {1}", File.FullName, ex);
 
             } finally {
-                DiagnosticOutput.Log(OutputConfiguration, "Pipe [{0}] closing ...", _pipeName);
-                pipeStream.Close();
-                _exitEvent.Set();
+                try {
+                    DiagnosticOutput.Log(OutputConfiguration, "Pipe [{0}] closing ...", _pipeName);
+                    pipeStream.Close();
+                } catch(Exception ex) {
+                    DiagnosticOutput.LogError("An exception was thrown while closing the pipe for '{0}': {1}", File.FullName, ex);
+                } finally {
+                    _exitEvent.Set();
+                }
             }
         }
 

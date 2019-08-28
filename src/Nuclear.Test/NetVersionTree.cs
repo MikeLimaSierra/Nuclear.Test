@@ -74,7 +74,7 @@ namespace Nuclear.Test.NetVersions {
             Add((NetPlatforms.XamarinAndroid, new Version(7, 0)), new Version(1, 6));
             Add((NetPlatforms.XamarinAndroid, new Version(8, 0)), new Version(2, 0));
 
-            Add((NetPlatforms.UWP, new Version(8, 0)), new Version(1, 4));
+            Add((NetPlatforms.UWP, new Version(8, 0)), new Version(1, 1));
             Add((NetPlatforms.UWP, new Version(8, 1)), new Version(1, 2));
             Add((NetPlatforms.UWP, new Version(10, 0)), new Version(1, 4));
             Add((NetPlatforms.UWP, new Version(10, 0, 16299)), new Version(2, 0));
@@ -94,20 +94,24 @@ namespace Nuclear.Test.NetVersions {
         /// <returns>The target runtime of the assembly.</returns>
         public static (NetPlatforms platform, Version version) GetTargetRuntimeFromAssembly(Assembly assembly) {
 
-            String frameworkName = assembly.GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName;
-            String[] parts = frameworkName.Replace("Version=v", "").Split(new Char[] { ',' });
+            TargetFrameworkAttribute attr = assembly.GetCustomAttribute<TargetFrameworkAttribute>();
 
-            if(parts.Length == 2 && Version.TryParse(parts[1], out Version version)) {
+            if(attr != null) {
+                String frameworkName = attr.FrameworkName;
+                String[] parts = frameworkName.Replace("Version=v", "").Split(new Char[] { ',' });
 
-                switch(parts[0]) {
-                    case ".NETFramework":
-                        return (NetPlatforms.NETFramework, version);
-                    case ".NETCoreApp":
-                        return (NetPlatforms.NETCore, version);
-                    case ".NETStandard":
-                        return (NetPlatforms.NETStandard, version);
-                    default:
-                        return (NetPlatforms.Unknown, version);
+                if(parts.Length == 2 && Version.TryParse(parts[1], out Version version)) {
+
+                    switch(parts[0]) {
+                        case ".NETFramework":
+                            return (NetPlatforms.NETFramework, version);
+                        case ".NETCoreApp":
+                            return (NetPlatforms.NETCore, version);
+                        case ".NETStandard":
+                            return (NetPlatforms.NETStandard, version);
+                        default:
+                            return (NetPlatforms.Unknown, version);
+                    }
                 }
             }
 

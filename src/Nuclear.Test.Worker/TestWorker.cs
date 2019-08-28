@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Versioning;
 using System.Threading.Tasks;
-using Nuclear.Test.Configurations;
 using Nuclear.Test.Output;
 using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;

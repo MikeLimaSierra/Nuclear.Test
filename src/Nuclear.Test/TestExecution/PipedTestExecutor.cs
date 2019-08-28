@@ -17,6 +17,12 @@ namespace Nuclear.Test.TestExecution {
     /// </summary>
     public abstract class PipedTestExecutor : TestExecutor {
 
+        #region fields
+
+        private readonly Object _pipeLock = new Object();
+
+        #endregion
+
         #region properties
 
         /// <summary>
@@ -119,10 +125,14 @@ namespace Nuclear.Test.TestExecution {
         /// </summary>
         /// <param name="pipeStream">The <see cref="PipeStream"/> that will be closed.</param>
         protected virtual void CloseClientPipe(PipeStream pipeStream) {
-            pipeStream.Write(TestConfiguration.TEST_FINISHED);
-            pipeStream.WaitForPipeDrain();
-            DiagnosticOutput.Log(OutputConfiguration, "Closing pipe stream.");
-            pipeStream.Close();
+            try {
+                PipeStream.Write(TestConfiguration.TEST_FINISHED);
+                pipeStream.WaitForPipeDrain();
+                DiagnosticOutput.Log(OutputConfiguration, "Closing pipe stream.");
+                pipeStream.Close();
+            } catch(Exception ex) {
+                HandleException(ex);
+            }
         }
 
         #endregion
@@ -205,9 +215,12 @@ namespace Nuclear.Test.TestExecution {
         protected Boolean TrySendResultData(PipeStream pipe, Byte[] data) {
             try {
                 DiagnosticOutput.Log(OutputConfiguration, "Sending {0} ({1} Bytes) results back to server.", Results.ResultMap.ResultsTotal, data.Length);
-                pipe.Write(TestConfiguration.TEST_RESULTS);
-                pipe.WriteLarge(data);
-                PipeStream.WaitForPipeDrain();
+
+                lock(_pipeLock) {
+                    pipe.Write(TestConfiguration.TEST_RESULTS);
+                    pipe.WriteLarge(data);
+                    PipeStream.WaitForPipeDrain();
+                }
 
             } catch(Exception ex) {
                 // this should work flawlessly
