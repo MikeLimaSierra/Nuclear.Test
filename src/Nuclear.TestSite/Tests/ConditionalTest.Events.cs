@@ -16,10 +16,39 @@ namespace Nuclear.TestSite.Tests {
         /// <param name="e">Contains the <see cref="PropertyChangedEventArgs"/> if event is raised.</param>
         public void RaisesPropertyChangedEvent(INotifyPropertyChanged _object, Action action, out Object sender, out PropertyChangedEventArgs e,
 #pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 #pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
-            => RaisesEvent(_object, "PropertyChanged", action, out sender, out e,
-                _file, _method, conditionTestOverride: "RaisesPropertyChangedEvent");
+
+            sender = null;
+            e = null;
+            (Object sender, PropertyChangedEventArgs e) tmp = (null, null);
+
+            if(_object == null) {
+                InternalTest(false, "Object is null.",
+                    _file, _method);
+                return;
+            }
+
+            PropertyChangedEventHandler handler = (Object _sender, PropertyChangedEventArgs _e) => tmp = (_sender, _e);
+
+            _object.PropertyChanged += handler;
+
+            try {
+                action();
+                sender = tmp.sender;
+                e = tmp.e;
+
+                InternalTest(sender != null && e != null, String.Format("{0} of type '{1}' thrown.", sender != null && e != null ? "Event" : "No event", typeof(PropertyChangedEventHandler)),
+                    _file, _method);
+
+            } catch(Exception ex) {
+                InternalTest(false, String.Format("Action threw Exception: {0}", ex.Message),
+                    _file, _method);
+
+            } finally {
+                _object.PropertyChanged -= handler;
+            }
+        }
 
         /// <summary>
         /// Tests if <paramref name="action"/> on <paramref name="_object"/> raises event with <typeparamref name="TEventArgs"/>.
@@ -32,7 +61,7 @@ namespace Nuclear.TestSite.Tests {
         /// <param name="e">Contains the <typeparamref name="TEventArgs"/> if event is raised.</param>
         public void RaisesEvent<TEventArgs>(Object _object, String eventName, Action action, out Object sender, out TEventArgs e,
 #pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null, String conditionTestOverride = null)
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
 #pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TEventArgs : EventArgs {
 
@@ -42,7 +71,7 @@ namespace Nuclear.TestSite.Tests {
 
             if(_object == null) {
                 InternalTest(false, "Object is null.",
-                    _file, _method, testInstructionOverride: conditionTestOverride);
+                    _file, _method);
                 return;
             }
 
@@ -53,15 +82,16 @@ namespace Nuclear.TestSite.Tests {
 
             if(eventInfo == null) {
                 InternalTest(false, String.Format("Event with name '{0}' could not be found.", eventName),
-                    _file, _method, testInstructionOverride: conditionTestOverride);
+                    _file, _method);
                 return;
             }
 
             try {
                 d = Delegate.CreateDelegate(eventInfo.EventHandlerType, eventProxy, handlerInfo);
+
             } catch {
                 InternalTest(false, String.Format("Given type of arguments '{0}' doesn't match event handler of type '{1}'.", typeof(TEventArgs).FullName, eventInfo.EventHandlerType.FullName),
-                    _file, _method, testInstructionOverride: conditionTestOverride);
+                    _file, _method);
                 return;
             }
 
@@ -71,16 +101,17 @@ namespace Nuclear.TestSite.Tests {
                 action();
                 sender = eventProxy.Sender;
                 e = eventProxy.EventArgs;
+
                 InternalTest(sender != null && e != null, String.Format("{0} of type '{1}' thrown.", sender != null && e != null ? "Event" : "No event", eventInfo.EventHandlerType.FullName),
-                    _file, _method, testInstructionOverride: conditionTestOverride);
+                    _file, _method);
+
             } catch(Exception ex) {
                 InternalTest(false, String.Format("Action threw Exception: {0}", ex.Message),
-                    _file, _method, testInstructionOverride: conditionTestOverride);
-                return;
+                    _file, _method);
+
             } finally {
                 eventInfo.GetRemoveMethod().Invoke(_object, new Object[] { d });
             }
-
         }
 
         private class EventProxy<TEventArgs>

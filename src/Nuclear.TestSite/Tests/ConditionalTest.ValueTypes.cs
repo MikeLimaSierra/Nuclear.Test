@@ -103,7 +103,9 @@ namespace Nuclear.TestSite.Tests {
                 }
             } catch { }
 
-            ValuesEqual(left, right, EqualityComparer<T>.Default,
+            IEqualityComparer<T> comparer = EqualityComparer<T>.Default;
+            InternalTest(comparer != null && comparer.Equals(left, right), String.Format(CultureInfo.InvariantCulture,
+                "({2}) [Left = '{0}'; Right = '{1}']", left != null ? left.ToString() : "null", right != null ? right.ToString() : "null", comparer.GetType().Name),
                 _file, _method);
         }
 

@@ -81,11 +81,10 @@ namespace Nuclear.TestSite.Tests {
         /// <param name="_file">The file name where the test method is located.</param>
         /// <param name="_method">The test method name.</param>
         /// <param name="testInstruction">The test instruction.</param>
-        /// <param name="testInstructionOverride">The test instruction override.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void InternalTest(Boolean condition, String message, String _file, String _method, [CallerMemberName] String testInstruction = null, String testInstructionOverride = null) {
+        public void InternalTest(Boolean condition, String message, String _file, String _method, [CallerMemberName] String testInstruction = null) {
             Boolean adjustedCondition = _invert ? !condition : condition;
-            String testInstructionName = String.Format("Test.{0}.{1}", _invert ? "IfNot" : "If", String.IsNullOrWhiteSpace(testInstructionOverride) ? testInstruction : testInstructionOverride);
+            String testInstructionName = String.Format("Test.{0}.{1}", _invert ? "IfNot" : "If", testInstruction);
             TestResult result = new TestResult(adjustedCondition, testInstructionName, message);
 
             Results.CollectResult(result, Path.GetFileNameWithoutExtension(_file), _method);
