@@ -4,8 +4,9 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Nuclear.TestSite.Results;
+using Nuclear.TestSite.TestSuites;
 
-namespace Nuclear.TestSite.Tests {
+namespace Nuclear.TestSite {
 
     /// <summary>
     /// Supplies conditional test implementation.
@@ -31,13 +32,25 @@ namespace Nuclear.TestSite.Tests {
         /// <summary>
         /// Gets conditional test functionality.
         /// </summary>
-        public static ConditionalTest If { get; private set; } = new ConditionalTest();
+        public static TestSuiteCollection If { get; private set; } = new TestSuiteCollection();
 
         /// <summary>
         /// Gets conditional test functionality with inverted results.
         /// </summary>
-        public static ConditionalTest IfNot { get; private set; } = new ConditionalTest(invert: true);
+        public static TestSuiteCollection IfNot { get; private set; } = new TestSuiteCollection(invert: true);
 
+        #endregion
+
+        #region hidden methods
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static new Boolean ReferenceEquals(Object objA, Object objB) => throw new MethodAccessException("This method is currently out of order.");
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static new Boolean Equals(Object objA, Object objB) => throw new MethodAccessException("This method is currently out of order.");
+
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
         #endregion
 
         #region methods
