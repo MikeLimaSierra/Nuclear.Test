@@ -87,6 +87,14 @@ namespace Nuclear.TestSite.Results {
         public void Clear() => ResultMap.Clear();
 
         /// <summary>
+        /// Prepares for test results by creating the result collection.
+        /// </summary>
+        /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
+        public void PrepareResults(MethodInfo _method)
+            => ResultMap.GetOrAdd(new ResultKeyMethodLevel(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
+                new TestResultCollection());
+
+        /// <summary>
         /// Collects a given <see cref="TestResult"/> and maps that to the combination of architecture, assembly, class and method.
         /// </summary>
         /// <param name="result">The <see cref="TestResult"/> to collect.</param>
