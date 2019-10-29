@@ -45,6 +45,12 @@ namespace Nuclear.TestSite.Results {
         void Clear();
 
         /// <summary>
+        /// Prepares for test results by creating the result collection.
+        /// </summary>
+        /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
+        void PrepareResults(MethodInfo _method);
+
+        /// <summary>
         /// Collects a given <see cref="TestResult"/> and maps that to the combination of architecture, assembly, class and method.
         /// </summary>
         /// <param name="result">The <see cref="TestResult"/> to collect.</param>

@@ -53,6 +53,8 @@ namespace Nuclear.Test.Worker {
         /// Invokes the associated method.
         /// </summary>
         internal void Invoke() {
+            _results.PrepareResults(_method);
+
             try {
                 _method.Invoke(CallingObject, new Object[0]);
             } catch(Exception ex) {
