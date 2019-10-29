@@ -4,15 +4,15 @@ using System.ComponentModel;
 
 namespace Ntt {
 
-    interface IInterfaceOne { }
+    interface ITwo { }
 
-    interface IInterfaceTwo : IInterfaceOne { }
+    interface IZero : ITwo { }
 
-    class ClassZero : IInterfaceTwo { }
+    class Zero : IZero { }
 
-    class ClassOne : ClassZero { }
+    class DerivesFromZero : Zero { }
 
-    class ClassTwo : IInterfaceOne { }
+    class Two : ITwo { }
 
     class PropertyChangedClass : INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -26,27 +26,36 @@ namespace Ntt {
         }
     }
 
-    class ImplementsIEquatableT : IEquatable<ImplementsIEquatableT> {
-        public Boolean Equals(ImplementsIEquatableT other) => _value.Equals(other._value);
+    class EquatableT : IEquatable<EquatableT> {
+        public Boolean Equals(EquatableT other) => _value.Equals(other._value);
 
         private Int32 _value;
-        public ImplementsIEquatableT(Int32 value) { _value = value; }
+        public EquatableT(Int32 value) { _value = value; }
         public override String ToString() => _value.ToString();
     }
 
-    class ImplementsIComparableT : IComparable<ImplementsIComparableT> {
-        public Int32 CompareTo(ImplementsIComparableT other) => _value.CompareTo(other._value);
+    class ComparableT : IComparable<ComparableT> {
+        public Int32 CompareTo(ComparableT other) => _value.CompareTo(other._value);
 
         private Int32 _value;
-        public ImplementsIComparableT(Int32 value) { _value = value; }
+        public ComparableT(Int32 value) { _value = value; }
         public override String ToString() => _value.ToString();
     }
 
-    class ImplementsIComparable : IComparable {
-        public Int32 CompareTo(Object obj) => _value.CompareTo((obj as ImplementsIComparable)._value);
+    class Comparable : IComparable {
+        public Int32 CompareTo(Object obj) => _value.CompareTo((obj as Comparable)._value);
 
         private Int32 _value;
-        public ImplementsIComparable(Int32 value) { _value = value; }
+        public Comparable(Int32 value) { _value = value; }
+        public override String ToString() => _value.ToString();
+    }
+
+    class ComparableX : IComparable, IComparable<ComparableX> {
+        public Int32 CompareTo(ComparableX other) => _value.CompareTo(other._value);
+        public Int32 CompareTo(Object obj) => _value.CompareTo((obj as ComparableX)._value);
+
+        private Int32 _value;
+        public ComparableX(Int32 value) { _value = value; }
         public override String ToString() => _value.ToString();
     }
 

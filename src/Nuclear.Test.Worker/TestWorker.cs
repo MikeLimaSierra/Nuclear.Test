@@ -19,7 +19,7 @@ namespace Nuclear.Test.Worker {
         internal TestWorker(ITestResultsEndPoint results, String pipeName)
             : base(results, pipeName) {
 
-            TestSite.Tests.Test.SetTestResultsEndPoint(Results);
+            TestSite.Test.SetTestResultsEndPoint(Results);
 
             HeaderContent.Add(@" _   _               _                    _____           _   ");
             HeaderContent.Add(@"| \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_ ");
@@ -39,7 +39,7 @@ namespace Nuclear.Test.Worker {
         #region protected methods
 
         protected override void ExecuteInternal() {
-            TestSite.Tests.Test.SetAssemblyInfo(
+            TestSite.Test.SetAssemblyInfo(
                 TestAssemblyName.Name,
                 TestAssembly.GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName,
                 TestAssemblyName.ProcessorArchitecture,

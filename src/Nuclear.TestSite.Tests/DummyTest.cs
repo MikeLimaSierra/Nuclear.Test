@@ -4,15 +4,16 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Nuclear.Exceptions;
 using Nuclear.TestSite.Results;
+using Nuclear.TestSite.TestSuites;
 
-namespace Nuclear.TestSite.Tests {
+namespace Nuclear.TestSite {
     static class DummyTest {
 
         #region properties
 
-        public static ConditionalTest If { get; private set; } = new ConditionalTest(DummyTestResults.Instance);
+        public static TestSuiteCollection If { get; private set; } = new TestSuiteCollection(DummyTestResults.Instance);
 
-        public static ConditionalTest IfNot { get; private set; } = new ConditionalTest(DummyTestResults.Instance, invert: true);
+        public static TestSuiteCollection IfNot { get; private set; } = new TestSuiteCollection(DummyTestResults.Instance, invert: true);
 
         #endregion
 
@@ -67,6 +68,10 @@ namespace Nuclear.TestSite.Tests {
         #region methods
 
         public void Clear() => ResultMap.Clear();
+
+        public void PrepareResults(MethodInfo _method)
+            => ResultMap.GetOrAdd(new ResultKeyMethodLevel(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
+                new TestResultCollection());
 
         public void CollectResult(TestResult result, String _file, String _method)
             => ResultMap.GetOrAdd(new ResultKeyMethodLevel(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _file, _method),
