@@ -8,13 +8,12 @@ namespace Nuclear.TestSite.Attributes {
     public enum TestMode : Int32 {
         /// <summary>
         /// Tests will run sequential.
-        ///     Default on <see cref="TestClassAttribute"/>.
         /// </summary>
         Sequential,
 
         /// <summary>
         /// Tests will run in parallel.
-        ///     Default on <see cref="TestMethodAttribute"/>.
+        /// This value is considered default.
         /// </summary>
         Parallel
     }

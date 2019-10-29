@@ -22,8 +22,8 @@ namespace Nuclear.TestSite.Attributes {
         /// <summary>
         /// Creates a new instance of <see cref="TestClassAttribute"/>.
         /// </summary>
-        /// <param name="testMode">The <see cref="TestMode"/> of the corresponding class. Default is <see cref="TestMode.Sequential"/>.</param>
-        public TestClassAttribute(TestMode testMode = TestMode.Sequential) {
+        /// <param name="testMode">The <see cref="TestMode"/> of the corresponding class. Default is <see cref="TestMode.Parallel"/>.</param>
+        public TestClassAttribute(TestMode testMode = TestMode.Parallel) {
             TestMode = testMode;
         }
 
