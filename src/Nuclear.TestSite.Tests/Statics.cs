@@ -46,7 +46,7 @@ namespace Nuclear.TestSite {
         internal static TestResult GetLastResult(ITestResultsEndPoint results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results.ResultMap.GetOrAdd(GetKey(_file, _method), new TestResultCollection()).Last();
 
-        internal static void DDTestResultState(Action action, (Int32 count, Boolean result, String message) expected, String instruction,
+        internal static void DDTResultState(Action action, (Int32 count, Boolean result, String message) expected, String instruction,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.IfNot.Action.ThrowsException(action, out Exception ex, _file, _method);
@@ -54,10 +54,10 @@ namespace Nuclear.TestSite {
             TestResultCollection results = GetResults(DummyTestResults.Instance, _file, _method);
             TestResult lastResult = GetLastResult(DummyTestResults.Instance, _file, _method);
 
-            Test.If.Values.Equal(results.Count, expected.count, _file, _method);
-            Test.If.Values.Equal(lastResult.Result, expected.result, _file, _method);
+            Test.If.Value.Equals(results.Count, expected.count, _file, _method);
+            Test.If.Value.Equals(lastResult.Result, expected.result, _file, _method);
             Test.If.String.StartsWith(lastResult.Message, expected.message, _file, _method);
-            Test.If.Values.Equal(lastResult.TestInstruction, instruction, _file, _method);
+            Test.If.Value.Equals(lastResult.TestInstruction, instruction, _file, _method);
 
         }
 

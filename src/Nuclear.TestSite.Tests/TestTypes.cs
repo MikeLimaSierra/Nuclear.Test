@@ -26,48 +26,43 @@ namespace Ntt {
         }
     }
 
-    class EquatableT : IEquatable<EquatableT> {
-        public Boolean Equals(EquatableT other) => _value.Equals(other._value);
+    internal class DummyIEquatableT : Dummy, IEquatable<DummyIEquatableT> {
+        internal DummyIEquatableT(Int32 value) : base(value) { }
 
-        private Int32 _value;
-        public EquatableT(Int32 value) { _value = value; }
-        public override String ToString() => _value.ToString();
+        public Boolean Equals(DummyIEquatableT other) => Value.Equals(other.Value);
     }
 
-    class ComparableT : IComparable<ComparableT> {
-        public Int32 CompareTo(ComparableT other) => _value.CompareTo(other._value);
+    internal class DummyIComparable : Dummy, IComparable {
+        internal DummyIComparable(Int32 value) : base(value) { }
 
-        private Int32 _value;
-        public ComparableT(Int32 value) { _value = value; }
-        public override String ToString() => _value.ToString();
+        public Int32 CompareTo(Object obj) => Value.CompareTo((obj as DummyIComparable).Value);
     }
 
-    class Comparable : IComparable {
-        public Int32 CompareTo(Object obj) => _value.CompareTo((obj as Comparable)._value);
+    internal class DummyIComparableT : Dummy, IComparable<DummyIComparableT> {
+        internal DummyIComparableT(Int32 value) : base(value) { }
 
-        private Int32 _value;
-        public Comparable(Int32 value) { _value = value; }
-        public override String ToString() => _value.ToString();
+        public Int32 CompareTo(DummyIComparableT other) => Value.CompareTo(other.Value);
     }
 
-    class ComparableX : IComparable, IComparable<ComparableX> {
-        public Int32 CompareTo(ComparableX other) => _value.CompareTo(other._value);
-        public Int32 CompareTo(Object obj) => _value.CompareTo((obj as ComparableX)._value);
+    internal class DummyIComparableX : Dummy, IComparable<DummyIComparableX>, IComparable {
+        internal DummyIComparableX(Int32 value) : base(value) { }
 
-        private Int32 _value;
-        public ComparableX(Int32 value) { _value = value; }
-        public override String ToString() => _value.ToString();
+        public Int32 CompareTo(Object obj) => Value.CompareTo((obj as DummyIComparableX).Value);
+
+        public Int32 CompareTo(DummyIComparableX other) => Value.CompareTo(other.Value);
     }
 
-    class ImplementsNone {
-        internal Int32 _value;
-        public ImplementsNone(Int32 value) { _value = value; }
-        public override String ToString() => _value.ToString();
+    internal class Dummy {
+        internal Int32 Value { get; private set; }
+
+        internal Dummy(Int32 value) { Value = value; }
+
+        public override String ToString() => Value.ToString();
     }
 
-    class TestEqualityComparer : IEqualityComparer<ImplementsNone> {
-        public Boolean Equals(ImplementsNone x, ImplementsNone y) => x._value.Equals(y._value);
-        public Int32 GetHashCode(ImplementsNone obj) => (obj as ImplementsNone)._value;
+    internal class DummyEqualityComparer : IEqualityComparer<Dummy> {
+        public Boolean Equals(Dummy x, Dummy y) => x.Value.Equals(y.Value);
+        public Int32 GetHashCode(Dummy obj) => (obj as Dummy).Value;
     }
 
 }

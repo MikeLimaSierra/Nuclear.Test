@@ -8,87 +8,87 @@ namespace Nuclear.TestSite.TestSuites {
         #region StartsWith
 
         [TestMethod]
-        void TestStartsWithChar() {
+        void StartsWithChar() {
 
-            DDTestStartsWithChar((null, 'x'), (1, false, "Parameter 'string' is null."));
-            DDTestStartsWithChar(("", 'x'), (2, false, "[String = ''; Value = 'x']"));
-            DDTestStartsWithChar(("ax", 'x'), (3, false, "[String = 'ax'; Value = 'x']"));
-            DDTestStartsWithChar(("xa", 'x'), (4, true, "[String = 'xa'; Value = 'x']"));
+            DDTStartsWithChar((null, 'x'), (1, false, "Parameter 'string' is null."));
+            DDTStartsWithChar(("", 'x'), (2, false, "[String = ''; Value = 'x']"));
+            DDTStartsWithChar(("ax", 'x'), (3, false, "[String = 'ax'; Value = 'x']"));
+            DDTStartsWithChar(("xa", 'x'), (4, true, "[String = 'xa'; Value = 'x']"));
         }
 
-        void DDTestStartsWithChar((String @string, Char value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTStartsWithChar((String @string, Char value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.String.StartsWith({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.If.String.StartsWith(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.If.String.StartsWith(input.@string, input.value, _file, _method),
                 expected, "Test.If.String.StartsWith", _file, _method);
 
         }
 
         [TestMethod]
-        void TestNotStartsWithChar() {
+        void NotStartsWithChar() {
 
-            DDTestNotStartsWithChar((null, 'x'), (1, false, "Parameter 'string' is null."));
-            DDTestNotStartsWithChar(("", 'x'), (2, true, "[String = ''; Value = 'x']"));
-            DDTestNotStartsWithChar(("ax", 'x'), (3, true, "[String = 'ax'; Value = 'x']"));
-            DDTestNotStartsWithChar(("xa", 'x'), (4, false, "[String = 'xa'; Value = 'x']"));
+            DDTNotStartsWithChar((null, 'x'), (1, false, "Parameter 'string' is null."));
+            DDTNotStartsWithChar(("", 'x'), (2, true, "[String = ''; Value = 'x']"));
+            DDTNotStartsWithChar(("ax", 'x'), (3, true, "[String = 'ax'; Value = 'x']"));
+            DDTNotStartsWithChar(("xa", 'x'), (4, false, "[String = 'xa'; Value = 'x']"));
 
         }
 
-        void DDTestNotStartsWithChar((String @string, Char value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotStartsWithChar((String @string, Char value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.IfNot.String.StartsWith({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.IfNot.String.StartsWith(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.IfNot.String.StartsWith(input.@string, input.value, _file, _method),
                 expected, "Test.IfNot.String.StartsWith", _file, _method);
 
         }
 
         [TestMethod]
-        void TestStartsWithString() {
+        void StartsWithString() {
 
-            DDTestStartsWithString((null, null), (1, false, "Parameter 'string' is null."));
-            DDTestStartsWithString((null, "xy"), (2, false, "Parameter 'string' is null."));
-            DDTestStartsWithString(("axy", null), (3, false, "Parameter 'value' is null."));
-            DDTestStartsWithString(("", ""), (4, true, "[String = ''; Value = '']"));
-            DDTestStartsWithString(("", "xy"), (5, false, "[String = ''; Value = 'xy']"));
-            DDTestStartsWithString(("xy", ""), (6, true, "[String = 'xy'; Value = '']"));
-            DDTestStartsWithString(("axy", "xy"), (7, false, "[String = 'axy'; Value = 'xy']"));
-            DDTestStartsWithString(("xya", "xy"), (8, true, "[String = 'xya'; Value = 'xy']"));
+            DDTStartsWithString((null, null), (1, false, "Parameter 'string' is null."));
+            DDTStartsWithString((null, "xy"), (2, false, "Parameter 'string' is null."));
+            DDTStartsWithString(("axy", null), (3, false, "Parameter 'value' is null."));
+            DDTStartsWithString(("", ""), (4, true, "[String = ''; Value = '']"));
+            DDTStartsWithString(("", "xy"), (5, false, "[String = ''; Value = 'xy']"));
+            DDTStartsWithString(("xy", ""), (6, true, "[String = 'xy'; Value = '']"));
+            DDTStartsWithString(("axy", "xy"), (7, false, "[String = 'axy'; Value = 'xy']"));
+            DDTStartsWithString(("xya", "xy"), (8, true, "[String = 'xya'; Value = 'xy']"));
 
         }
 
-        void DDTestStartsWithString((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTStartsWithString((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.String.StartsWith({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.If.String.StartsWith(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.If.String.StartsWith(input.@string, input.value, _file, _method),
                 expected, "Test.If.String.StartsWith", _file, _method);
 
         }
 
         [TestMethod]
-        void TestNotStartsWithString() {
+        void NotStartsWithString() {
 
-            DDTestNotStartsWithString((null, null), (1, false, "Parameter 'string' is null."));
-            DDTestNotStartsWithString((null, "xy"), (2, false, "Parameter 'string' is null."));
-            DDTestNotStartsWithString(("axy", null), (3, false, "Parameter 'value' is null."));
-            DDTestNotStartsWithString(("", ""), (4, false, "[String = ''; Value = '']"));
-            DDTestNotStartsWithString(("", "xy"), (5, true, "[String = ''; Value = 'xy']"));
-            DDTestNotStartsWithString(("xy", ""), (6, false, "[String = 'xy'; Value = '']"));
-            DDTestNotStartsWithString(("axy", "xy"), (7, true, "[String = 'axy'; Value = 'xy']"));
-            DDTestNotStartsWithString(("xya", "xy"), (8, false, "[String = 'xya'; Value = 'xy']"));
+            DDTNotStartsWithString((null, null), (1, false, "Parameter 'string' is null."));
+            DDTNotStartsWithString((null, "xy"), (2, false, "Parameter 'string' is null."));
+            DDTNotStartsWithString(("axy", null), (3, false, "Parameter 'value' is null."));
+            DDTNotStartsWithString(("", ""), (4, false, "[String = ''; Value = '']"));
+            DDTNotStartsWithString(("", "xy"), (5, true, "[String = ''; Value = 'xy']"));
+            DDTNotStartsWithString(("xy", ""), (6, false, "[String = 'xy'; Value = '']"));
+            DDTNotStartsWithString(("axy", "xy"), (7, true, "[String = 'axy'; Value = 'xy']"));
+            DDTNotStartsWithString(("xya", "xy"), (8, false, "[String = 'xya'; Value = 'xy']"));
         }
 
-        void DDTestNotStartsWithString((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotStartsWithString((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.IfNot.String.StartsWith({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.IfNot.String.StartsWith(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.IfNot.String.StartsWith(input.@string, input.value, _file, _method),
                 expected, "Test.IfNot.String.StartsWith", _file, _method);
 
         }
@@ -98,87 +98,87 @@ namespace Nuclear.TestSite.TestSuites {
         #region EndsWith
 
         [TestMethod]
-        void TestEndsWithChar() {
+        void EndsWithChar() {
 
-            DDTestEndsWithChar((null, 'x'), (1, false, "Parameter 'string' is null."));
-            DDTestEndsWithChar(("", 'x'), (2, false, "[String = ''; Value = 'x']"));
-            DDTestEndsWithChar(("ax", 'x'), (3, true, "[String = 'ax'; Value = 'x']"));
-            DDTestEndsWithChar(("xa", 'x'), (4, false, "[String = 'xa'; Value = 'x']"));
+            DDTEndsWithChar((null, 'x'), (1, false, "Parameter 'string' is null."));
+            DDTEndsWithChar(("", 'x'), (2, false, "[String = ''; Value = 'x']"));
+            DDTEndsWithChar(("ax", 'x'), (3, true, "[String = 'ax'; Value = 'x']"));
+            DDTEndsWithChar(("xa", 'x'), (4, false, "[String = 'xa'; Value = 'x']"));
         }
 
-        void DDTestEndsWithChar((String @string, Char value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTEndsWithChar((String @string, Char value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.String.EndsWith({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.If.String.EndsWith(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.If.String.EndsWith(input.@string, input.value, _file, _method),
                 expected, "Test.If.String.EndsWith", _file, _method);
 
         }
 
         [TestMethod]
-        void TestNotEndsWithChar() {
+        void NotEndsWithChar() {
 
-            DDTestNotEndsWithChar((null, 'x'), (1, false, "Parameter 'string' is null."));
-            DDTestNotEndsWithChar(("", 'x'), (2, true, "[String = ''; Value = 'x']"));
-            DDTestNotEndsWithChar(("ax", 'x'), (3, false, "[String = 'ax'; Value = 'x']"));
-            DDTestNotEndsWithChar(("xa", 'x'), (4, true, "[String = 'xa'; Value = 'x']"));
+            DDTNotEndsWithChar((null, 'x'), (1, false, "Parameter 'string' is null."));
+            DDTNotEndsWithChar(("", 'x'), (2, true, "[String = ''; Value = 'x']"));
+            DDTNotEndsWithChar(("ax", 'x'), (3, false, "[String = 'ax'; Value = 'x']"));
+            DDTNotEndsWithChar(("xa", 'x'), (4, true, "[String = 'xa'; Value = 'x']"));
 
         }
 
-        void DDTestNotEndsWithChar((String @string, Char value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotEndsWithChar((String @string, Char value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.IfNot.String.EndsWith({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.IfNot.String.EndsWith(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.IfNot.String.EndsWith(input.@string, input.value, _file, _method),
                 expected, "Test.IfNot.String.EndsWith", _file, _method);
 
         }
 
         [TestMethod]
-        void TestEndsWithString() {
+        void EndsWithString() {
 
-            DDTestEndsWithString((null, null), (1, false, "Parameter 'string' is null."));
-            DDTestEndsWithString((null, "xy"), (2, false, "Parameter 'string' is null."));
-            DDTestEndsWithString(("axy", null), (3, false, "Parameter 'value' is null."));
-            DDTestEndsWithString(("", ""), (4, true, "[String = ''; Value = '']"));
-            DDTestEndsWithString(("", "xy"), (5, false, "[String = ''; Value = 'xy']"));
-            DDTestEndsWithString(("xy", ""), (6, true, "[String = 'xy'; Value = '']"));
-            DDTestEndsWithString(("axy", "xy"), (7, true, "[String = 'axy'; Value = 'xy']"));
-            DDTestEndsWithString(("xya", "xy"), (8, false, "[String = 'xya'; Value = 'xy']"));
+            DDTEndsWithString((null, null), (1, false, "Parameter 'string' is null."));
+            DDTEndsWithString((null, "xy"), (2, false, "Parameter 'string' is null."));
+            DDTEndsWithString(("axy", null), (3, false, "Parameter 'value' is null."));
+            DDTEndsWithString(("", ""), (4, true, "[String = ''; Value = '']"));
+            DDTEndsWithString(("", "xy"), (5, false, "[String = ''; Value = 'xy']"));
+            DDTEndsWithString(("xy", ""), (6, true, "[String = 'xy'; Value = '']"));
+            DDTEndsWithString(("axy", "xy"), (7, true, "[String = 'axy'; Value = 'xy']"));
+            DDTEndsWithString(("xya", "xy"), (8, false, "[String = 'xya'; Value = 'xy']"));
 
         }
 
-        void DDTestEndsWithString((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTEndsWithString((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.String.EndsWith({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.If.String.EndsWith(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.If.String.EndsWith(input.@string, input.value, _file, _method),
                 expected, "Test.If.String.EndsWith", _file, _method);
 
         }
 
         [TestMethod]
-        void TestNotEndsWithString() {
+        void NotEndsWithString() {
 
-            DDTestNotEndsWithString((null, null), (1, false, "Parameter 'string' is null."));
-            DDTestNotEndsWithString((null, "xy"), (2, false, "Parameter 'string' is null."));
-            DDTestNotEndsWithString(("axy", null), (3, false, "Parameter 'value' is null."));
-            DDTestNotEndsWithString(("", ""), (4, false, "[String = ''; Value = '']"));
-            DDTestNotEndsWithString(("", "xy"), (5, true, "[String = ''; Value = 'xy']"));
-            DDTestNotEndsWithString(("xy", ""), (6, false, "[String = 'xy'; Value = '']"));
-            DDTestNotEndsWithString(("axy", "xy"), (7, false, "[String = 'axy'; Value = 'xy']"));
-            DDTestNotEndsWithString(("xya", "xy"), (8, true, "[String = 'xya'; Value = 'xy']"));
+            DDTNotEndsWithString((null, null), (1, false, "Parameter 'string' is null."));
+            DDTNotEndsWithString((null, "xy"), (2, false, "Parameter 'string' is null."));
+            DDTNotEndsWithString(("axy", null), (3, false, "Parameter 'value' is null."));
+            DDTNotEndsWithString(("", ""), (4, false, "[String = ''; Value = '']"));
+            DDTNotEndsWithString(("", "xy"), (5, true, "[String = ''; Value = 'xy']"));
+            DDTNotEndsWithString(("xy", ""), (6, false, "[String = 'xy'; Value = '']"));
+            DDTNotEndsWithString(("axy", "xy"), (7, false, "[String = 'axy'; Value = 'xy']"));
+            DDTNotEndsWithString(("xya", "xy"), (8, true, "[String = 'xya'; Value = 'xy']"));
         }
 
-        void DDTestNotEndsWithString((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotEndsWithString((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.IfNot.String.EndsWith({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.IfNot.String.EndsWith(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.IfNot.String.EndsWith(input.@string, input.value, _file, _method),
                 expected, "Test.IfNot.String.EndsWith", _file, _method);
 
         }
@@ -188,41 +188,41 @@ namespace Nuclear.TestSite.TestSuites {
         #region NullOrEmpty
 
         [TestMethod]
-        void TestIsNullOrEmpty() {
+        void IsNullOrEmpty() {
 
-            DDTestIsNOE(null, (1, true, "[String = null]"));
-            DDTestIsNOE(String.Empty, (2, true, "[String = '']"));
-            DDTestIsNOE(" ", (3, false, "[String = ' ']"));
-            DDTestIsNOE("content", (4, false, "[String = 'content']"));
+            DDTIsNOE(null, (1, true, "[String = null]"));
+            DDTIsNOE(String.Empty, (2, true, "[String = '']"));
+            DDTIsNOE(" ", (3, false, "[String = ' ']"));
+            DDTIsNOE("content", (4, false, "[String = 'content']"));
 
         }
 
-        void DDTestIsNOE(String input, (Int32 count, Boolean result, String message) expected,
+        void DDTIsNOE(String input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.String.IsNullOrEmpty({input.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.If.String.IsNullOrEmpty(input, _file, _method),
+            Statics.DDTResultState(() => DummyTest.If.String.IsNullOrEmpty(input, _file, _method),
                 expected, "Test.If.String.IsNullOrEmpty", _file, _method);
 
         }
 
         [TestMethod]
-        void TestNotIsNullOrEmpty() {
+        void NotIsNullOrEmpty() {
 
-            DDTestIsNotNOE(null, (1, false, "[String = null]"));
-            DDTestIsNotNOE(String.Empty, (2, false, "[String = '']"));
-            DDTestIsNotNOE(" ", (3, true, "[String = ' ']"));
-            DDTestIsNotNOE("content", (4, true, "[String = 'content']"));
+            DDTIsNotNOE(null, (1, false, "[String = null]"));
+            DDTIsNotNOE(String.Empty, (2, false, "[String = '']"));
+            DDTIsNotNOE(" ", (3, true, "[String = ' ']"));
+            DDTIsNotNOE("content", (4, true, "[String = 'content']"));
 
         }
 
-        void DDTestIsNotNOE(String input, (Int32 count, Boolean result, String message) expected,
+        void DDTIsNotNOE(String input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.IfNot.String.IsNullOrEmpty({input.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.IfNot.String.IsNullOrEmpty(input, _file, _method),
+            Statics.DDTResultState(() => DummyTest.IfNot.String.IsNullOrEmpty(input, _file, _method),
                 expected, "Test.IfNot.String.IsNullOrEmpty", _file, _method);
 
         }
@@ -232,41 +232,41 @@ namespace Nuclear.TestSite.TestSuites {
         #region NullOrWhiteSpace
 
         [TestMethod]
-        void TestIsNullWhiteSpace() {
+        void IsNullWhiteSpace() {
 
-            DDTestIsNOW(null, (1, true, "[String = null]"));
-            DDTestIsNOW(String.Empty, (2, true, "[String = '']"));
-            DDTestIsNOW(" ", (3, true, "[String = ' ']"));
-            DDTestIsNOW("content", (4, false, "[String = 'content']"));
+            DDTIsNOW(null, (1, true, "[String = null]"));
+            DDTIsNOW(String.Empty, (2, true, "[String = '']"));
+            DDTIsNOW(" ", (3, true, "[String = ' ']"));
+            DDTIsNOW("content", (4, false, "[String = 'content']"));
 
         }
 
-        void DDTestIsNOW(String input, (Int32 count, Boolean result, String message) expected,
+        void DDTIsNOW(String input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.String.IsNullOrWhiteSpace({input.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.If.String.IsNullOrWhiteSpace(input, _file, _method),
+            Statics.DDTResultState(() => DummyTest.If.String.IsNullOrWhiteSpace(input, _file, _method),
                 expected, "Test.If.String.IsNullOrWhiteSpace", _file, _method);
 
         }
 
         [TestMethod]
-        void TestNotIsNullWhiteSpace() {
+        void NotIsNullWhiteSpace() {
 
-            DDTestIsNotNOW(null, (1, false, "[String = null]"));
-            DDTestIsNotNOW(String.Empty, (2, false, "[String = '']"));
-            DDTestIsNotNOW(" ", (3, false, "[String = ' ']"));
-            DDTestIsNotNOW("content", (4, true, "[String = 'content']"));
+            DDTIsNotNOW(null, (1, false, "[String = null]"));
+            DDTIsNotNOW(String.Empty, (2, false, "[String = '']"));
+            DDTIsNotNOW(" ", (3, false, "[String = ' ']"));
+            DDTIsNotNOW("content", (4, true, "[String = 'content']"));
 
         }
 
-        void DDTestIsNotNOW(String input, (Int32 count, Boolean result, String message) expected,
+        void DDTIsNotNOW(String input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.IfNot.String.IsNullOrWhiteSpace({input.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.IfNot.String.IsNullOrWhiteSpace(input, _file, _method),
+            Statics.DDTResultState(() => DummyTest.IfNot.String.IsNullOrWhiteSpace(input, _file, _method),
                 expected, "Test.IfNot.String.IsNullOrWhiteSpace", _file, _method);
 
         }
@@ -276,55 +276,55 @@ namespace Nuclear.TestSite.TestSuites {
         #region Contains
 
         [TestMethod]
-        void TestContains() {
+        void Contains() {
 
-            DDTestContains((null, null), (1, false, "Parameter 'string' is null."));
-            DDTestContains((null, "abc"), (2, false, "Parameter 'string' is null."));
-            DDTestContains(("abc", null), (3, false, "Parameter 'value' is null."));
-            DDTestContains((String.Empty, String.Empty), (4, true, "[String = ''; Value = '']"));
-            DDTestContains((String.Empty, "abc"), (5, false, "[String = ''; Value = 'abc']"));
-            DDTestContains(("abc", String.Empty), (6, true, "[String = 'abc'; Value = '']"));
-            DDTestContains(("abcd", "abcd"), (7, true, "[String = 'abcd'; Value = 'abcd']"));
-            DDTestContains(("abcd", "ab"), (8, true, "[String = 'abcd'; Value = 'ab']"));
-            DDTestContains(("abcd", "cd"), (9, true, "[String = 'abcd'; Value = 'cd']"));
-            DDTestContains(("abcd", "bc"), (10, true, "[String = 'abcd'; Value = 'bc']"));
-            DDTestContains(("abcd", "cb"), (11, false, "[String = 'abcd'; Value = 'cb']"));
+            DDTContains((null, null), (1, false, "Parameter 'string' is null."));
+            DDTContains((null, "abc"), (2, false, "Parameter 'string' is null."));
+            DDTContains(("abc", null), (3, false, "Parameter 'value' is null."));
+            DDTContains((String.Empty, String.Empty), (4, true, "[String = ''; Value = '']"));
+            DDTContains((String.Empty, "abc"), (5, false, "[String = ''; Value = 'abc']"));
+            DDTContains(("abc", String.Empty), (6, true, "[String = 'abc'; Value = '']"));
+            DDTContains(("abcd", "abcd"), (7, true, "[String = 'abcd'; Value = 'abcd']"));
+            DDTContains(("abcd", "ab"), (8, true, "[String = 'abcd'; Value = 'ab']"));
+            DDTContains(("abcd", "cd"), (9, true, "[String = 'abcd'; Value = 'cd']"));
+            DDTContains(("abcd", "bc"), (10, true, "[String = 'abcd'; Value = 'bc']"));
+            DDTContains(("abcd", "cb"), (11, false, "[String = 'abcd'; Value = 'cb']"));
 
         }
 
-        void DDTestContains((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTContains((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.String.Contains({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.If.String.Contains(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.If.String.Contains(input.@string, input.value, _file, _method),
                 expected, "Test.If.String.Contains", _file, _method);
 
         }
 
         [TestMethod]
-        void TestNotContains() {
+        void NotContains() {
 
-            DDTestNotContains((null, null), (1, false, "Parameter 'string' is null."));
-            DDTestNotContains((null, "abc"), (2, false, "Parameter 'string' is null."));
-            DDTestNotContains(("abc", null), (3, false, "Parameter 'value' is null."));
-            DDTestNotContains((String.Empty, String.Empty), (4, false, "[String = ''; Value = '']"));
-            DDTestNotContains((String.Empty, "abc"), (5, true, "[String = ''; Value = 'abc']"));
-            DDTestNotContains(("abc", String.Empty), (6, false, "[String = 'abc'; Value = '']"));
-            DDTestNotContains(("abcd", "abcd"), (7, false, "[String = 'abcd'; Value = 'abcd']"));
-            DDTestNotContains(("abcd", "ab"), (8, false, "[String = 'abcd'; Value = 'ab']"));
-            DDTestNotContains(("abcd", "cd"), (9, false, "[String = 'abcd'; Value = 'cd']"));
-            DDTestNotContains(("abcd", "bc"), (10, false, "[String = 'abcd'; Value = 'bc']"));
-            DDTestNotContains(("abcd", "cb"), (11, true, "[String = 'abcd'; Value = 'cb']"));
+            DDTNotContains((null, null), (1, false, "Parameter 'string' is null."));
+            DDTNotContains((null, "abc"), (2, false, "Parameter 'string' is null."));
+            DDTNotContains(("abc", null), (3, false, "Parameter 'value' is null."));
+            DDTNotContains((String.Empty, String.Empty), (4, false, "[String = ''; Value = '']"));
+            DDTNotContains((String.Empty, "abc"), (5, true, "[String = ''; Value = 'abc']"));
+            DDTNotContains(("abc", String.Empty), (6, false, "[String = 'abc'; Value = '']"));
+            DDTNotContains(("abcd", "abcd"), (7, false, "[String = 'abcd'; Value = 'abcd']"));
+            DDTNotContains(("abcd", "ab"), (8, false, "[String = 'abcd'; Value = 'ab']"));
+            DDTNotContains(("abcd", "cd"), (9, false, "[String = 'abcd'; Value = 'cd']"));
+            DDTNotContains(("abcd", "bc"), (10, false, "[String = 'abcd'; Value = 'bc']"));
+            DDTNotContains(("abcd", "cb"), (11, true, "[String = 'abcd'; Value = 'cb']"));
 
         }
 
-        void DDTestNotContains((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotContains((String @string, String value) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.IfNot.String.Contains({input.@string.Print()}, {input.value.Print()})", _file, _method);
 
-            Statics.DDTestResultState(() => DummyTest.IfNot.String.Contains(input.@string, input.value, _file, _method),
+            Statics.DDTResultState(() => DummyTest.IfNot.String.Contains(input.@string, input.value, _file, _method),
                 expected, "Test.IfNot.String.Contains", _file, _method);
 
         }

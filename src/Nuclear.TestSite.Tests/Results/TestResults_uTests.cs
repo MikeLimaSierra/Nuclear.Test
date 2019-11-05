@@ -23,11 +23,11 @@ namespace Nuclear.TestSite.Results {
 
             Test.If.Action.ThrowsException(() => TestResults.Instance.AssemblyName = null, out ArgumentNullException argNullEx);
             Test.IfNot.Object.IsNull(argNullEx);
-            Test.If.Values.Equal(argNullEx.ParamName, "value");
+            Test.If.Value.Equals(argNullEx.ParamName, "value");
 
             Test.If.Action.ThrowsException(() => TestResults.Instance.AssemblyName = String.Empty, out ArgumentException argEx);
             Test.IfNot.Object.IsNull(argEx);
-            Test.If.Values.Equal(argEx.ParamName, "value");
+            Test.If.Value.Equals(argEx.ParamName, "value");
 
         }
 
@@ -36,11 +36,11 @@ namespace Nuclear.TestSite.Results {
 
             Test.If.Action.ThrowsException(() => TestResults.Instance.TargetRuntime = null, out ArgumentNullException argNullEx);
             Test.IfNot.Object.IsNull(argNullEx);
-            Test.If.Values.Equal(argNullEx.ParamName, "value");
+            Test.If.Value.Equals(argNullEx.ParamName, "value");
 
             Test.If.Action.ThrowsException(() => TestResults.Instance.TargetRuntime = String.Empty, out ArgumentException argEx);
             Test.IfNot.Object.IsNull(argEx);
-            Test.If.Values.Equal(argEx.ParamName, "value");
+            Test.If.Value.Equals(argEx.ParamName, "value");
 
         }
 
@@ -49,11 +49,11 @@ namespace Nuclear.TestSite.Results {
 
             Test.If.Action.ThrowsException(() => TestResults.Instance.ExecutionRuntime = null, out ArgumentNullException argNullEx);
             Test.IfNot.Object.IsNull(argNullEx);
-            Test.If.Values.Equal(argNullEx.ParamName, "value");
+            Test.If.Value.Equals(argNullEx.ParamName, "value");
 
             Test.If.Action.ThrowsException(() => TestResults.Instance.ExecutionRuntime = String.Empty, out ArgumentException argEx);
             Test.IfNot.Object.IsNull(argEx);
-            Test.If.Values.Equal(argEx.ParamName, "value");
+            Test.If.Value.Equals(argEx.ParamName, "value");
 
         }
 

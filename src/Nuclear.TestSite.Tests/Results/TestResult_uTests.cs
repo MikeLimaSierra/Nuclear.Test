@@ -12,13 +12,13 @@ namespace Nuclear.TestSite.Results {
             Test.Note("new TestResult(false, null, null)");
             Test.If.Action.ThrowsException(() => result = new TestResult(false, null, null), out ArgumentNullException argNullEx);
             Test.IfNot.Object.IsNull(argNullEx);
-            Test.If.Values.Equal(argNullEx.ParamName, "testInstruction");
+            Test.If.Value.Equals(argNullEx.ParamName, "testInstruction");
             Test.If.Object.IsNull(result);
 
             Test.Note("new TestResult(false, String.Empty, null)");
             Test.If.Action.ThrowsException(() => result = new TestResult(false, String.Empty, null), out ArgumentException argEx);
             Test.IfNot.Object.IsNull(argEx);
-            Test.If.Values.Equal(argEx.ParamName, "testInstruction");
+            Test.If.Value.Equals(argEx.ParamName, "testInstruction");
             Test.If.Object.IsNull(result);
 
             Test.Note("new TestResult(false, \"SomeInstruction\", null)");
@@ -27,8 +27,8 @@ namespace Nuclear.TestSite.Results {
             Test.IfNot.Object.IsNull(result);
             Test.If.Value.IsTrue(result.Result.HasValue);
             Test.If.Value.IsFalse(result.Result);
-            Test.If.Values.Equal(result.TestInstruction, "SomeInstruction");
-            Test.If.Values.Equal(result.Message, null);
+            Test.If.Value.Equals(result.TestInstruction, "SomeInstruction");
+            Test.If.Value.Equals(result.Message, null);
 
             Test.Note("new TestResult(true, \"SomeInstruction\", \"Some message\")");
             Test.IfNot.Action.ThrowsException(() => result = new TestResult(true, "SomeInstruction", "Some message"), out ex);
@@ -36,8 +36,8 @@ namespace Nuclear.TestSite.Results {
             Test.IfNot.Object.IsNull(result);
             Test.If.Value.IsTrue(result.Result.HasValue);
             Test.If.Value.IsTrue(result.Result);
-            Test.If.Values.Equal(result.TestInstruction, "SomeInstruction");
-            Test.If.Values.Equal(result.Message, "Some message");
+            Test.If.Value.Equals(result.TestInstruction, "SomeInstruction");
+            Test.If.Value.Equals(result.Message, "Some message");
 
         }
 
@@ -49,13 +49,13 @@ namespace Nuclear.TestSite.Results {
             Test.Note("new TestResult(null)");
             Test.If.Action.ThrowsException(() => result = new TestResult(null), out ArgumentNullException argNullEx);
             Test.IfNot.Object.IsNull(argNullEx);
-            Test.If.Values.Equal(argNullEx.ParamName, "message");
+            Test.If.Value.Equals(argNullEx.ParamName, "message");
             Test.If.Object.IsNull(result);
 
             Test.Note("new TestResult(String.Empty)");
             Test.If.Action.ThrowsException(() => result = new TestResult(String.Empty), out ArgumentException argEx);
             Test.IfNot.Object.IsNull(argEx);
-            Test.If.Values.Equal(argEx.ParamName, "message");
+            Test.If.Value.Equals(argEx.ParamName, "message");
             Test.If.Object.IsNull(result);
 
             Test.Note("new TestResult(\"Some test note\")");
@@ -64,7 +64,7 @@ namespace Nuclear.TestSite.Results {
             Test.IfNot.Object.IsNull(result);
             Test.If.Value.IsFalse(result.Result.HasValue);
             Test.If.Object.IsNull(result.TestInstruction);
-            Test.If.Values.Equal(result.Message, "Some test note");
+            Test.If.Value.Equals(result.Message, "Some test note");
 
         }
 
