@@ -113,8 +113,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </code>
         /// </example>
         public void Equals(Single left, Single right,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => Equals(left, right, 1e-12f, _file, _method);
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) => Equals(left, right, 1e-12f, _file, _method);
 
         /// <summary>
         /// Tests if two <see cref="Single"/> values are equal by a <paramref name="margin"/>.
@@ -147,8 +146,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </code>
         /// </example>
         public void Equals(Double left, Double right,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => Equals(left, right, 1e-12d, _file, _method);
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) => Equals(left, right, 1e-12d, _file, _method);
 
         /// <summary>
         /// Tests if two <see cref="Double"/> values are equal by a <paramref name="margin"/>.

@@ -492,6 +492,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTMatches((new List<String>() { "1", "2" }, new List<String>() { "1", "1", "2" }), (8, false, "Enumerations don't match."));
             DDTMatches((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "1", "2" }), (9, true, "Enumerations match."));
             DDTMatches((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "1" }), (10, true, "Enumerations match."));
+            DDTMatches((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "2" }), (11, false, "Enumerations don't match."));
+            DDTMatches((new List<String>() { "1", null, null, "2" }, new List<String>() { "1", null, null, "2" }), (12, true, "Enumerations match."));
+            DDTMatches((new List<String>() { "1", null, "2", null }, new List<String>() { "1", null, null, "2" }), (13, true, "Enumerations match."));
 
         }
 
@@ -519,6 +522,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotMatches((new List<String>() { "1", "2" }, new List<String>() { "1", "1", "2" }), (8, true, "Enumerations don't match."));
             DDTNotMatches((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "1", "2" }), (9, false, "Enumerations match."));
             DDTNotMatches((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "1" }), (10, false, "Enumerations match."));
+            DDTNotMatches((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "2" }), (11, true, "Enumerations don't match."));
+            DDTNotMatches((new List<String>() { "1", null, null, "2" }, new List<String>() { "1", null, null, "2" }), (12, false, "Enumerations match."));
+            DDTNotMatches((new List<String>() { "1", null, "2", null }, new List<String>() { "1", null, null, "2" }), (13, false, "Enumerations match."));
 
         }
 
@@ -546,6 +552,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTMatchesT((new List<String>() { "1", "2" }, new List<String>() { "1", "1", "2" }), (8, false, "Enumerations don't match."));
             DDTMatchesT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "1", "2" }), (9, true, "Enumerations match."));
             DDTMatchesT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "1" }), (10, true, "Enumerations match."));
+            DDTMatchesT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "2" }), (11, false, "Enumerations don't match."));
+            DDTMatchesT((new List<String>() { "1", null, null, "2" }, new List<String>() { "1", null, null, "2" }), (12, true, "Enumerations match."));
+            DDTMatchesT((new List<String>() { "1", null, "2", null }, new List<String>() { "1", null, null, "2" }), (13, true, "Enumerations match."));
 
         }
 
@@ -573,6 +582,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotMatchesT((new List<String>() { "1", "2" }, new List<String>() { "1", "1", "2" }), (8, true, "Enumerations don't match."));
             DDTNotMatchesT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "1", "2" }), (9, false, "Enumerations match."));
             DDTNotMatchesT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "1" }), (10, false, "Enumerations match."));
+            DDTNotMatchesT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "2" }), (11, true, "Enumerations don't match."));
+            DDTNotMatchesT((new List<String>() { "1", null, null, "2" }, new List<String>() { "1", null, null, "2" }), (12, false, "Enumerations match."));
+            DDTNotMatchesT((new List<String>() { "1", null, "2", null }, new List<String>() { "1", null, null, "2" }), (13, false, "Enumerations match."));
 
         }
 
@@ -604,6 +616,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTMatchesExactly((new List<String>() { "1", "2" }, new List<String>() { "1", "1", "2" }), (8, false, "Enumerations don't match."));
             DDTMatchesExactly((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "1", "2" }), (9, true, "Enumerations match."));
             DDTMatchesExactly((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "1" }), (10, false, "Enumerations don't match."));
+            DDTMatchesExactly((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "2" }), (11, false, "Enumerations don't match."));
+            DDTMatchesExactly((new List<String>() { "1", null, null, "2" }, new List<String>() { "1", null, null, "2" }), (12, true, "Enumerations match."));
+            DDTMatchesExactly((new List<String>() { "1", null, "2", null }, new List<String>() { "1", null, null, "2" }), (13, false, "Enumerations don't match."));
 
         }
 
@@ -631,6 +646,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotMatchesExactly((new List<String>() { "1", "2" }, new List<String>() { "1", "1", "2" }), (8, true, "Enumerations don't match."));
             DDTNotMatchesExactly((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "1", "2" }), (9, false, "Enumerations match."));
             DDTNotMatchesExactly((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "1" }), (10, true, "Enumerations don't match."));
+            DDTNotMatchesExactly((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "2" }), (11, true, "Enumerations don't match."));
+            DDTNotMatchesExactly((new List<String>() { "1", null, null, "2" }, new List<String>() { "1", null, null, "2" }), (12, false, "Enumerations match."));
+            DDTNotMatchesExactly((new List<String>() { "1", null, "2", null }, new List<String>() { "1", null, null, "2" }), (13, true, "Enumerations don't match."));
 
         }
 
@@ -658,6 +676,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTMatchesExactlyT((new List<String>() { "1", "2" }, new List<String>() { "1", "1", "2" }), (8, false, "Enumerations don't match."));
             DDTMatchesExactlyT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "1", "2" }), (9, true, "Enumerations match."));
             DDTMatchesExactlyT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "1" }), (10, false, "Enumerations don't match."));
+            DDTMatchesExactlyT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "2" }), (11, false, "Enumerations don't match."));
+            DDTMatchesExactlyT((new List<String>() { "1", null, null, "2" }, new List<String>() { "1", null, null, "2" }), (12, true, "Enumerations match."));
+            DDTMatchesExactlyT((new List<String>() { "1", null, "2", null }, new List<String>() { "1", null, null, "2" }), (13, false, "Enumerations don't match."));
 
         }
 
@@ -685,6 +706,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotMatchesExactlyT((new List<String>() { "1", "2" }, new List<String>() { "1", "1", "2" }), (8, true, "Enumerations don't match."));
             DDTNotMatchesExactlyT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "1", "2" }), (9, false, "Enumerations match."));
             DDTNotMatchesExactlyT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "1" }), (10, true, "Enumerations don't match."));
+            DDTNotMatchesExactlyT((new List<String>() { "1", "1", "2" }, new List<String>() { "1", "2", "2" }), (11, true, "Enumerations don't match."));
+            DDTNotMatchesExactlyT((new List<String>() { "1", null, null, "2" }, new List<String>() { "1", null, null, "2" }), (12, false, "Enumerations match."));
+            DDTNotMatchesExactlyT((new List<String>() { "1", null, "2", null }, new List<String>() { "1", null, null, "2" }), (13, true, "Enumerations don't match."));
 
         }
 
