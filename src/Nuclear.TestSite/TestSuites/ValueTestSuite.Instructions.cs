@@ -1,9 +1,174 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Nuclear.Extensions;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ValueTestSuite {
+
+        #region generic equality
+
+        /// <summary>
+        /// Tests if two objects are equal.
+        ///     Equality is determined by checking implementations of (in given order):
+        ///     <see cref="IEquatable{T}"/>
+        ///     <see cref="IComparable{T}"/>
+        ///     <see cref="IComparable"/>
+        ///     default <see cref="IEqualityComparer{T}"/>
+        /// </summary>
+        /// <typeparam name="T">The type of both objects.</typeparam>
+        /// <param name="left">The first object.</param>
+        /// <param name="right">The second object.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(obj1, obj2);
+        /// </code>
+        /// </example>
+        public void Equals<T>(T left, T right,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(left == null && right == null) {
+                InternalTest(true, $"[Left = {left.Print()}; Right = {right.Print()}]",
+                    _file, _method);
+                return;
+            }
+
+            try {
+                if(left is IEquatable<T> eLeft) {
+                    InternalTest(eLeft.Equals(right), $"({typeof(T).Print()}.IEquatable<T>) [Left = {left.Print()}; Right = {right.Print()}]",
+                        _file, _method);
+                    return;
+                }
+
+                if(left is IComparable<T> cTLeft) {
+                    InternalTest(cTLeft.CompareTo(right) == 0, $"({typeof(T).Print()}.IComparable<T>) [Left = {left.Print()}; Right = {right.Print()}]",
+                        _file, _method);
+                    return;
+                }
+
+                if(left is IComparable cLeft) {
+                    InternalTest(cLeft.CompareTo(right) == 0, $"({typeof(T).Print()}.IComparable) [Left = {left.Print()}; Right = {right.Print()}]",
+                        _file, _method);
+                    return;
+                }
+            } catch { }
+
+            Equals(left, right, EqualityComparer<T>.Default, _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if two objects are equal by using a supplied <see cref="IEqualityComparer{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of both objects.</typeparam>
+        /// <param name="left">The first object.</param>
+        /// <param name="right">The second object.</param>
+        /// <param name="comparer">The comparer to be used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
+        /// </code>
+        /// </example>
+        public void Equals<T>(T left, T right, IEqualityComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Boolean result = false;
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            try {
+                result = comparer.Equals(left, right);
+
+            } catch(Exception ex) {
+                FailTest(String.Format("Comparison threw Exception: {0}", ex.Message),
+                    _file, _method);
+                return;
+            }
+
+            InternalTest(result, $"({comparer.GetType().Name.Print()}) [Left = {left.Print()}; Right = {right.Print()}]",
+                _file, _method);
+        }
+
+        #endregion
+
+        #region float equality
+
+        /// <summary>
+        /// Tests if two <see cref="Single"/> values are equal by a margin of 1e-12.
+        /// </summary>
+        /// <param name="left">The first value.</param>
+        /// <param name="right">The second value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(val1, val2);
+        /// </code>
+        /// </example>
+        public void Equals(Single left, Single right,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            => Equals(left, right, 1e-12f, _file, _method);
+
+        /// <summary>
+        /// Tests if two <see cref="Single"/> values are equal by a <paramref name="margin"/>.
+        /// </summary>
+        /// <param name="left">The first value.</param>
+        /// <param name="right">The second value.</param>
+        /// <param name="margin">The margin to use as tolerance.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(val1, val2, 1e-28f);
+        /// </code>
+        /// </example>
+        public void Equals(Single left, Single right, Single margin,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Print()}; Right = {right.Print()}; Margin = {margin.Print()}]",
+                _file, _method);
+
+        /// <summary>
+        /// Tests if two <see cref="Double"/> values are equal by a margin of 1e-12.
+        /// </summary>
+        /// <param name="left">The first value.</param>
+        /// <param name="right">The second value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(val1, val2);
+        /// </code>
+        /// </example>
+        public void Equals(Double left, Double right,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            => Equals(left, right, 1e-12d, _file, _method);
+
+        /// <summary>
+        /// Tests if two <see cref="Double"/> values are equal by a <paramref name="margin"/>.
+        /// </summary>
+        /// <param name="left">The first value.</param>
+        /// <param name="right">The second value.</param>
+        /// <param name="margin">The margin to use as tolerance.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(val1, val2, 1e-28f);
+        /// </code>
+        /// </example>
+        public void Equals(Double left, Double right, Double margin,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Print()}; Right = {right.Print()}; Margin = {margin.Print()}]",
+                _file, _method);
+
+        #endregion
 
         #region IsTrue
 
@@ -11,10 +176,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// Tests if <paramref name="value"/> is true.
         /// </summary>
         /// <param name="value">The value to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsTrue(1 + 1 == 2);
+        /// </code>
+        /// </example>
         public void IsTrue(Boolean value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(value, $"[Value = {value.Print()}]",
                 _file, _method);
 
@@ -22,10 +192,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// Tests if <paramref name="value"/> is true.
         /// </summary>
         /// <param name="value">The value to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsTrue(someNullableBoolean);
+        /// </code>
+        /// </example>
         public void IsTrue(Boolean? value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(!value.HasValue) {
                 FailTest("Parameter 'value' is null.", _file, _method);
@@ -44,10 +219,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// Tests if <paramref name="value"/> is false.
         /// </summary>
         /// <param name="value">The value to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsFalse(1 + 1 != 2);
+        /// </code>
+        /// </example>
         public void IsFalse(Boolean value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(!value, $"[Value = {value.Print()}]",
                 _file, _method);
 
@@ -55,10 +235,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// Tests if <paramref name="value"/> is false.
         /// </summary>
         /// <param name="value">The value to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsFalse(someNullableBoolean);
+        /// </code>
+        /// </example>
         public void IsFalse(Boolean? value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(!value.HasValue) {
                 FailTest("Parameter 'value' is null.", _file, _method);
@@ -80,10 +265,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="value">The value that is checked against the range.</param>
         /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
         /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClamped(someIndex, 0, someList.Count - 1);
+        /// </code>
+        /// </example>
         public void IsClamped<TType>(TType value, TType min, TType max,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TType : IComparable {
 
             if(value == null) {
@@ -102,10 +292,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="value">The value that is checked against the range.</param>
         /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
         /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClamped(someIndex, 0, someList.Count - 1);
+        /// </code>
+        /// </example>
         public void IsClampedT<TType>(TType value, TType min, TType max,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TType : IComparable<TType> {
 
             if(value == null) {
@@ -128,10 +323,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="value">The value that is checked against the range.</param>
         /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
         /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClampedExclusive(someIndex, -1, someList.Count);
+        /// </code>
+        /// </example>
         public void IsClampedExclusive<TType>(TType value, TType min, TType max,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TType : IComparable {
 
             if(value == null) {
@@ -150,10 +350,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="value">The value that is checked against the range.</param>
         /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
         /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClampedExclusive(someIndex, -1, someList.Count);
+        /// </code>
+        /// </example>
         public void IsClampedExclusiveT<TType>(TType value, TType min, TType max,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TType : IComparable<TType> {
 
             if(value == null) {

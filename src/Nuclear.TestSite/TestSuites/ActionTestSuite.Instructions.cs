@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ActionTestSuite {
@@ -15,10 +16,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// <typeparam name="TException">The expected type of exception.</typeparam>
         /// <param name="action">The action to be executed.</param>
         /// <param name="exception">Contains the exception if thrown.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Action.ThrowsException&lt;ArgumentException&gt;(() => obj.DoSomething(), out ArgumentException exception);
+        /// </code>
+        /// </example>
         public void ThrowsException<TException>(Action action, out TException exception,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TException : Exception {
 
             exception = null;
@@ -51,10 +57,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
         /// <param name="sender">Contains the sender if event is raised.</param>
         /// <param name="e">Contains the <see cref="PropertyChangedEventArgs"/> if event is raised.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Action.RaisesPropertyChangedEvent(() => obj.Title = "new content", obj, out Object sender, out PropertyChangedEventArgs e);
+        /// </code>
+        /// </example>
         public void RaisesPropertyChangedEvent(Action action, INotifyPropertyChanged @object, out Object sender, out PropertyChangedEventArgs e,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             sender = null;
             e = null;
@@ -102,10 +113,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="eventName">The name of the event to be raised.</param>
         /// <param name="sender">Contains the sender if event is raised.</param>
         /// <param name="e">Contains the <typeparamref name="TEventArgs"/> if event is raised.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Action.RaisesEvent(() => obj.DoSomething(), obj, "MyCustomEvent", out Object sender, out MyCustomEventArgs e);
+        /// </code>
+        /// </example>
         public void RaisesEvent<TEventArgs>(Action action, Object @object, String eventName, out Object sender, out TEventArgs e,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             where TEventArgs : EventArgs {
 
             sender = null;

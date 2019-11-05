@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class TypeTestSuite {
@@ -12,9 +13,14 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <typeparam name="TType">The type to be checked.</typeparam>
         /// <typeparam name="TInterface">The interface to be implemented.</typeparam>
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Type.Implements&lt;MyClass, IDisposable&gt;();
+        /// </code>
+        /// </example>
         public void Implements<TType, TInterface>([CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => Implements(typeof(TType), typeof(TInterface), _file, _method);
 
         /// <summary>
@@ -22,10 +28,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="type">The type to be checked.</param>
         /// <param name="interface">The interface to be implemented.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Type.Implements(obj.GetType(), typeof(IDisposable));
+        /// </code>
+        /// </example>
         public void Implements(Type type, Type @interface,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(type == null) {
                 FailTest("Parameter 'type' is null.", _file, _method);
@@ -57,9 +68,14 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <typeparam name="TType">The type to be checked.</typeparam>
         /// <typeparam name="TBase">The base class to be inherited from.</typeparam>
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Type.IsSubClass&lt;MyClass, MyBaseClass&gt;();
+        /// </code>
+        /// </example>
         public void IsSubClass<TType, TBase>([CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
          => IsSubClass(typeof(TType), typeof(TBase), _file, _method);
 
         /// <summary>
@@ -67,10 +83,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="type">The type to be checked.</param>
         /// <param name="baseType">The base class to be inherited from.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Type.IsSubClass(obj.GetType(), typeof(MyBaseClass));
+        /// </code>
+        /// </example>
         public void IsSubClass(Type type, Type baseType,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(type == null) {
                 FailTest("Parameter 'type' is null.", _file, _method);

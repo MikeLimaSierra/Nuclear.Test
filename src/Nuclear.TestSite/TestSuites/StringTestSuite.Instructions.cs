@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using Nuclear.Extensions;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class StringTestSuite {
@@ -12,10 +13,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="string">The <see cref="String"/> to be checked.</param>
         /// <param name="value">The <see cref="Char"/> to check for.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.String.StartsWith(someString, '.');
+        /// </code>
+        /// </example>
         public void StartsWith(String @string, Char value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(@string == null) {
                 FailTest("Parameter 'string' is null.", _file, _method);
@@ -31,10 +37,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="string">The <see cref="String"/> to be checked.</param>
         /// <param name="value">The <see cref="String"/> to check for.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.String.StartsWith(someString, "https://");
+        /// </code>
+        /// </example>
         public void StartsWith(String @string, String value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(@string == null) {
                 FailTest("Parameter 'string' is null.", _file, _method);
@@ -59,10 +70,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="string">The <see cref="String"/> to be checked.</param>
         /// <param name="value">The <see cref="Char"/> to check for.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.String.EndsWith(someString, '/');
+        /// </code>
+        /// </example>
         public void EndsWith(String @string, Char value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(@string == null) {
                 FailTest("Parameter 'string' is null.", _file, _method);
@@ -78,10 +94,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="string">The <see cref="String"/> to be checked.</param>
         /// <param name="value">The <see cref="String"/> to check for.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.String.EndsWith(someString, ".xml");
+        /// </code>
+        /// </example>
         public void EndsWith(String @string, String value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(@string == null) {
                 FailTest("Parameter 'string' is null.", _file, _method);
@@ -105,10 +126,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// Tests if a <see cref="String"/> is null or empty.
         /// </summary>
         /// <param name="string">The <see cref="String"/> to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.String.IsNullOrEmpty(someString);
+        /// </code>
+        /// </example>
         public void IsNullOrEmpty(String @string,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(String.IsNullOrEmpty(@string), $"[String = {@string.Print()}]",
                 _file, _method);
 
@@ -116,10 +142,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// Tests if a <see cref="String"/> is null or white spaces.
         /// </summary>
         /// <param name="string">The <see cref="String"/> to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.String.IsNullOrWhiteSpace(someString);
+        /// </code>
+        /// </example>
         public void IsNullOrWhiteSpace(String @string,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(String.IsNullOrWhiteSpace(@string), $"[String = {@string.Print()}]",
                 _file, _method);
 
@@ -128,10 +159,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="string">The <see cref="String"/> to be checked.</param>
         /// <param name="value">The <see cref="String"/> to check for.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.String.Contains(someString, "John Doe");
+        /// </code>
+        /// </example>
         public void Contains(String @string, String value,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(@string == null) {
                 FailTest("Parameter 'string' is null.", _file, _method);

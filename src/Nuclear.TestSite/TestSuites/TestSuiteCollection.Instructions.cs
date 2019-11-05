@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class TestSuiteCollection {
@@ -9,10 +10,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="obj">The object to be checked against <paramref name="_other"/>.</param>
         /// <param name="_other">The object to be checked against <paramref name="obj"/>.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.ReferencesEqual(obj1, obj2);
+        /// </code>
+        /// </example>
         public void ReferencesEqual(Object obj, Object _other,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(ReferenceEquals(obj, _other), System.String.Format("References {0}equal.", ReferenceEquals(obj, _other) ? "" : "don't "),
                 _file, _method);
 

@@ -49,11 +49,6 @@ namespace Nuclear.TestSite.TestSuites {
         public ValueTestSuite Value { get; private set; }
 
         /// <summary>
-        /// Test suite with instructions for testing single values.
-        /// </summary>
-        public ValuesTestSuite Values { get; private set; }
-
-        /// <summary>
         /// Test suite with instructions for testing enumerations.
         /// </summary>
         public EnumerationTestSuite Enumeration { get; private set; }
@@ -94,7 +89,6 @@ namespace Nuclear.TestSite.TestSuites {
             Object = new ObjectTestSuite(this);
             String = new StringTestSuite(this);
             Value = new ValueTestSuite(this);
-            Values = new ValuesTestSuite(this);
             Enumeration = new EnumerationTestSuite(this);
         }
 

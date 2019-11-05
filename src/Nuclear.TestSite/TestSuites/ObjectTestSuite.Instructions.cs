@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ObjectTestSuite {
@@ -10,10 +11,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// Tests if <paramref name="object"/> is null.
         /// </summary>
         /// <param name="object">The object to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Object.IsNull(obj);
+        /// </code>
+        /// </example>
         public void IsNull(Object @object,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => InternalTest(@object == null, String.Format("[Object: {0}null]", @object == null ? "" : "not "),
                 _file, _method);
 
@@ -26,10 +32,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <typeparam name="TType">The type to be checked for.</typeparam>
         /// <param name="object">The object to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Object.IsOfType&lt;MyClass&gt;(obj);
+        /// </code>
+        /// </example>
         public void IsOfType<TType>(Object @object,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => IsOfType(@object, typeof(TType), _file, _method);
 
         /// <summary>
@@ -37,10 +48,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="object">The object to be checked.</param>
         /// <param name="type">The type to be checked for.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Object.IsOfType(obj, typeof(MyClass));
+        /// </code>
+        /// </example>
         public void IsOfType(Object @object, Type type,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(@object == null) {
                 FailTest("Parameter 'object' is null.", _file, _method);
@@ -65,10 +81,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <typeparam name="TType">The type to be checked for.</typeparam>
         /// <param name="object">The object to be checked.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Object.IsOfExactType&lt;MyClass&gt;(obj);
+        /// </code>
+        /// </example>
         public void IsOfExactType<TType>(Object @object,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             => IsOfExactType(@object, typeof(TType), _file, _method);
 
         /// <summary>
@@ -76,10 +97,15 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="object">The object to be checked.</param>
         /// <param name="type">The type to be checked for.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Object.IsOfExactType(obj, typeof(MyClass));
+        /// </code>
+        /// </example>
         public void IsOfExactType(Object @object, Type type,
-#pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-#pragma warning restore CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
 
             if(@object == null) {
                 FailTest("Parameter 'object' is null.", _file, _method);
