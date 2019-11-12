@@ -1,7 +1,8 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Ntt;
+﻿using Ntt;
+using Nuclear.Extensions;
 using Nuclear.TestSite.Attributes;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Nuclear.TestSite.TestSuites {
     class ObjectTestSuit_uTests {
@@ -19,7 +20,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTIsNull(Object input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Object.IsNull({input.Print()})", _file, _method);
+            Test.Note($"Test.If.Object.IsNull({input.Format()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Object.IsNull(input, _file, _method),
                 expected, "Test.If.Object.IsNull", _file, _method);
@@ -37,7 +38,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotIsNull(Object input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Object.IsNull({input.Print()})", _file, _method);
+            Test.Note($"Test.IfNot.Object.IsNull({input.Format()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Object.IsNull(input, _file, _method),
                 expected, "Test.IfNot.Object.IsNull", _file, _method);
@@ -65,7 +66,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTIsOfType((Object @object, Type type) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Object.IsOfType({input.@object.PrintType()}, {input.type.Print()})", _file, _method);
+            Test.Note($"Test.If.Object.IsOfType({input.@object.FormatType()}, {input.type.Format()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Object.IsOfType(input.@object, input.type, _file, _method),
                 expected, "Test.If.Object.IsOfType", _file, _method);
@@ -89,7 +90,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotIsOfType((Object @object, Type type) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Object.IsOfType({input.@object.PrintType()}, {input.type.Print()})", _file, _method);
+            Test.Note($"Test.IfNot.Object.IsOfType({input.@object.FormatType()}, {input.type.Format()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Object.IsOfType(input.@object, input.type, _file, _method),
                 expected, "Test.IfNot.Object.IsOfType", _file, _method);
@@ -111,7 +112,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTIsOfTypeGeneric<TType>(Object input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Object.IsOfType<{typeof(TType).Print()}>({input.PrintType()})", _file, _method);
+            Test.Note($"Test.If.Object.IsOfType<{typeof(TType).Format()}>({input.FormatType()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Object.IsOfType<TType>(input, _file, _method),
                 expected, "Test.If.Object.IsOfType", _file, _method);
@@ -133,7 +134,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotIsOfTypeGeneric<TType>(Object input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Object.IsOfType<{typeof(TType).Print()}>({input.PrintType()})", _file, _method);
+            Test.Note($"Test.IfNot.Object.IsOfType<{typeof(TType).Format()}>({input.FormatType()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Object.IsOfType<TType>(input, _file, _method),
                 expected, "Test.IfNot.Object.IsOfType", _file, _method);
@@ -159,7 +160,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTIsOfExactType((Object @object, Type type) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Object.IsOfExactType({input.@object.PrintType()}, {input.type.Print()})", _file, _method);
+            Test.Note($"Test.If.Object.IsOfExactType({input.@object.FormatType()}, {input.type.Format()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Object.IsOfExactType(input.@object, input.type, _file, _method),
                 expected, "Test.If.Object.IsOfExactType", _file, _method);
@@ -181,7 +182,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotIsOfExactType((Object @object, Type type) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Object.IsOfExactType({input.@object.PrintType()}, {input.type.Print()})", _file, _method);
+            Test.Note($"Test.IfNot.Object.IsOfExactType({input.@object.FormatType()}, {input.type.Format()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Object.IsOfExactType(input.@object, input.type, _file, _method),
                 expected, "Test.IfNot.Object.IsOfExactType", _file, _method);
@@ -201,7 +202,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTIsOfExactTypeGeneric<TType>(Object input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Object.IsOfExactType<{typeof(TType).Print()}>({input.PrintType()})", _file, _method);
+            Test.Note($"Test.If.Object.IsOfExactType<{typeof(TType).Format()}>({input.FormatType()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Object.IsOfExactType<TType>(input, _file, _method),
                 expected, "Test.If.Object.IsOfExactType", _file, _method);
@@ -221,7 +222,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotIsOfExactTypeGeneric<TType>(Object input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Object.IsOfExactType<{typeof(TType).Print()}>({input.PrintType()})", _file, _method);
+            Test.Note($"Test.IfNot.Object.IsOfExactType<{typeof(TType).Format()}>({input.FormatType()})", _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Object.IsOfExactType<TType>(input, _file, _method),
                 expected, "Test.IfNot.Object.IsOfExactType", _file, _method);

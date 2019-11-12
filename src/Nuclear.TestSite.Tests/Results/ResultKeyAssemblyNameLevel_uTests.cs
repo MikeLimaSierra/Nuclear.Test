@@ -1,6 +1,7 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using Nuclear.Extensions;
 using Nuclear.TestSite.Attributes;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Nuclear.TestSite.Results {
     class ResultKeyAssemblyNameLevel_uTests {
@@ -19,7 +20,7 @@ namespace Nuclear.TestSite.Results {
 
             ResultKeyAssemblyNameLevel key = null;
 
-            Test.Note(String.Format("new ResultKeyAssemblyNameLevel({0})", input.Print()), _file, _method);
+            Test.Note(String.Format("new ResultKeyAssemblyNameLevel({0})", input.Format()), _file, _method);
             Test.IfNot.Action.ThrowsException(() => key = new ResultKeyAssemblyNameLevel(input), out Exception ex, _file, _method);
             Test.IfNot.Object.IsNull(key, _file, _method);
             Test.If.Value.Equals(key.Assembly, input, _file, _method);

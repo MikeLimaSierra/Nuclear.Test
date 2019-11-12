@@ -1,6 +1,7 @@
-﻿using System;
-using System.Runtime.CompilerServices;
+﻿using Nuclear.Extensions;
 using Nuclear.TestSite.Attributes;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ObjectTestSuite {
@@ -68,7 +69,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(type.IsAssignableFrom(@object.GetType()), $"Object is {@object.PrintType()}. Given type is {type.Print()}.",
+            InternalTest(type.IsAssignableFrom(@object.GetType()), $"Object is {@object.FormatType()}. Given type is {type.Format()}.",
                 _file, _method);
         }
 
@@ -117,7 +118,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(@object.GetType().Equals(type), $"Object is {@object.PrintType()}. Given type is {type.Print()}.",
+            InternalTest(@object.GetType().Equals(type), $"Object is {@object.FormatType()}. Given type is {type.Format()}.",
                 _file, _method);
         }
 

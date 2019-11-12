@@ -1,14 +1,16 @@
-﻿using System;
+﻿using Nuclear.Extensions;
+using Nuclear.TestSite.Attributes;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Nuclear.TestSite.Attributes;
+using System.Threading;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ActionTestSuite {
 
-        #region exceptions
+        #region ThrowsException
 
         /// <summary>
         /// Tests if <paramref name="action"/> throws an <see cref="Exception"/> of type <typeparamref name="TException"/> when executed.
@@ -41,22 +43,21 @@ namespace Nuclear.TestSite.TestSuites {
             } catch(Exception) {
                 // don't care about all the other ones, this is just about TException!
             } finally {
-                InternalTest(exception != null, $"[Exception = {exception.Print()}]",
+                InternalTest(exception != null, $"[Exception = {exception.Format()}]",
                     _file, _method);
             }
         }
 
         #endregion
 
-        #region events
+        #region RaisesPropertyChangedEvent
 
         /// <summary>
         /// Tests if <paramref name="action"/> on <paramref name="object"/> raises <see cref="INotifyPropertyChanged"/>.
         /// </summary>
         /// <param name="action">The action to be invoked on <paramref name="object"/>.</param>
         /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
-        /// <param name="sender">Contains the sender if event is raised.</param>
-        /// <param name="e">Contains the <see cref="PropertyChangedEventArgs"/> if event is raised.</param>
+        /// <param name="eventData">The event data containing sender and arguments.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <example>
@@ -64,11 +65,10 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Action.RaisesPropertyChangedEvent(() => obj.Title = "new content", obj, out Object sender, out PropertyChangedEventArgs e);
         /// </code>
         /// </example>
-        public void RaisesPropertyChangedEvent(Action action, INotifyPropertyChanged @object, out Object sender, out PropertyChangedEventArgs e,
+        public void RaisesPropertyChangedEvent(Action action, INotifyPropertyChanged @object, out EventData<PropertyChangedEventArgs> eventData,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            sender = null;
-            e = null;
+            eventData = null;
 
             if(action == null) {
                 FailTest("Parameter 'action' is null.", _file, _method);
@@ -80,22 +80,21 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            (Object sender, PropertyChangedEventArgs e) tmp = (null, null);
+            EventData<PropertyChangedEventArgs> tmp = null;
 
-            void handler(Object _sender, PropertyChangedEventArgs _e) => tmp = (_sender, _e);
+            PropertyChangedEventHandler handler = new PropertyChangedEventHandler((Object sender, PropertyChangedEventArgs e) => tmp = new EventData<PropertyChangedEventArgs>(sender, e));
 
             @object.PropertyChanged += handler;
 
             try {
                 action();
-                sender = tmp.sender;
-                e = tmp.e;
+                eventData = tmp;
 
-                InternalTest(sender != null && e != null, String.Format("{0} of type {1} raised.", sender != null && e != null ? "Event" : "No event", typeof(PropertyChangedEventHandler).Print()),
+                InternalTest(tmp != null, String.Format("{0} of type {1} raised.", tmp != null ? "Event" : "No event", typeof(PropertyChangedEventHandler).Format()),
                     _file, _method);
 
             } catch(Exception ex) {
-                FailTest($"Action threw Exception: {ex.Message.Print()}",
+                FailTest($"Action threw Exception: {ex.Message.Format()}",
                     _file, _method);
                 return;
 
@@ -105,27 +104,81 @@ namespace Nuclear.TestSite.TestSuites {
         }
 
         /// <summary>
+        /// Tests if <paramref name="action"/> on <paramref name="object"/> raises <see cref="INotifyPropertyChanged"/>.
+        /// </summary>
+        /// <param name="action">The action to be invoked on <paramref name="object"/>.</param>
+        /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
+        /// <param name="eventDatas">The collection of event datas containing senders and arguments.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Action.RaisesPropertyChangedEvent(() => obj.Title = "new content", obj, out Object sender, out PropertyChangedEventArgs e);
+        /// </code>
+        /// </example>
+        public void RaisesPropertyChangedEvent(Action action, INotifyPropertyChanged @object, out EventDataCollection<PropertyChangedEventArgs> eventDatas,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            eventDatas = null;
+
+            if(action == null) {
+                FailTest("Parameter 'action' is null.", _file, _method);
+                return;
+            }
+
+            if(@object == null) {
+                FailTest("Parameter 'object' is null.", _file, _method);
+                return;
+            }
+
+            EventDataCollection<PropertyChangedEventArgs> tmp = new EventDataCollection<PropertyChangedEventArgs>();
+
+            PropertyChangedEventHandler handler = new PropertyChangedEventHandler((Object sender, PropertyChangedEventArgs e) => tmp.Add(new EventData<PropertyChangedEventArgs>(sender, e)));
+
+            @object.PropertyChanged += handler;
+
+            try {
+                action();
+                eventDatas = tmp;
+
+                InternalTest(tmp.Count > 0, $"Event of type {typeof(PropertyChangedEventHandler).Format()} raised {tmp.Count} times.",
+                    _file, _method);
+
+
+            } catch(Exception ex) {
+                FailTest($"Action threw Exception: {ex.Message.Format()}",
+                    _file, _method);
+                return;
+
+            } finally {
+                @object.PropertyChanged -= handler;
+            }
+        }
+
+        #endregion
+
+        #region RaisesEvent
+
+        /// <summary>
         /// Tests if <paramref name="action"/> on <paramref name="object"/> raises event with <typeparamref name="TEventArgs"/>.
         /// </summary>
         /// <typeparam name="TEventArgs">The expected type of event arguments.</typeparam>
         /// <param name="action">The action to be invoked on <paramref name="object"/>.</param>
         /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
         /// <param name="eventName">The name of the event to be raised.</param>
-        /// <param name="sender">Contains the sender if event is raised.</param>
-        /// <param name="e">Contains the <typeparamref name="TEventArgs"/> if event is raised.</param>
+        /// <param name="eventData">The event data containing sender and arguments.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <example>
         /// <code>
-        /// Test.If.Action.RaisesEvent(() => obj.DoSomething(), obj, "MyCustomEvent", out Object sender, out MyCustomEventArgs e);
+        /// Test.If.Action.RaisesEvent(() => obj.DoSomething(), obj, "MyCustomEvent", out EventData&lt;MyCustomEventArgs&gt; eventData);
         /// </code>
         /// </example>
-        public void RaisesEvent<TEventArgs>(Action action, Object @object, String eventName, out Object sender, out TEventArgs e,
+        public void RaisesEvent<TEventArgs>(Action action, Object @object, String eventName, out EventData<TEventArgs> eventData,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             where TEventArgs : EventArgs {
 
-            sender = null;
-            e = null;
+            eventData = null;
 
             if(action == null) {
                 FailTest("Parameter 'action' is null.", _file, _method);
@@ -150,7 +203,7 @@ namespace Nuclear.TestSite.TestSuites {
             EventInfo eventInfo = @object.GetType().GetRuntimeEvent(eventName);
 
             if(eventInfo == null) {
-                FailTest($"Event with name {eventName.Print()} could not be found.",
+                FailTest($"Event with name {eventName.Format()} could not be found.",
                     _file, _method);
                 return;
             }
@@ -159,7 +212,7 @@ namespace Nuclear.TestSite.TestSuites {
                 d = Delegate.CreateDelegate(eventInfo.EventHandlerType, eventProxy, handlerInfo);
 
             } catch {
-                FailTest($"Given type of arguments {typeof(TEventArgs).Print()} doesn't match event handler of type {eventInfo.EventHandlerType.Print()}.",
+                FailTest($"Given type of arguments {typeof(TEventArgs).Format()} doesn't match event handler of type {eventInfo.EventHandlerType.Format()}.",
                     _file, _method);
                 return;
             }
@@ -168,14 +221,13 @@ namespace Nuclear.TestSite.TestSuites {
 
             try {
                 action();
-                sender = eventProxy.Sender;
-                e = eventProxy.EventArgs;
+                eventData = eventProxy.EventData;
 
-                InternalTest(sender != null && e != null, String.Format("{0} of type '{1}' raised.", sender != null && e != null ? "Event" : "No event", eventInfo.EventHandlerType.FullName),
+                InternalTest(eventProxy.EventRaised, String.Format("{0} of type '{1}' raised.", eventProxy.EventRaised ? "Event" : "No event", eventInfo.EventHandlerType.FullName),
                     _file, _method);
 
             } catch(Exception ex) {
-                FailTest($"Action threw Exception: {ex.Message.Print()}",
+                FailTest($"Action threw Exception: {ex.Message.Format()}",
                     _file, _method);
                 return;
 
@@ -184,16 +236,115 @@ namespace Nuclear.TestSite.TestSuites {
             }
         }
 
+        /// <summary>
+        /// Tests if <paramref name="action"/> on <paramref name="object"/> raises events with <typeparamref name="TEventArgs"/>.
+        /// </summary>
+        /// <typeparam name="TEventArgs">The expected type of event arguments.</typeparam>
+        /// <param name="action">The action to be invoked on <paramref name="object"/>.</param>
+        /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
+        /// <param name="eventName">The name of the event to be raised.</param>
+        /// <param name="eventDatas">The collection of event datas containing senders and arguments.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Action.RaisesEvent(() => obj.DoSomething(), obj, "MyCustomEvent", out EventDataCollection&lt;MyCustomEventArgs&gt; eventDatas);
+        /// </code>
+        /// </example>
+        public void RaisesEvent<TEventArgs>(Action action, Object @object, String eventName, out EventDataCollection<TEventArgs> eventDatas,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where TEventArgs : EventArgs {
+
+            eventDatas = null;
+
+            if(action == null) {
+                FailTest("Parameter 'action' is null.", _file, _method);
+                return;
+            }
+
+            if(@object == null) {
+                FailTest("Parameter 'object' is null.", _file, _method);
+                return;
+            }
+
+            if(String.IsNullOrWhiteSpace(eventName)) {
+                FailTest("Parameter 'eventName' is null or empty.", _file, _method);
+                return;
+            }
+
+            Delegate d = null;
+
+            MultiEventProxy<TEventArgs> eventProxy = new MultiEventProxy<TEventArgs>();
+            MethodInfo handlerInfo = eventProxy.GetType().GetRuntimeMethods().First(method => method.Name == "OnEventRaised");
+
+            EventInfo eventInfo = @object.GetType().GetRuntimeEvent(eventName);
+
+            if(eventInfo == null) {
+                FailTest($"Event with name {eventName.Format()} could not be found.",
+                    _file, _method);
+                return;
+            }
+
+            try {
+                d = Delegate.CreateDelegate(eventInfo.EventHandlerType, eventProxy, handlerInfo);
+
+            } catch {
+                FailTest($"Given type of arguments {typeof(TEventArgs).Format()} doesn't match event handler of type {eventInfo.EventHandlerType.Format()}.",
+                    _file, _method);
+                return;
+            }
+
+            eventInfo.GetAddMethod().Invoke(@object, new Object[] { d });
+
+            try {
+                action();
+                eventDatas = eventProxy.EventData;
+
+                InternalTest(eventProxy.EventRaised, $"Event of type {eventInfo.EventHandlerType.Format()} raised {eventProxy.RaiseCount} times.",
+                    _file, _method);
+
+            } catch(Exception ex) {
+                FailTest($"Action threw Exception: {ex.Message.Format()}",
+                    _file, _method);
+                return;
+
+            } finally {
+                eventInfo.GetRemoveMethod().Invoke(@object, new Object[] { d });
+            }
+        }
+
+        #endregion
+
+        #region private classes
+
         private class EventProxy<TEventArgs>
             where TEventArgs : EventArgs {
 
-            internal Object Sender { get; private set; }
+            internal Boolean EventRaised { get; private set; } = false;
 
-            internal TEventArgs EventArgs { get; private set; }
+            internal EventData<TEventArgs> EventData { get; private set; }
 
             internal void OnEventRaised(Object sender, TEventArgs e) {
-                Sender = sender;
-                EventArgs = e;
+                EventRaised = true;
+                EventData = new EventData<TEventArgs>(sender, e);
+            }
+
+        }
+
+        private class MultiEventProxy<TEventArgs>
+            where TEventArgs : EventArgs {
+
+            private Int32 _raiseCount = 0;
+
+            internal Int32 RaiseCount => _raiseCount;
+
+            internal Boolean EventRaised => RaiseCount > 0;
+
+            internal EventDataCollection<TEventArgs> EventData { get; private set; } = new EventDataCollection<TEventArgs>();
+
+            internal void OnEventRaised(Object sender, TEventArgs e) {
+                Interlocked.Increment(ref _raiseCount);
+                EventData.Add(new EventData<TEventArgs>(sender, e));
             }
 
         }

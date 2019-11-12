@@ -1,7 +1,8 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using Ntt;
+﻿using Ntt;
+using Nuclear.Extensions;
 using Nuclear.TestSite.Attributes;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace Nuclear.TestSite.TestSuites {
     class TypeTestSuit_uTests {
@@ -22,7 +23,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTImplementsGeneric<TType, TInterface>((Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Type.Implements<{typeof(TType).Print()}, {typeof(TInterface).Print()}>()",
+            Test.Note($"Test.If.Type.Implements<{typeof(TType).Format()}, {typeof(TInterface).Format()}>()",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Type.Implements<TType, TInterface>(_file, _method),
@@ -45,7 +46,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotImplementsGeneric<TType, TInterface>((Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Type.Implements<{typeof(TType).Print()}, {typeof(TInterface).Print()}>()",
+            Test.Note($"Test.IfNot.Type.Implements<{typeof(TType).Format()}, {typeof(TInterface).Format()}>()",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Type.Implements<TType, TInterface>(_file, _method),
@@ -71,7 +72,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTImplements((Type type, Type @interface) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Type.Implements({input.type.Print()}, {input.@interface.Print()})",
+            Test.Note($"Test.If.Type.Implements({input.type.Format()}, {input.@interface.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Type.Implements(input.type, input.@interface, _file, _method),
@@ -97,7 +98,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotImplements((Type type, Type @interface) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Type.Implements({input.type.Print()}, {input.@interface.Print()})",
+            Test.Note($"Test.IfNot.Type.Implements({input.type.Format()}, {input.@interface.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Type.Implements(input.type, input.@interface, _file, _method),
@@ -122,7 +123,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTIsSubClassGeneric<TType, TBase>((Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Type.IsSubClass<{typeof(TType).Print()}, {typeof(TBase).Print()}>()",
+            Test.Note($"Test.If.Type.IsSubClass<{typeof(TType).Format()}, {typeof(TBase).Format()}>()",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Type.IsSubClass<TType, TBase>(_file, _method),
@@ -143,7 +144,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotIsSubClassGeneric<TType, TBase>((Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Type.IsSubClass<{typeof(TType).Print()}, {typeof(TBase).Print()}>()",
+            Test.Note($"Test.IfNot.Type.IsSubClass<{typeof(TType).Format()}, {typeof(TBase).Format()}>()",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Type.IsSubClass<TType, TBase>(_file, _method),
@@ -167,7 +168,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTIsSubClass((Type type, Type baseType) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Type.IsSubClass({input.type.Print()}, {input.baseType.Print()})",
+            Test.Note($"Test.If.Type.IsSubClass({input.type.Format()}, {input.baseType.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Type.IsSubClass(input.type, input.baseType, _file, _method),
@@ -191,7 +192,7 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotIsSubClass((Type type, Type baseType) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Type.IsSubClass({input.type.Print()}, {input.baseType.Print()})",
+            Test.Note($"Test.IfNot.Type.IsSubClass({input.type.Format()}, {input.baseType.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Type.IsSubClass(input.type, input.baseType, _file, _method),

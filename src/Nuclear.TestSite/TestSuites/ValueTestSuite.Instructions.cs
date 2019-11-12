@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Nuclear.Extensions;
+using Nuclear.TestSite.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ValueTestSuite {
@@ -31,30 +31,39 @@ namespace Nuclear.TestSite.TestSuites {
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(left == null && right == null) {
-                InternalTest(true, $"[Left = {left.Print()}; Right = {right.Print()}]",
+                InternalTest(true, $"[Left = {left.Format()}; Right = {right.Format()}]",
                     _file, _method);
                 return;
             }
 
-            try {
-                if(left is IEquatable<T> eLeft) {
-                    InternalTest(eLeft.Equals(right), $"({typeof(T).Print()}.IEquatable<T>) [Left = {left.Print()}; Right = {right.Print()}]",
+            if(left is IEquatable<T> eLeft) {
+                try {
+                    InternalTest(eLeft.Equals(right), $"({typeof(T).Format()}.IEquatable<T>) [Left = {left.Format()}; Right = {right.Format()}]",
                         _file, _method);
                     return;
-                }
 
-                if(left is IComparable<T> cTLeft) {
-                    InternalTest(cTLeft.CompareTo(right) == 0, $"({typeof(T).Print()}.IComparable<T>) [Left = {left.Print()}; Right = {right.Print()}]",
-                        _file, _method);
-                    return;
-                }
+                } catch { /* advance to next */ }
+            }
 
-                if(left is IComparable cLeft) {
-                    InternalTest(cLeft.CompareTo(right) == 0, $"({typeof(T).Print()}.IComparable) [Left = {left.Print()}; Right = {right.Print()}]",
+            if(left is IComparable<T> cTLeft) {
+                try {
+                    InternalTest(cTLeft.CompareTo(right) == 0, $"({typeof(T).Format()}.IComparable<T>) [Left = {left.Format()}; Right = {right.Format()}]",
                         _file, _method);
                     return;
-                }
-            } catch { }
+
+                } catch { /* advance to next */ }
+
+            }
+
+            if(left is IComparable cLeft) {
+                try {
+                    InternalTest(cLeft.CompareTo(right) == 0, $"({typeof(T).Format()}.IComparable) [Left = {left.Format()}; Right = {right.Format()}]",
+                        _file, _method);
+                    return;
+
+                } catch { /* advance to next */ }
+
+            }
 
             Equals(left, right, EqualityComparer<T>.Default, _file, _method);
         }
@@ -92,7 +101,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(result, $"({comparer.GetType().Name.Print()}) [Left = {left.Print()}; Right = {right.Print()}]",
+            InternalTest(result, $"({comparer.GetType().Name.Format()}) [Left = {left.Format()}; Right = {right.Format()}]",
                 _file, _method);
         }
 
@@ -130,7 +139,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </example>
         public void Equals(Single left, Single right, Single margin,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Print()}; Right = {right.Print()}; Margin = {margin.Print()}]",
+            => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Format()}; Right = {right.Format()}; Margin = {margin.Format()}]",
                 _file, _method);
 
         /// <summary>
@@ -163,7 +172,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </example>
         public void Equals(Double left, Double right, Double margin,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Print()}; Right = {right.Print()}; Margin = {margin.Print()}]",
+            => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Format()}; Right = {right.Format()}; Margin = {margin.Format()}]",
                 _file, _method);
 
         #endregion
@@ -183,7 +192,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </example>
         public void IsTrue(Boolean value,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => InternalTest(value, $"[Value = {value.Print()}]",
+            => InternalTest(value, $"[Value = {value.Format()}]",
                 _file, _method);
 
         /// <summary>
@@ -205,7 +214,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(value.Value, $"[Value = {value.Print()}]",
+            InternalTest(value.Value, $"[Value = {value.Format()}]",
                 _file, _method);
         }
 
@@ -226,7 +235,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </example>
         public void IsFalse(Boolean value,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => InternalTest(!value, $"[Value = {value.Print()}]",
+            => InternalTest(!value, $"[Value = {value.Format()}]",
                 _file, _method);
 
         /// <summary>
@@ -248,7 +257,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(!value.Value, $"[Value = {value.Print()}]",
+            InternalTest(!value.Value, $"[Value = {value.Format()}]",
                 _file, _method);
         }
 
@@ -279,7 +288,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(value.IsClamped(min, max), $"[Value = {value.Print()}; Min = {min.Print()}; Max = {max.Print()}]",
+            InternalTest(value.IsClamped(min, max), $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
                 _file, _method);
         }
 
@@ -306,7 +315,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(value.IsClamped(min, max), $"[Value = {value.Print()}; Min = {min.Print()}; Max = {max.Print()}]",
+            InternalTest(value.IsClamped(min, max), $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
                 _file, _method);
         }
 
@@ -337,7 +346,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(value.IsClampedExclusive(min, max), $"[Value = {value.Print()}; Min = {min.Print()}; Max = {max.Print()}]",
+            InternalTest(value.IsClampedExclusive(min, max), $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
                 _file, _method);
         }
 
@@ -364,7 +373,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(value.IsClampedExclusive(min, max), $"[Value = {value.Print()}; Min = {min.Print()}; Max = {max.Print()}]",
+            InternalTest(value.IsClampedExclusive(min, max), $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
                 _file, _method);
         }
 

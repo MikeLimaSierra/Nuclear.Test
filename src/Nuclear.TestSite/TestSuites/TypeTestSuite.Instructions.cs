@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Nuclear.Extensions;
 using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
@@ -49,13 +50,13 @@ namespace Nuclear.TestSite.TestSuites {
             }
 
             if(!@interface.IsInterface) {
-                FailTest($"Type {@interface.Print()} is not an interface.",
+                FailTest($"Type {@interface.Format()} is not an interface.",
                     _file, _method);
                 return;
             }
 
             Boolean result = type.GetInterfaces().Where(_interface => _interface.Equals(@interface)).Count() > 0;
-            InternalTest(result, String.Format("Type {0} {1} interface {2}.", type.Print(), result ? "implements" : "doesn't implement", @interface.Print()),
+            InternalTest(result, String.Format("Type {0} {1} interface {2}.", type.Format(), result ? "implements" : "doesn't implement", @interface.Format()),
                 _file, _method);
         }
 
@@ -104,19 +105,19 @@ namespace Nuclear.TestSite.TestSuites {
             }
 
             if(!type.IsClass) {
-                FailTest($"Type {type.Print()} is not a class.",
+                FailTest($"Type {type.Format()} is not a class.",
                     _file, _method);
                 return;
             }
 
             if(!baseType.IsClass) {
-                FailTest($"Type {baseType.Print()} is not a class.",
+                FailTest($"Type {baseType.Format()} is not a class.",
                     _file, _method);
                 return;
             }
 
             Boolean result = type.IsSubclassOf(baseType);
-            InternalTest(result, String.Format("Type {0} is {1}subclass of {2}.", type.Print(), result ? "" : "no ", baseType.Print()),
+            InternalTest(result, String.Format("Type {0} is {1}subclass of {2}.", type.Format(), result ? "" : "no ", baseType.Format()),
                 _file, _method);
         }
 
