@@ -1,10 +1,10 @@
-﻿using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using Nuclear.Extensions;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class EnumerationTestSuite {
@@ -31,11 +31,11 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="enumeration"/> is empty.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
-        public void IsEmpty<TType>(IEnumerable<TType> enumeration,
+        public void IsEmpty<T>(IEnumerable<T> enumeration,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -73,11 +73,11 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains a null element.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
-        public void ContainsNull<TType>(IEnumerable<TType> enumeration,
+        public void ContainsNull<T>(IEnumerable<T> enumeration,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -87,7 +87,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             Boolean result = false;
 
-            foreach(TType element in enumeration) {
+            foreach(T element in enumeration) {
                 if(element == null) {
                     result = true;
                     break;
@@ -122,11 +122,11 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains a non null element.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
-        public void ContainsNonNull<TType>(IEnumerable<TType> enumeration,
+        public void ContainsNonNull<T>(IEnumerable<T> enumeration,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -136,7 +136,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             Boolean result = false;
 
-            foreach(TType element in enumeration) {
+            foreach(T element in enumeration) {
                 if(element != null) {
                     result = true;
                     break;
@@ -177,9 +177,9 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains <paramref name="element"/>.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
-        /// <param name="element">The element of type <typeparamref name="TType"/> to search for.</param>
+        /// <param name="element">The element of type <typeparamref name="T"/> to search for.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <example>
@@ -187,7 +187,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.Contains(someEnumeration, someObject);
         /// </code>
         /// </example>
-        public void Contains<TType>(IEnumerable<TType> enumeration, TType element,
+        public void Contains<T>(IEnumerable<T> enumeration, T element,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -204,6 +204,36 @@ namespace Nuclear.TestSite.TestSuites {
         #endregion
 
         #region ContainsComparer
+
+        /// <summary>
+        /// Tests if <paramref name="enumeration"/> contains <paramref name="element"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <param name="enumeration">The <see cref="IEnumerable"/> that is checked.</param>
+        /// <param name="element">The <see cref="Object"/> to search for.</param>
+        /// <param name="comparer">The <see cref="EqualityComparer{T}"/> used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Enumeration.Contains(someEnumeration, someObject, new MyEqualityComparer());
+        /// </code>
+        /// </example>
+        public void Contains<T>(IEnumerable<T> enumeration, T element, EqualityComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(enumeration == null) {
+                FailTest("Parameter 'enumeration' is null.", _file, _method);
+                return;
+            }
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Contains(enumeration, element, comparer as IEqualityComparer<T>, _file, _method);
+        }
 
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains <paramref name="element"/>.
@@ -231,15 +261,15 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Contains(enumeration.Cast<Object>(), element, new EqualityComparerProxy<Object>(comparer), _file, _method);
+            Contains(enumeration.Cast<Object>(), element, DynamicEqualityComparer<Object>.From(comparer), _file, _method);
         }
 
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains <paramref name="element"/>.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
-        /// <param name="element">The element of type <typeparamref name="TType"/> to search for.</param>
+        /// <param name="element">The element of type <typeparamref name="T"/> to search for.</param>
         /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> used to determine equality.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -248,7 +278,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.Contains(someEnumeration, someObject, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void Contains<TType>(IEnumerable<TType> enumeration, TType element, IEqualityComparer<TType> comparer,
+        public void Contains<T>(IEnumerable<T> enumeration, T element, IEqualityComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -284,7 +314,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Tests if <paramref name="enumeration"/> contains an element matching <paramref name="match"/>.
         /// </summary>
         /// <param name="enumeration">The <see cref="IEnumerable"/> that is checked.</param>
-        /// <param name="match">The <see cref="Predicate{T}"/> used to filter for matches.</param>
+        /// <param name="match">The <see cref="Predicate{Object}"/> used to filter for matches.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <example>
@@ -311,7 +341,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains an element matching <paramref name="match"/>.
         /// </summary>
-        /// <typeparam name="TType"></typeparam>
+        /// <typeparam name="T"></typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="match">The <see cref="Predicate{T}"/> used to filter for matches.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -321,7 +351,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.Contains(someEnumeration, new Predicate&lt;Int32&gt;((element) => element > 0));
         /// </code>
         /// </example>
-        public void Contains<TType>(IEnumerable<TType> enumeration, Predicate<TType> match,
+        public void Contains<T>(IEnumerable<T> enumeration, Predicate<T> match,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -337,7 +367,7 @@ namespace Nuclear.TestSite.TestSuites {
             Boolean result = false;
 
             try {
-                foreach(TType element in enumeration) {
+                foreach(T element in enumeration) {
                     if(match(element)) {
                         result = true;
                         break;
@@ -390,7 +420,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains a range of <paramref name="elements"/>.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="elements">The range of <see cref="Object"/> to search for.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -400,7 +430,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.ContainsRange(someEnumeration, someCollection);
         /// </code>
         /// </example>
-        public void ContainsRange<TType>(IEnumerable<TType> enumeration, IEnumerable elements,
+        public void ContainsRange<T>(IEnumerable<T> enumeration, IEnumerable elements,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -416,7 +446,7 @@ namespace Nuclear.TestSite.TestSuites {
             Int32 elementsCount = 0;
             Int32 elementsFound = 0;
 
-            foreach(TType element in elements) {
+            foreach(T element in elements) {
                 elementsCount++;
 
                 if(enumeration.Contains(element)) {
@@ -435,9 +465,10 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains a range of <paramref name="elements"/>.
         /// </summary>
-        /// <param name="enumeration">The <see cref="IEnumerable"/> that is checked.</param>
-        /// <param name="elements">The range of <see cref="Object"/> to search for.</param>
-        /// <param name="comparer">The <see cref="IEqualityComparer"/> used to determine equality.</param>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
+        /// <param name="elements">The <see cref="IEnumerable{T}"/> to search for.</param>
+        /// <param name="comparer">The <see cref="EqualityComparer{T}"/> used to determine equality.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <example>
@@ -445,8 +476,8 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.ContainsRange(someEnumeration, someCollection, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void ContainsRange(IEnumerable enumeration, IEnumerable elements, IEqualityComparer comparer,
-        [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+        public void ContainsRange<T>(IEnumerable<T> enumeration, IEnumerable<T> elements, EqualityComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
                 FailTest("Parameter 'enumeration' is null.", _file, _method);
@@ -463,15 +494,49 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            ContainsRange(enumeration.Cast<Object>(), elements.Cast<Object>(), new EqualityComparerProxy<Object>(comparer), _file, _method);
+            ContainsRange(enumeration, elements, comparer as IEqualityComparer<T>, _file, _method);
         }
 
         /// <summary>
         /// Tests if <paramref name="enumeration"/> contains a range of <paramref name="elements"/>.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <param name="enumeration">The <see cref="IEnumerable"/> that is checked.</param>
+        /// <param name="elements">The <see cref="IEnumerable"/> to search for.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer"/> used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Enumeration.ContainsRange(someEnumeration, someCollection, new MyEqualityComparer());
+        /// </code>
+        /// </example>
+        public void ContainsRange(IEnumerable enumeration, IEnumerable elements, IEqualityComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(enumeration == null) {
+                FailTest("Parameter 'enumeration' is null.", _file, _method);
+                return;
+            }
+
+            if(elements == null) {
+                FailTest("Parameter 'elements' is null.", _file, _method);
+                return;
+            }
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            ContainsRange(enumeration.Cast<Object>(), elements.Cast<Object>(), DynamicEqualityComparer<Object>.From(comparer), _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="enumeration"/> contains a range of <paramref name="elements"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
-        /// <param name="elements">The range of <see cref="Object"/> to search for.</param>
+        /// <param name="elements">The <see cref="IEnumerable{T}"/> to search for.</param>
         /// <param name="comparer">´The <see cref="IEqualityComparer{T}"/> used to determine equality.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -480,7 +545,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.ContainsRange(someEnumeration, someCollection, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void ContainsRange<TType>(IEnumerable<TType> enumeration, IEnumerable elements, IEqualityComparer<TType> comparer,
+        public void ContainsRange<T>(IEnumerable<T> enumeration, IEnumerable<T> elements, IEqualityComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -502,7 +567,7 @@ namespace Nuclear.TestSite.TestSuites {
             Int32 elementsFound = 0;
 
 
-            foreach(TType element in elements) {
+            foreach(T element in elements) {
                 elementsCount++;
                 Boolean contains = false;
 
@@ -557,7 +622,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if the elements of <paramref name="enumeration"/> match the elements of <paramref name="other"/> ignoring order.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="other">The other <see cref="IEnumerable{T}"/> that is checked for.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -567,7 +632,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.Matches(someEnumeration, someOtherEnumeration);
         /// </code>
         /// </example>
-        public void Matches<TType>(IEnumerable<TType> enumeration, IEnumerable<TType> other,
+        public void Matches<T>(IEnumerable<T> enumeration, IEnumerable<T> other,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -586,9 +651,9 @@ namespace Nuclear.TestSite.TestSuites {
 
             if(!result && count1 == count2) {
                 result = true;
-                List<TType> otherAsList = other.ToList();
+                List<T> otherAsList = other.ToList();
 
-                foreach(TType element in enumeration) {
+                foreach(T element in enumeration) {
                     if(otherAsList.Contains(element)) {
                         otherAsList.Remove(element);
                     } else {
@@ -605,6 +670,41 @@ namespace Nuclear.TestSite.TestSuites {
         #endregion
 
         #region MatchesComparer
+
+        /// <summary>
+        /// Tests if the elements of <paramref name="enumeration"/> match the elements of <paramref name="other"/> ignoring order.
+        /// </summary>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
+        /// <param name="other">The other <see cref="IEnumerable{T}"/> that is checked for.</param>
+        /// <param name="comparer">The <see cref="EqualityComparer{T}"/> used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Enumeration.Matches(someEnumeration, someOtherEnumeration, new MyComparer());
+        /// </code>
+        /// </example>
+        public void Matches<T>(IEnumerable<T> enumeration, IEnumerable<T> other, EqualityComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(enumeration == null) {
+                FailTest("Parameter 'enumeration' is null.", _file, _method);
+                return;
+            }
+
+            if(other == null) {
+                FailTest("Parameter 'other' is null.", _file, _method);
+                return;
+            }
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Matches(enumeration, other, comparer as IEqualityComparer<T>, _file, _method);
+        }
 
         /// <summary>
         /// Tests if the elements of <paramref name="enumeration"/> match the elements of <paramref name="other"/> ignoring order.
@@ -637,13 +737,13 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Matches(enumeration.Cast<Object>(), other.Cast<Object>(), new EqualityComparerProxy<Object>(comparer), _file, _method);
+            Matches(enumeration.Cast<Object>(), other.Cast<Object>(), DynamicEqualityComparer<Object>.From(comparer), _file, _method);
         }
 
         /// <summary>
         /// Tests if the elements of <paramref name="enumeration"/> match the elements of <paramref name="other"/> ignoring order.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="other">The other <see cref="IEnumerable{T}"/> that is checked for.</param>
         /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> used to determine equality.</param>
@@ -654,7 +754,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.Matches(someEnumeration, someOtherEnumeration, new MyComparer());
         /// </code>
         /// </example>
-        public void Matches<TType>(IEnumerable<TType> enumeration, IEnumerable<TType> other, IEqualityComparer<TType> comparer,
+        public void Matches<T>(IEnumerable<T> enumeration, IEnumerable<T> other, IEqualityComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -678,13 +778,13 @@ namespace Nuclear.TestSite.TestSuites {
 
             if(!result && count1 == count2) {
                 result = true;
-                List<TType> otherAsList = other.ToList();
+                List<T> otherAsList = other.ToList();
 
-                foreach(TType element in enumeration) {
-                    Boolean contains = false;
+                foreach(T element in enumeration) {
+                    Int32 index = -1;
 
                     try {
-                        contains = otherAsList.Contains(element, comparer);
+                        index = otherAsList.FindIndex(new Predicate<T>((_) => comparer.Equals(_, element)));
 
                     } catch(Exception ex) {
                         FailTest($"Comparer threw Exception: {ex.Message.Format()}",
@@ -692,8 +792,8 @@ namespace Nuclear.TestSite.TestSuites {
                         return;
                     }
 
-                    if(contains) {
-                        otherAsList.Remove(element);
+                    if(index >= 0) {
+                        otherAsList.RemoveAt(index);
                     } else {
                         result = false;
                         break;
@@ -740,7 +840,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if the elements of <paramref name="enumeration"/> match the elements of <paramref name="other"/> respecting order.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="other">The other <see cref="IEnumerable{T}"/> that is checked for.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -750,7 +850,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.MatchesExactly(someEnumeration, someOtherEnumeration);
         /// </code>
         /// </example>
-        public void MatchesExactly<TType>(IEnumerable<TType> enumeration, IEnumerable<TType> other,
+        public void MatchesExactly<T>(IEnumerable<T> enumeration, IEnumerable<T> other,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -770,14 +870,14 @@ namespace Nuclear.TestSite.TestSuites {
             if(!result && count1 == count2) {
                 result = true;
 
-                using(IEnumerator<TType> enum1 = enumeration.GetEnumerator()) {
-                    using(IEnumerator<TType> enum2 = other.GetEnumerator()) {
+                using(IEnumerator<T> enum1 = enumeration.GetEnumerator()) {
+                    using(IEnumerator<T> enum2 = other.GetEnumerator()) {
 
                         do {
-                            TType element1 = enum1.Current;
-                            TType element2 = enum2.Current;
+                            T element1 = enum1.Current;
+                            T element2 = enum2.Current;
 
-                            if(!element1.IsEqual(element2)) {
+                            if(!element1.Equals<T>(element2)) {
                                 result = false;
                                 break;
                             }
@@ -794,6 +894,41 @@ namespace Nuclear.TestSite.TestSuites {
         #endregion
 
         #region MatchesExactlyComparer
+
+        /// <summary>
+        /// Tests if the elements of <paramref name="enumeration"/> match the elements of <paramref name="other"/> respecting order.
+        /// </summary>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
+        /// <param name="other">The other <see cref="IEnumerable{T}"/> that is checked for.</param>
+        /// <param name="comparer">The <see cref="EqualityComparer{T}"/> used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Enumeration.MatchesExactly(someEnumeration, someOtherEnumeration, new MyComparer());
+        /// </code>
+        /// </example>
+        public void MatchesExactly<T>(IEnumerable<T> enumeration, IEnumerable<T> other, EqualityComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(enumeration == null) {
+                FailTest("Parameter 'enumeration' is null.", _file, _method);
+                return;
+            }
+
+            if(other == null) {
+                FailTest("Parameter 'other' is null.", _file, _method);
+                return;
+            }
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            MatchesExactly(enumeration, other, comparer as IEqualityComparer<T>, _file, _method);
+        }
 
         /// <summary>
         /// Tests if the elements of <paramref name="enumeration"/> match the elements of <paramref name="other"/> respecting order.
@@ -826,13 +961,13 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            MatchesExactly(enumeration.Cast<Object>(), other.Cast<Object>(), new EqualityComparerProxy<Object>(comparer), _file, _method);
+            MatchesExactly(enumeration.Cast<Object>(), other.Cast<Object>(), DynamicEqualityComparer<Object>.From(comparer), _file, _method);
         }
 
         /// <summary>
         /// Tests if the elements of <paramref name="enumeration"/> match the elements of <paramref name="other"/> respecting order.
         /// </summary>
-        /// <typeparam name="TType">The type of <paramref name="enumeration"/>.</typeparam>
+        /// <typeparam name="T">The type of <paramref name="enumeration"/>.</typeparam>
         /// <param name="enumeration">The <see cref="IEnumerable{T}"/> that is checked.</param>
         /// <param name="other">The other <see cref="IEnumerable{T}"/> that is checked for.</param>
         /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> used to determine equality.</param>
@@ -843,7 +978,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Enumeration.MatchesExactly(someEnumeration, someOtherEnumeration, new MyComparer());
         /// </code>
         /// </example>
-        public void MatchesExactly<TType>(IEnumerable<TType> enumeration, IEnumerable<TType> other, IEqualityComparer<TType> comparer,
+        public void MatchesExactly<T>(IEnumerable<T> enumeration, IEnumerable<T> other, IEqualityComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(enumeration == null) {
@@ -868,12 +1003,12 @@ namespace Nuclear.TestSite.TestSuites {
             if(!result && count1 == count2) {
                 result = true;
 
-                using(IEnumerator<TType> enum1 = enumeration.GetEnumerator()) {
-                    using(IEnumerator<TType> enum2 = other.GetEnumerator()) {
+                using(IEnumerator<T> enum1 = enumeration.GetEnumerator()) {
+                    using(IEnumerator<T> enum2 = other.GetEnumerator()) {
 
                         do {
-                            TType element1 = enum1.Current;
-                            TType element2 = enum2.Current;
+                            T element1 = enum1.Current;
+                            T element2 = enum2.Current;
                             Boolean contains = false;
 
                             try {
@@ -897,23 +1032,6 @@ namespace Nuclear.TestSite.TestSuites {
 
             InternalTest(result, String.Format("Enumerations {0}.", result ? "match" : "don't match"),
                 _file, _method);
-        }
-
-        #endregion
-
-        #region private classes
-
-        private class EqualityComparerProxy<T> : IEqualityComparer<T> {
-
-            private IEqualityComparer _comparer = null;
-
-            internal EqualityComparerProxy(IEqualityComparer comparer) {
-                _comparer = comparer;
-            }
-
-            public Boolean Equals(T x, T y) => _comparer.Equals(x, y);
-
-            public Int32 GetHashCode(T obj) => _comparer.GetHashCode(obj);
         }
 
         #endregion

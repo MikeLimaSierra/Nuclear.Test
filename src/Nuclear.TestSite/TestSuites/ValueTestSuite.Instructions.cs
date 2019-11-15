@@ -1,13 +1,14 @@
-﻿using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Nuclear.Extensions;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ValueTestSuite {
 
-        #region generic equality
+        #region Equals
 
         /// <summary>
         /// Tests if two objects are equal.
@@ -47,7 +48,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             if(left is IComparable<T> cTLeft) {
                 try {
-                    InternalTest(cTLeft.CompareTo(right) == 0, $"({typeof(T).Format()}.IComparable<T>) [Left = {left.Format()}; Right = {right.Format()}]",
+                    InternalTest(cTLeft.IsEqual(right), $"({typeof(T).Format()}.IComparable<T>) [Left = {left.Format()}; Right = {right.Format()}]",
                         _file, _method);
                     return;
 
@@ -57,7 +58,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             if(left is IComparable cLeft) {
                 try {
-                    InternalTest(cLeft.CompareTo(right) == 0, $"({typeof(T).Format()}.IComparable) [Left = {left.Format()}; Right = {right.Format()}]",
+                    InternalTest(cLeft.IsEqual(right), $"({typeof(T).Format()}.IComparable) [Left = {left.Format()}; Right = {right.Format()}]",
                         _file, _method);
                     return;
 
@@ -68,13 +69,67 @@ namespace Nuclear.TestSite.TestSuites {
             Equals(left, right, EqualityComparer<T>.Default, _file, _method);
         }
 
+        #endregion
+
+        #region EqualsComparer
+
+        /// <summary>
+        /// Tests if two objects are equal by using a supplied <see cref="EqualityComparer{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="left">The first object.</param>
+        /// <param name="right">The second object.</param>
+        /// <param name="comparer">The <see cref="EqualityComparer{T}"/> to be used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
+        /// </code>
+        /// </example>
+        public void Equals<T>(T left, T right, EqualityComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Equals(left, right, comparer as IEqualityComparer<T>, _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if two objects are equal by using a supplied <see cref="IEqualityComparer"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="left">The first object.</param>
+        /// <param name="right">The second object.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer"/> to be used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
+        /// </code>
+        /// </example>
+        public void Equals<T>(T left, T right, IEqualityComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Equals(left, right, DynamicEqualityComparer<T>.From(comparer), _file, _method);
+        }
+
         /// <summary>
         /// Tests if two objects are equal by using a supplied <see cref="IEqualityComparer{T}"/>.
         /// </summary>
-        /// <typeparam name="T">The type of both objects.</typeparam>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
         /// <param name="left">The first object.</param>
         /// <param name="right">The second object.</param>
-        /// <param name="comparer">The comparer to be used to determine equality.</param>
+        /// <param name="comparer">The <see cref="IEqualityComparer{T}"/> to be used to determine equality.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <example>
@@ -105,9 +160,96 @@ namespace Nuclear.TestSite.TestSuites {
                 _file, _method);
         }
 
+        /// <summary>
+        /// Tests if two objects are equal by using a supplied <see cref="Comparer{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="left">The first object.</param>
+        /// <param name="right">The second object.</param>
+        /// <param name="comparer">The <see cref="Comparer{T}"/> to be used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
+        /// </code>
+        /// </example>
+        public void Equals<T>(T left, T right, Comparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Equals(left, right, comparer as IComparer<T>, _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if two objects are equal by using a supplied <see cref="IComparer"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="left">The first object.</param>
+        /// <param name="right">The second object.</param>
+        /// <param name="comparer">The <see cref="IComparer"/> to be used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
+        /// </code>
+        /// </example>
+        public void Equals<T>(T left, T right, IComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Equals(left, right, DynamicComparer<T>.From(comparer), _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if two objects are equal by using a supplied <see cref="IComparer{T}"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="left">The first object.</param>
+        /// <param name="right">The second object.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to be used to determine equality.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
+        /// </code>
+        /// </example>
+        public void Equals<T>(T left, T right, IComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Boolean result = false;
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            try {
+                result = comparer.IsEqual(left, right);
+
+            } catch(Exception ex) {
+                FailTest(String.Format("Comparison threw Exception: {0}", ex.Message),
+                    _file, _method);
+                return;
+            }
+
+            InternalTest(result, $"({comparer.GetType().Name.Format()}) [Left = {left.Format()}; Right = {right.Format()}]",
+                _file, _method);
+        }
+
         #endregion
 
-        #region float equality
+        #region EqualsFloat
 
         /// <summary>
         /// Tests if two <see cref="Single"/> values are equal by a margin of 1e-12.
@@ -174,6 +316,22 @@ namespace Nuclear.TestSite.TestSuites {
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Format()}; Right = {right.Format()}; Margin = {margin.Format()}]",
                 _file, _method);
+
+        #endregion
+
+        #region IsLess
+
+        #endregion
+
+        #region IsLessOrEquals
+
+        #endregion
+
+        #region IsGreater
+
+        #endregion
+
+        #region IsGreaterOrEquals
 
         #endregion
 
@@ -268,7 +426,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="value"/> is clamped in a given inclusive range.
         /// </summary>
-        /// <typeparam name="TType">Type must implement <see cref="IComparable"/>.</typeparam>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable"/>.</typeparam>
         /// <param name="value">The value that is checked against the range.</param>
         /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
         /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
@@ -279,43 +437,130 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsClamped(someIndex, 0, someList.Count - 1);
         /// </code>
         /// </example>
-        public void IsClamped<TType>(TType value, TType min, TType max,
+        public void IsClamped<T>(T value, T min, T max,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable {
+            where T : IComparable => IsClamped(value, min, max, Comparer<T>.Create(new Comparison<T>((x, y) => x.CompareTo(y))), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is clamped in a given inclusive range.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable{T}"/>.</typeparam>
+        /// <param name="value">The value that is checked against the range.</param>
+        /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
+        /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClamped(someIndex, 0, someList.Count - 1);
+        /// </code>
+        /// </example>
+        public void IsClampedT<T>(T value, T min, T max,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable<T> => IsClamped(value, min, max, Comparer<T>.Create(new Comparison<T>((x, y) => x.CompareTo(y))), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is clamped in a given inclusive range.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against the range.</param>
+        /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
+        /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="comparer">The <see cref="Comparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClamped(someIndex, 0, someList.Count - 1, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsClamped<T>(T value, T min, T max, Comparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(value == null) {
                 FailTest("Parameter 'value' is null.", _file, _method);
                 return;
             }
 
-            InternalTest(value.IsClamped(min, max), $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
-                _file, _method);
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsClamped(value, min, max, comparer as IComparer<T>, _file, _method);
         }
 
         /// <summary>
         /// Tests if <paramref name="value"/> is clamped in a given inclusive range.
         /// </summary>
-        /// <typeparam name="TType">Type must implement <see cref="IComparable{T}"/>.</typeparam>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
         /// <param name="value">The value that is checked against the range.</param>
         /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
         /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="comparer">The <see cref="IComparer"/> to be used for comparison.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <example>
         /// <code>
-        /// Test.If.Value.IsClamped(someIndex, 0, someList.Count - 1);
+        /// Test.If.Value.IsClamped(someIndex, 0, someList.Count - 1, new MyComparer());
         /// </code>
         /// </example>
-        public void IsClampedT<TType>(TType value, TType min, TType max,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable<TType> {
+        public void IsClamped<T>(T value, T min, T max, IComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(value == null) {
                 FailTest("Parameter 'value' is null.", _file, _method);
                 return;
             }
 
-            InternalTest(value.IsClamped(min, max), $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsClamped(value, min, max, DynamicComparer<T>.From(comparer), _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is clamped in a given inclusive range.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against the range.</param>
+        /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
+        /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClamped(someIndex, 0, someList.Count - 1, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsClamped<T>(T value, T min, T max, IComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(value == null) {
+                FailTest("Parameter 'value' is null.", _file, _method);
+                return;
+            }
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Boolean result = false;
+
+            try {
+                result = comparer.IsClamped(value, min, max);
+
+            } catch(Exception ex) {
+                FailTest($"Comparer threw Exception: {ex.Message.Format()}",
+                    _file, _method);
+                return;
+            }
+
+            InternalTest(result, $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
                 _file, _method);
         }
 
@@ -326,7 +571,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Tests if <paramref name="value"/> is clamped in a given exclusive range.
         /// </summary>
-        /// <typeparam name="TType">Type must implement <see cref="IComparable"/>.</typeparam>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable"/>.</typeparam>
         /// <param name="value">The value that is checked against the range.</param>
         /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
         /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
@@ -337,43 +582,130 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsClampedExclusive(someIndex, -1, someList.Count);
         /// </code>
         /// </example>
-        public void IsClampedExclusive<TType>(TType value, TType min, TType max,
+        public void IsClampedExclusive<T>(T value, T min, T max,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable {
+            where T : IComparable => IsClampedExclusive(value, min, max, Comparer<T>.Create(new Comparison<T>((x, y) => x.CompareTo(y))), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is clamped in a given exclusive range.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable{T}"/>.</typeparam>
+        /// <param name="value">The value that is checked against the range.</param>
+        /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
+        /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClampedExclusive(someIndex, -1, someList.Count);
+        /// </code>
+        /// </example>
+        public void IsClampedExclusiveT<T>(T value, T min, T max,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable<T> => IsClampedExclusive(value, min, max, Comparer<T>.Create(new Comparison<T>((x, y) => x.CompareTo(y))), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is clamped in a given exclusive range.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against the range.</param>
+        /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
+        /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="comparer">The <see cref="Comparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClampedExclusive(someIndex, -1, someList.Count, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsClampedExclusive<T>(T value, T min, T max, Comparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(value == null) {
                 FailTest("Parameter 'value' is null.", _file, _method);
                 return;
             }
 
-            InternalTest(value.IsClampedExclusive(min, max), $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
-                _file, _method);
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsClampedExclusive(value, min, max, comparer as IComparer<T>, _file, _method);
         }
 
         /// <summary>
         /// Tests if <paramref name="value"/> is clamped in a given exclusive range.
         /// </summary>
-        /// <typeparam name="TType">Type must implement <see cref="IComparable{T}"/>.</typeparam>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
         /// <param name="value">The value that is checked against the range.</param>
         /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
         /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="comparer">The <see cref="IComparer"/> to be used for comparison.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <example>
         /// <code>
-        /// Test.If.Value.IsClampedExclusive(someIndex, -1, someList.Count);
+        /// Test.If.Value.IsClampedExclusive(someIndex, -1, someList.Count, new MyComparer());
         /// </code>
         /// </example>
-        public void IsClampedExclusiveT<TType>(TType value, TType min, TType max,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable<TType> {
+        public void IsClampedExclusive<T>(T value, T min, T max, IComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(value == null) {
                 FailTest("Parameter 'value' is null.", _file, _method);
                 return;
             }
 
-            InternalTest(value.IsClampedExclusive(min, max), $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsClampedExclusive(value, min, max, DynamicComparer<T>.From(comparer), _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is clamped in a given exclusive range.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against the range.</param>
+        /// <param name="min">The lower border of the range. Is considered lower than <paramref name="value"/> if null.</param>
+        /// <param name="max">The upper border of the range. Is considered higher than <paramref name="value"/> if null.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsClampedExclusive(someIndex, -1, someList.Count, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsClampedExclusive<T>(T value, T min, T max, IComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(value == null) {
+                FailTest("Parameter 'value' is null.", _file, _method);
+                return;
+            }
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Boolean result = false;
+
+            try {
+                result = comparer.IsClampedExclusive(value, min, max);
+
+            } catch(Exception ex) {
+                FailTest($"Comparer threw Exception: {ex.Message.Format()}",
+                    _file, _method);
+                return;
+            }
+
+            InternalTest(result, $"[Value = {value.Format()}; Min = {min.Format()}; Max = {max.Format()}]",
                 _file, _method);
         }
 

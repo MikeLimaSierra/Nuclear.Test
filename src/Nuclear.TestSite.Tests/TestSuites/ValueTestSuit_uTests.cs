@@ -1,48 +1,49 @@
-﻿using Ntt;
-using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
-using System;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Ntt;
+using Nuclear.Extensions;
+using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     class ValueTestSuit_uTests {
 
-        #region EqualT
+        #region Equals
 
         [TestMethod]
-        void EqualIEquatableT() {
+        void Equals() {
 
-            DDTEqualT<DummyIEquatableT>((null, null), (1, true, "[Left = 'null'; Right = 'null']"));
-            DDTEqualT((null, new DummyIEquatableT(0)), (2, false, "('GenericEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTEqualT((new DummyIEquatableT(0), null), (3, false, "('GenericEqualityComparer`1') [Left = '0'; Right = 'null']"));
-            DDTEqualT((new DummyIEquatableT(5), new DummyIEquatableT(0)), (4, false, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '5'; Right = '0']"));
-            DDTEqualT((new DummyIEquatableT(5), new DummyIEquatableT(5)), (5, true, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '5'; Right = '5']"));
+            DDTEqualsT<DummyIEquatableT>((null, null), (1, true, "[Left = 'null'; Right = 'null']"));
+            DDTEqualsT((null, new DummyIEquatableT(0)), (2, false, "('GenericEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTEqualsT((new DummyIEquatableT(0), null), (3, false, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '0'; Right = 'null']"));
+            DDTEqualsT((new DummyIEquatableT(5), new DummyIEquatableT(0)), (4, false, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '5'; Right = '0']"));
+            DDTEqualsT((new DummyIEquatableT(5), new DummyIEquatableT(5)), (5, true, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '5'; Right = '5']"));
 
-            DDTEqualT<DummyIComparableT>((null, null), (6, true, "[Left = 'null'; Right = 'null']"));
-            DDTEqualT((null, new DummyIComparableT(0)), (7, false, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTEqualT((new DummyIComparableT(0), null), (8, false, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
-            DDTEqualT((new DummyIComparableT(5), new DummyIComparableT(0)), (9, false, "('Ntt.DummyIComparableT'.IComparable<T>) [Left = '5'; Right = '0']"));
-            DDTEqualT((new DummyIComparableT(5), new DummyIComparableT(5)), (10, true, "('Ntt.DummyIComparableT'.IComparable<T>) [Left = '5'; Right = '5']"));
+            DDTEqualsT<DummyIComparableT>((null, null), (6, true, "[Left = 'null'; Right = 'null']"));
+            DDTEqualsT((null, new DummyIComparableT(0)), (7, false, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTEqualsT((new DummyIComparableT(0), null), (8, false, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTEqualsT((new DummyIComparableT(5), new DummyIComparableT(0)), (9, false, "('Ntt.DummyIComparableT'.IComparable<T>) [Left = '5'; Right = '0']"));
+            DDTEqualsT((new DummyIComparableT(5), new DummyIComparableT(5)), (10, true, "('Ntt.DummyIComparableT'.IComparable<T>) [Left = '5'; Right = '5']"));
 
-            DDTEqualT<DummyIComparable>((null, null), (11, true, "[Left = 'null'; Right = 'null']"));
-            DDTEqualT((null, new DummyIComparable(0)), (12, false, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTEqualT((new DummyIComparable(0), null), (13, false, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
-            DDTEqualT((new DummyIComparable(5), new DummyIComparable(0)), (14, false, "('Ntt.DummyIComparable'.IComparable) [Left = '5'; Right = '0']"));
-            DDTEqualT((new DummyIComparable(5), new DummyIComparable(5)), (15, true, "('Ntt.DummyIComparable'.IComparable) [Left = '5'; Right = '5']"));
+            DDTEqualsT<DummyIComparable>((null, null), (11, true, "[Left = 'null'; Right = 'null']"));
+            DDTEqualsT((null, new DummyIComparable(0)), (12, false, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTEqualsT((new DummyIComparable(0), null), (13, false, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTEqualsT((new DummyIComparable(5), new DummyIComparable(0)), (14, false, "('Ntt.DummyIComparable'.IComparable) [Left = '5'; Right = '0']"));
+            DDTEqualsT((new DummyIComparable(5), new DummyIComparable(5)), (15, true, "('Ntt.DummyIComparable'.IComparable) [Left = '5'; Right = '5']"));
 
-            DDTEqualT<Dummy>((null, null), (16, true, "[Left = 'null'; Right = 'null']"));
-            DDTEqualT((null, new Dummy(0)), (17, false, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTEqualT((new Dummy(0), null), (18, false, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
-            DDTEqualT((new Dummy(5), new Dummy(0)), (19, false, "('ObjectEqualityComparer`1') [Left = '5'; Right = '0']"));
-            DDTEqualT((new Dummy(5), new Dummy(5)), (20, false, "('ObjectEqualityComparer`1') [Left = '5'; Right = '5']"));
+            DDTEqualsT<Dummy>((null, null), (16, true, "[Left = 'null'; Right = 'null']"));
+            DDTEqualsT((null, new Dummy(0)), (17, false, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTEqualsT((new Dummy(0), null), (18, false, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTEqualsT((new Dummy(5), new Dummy(0)), (19, false, "('ObjectEqualityComparer`1') [Left = '5'; Right = '0']"));
+            DDTEqualsT((new Dummy(5), new Dummy(5)), (20, false, "('ObjectEqualityComparer`1') [Left = '5'; Right = '5']"));
 
         }
 
-        void DDTEqualT<TType>((TType left, TType right) input, (Int32 count, Boolean result, String message) expected,
+        void DDTEqualsT<T>((T left, T right) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Value.Equals<{typeof(TType).Format()}>({input.left.Format()}, {input.right.Format()})",
+            Test.Note($"Test.If.Value.Equals<{typeof(T).Format()}>({input.left.Format()}, {input.right.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Value.Equals(input.left, input.right, _file, _method),
@@ -51,38 +52,38 @@ namespace Nuclear.TestSite.TestSuites {
         }
 
         [TestMethod]
-        void NotEqualIEquatableT() {
+        void NotEquals() {
 
-            DDTNotEqualT<DummyIEquatableT>((null, null), (1, false, "[Left = 'null'; Right = 'null']"));
-            DDTNotEqualT((null, new DummyIEquatableT(0)), (2, true, "('GenericEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTNotEqualT((new DummyIEquatableT(0), null), (3, true, "('GenericEqualityComparer`1') [Left = '0'; Right = 'null']"));
-            DDTNotEqualT((new DummyIEquatableT(5), new DummyIEquatableT(0)), (4, true, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '5'; Right = '0']"));
-            DDTNotEqualT((new DummyIEquatableT(5), new DummyIEquatableT(5)), (5, false, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '5'; Right = '5']"));
+            DDTNotEqualsT<DummyIEquatableT>((null, null), (1, false, "[Left = 'null'; Right = 'null']"));
+            DDTNotEqualsT((null, new DummyIEquatableT(0)), (2, true, "('GenericEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTNotEqualsT((new DummyIEquatableT(0), null), (3, true, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '0'; Right = 'null']"));
+            DDTNotEqualsT((new DummyIEquatableT(5), new DummyIEquatableT(0)), (4, true, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '5'; Right = '0']"));
+            DDTNotEqualsT((new DummyIEquatableT(5), new DummyIEquatableT(5)), (5, false, "('Ntt.DummyIEquatableT'.IEquatable<T>) [Left = '5'; Right = '5']"));
 
-            DDTNotEqualT<DummyIComparableT>((null, null), (6, false, "[Left = 'null'; Right = 'null']"));
-            DDTNotEqualT((null, new DummyIComparableT(0)), (7, true, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTNotEqualT((new DummyIComparableT(0), null), (8, true, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
-            DDTNotEqualT((new DummyIComparableT(5), new DummyIComparableT(0)), (9, true, "('Ntt.DummyIComparableT'.IComparable<T>) [Left = '5'; Right = '0']"));
-            DDTNotEqualT((new DummyIComparableT(5), new DummyIComparableT(5)), (10, false, "('Ntt.DummyIComparableT'.IComparable<T>) [Left = '5'; Right = '5']"));
+            DDTNotEqualsT<DummyIComparableT>((null, null), (6, false, "[Left = 'null'; Right = 'null']"));
+            DDTNotEqualsT((null, new DummyIComparableT(0)), (7, true, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTNotEqualsT((new DummyIComparableT(0), null), (8, true, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTNotEqualsT((new DummyIComparableT(5), new DummyIComparableT(0)), (9, true, "('Ntt.DummyIComparableT'.IComparable<T>) [Left = '5'; Right = '0']"));
+            DDTNotEqualsT((new DummyIComparableT(5), new DummyIComparableT(5)), (10, false, "('Ntt.DummyIComparableT'.IComparable<T>) [Left = '5'; Right = '5']"));
 
-            DDTNotEqualT<DummyIComparable>((null, null), (11, false, "[Left = 'null'; Right = 'null']"));
-            DDTNotEqualT((null, new DummyIComparable(0)), (12, true, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTNotEqualT((new DummyIComparable(0), null), (13, true, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
-            DDTNotEqualT((new DummyIComparable(5), new DummyIComparable(0)), (14, true, "('Ntt.DummyIComparable'.IComparable) [Left = '5'; Right = '0']"));
-            DDTNotEqualT((new DummyIComparable(5), new DummyIComparable(5)), (15, false, "('Ntt.DummyIComparable'.IComparable) [Left = '5'; Right = '5']"));
+            DDTNotEqualsT<DummyIComparable>((null, null), (11, false, "[Left = 'null'; Right = 'null']"));
+            DDTNotEqualsT((null, new DummyIComparable(0)), (12, true, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTNotEqualsT((new DummyIComparable(0), null), (13, true, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTNotEqualsT((new DummyIComparable(5), new DummyIComparable(0)), (14, true, "('Ntt.DummyIComparable'.IComparable) [Left = '5'; Right = '0']"));
+            DDTNotEqualsT((new DummyIComparable(5), new DummyIComparable(5)), (15, false, "('Ntt.DummyIComparable'.IComparable) [Left = '5'; Right = '5']"));
 
-            DDTNotEqualT<Dummy>((null, null), (16, false, "[Left = 'null'; Right = 'null']"));
-            DDTNotEqualT((null, new Dummy(0)), (17, true, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTNotEqualT((new Dummy(0), null), (18, true, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
-            DDTNotEqualT((new Dummy(5), new Dummy(0)), (19, true, "('ObjectEqualityComparer`1') [Left = '5'; Right = '0']"));
-            DDTNotEqualT((new Dummy(5), new Dummy(5)), (20, true, "('ObjectEqualityComparer`1') [Left = '5'; Right = '5']"));
+            DDTNotEqualsT<Dummy>((null, null), (16, false, "[Left = 'null'; Right = 'null']"));
+            DDTNotEqualsT((null, new Dummy(0)), (17, true, "('ObjectEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTNotEqualsT((new Dummy(0), null), (18, true, "('ObjectEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTNotEqualsT((new Dummy(5), new Dummy(0)), (19, true, "('ObjectEqualityComparer`1') [Left = '5'; Right = '0']"));
+            DDTNotEqualsT((new Dummy(5), new Dummy(5)), (20, true, "('ObjectEqualityComparer`1') [Left = '5'; Right = '5']"));
 
         }
 
-        void DDTNotEqualT<TType>((TType left, TType right) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotEqualsT<T>((T left, T right) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Value.Equals<{typeof(TType).Format()}>({input.left.Format()}, {input.right.Format()})",
+            Test.Note($"Test.IfNot.Value.Equals<{typeof(T).Format()}>({input.left.Format()}, {input.right.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Value.Equals(input.left, input.right, _file, _method),
@@ -92,25 +93,69 @@ namespace Nuclear.TestSite.TestSuites {
 
         #endregion
 
-        #region EqualTEqualityComparerT
+        #region EqualsComparer
 
         [TestMethod]
-        void EqualEqualityComparerT() {
+        void EqualsComparer() {
 
-            DDTEqualEqualityComparerT<Dummy>((null, null, null), (1, false, "Parameter 'comparer' is null."));
-            DDTEqualEqualityComparerT((null, new Dummy(0), new DummyEqualityComparerT()), (2, false, "('DummyEqualityComparerT') [Left = 'null'; Right = '0']"));
-            DDTEqualEqualityComparerT((new Dummy(0), null, new DummyEqualityComparerT()), (3, false, "('DummyEqualityComparerT') [Left = '0'; Right = 'null']"));
-            DDTEqualEqualityComparerT((new Dummy(0), new Dummy(0), null), (4, false, "Parameter 'comparer' is null."));
-            DDTEqualEqualityComparerT((new Dummy(5), new Dummy(0), new DummyEqualityComparerT()), (5, false, "('DummyEqualityComparerT') [Left = '5'; Right = '0']"));
-            DDTEqualEqualityComparerT((new Dummy(5), new Dummy(5), new DummyEqualityComparerT()), (6, true, "('DummyEqualityComparerT') [Left = '5'; Right = '5']"));
-            DDTEqualEqualityComparerT((new Dummy(5), new Dummy(5), new ThrowExceptionComparerT<Dummy>()), (7, false, "Comparison threw Exception:"));
+            DDTEqualsComparer<Dummy>((null, null, null), (1, false, "Parameter 'comparer' is null."));
+            DDTEqualsComparer((null, 0, new DummyEqualityComparer()), (2, false, "('DummyEqualityComparer') [Left = 'null'; Right = '0']"));
+            DDTEqualsComparer((0, null, new DummyEqualityComparer()), (3, false, "('DummyEqualityComparer') [Left = '0'; Right = 'null']"));
+            DDTEqualsComparer<Dummy>((0, 0, null), (4, false, "Parameter 'comparer' is null."));
+            DDTEqualsComparer<Dummy>((5, 0, new DummyEqualityComparer()), (5, false, "('DummyEqualityComparer') [Left = '5'; Right = '0']"));
+            DDTEqualsComparer<Dummy>((5, 5, new DummyEqualityComparer()), (6, true, "('DummyEqualityComparer') [Left = '5'; Right = '5']"));
+            DDTEqualsComparer<Dummy>((5, 5, new ThrowingEqualityComparer()), (7, false, "Comparison threw Exception:"));
+
+            DDTEqualsComparer<Dummy>((null, null, (IEqualityComparer) null), (8, false, "Parameter 'comparer' is null."));
+            DDTEqualsComparer<Dummy>((null, 0, new DummyIEqualityComparer()), (9, false, "('DynamicEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTEqualsComparer<Dummy>((0, null, new DummyIEqualityComparer()), (10, false, "('DynamicEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTEqualsComparer<Dummy>((0, 0, (IEqualityComparer) null), (11, false, "Parameter 'comparer' is null."));
+            DDTEqualsComparer<Dummy>((5, 0, new DummyIEqualityComparer()), (12, false, "('DynamicEqualityComparer`1') [Left = '5'; Right = '0']"));
+            DDTEqualsComparer<Dummy>((5, 5, new DummyIEqualityComparer()), (13, true, "('DynamicEqualityComparer`1') [Left = '5'; Right = '5']"));
+            DDTEqualsComparer<Dummy>((5, 5, DynamicEqualityComparer.From(
+                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
+                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+                (14, false, "Comparison threw Exception:"));
+
+            DDTEqualsComparer((null, null, (IEqualityComparer<Dummy>) null), (15, false, "Parameter 'comparer' is null."));
+            DDTEqualsComparer((null, 0, new DummyIEqualityComparerT()), (16, false, "('DummyIEqualityComparerT') [Left = 'null'; Right = '0']"));
+            DDTEqualsComparer((0, null, new DummyIEqualityComparerT()), (17, false, "('DummyIEqualityComparerT') [Left = '0'; Right = 'null']"));
+            DDTEqualsComparer((0, 0, (IEqualityComparer<Dummy>) null), (18, false, "Parameter 'comparer' is null."));
+            DDTEqualsComparer((5, 0, new DummyIEqualityComparerT()), (19, false, "('DummyIEqualityComparerT') [Left = '5'; Right = '0']"));
+            DDTEqualsComparer((5, 5, new DummyIEqualityComparerT()), (20, true, "('DummyIEqualityComparerT') [Left = '5'; Right = '5']"));
+            DDTEqualsComparer((5, 5, DynamicEqualityComparer<Dummy>.From(
+                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
+                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+                (21, false, "Comparison threw Exception:"));
 
         }
 
-        void DDTEqualEqualityComparerT<TType>((TType left, TType right, IEqualityComparer<TType> comparer) input, (Int32 count, Boolean result, String message) expected,
+        void DDTEqualsComparer<T>((T left, T right, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Value.Equals<{typeof(TType).Format()}>({input.left.Format()}, {input.right.Format()}, {input.comparer.Format()})",
+            Test.Note($"Test.If.Value.Equals<{typeof(T).Format()}>({input.left.Format()}, {input.right.Format()}, {input.comparer.Format()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.Equals(input.left, input.right, input.comparer, _file, _method),
+                expected, "Test.If.Value.Equals", _file, _method);
+
+        }
+
+        void DDTEqualsComparer<T>((T left, T right, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.Equals<{typeof(T).Format()}>({input.left.Format()}, {input.right.Format()}, {input.comparer.Format()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.Equals(input.left, input.right, input.comparer, _file, _method),
+                expected, "Test.If.Value.Equals", _file, _method);
+
+        }
+
+        void DDTEqualsComparer<T>((T left, T right, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.Equals<{typeof(T).Format()}>({input.left.Format()}, {input.right.Format()}, {input.comparer.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Value.Equals(input.left, input.right, input.comparer, _file, _method),
@@ -119,22 +164,66 @@ namespace Nuclear.TestSite.TestSuites {
         }
 
         [TestMethod]
-        void NotEqualEqualityComparerT() {
+        void NotEqualsComparer() {
 
-            DDTNotEqualEqualityComparerT<Dummy>((null, null, null), (1, false, "Parameter 'comparer' is null."));
-            DDTNotEqualEqualityComparerT((null, new Dummy(0), new DummyEqualityComparerT()), (2, true, "('DummyEqualityComparerT') [Left = 'null'; Right = '0']"));
-            DDTNotEqualEqualityComparerT((new Dummy(0), null, new DummyEqualityComparerT()), (3, true, "('DummyEqualityComparerT') [Left = '0'; Right = 'null']"));
-            DDTNotEqualEqualityComparerT((new Dummy(0), new Dummy(0), null), (4, false, "Parameter 'comparer' is null."));
-            DDTNotEqualEqualityComparerT((new Dummy(5), new Dummy(0), new DummyEqualityComparerT()), (5, true, "('DummyEqualityComparerT') [Left = '5'; Right = '0']"));
-            DDTNotEqualEqualityComparerT((new Dummy(5), new Dummy(5), new DummyEqualityComparerT()), (6, false, "('DummyEqualityComparerT') [Left = '5'; Right = '5']"));
-            DDTNotEqualEqualityComparerT((new Dummy(5), new Dummy(5), new ThrowExceptionComparerT<Dummy>()), (7, false, "Comparison threw Exception:"));
+            DDTNotEqualsComparer<Dummy>((null, null, null), (1, false, "Parameter 'comparer' is null."));
+            DDTNotEqualsComparer((null, 0, new DummyEqualityComparer()), (2, true, "('DummyEqualityComparer') [Left = 'null'; Right = '0']"));
+            DDTNotEqualsComparer((0, null, new DummyEqualityComparer()), (3, true, "('DummyEqualityComparer') [Left = '0'; Right = 'null']"));
+            DDTNotEqualsComparer<Dummy>((0, 0, null), (4, false, "Parameter 'comparer' is null."));
+            DDTNotEqualsComparer<Dummy>((5, 0, new DummyEqualityComparer()), (5, true, "('DummyEqualityComparer') [Left = '5'; Right = '0']"));
+            DDTNotEqualsComparer<Dummy>((5, 5, new DummyEqualityComparer()), (6, false, "('DummyEqualityComparer') [Left = '5'; Right = '5']"));
+            DDTNotEqualsComparer<Dummy>((5, 5, new ThrowingEqualityComparer()), (7, false, "Comparison threw Exception:"));
+
+            DDTNotEqualsComparer<Dummy>((null, null, (IEqualityComparer) null), (8, false, "Parameter 'comparer' is null."));
+            DDTNotEqualsComparer<Dummy>((null, 0, new DummyIEqualityComparer()), (9, true, "('DynamicEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTNotEqualsComparer<Dummy>((0, null, new DummyIEqualityComparer()), (10, true, "('DynamicEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTNotEqualsComparer<Dummy>((0, 0, (IEqualityComparer) null), (11, false, "Parameter 'comparer' is null."));
+            DDTNotEqualsComparer<Dummy>((5, 0, new DummyIEqualityComparer()), (12, true, "('DynamicEqualityComparer`1') [Left = '5'; Right = '0']"));
+            DDTNotEqualsComparer<Dummy>((5, 5, new DummyIEqualityComparer()), (13, false, "('DynamicEqualityComparer`1') [Left = '5'; Right = '5']"));
+            DDTNotEqualsComparer<Dummy>((5, 5, DynamicEqualityComparer.From(
+                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
+                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+                (14, false, "Comparison threw Exception:"));
+
+            DDTNotEqualsComparer((null, null, (IEqualityComparer<Dummy>) null), (15, false, "Parameter 'comparer' is null."));
+            DDTNotEqualsComparer((null, 0, new DummyIEqualityComparerT()), (16, true, "('DummyIEqualityComparerT') [Left = 'null'; Right = '0']"));
+            DDTNotEqualsComparer((0, null, new DummyIEqualityComparerT()), (17, true, "('DummyIEqualityComparerT') [Left = '0'; Right = 'null']"));
+            DDTNotEqualsComparer((0, 0, (IEqualityComparer<Dummy>) null), (18, false, "Parameter 'comparer' is null."));
+            DDTNotEqualsComparer((5, 0, new DummyIEqualityComparerT()), (19, true, "('DummyIEqualityComparerT') [Left = '5'; Right = '0']"));
+            DDTNotEqualsComparer((5, 5, new DummyIEqualityComparerT()), (20, false, "('DummyIEqualityComparerT') [Left = '5'; Right = '5']"));
+            DDTNotEqualsComparer((5, 5, DynamicEqualityComparer<Dummy>.From(
+                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
+                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+                (21, false, "Comparison threw Exception:"));
 
         }
 
-        void DDTNotEqualEqualityComparerT<TType>((TType left, TType right, IEqualityComparer<TType> comparer) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotEqualsComparer<T>((T left, T right, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Value.Equals<{typeof(TType).Format()}>({input.left.Format()}, {input.right.Format()}, {input.comparer.Format()})",
+            Test.Note($"Test.IfNot.Value.Equals<{typeof(T).Format()}>({input.left.Format()}, {input.right.Format()}, {input.comparer.Format()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Value.Equals(input.left, input.right, input.comparer, _file, _method),
+                expected, "Test.IfNot.Value.Equals", _file, _method);
+
+        }
+
+        void DDTNotEqualsComparer<T>((T left, T right, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Value.Equals<{typeof(T).Format()}>({input.left.Format()}, {input.right.Format()}, {input.comparer.Format()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Value.Equals(input.left, input.right, input.comparer, _file, _method),
+                expected, "Test.IfNot.Value.Equals", _file, _method);
+
+        }
+
+        void DDTNotEqualsComparer<T>((T left, T right, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Value.Equals<{typeof(T).Format()}>({input.left.Format()}, {input.right.Format()}, {input.comparer.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Value.Equals(input.left, input.right, input.comparer, _file, _method),
@@ -292,9 +381,23 @@ namespace Nuclear.TestSite.TestSuites {
             DDTTrue(true, (1, true, "[Value = 'True']"));
             DDTTrue(false, (2, false, "[Value = 'False']"));
 
+            DDTTrueNullable(true, (3, true, "[Value = 'True']"));
+            DDTTrueNullable(false, (4, false, "[Value = 'False']"));
+            DDTTrueNullable(null, (5, false, "Parameter 'value' is null."));
+
         }
 
         void DDTTrue(Boolean input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.IsTrue({input.Format()})", _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.IsTrue(input, _file, _method),
+                expected, "Test.If.Value.IsTrue", _file, _method);
+
+        }
+
+        void DDTTrueNullable(Boolean? input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.Value.IsTrue({input.Format()})", _file, _method);
@@ -310,6 +413,10 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotTrue(true, (1, false, "[Value = 'True']"));
             DDTNotTrue(false, (2, true, "[Value = 'False']"));
 
+            DDTNotTrueNullable(true, (3, false, "[Value = 'True']"));
+            DDTNotTrueNullable(false, (4, true, "[Value = 'False']"));
+            DDTNotTrueNullable(null, (5, false, "Parameter 'value' is null."));
+
         }
 
         void DDTNotTrue(Boolean input, (Int32 count, Boolean result, String message) expected,
@@ -319,34 +426,6 @@ namespace Nuclear.TestSite.TestSuites {
 
             Statics.DDTResultState(() => DummyTest.IfNot.Value.IsTrue(input, _file, _method),
                 expected, "Test.IfNot.Value.IsTrue", _file, _method);
-
-        }
-
-        [TestMethod]
-        void TrueNullable() {
-
-            DDTTrueNullable(true, (1, true, "[Value = 'True']"));
-            DDTTrueNullable(false, (2, false, "[Value = 'False']"));
-            DDTTrueNullable(null, (3, false, "Parameter 'value' is null."));
-
-        }
-
-        void DDTTrueNullable(Boolean? input, (Int32 count, Boolean result, String message) expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            Test.Note($"Test.If.Value.IsTrue({input.Format()})", _file, _method);
-
-            Statics.DDTResultState(() => DummyTest.If.Value.IsTrue(input, _file, _method),
-                expected, "Test.If.Value.IsTrue", _file, _method);
-
-        }
-
-        [TestMethod]
-        void NotTrueNullable() {
-
-            DDTNotTrueNullable(true, (1, false, "[Value = 'True']"));
-            DDTNotTrueNullable(false, (2, true, "[Value = 'False']"));
-            DDTNotTrueNullable(null, (3, false, "Parameter 'value' is null."));
 
         }
 
@@ -370,9 +449,23 @@ namespace Nuclear.TestSite.TestSuites {
             DDTFalse(true, (1, false, "[Value = 'True']"));
             DDTFalse(false, (2, true, "[Value = 'False']"));
 
+            DDTFalseNullable(true, (3, false, "[Value = 'True']"));
+            DDTFalseNullable(false, (4, true, "[Value = 'False']"));
+            DDTFalseNullable(null, (5, false, "Parameter 'value' is null."));
+
         }
 
         void DDTFalse(Boolean input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.IsFalse({input.Format()})", _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.IsFalse(input, _file, _method),
+                expected, "Test.If.Value.IsFalse", _file, _method);
+
+        }
+
+        void DDTFalseNullable(Boolean? input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Test.Note($"Test.If.Value.IsFalse({input.Format()})", _file, _method);
@@ -388,6 +481,10 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotFalse(true, (1, true, "[Value = 'True']"));
             DDTNotFalse(false, (2, false, "[Value = 'False']"));
 
+            DDTNotFalseNullable(true, (3, true, "[Value = 'True']"));
+            DDTNotFalseNullable(false, (4, false, "[Value = 'False']"));
+            DDTNotFalseNullable(null, (5, false, "Parameter 'value' is null."));
+
         }
 
         void DDTNotFalse(Boolean input, (Int32 count, Boolean result, String message) expected,
@@ -397,34 +494,6 @@ namespace Nuclear.TestSite.TestSuites {
 
             Statics.DDTResultState(() => DummyTest.IfNot.Value.IsFalse(input, _file, _method),
                 expected, "Test.IfNot.Value.IsFalse", _file, _method);
-
-        }
-
-        [TestMethod]
-        void FalseNullable() {
-
-            DDTFalseNullable(true, (1, false, "[Value = 'True']"));
-            DDTFalseNullable(false, (2, true, "[Value = 'False']"));
-            DDTFalseNullable(null, (3, false, "Parameter 'value' is null."));
-
-        }
-
-        void DDTFalseNullable(Boolean? input, (Int32 count, Boolean result, String message) expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            Test.Note($"Test.If.Value.IsFalse({input.Format()})", _file, _method);
-
-            Statics.DDTResultState(() => DummyTest.If.Value.IsFalse(input, _file, _method),
-                expected, "Test.If.Value.IsFalse", _file, _method);
-
-        }
-
-        [TestMethod]
-        void NotFalseNullable() {
-
-            DDTNotFalseNullable(true, (1, true, "[Value = 'True']"));
-            DDTNotFalseNullable(false, (2, false, "[Value = 'False']"));
-            DDTNotFalseNullable(null, (3, false, "Parameter 'value' is null."));
 
         }
 
@@ -446,34 +515,34 @@ namespace Nuclear.TestSite.TestSuites {
         void IsClamped() {
 
             DDTIsClamped<DummyIComparable>((null, null, null), (1, false, "Parameter 'value' is null."));
-            DDTIsClamped((null, new DummyIComparable(0), new DummyIComparable(0)), (2, false, "Parameter 'value' is null."));
-            DDTIsClamped((new DummyIComparable(0), null, new DummyIComparable(0)), (3, true, "[Value = '0'; Min = 'null'; Max = '0']"));
-            DDTIsClamped((new DummyIComparable(0), new DummyIComparable(0), null), (4, true, "[Value = '0'; Min = '0'; Max = 'null']"));
-            DDTIsClamped((new DummyIComparable(0), new DummyIComparable(0), new DummyIComparable(0)), (5, true, "[Value = '0'; Min = '0'; Max = '0']"));
-            DDTIsClamped((new DummyIComparable(0), new DummyIComparable(-1), new DummyIComparable(1)), (6, true, "[Value = '0'; Min = '-1'; Max = '1']"));
-            DDTIsClamped((new DummyIComparable(0), new DummyIComparable(1), new DummyIComparable(-1)), (7, true, "[Value = '0'; Min = '1'; Max = '-1']"));
-            DDTIsClamped((new DummyIComparable(0), new DummyIComparable(0), new DummyIComparable(1)), (8, true, "[Value = '0'; Min = '0'; Max = '1']"));
-            DDTIsClamped((new DummyIComparable(0), new DummyIComparable(-1), new DummyIComparable(0)), (9, true, "[Value = '0'; Min = '-1'; Max = '0']"));
-            DDTIsClamped((new DummyIComparable(0), new DummyIComparable(1), new DummyIComparable(2)), (10, false, "[Value = '0'; Min = '1'; Max = '2']"));
-            DDTIsClamped((new DummyIComparable(0), new DummyIComparable(-2), new DummyIComparable(-1)), (11, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+            DDTIsClamped<DummyIComparable>((null, 0, 0), (2, false, "Parameter 'value' is null."));
+            DDTIsClamped<DummyIComparable>((0, null, 0), (3, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClamped<DummyIComparable>((0, 0, null), (4, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClamped<DummyIComparable>((0, 0, 0), (5, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClamped<DummyIComparable>((0, -1, 1), (6, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClamped<DummyIComparable>((0, 1, -1), (7, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClamped<DummyIComparable>((0, 0, 1), (8, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClamped<DummyIComparable>((0, -1, 0), (9, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClamped<DummyIComparable>((0, 1, 2), (10, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClamped<DummyIComparable>((0, -2, -1), (11, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
 
             DDTIsClampedT<DummyIComparableT>((null, null, null), (12, false, "Parameter 'value' is null."));
-            DDTIsClampedT((null, new DummyIComparableT(0), new DummyIComparableT(0)), (13, false, "Parameter 'value' is null."));
-            DDTIsClampedT((new DummyIComparableT(0), null, new DummyIComparableT(0)), (14, true, "[Value = '0'; Min = 'null'; Max = '0']"));
-            DDTIsClampedT((new DummyIComparableT(0), new DummyIComparableT(0), null), (15, true, "[Value = '0'; Min = '0'; Max = 'null']"));
-            DDTIsClampedT((new DummyIComparableT(0), new DummyIComparableT(0), new DummyIComparableT(0)), (16, true, "[Value = '0'; Min = '0'; Max = '0']"));
-            DDTIsClampedT((new DummyIComparableT(0), new DummyIComparableT(-1), new DummyIComparableT(1)), (17, true, "[Value = '0'; Min = '-1'; Max = '1']"));
-            DDTIsClampedT((new DummyIComparableT(0), new DummyIComparableT(1), new DummyIComparableT(-1)), (18, true, "[Value = '0'; Min = '1'; Max = '-1']"));
-            DDTIsClampedT((new DummyIComparableT(0), new DummyIComparableT(0), new DummyIComparableT(1)), (19, true, "[Value = '0'; Min = '0'; Max = '1']"));
-            DDTIsClampedT((new DummyIComparableT(0), new DummyIComparableT(-1), new DummyIComparableT(0)), (20, true, "[Value = '0'; Min = '-1'; Max = '0']"));
-            DDTIsClampedT((new DummyIComparableT(0), new DummyIComparableT(1), new DummyIComparableT(2)), (21, false, "[Value = '0'; Min = '1'; Max = '2']"));
-            DDTIsClampedT((new DummyIComparableT(0), new DummyIComparableT(-2), new DummyIComparableT(-1)), (22, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+            DDTIsClampedT<DummyIComparableT>((null, 0, 0), (13, false, "Parameter 'value' is null."));
+            DDTIsClampedT<DummyIComparableT>((0, null, 0), (14, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedT<DummyIComparableT>((0, 0, null), (15, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedT<DummyIComparableT>((0, 0, 0), (16, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedT<DummyIComparableT>((0, -1, 1), (17, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedT<DummyIComparableT>((0, 1, -1), (18, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedT<DummyIComparableT>((0, 0, 1), (19, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedT<DummyIComparableT>((0, -1, 0), (20, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedT<DummyIComparableT>((0, 1, 2), (21, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedT<DummyIComparableT>((0, -2, -1), (22, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
 
         }
 
-        void DDTIsClamped<TType>((TType value, TType min, TType max) input, (Int32 count, Boolean result, String message) expected,
+        void DDTIsClamped<T>((T value, T min, T max) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable {
+            where T : IComparable {
 
             Test.Note($"Test.If.Value.IsClamped({input.value.Format()}, {input.min.Format()}, {input.max.Format()})",
                 _file, _method);
@@ -483,15 +552,15 @@ namespace Nuclear.TestSite.TestSuites {
 
         }
 
-        void DDTIsClampedT<TType>((TType value, TType min, TType max) input, (Int32 count, Boolean result, String message) expected,
+        void DDTIsClampedT<T>((T value, T min, T max) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable<TType> {
+            where T : IComparable<T> {
 
             Test.Note($"Test.If.Value.IsClampedT({input.value.Format()}, {input.min.Format()}, {input.max.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Value.IsClampedT(input.value, input.min, input.max, _file, _method),
-                expected, "Test.If.Value.IsClampedT", _file, _method);
+                expected, "Test.If.Value.IsClamped", _file, _method);
 
         }
 
@@ -499,34 +568,34 @@ namespace Nuclear.TestSite.TestSuites {
         void NotIsClamped() {
 
             DDTNotIsClamped<DummyIComparable>((null, null, null), (1, false, "Parameter 'value' is null."));
-            DDTNotIsClamped((null, new DummyIComparable(0), new DummyIComparable(0)), (2, false, "Parameter 'value' is null."));
-            DDTNotIsClamped((new DummyIComparable(0), null, new DummyIComparable(0)), (3, false, "[Value = '0'; Min = 'null'; Max = '0']"));
-            DDTNotIsClamped((new DummyIComparable(0), new DummyIComparable(0), null), (4, false, "[Value = '0'; Min = '0'; Max = 'null']"));
-            DDTNotIsClamped((new DummyIComparable(0), new DummyIComparable(0), new DummyIComparable(0)), (5, false, "[Value = '0'; Min = '0'; Max = '0']"));
-            DDTNotIsClamped((new DummyIComparable(0), new DummyIComparable(-1), new DummyIComparable(1)), (6, false, "[Value = '0'; Min = '-1'; Max = '1']"));
-            DDTNotIsClamped((new DummyIComparable(0), new DummyIComparable(1), new DummyIComparable(-1)), (7, false, "[Value = '0'; Min = '1'; Max = '-1']"));
-            DDTNotIsClamped((new DummyIComparable(0), new DummyIComparable(0), new DummyIComparable(1)), (8, false, "[Value = '0'; Min = '0'; Max = '1']"));
-            DDTNotIsClamped((new DummyIComparable(0), new DummyIComparable(-1), new DummyIComparable(0)), (9, false, "[Value = '0'; Min = '-1'; Max = '0']"));
-            DDTNotIsClamped((new DummyIComparable(0), new DummyIComparable(1), new DummyIComparable(2)), (10, true, "[Value = '0'; Min = '1'; Max = '2']"));
-            DDTNotIsClamped((new DummyIComparable(0), new DummyIComparable(-2), new DummyIComparable(-1)), (11, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+            DDTNotIsClamped<DummyIComparable>((null, 0, 0), (2, false, "Parameter 'value' is null."));
+            DDTNotIsClamped<DummyIComparable>((0, null, 0), (3, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClamped<DummyIComparable>((0, 0, null), (4, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClamped<DummyIComparable>((0, 0, 0), (5, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClamped<DummyIComparable>((0, -1, 1), (6, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClamped<DummyIComparable>((0, 1, -1), (7, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClamped<DummyIComparable>((0, 0, 1), (8, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClamped<DummyIComparable>((0, -1, 0), (9, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClamped<DummyIComparable>((0, 1, 2), (10, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClamped<DummyIComparable>((0, -2, -1), (11, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
 
             DDTNotIsClampedT<DummyIComparableT>((null, null, null), (12, false, "Parameter 'value' is null."));
-            DDTNotIsClampedT((null, new DummyIComparableT(0), new DummyIComparableT(0)), (13, false, "Parameter 'value' is null."));
-            DDTNotIsClampedT((new DummyIComparableT(0), null, new DummyIComparableT(0)), (14, false, "[Value = '0'; Min = 'null'; Max = '0']"));
-            DDTNotIsClampedT((new DummyIComparableT(0), new DummyIComparableT(0), null), (15, false, "[Value = '0'; Min = '0'; Max = 'null']"));
-            DDTNotIsClampedT((new DummyIComparableT(0), new DummyIComparableT(0), new DummyIComparableT(0)), (16, false, "[Value = '0'; Min = '0'; Max = '0']"));
-            DDTNotIsClampedT((new DummyIComparableT(0), new DummyIComparableT(-1), new DummyIComparableT(1)), (17, false, "[Value = '0'; Min = '-1'; Max = '1']"));
-            DDTNotIsClampedT((new DummyIComparableT(0), new DummyIComparableT(1), new DummyIComparableT(-1)), (18, false, "[Value = '0'; Min = '1'; Max = '-1']"));
-            DDTNotIsClampedT((new DummyIComparableT(0), new DummyIComparableT(0), new DummyIComparableT(1)), (19, false, "[Value = '0'; Min = '0'; Max = '1']"));
-            DDTNotIsClampedT((new DummyIComparableT(0), new DummyIComparableT(-1), new DummyIComparableT(0)), (20, false, "[Value = '0'; Min = '-1'; Max = '0']"));
-            DDTNotIsClampedT((new DummyIComparableT(0), new DummyIComparableT(1), new DummyIComparableT(2)), (21, true, "[Value = '0'; Min = '1'; Max = '2']"));
-            DDTNotIsClampedT((new DummyIComparableT(0), new DummyIComparableT(-2), new DummyIComparableT(-1)), (22, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+            DDTNotIsClampedT<DummyIComparableT>((null, 0, 0), (13, false, "Parameter 'value' is null."));
+            DDTNotIsClampedT<DummyIComparableT>((0, null, 0), (14, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedT<DummyIComparableT>((0, 0, null), (15, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedT<DummyIComparableT>((0, 0, 0), (16, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedT<DummyIComparableT>((0, -1, 1), (17, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedT<DummyIComparableT>((0, 1, -1), (18, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedT<DummyIComparableT>((0, 0, 1), (19, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedT<DummyIComparableT>((0, -1, 0), (20, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedT<DummyIComparableT>((0, 1, 2), (21, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedT<DummyIComparableT>((0, -2, -1), (22, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
 
         }
 
-        void DDTNotIsClamped<TType>((TType value, TType min, TType max) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotIsClamped<T>((T value, T min, T max) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable {
+            where T : IComparable {
 
             Test.Note($"Test.IfNot.Value.IsClamped({input.value.Format()}, {input.min.Format()}, {input.max.Format()})",
                 _file, _method);
@@ -536,15 +605,185 @@ namespace Nuclear.TestSite.TestSuites {
 
         }
 
-        void DDTNotIsClampedT<TType>((TType value, TType min, TType max) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotIsClampedT<T>((T value, T min, T max) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable<TType> {
+            where T : IComparable<T> {
 
             Test.Note($"Test.IfNot.Value.IsClampedT({input.value.Format()}, {input.min.Format()}, {input.max.Format()})",
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Value.IsClampedT(input.value, input.min, input.max, _file, _method),
-                expected, "Test.IfNot.Value.IsClampedT", _file, _method);
+                expected, "Test.IfNot.Value.IsClamped", _file, _method);
+
+        }
+
+        #endregion
+
+        #region IsClampedComparer
+
+        [TestMethod]
+        void IsClampedComparer() {
+
+            DDTIsClampedComparer<Dummy>((null, null, null, null), (1, false, "Parameter 'value' is null."));
+            DDTIsClampedComparer((null, 0, 0, new DummyComparer()), (2, false, "Parameter 'value' is null."));
+            DDTIsClampedComparer((0, null, 0, new DummyComparer()), (3, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedComparer((0, 0, null, new DummyComparer()), (4, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedComparer<Dummy>((0, 0, 0, null), (5, false, "Parameter 'comparer' is null."));
+            DDTIsClampedComparer<Dummy>((0, 0, 0, new ThrowingComparer()), (6, false, "Comparer threw Exception:"));
+
+            DDTIsClampedComparer<Dummy>((0, 0, 0, new DummyComparer()), (7, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedComparer<Dummy>((0, -1, 1, new DummyComparer()), (8, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedComparer<Dummy>((0, 1, -1, new DummyComparer()), (9, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedComparer<Dummy>((0, 0, 1, new DummyComparer()), (10, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedComparer<Dummy>((0, -1, 0, new DummyComparer()), (11, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedComparer<Dummy>((0, 1, 2, new DummyComparer()), (12, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedComparer<Dummy>((0, -2, -1, new DummyComparer()), (13, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+            DDTIsClampedComparer<Dummy>((null, null, null, (IComparer) null), (14, false, "Parameter 'value' is null."));
+            DDTIsClampedComparer<Dummy>((null, 0, 0, new DummyIComparer()), (15, false, "Parameter 'value' is null."));
+            DDTIsClampedComparer<Dummy>((0, null, 0, new DummyIComparer()), (16, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedComparer<Dummy>((0, 0, null, new DummyIComparer()), (17, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedComparer<Dummy>((0, 0, 0, (IComparer) null), (18, false, "Parameter 'comparer' is null."));
+            DDTIsClampedComparer<Dummy>((0, 0, 0, DynamicComparer.From(new Comparison((x, y) => throw new NotImplementedException()))), (19, false, "Comparer threw Exception:"));
+
+            DDTIsClampedComparer<Dummy>((0, 0, 0, new DummyIComparer()), (20, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedComparer<Dummy>((0, -1, 1, new DummyIComparer()), (21, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedComparer<Dummy>((0, 1, -1, new DummyIComparer()), (22, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedComparer<Dummy>((0, 0, 1, new DummyIComparer()), (23, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedComparer<Dummy>((0, -1, 0, new DummyIComparer()), (24, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedComparer<Dummy>((0, 1, 2, new DummyIComparer()), (25, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedComparer<Dummy>((0, -2, -1, new DummyIComparer()), (26, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+            DDTIsClampedComparer((null, null, null, (IComparer<Dummy>) null), (27, false, "Parameter 'value' is null."));
+            DDTIsClampedComparer((null, 0, 0, new DummyIComparerT()), (28, false, "Parameter 'value' is null."));
+            DDTIsClampedComparer((0, null, 0, new DummyIComparerT()), (29, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedComparer((0, 0, null, new DummyIComparerT()), (30, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedComparer((0, 0, 0, (IComparer<Dummy>) null), (31, false, "Parameter 'comparer' is null."));
+            DDTIsClampedComparer((0, 0, 0, DynamicComparer<Dummy>.From(new Comparison<Dummy>((x, y) => throw new NotImplementedException()))), (32, false, "Comparer threw Exception:"));
+
+            DDTIsClampedComparer((0, 0, 0, new DummyIComparerT()), (33, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedComparer((0, -1, 1, new DummyIComparerT()), (34, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedComparer((0, 1, -1, new DummyIComparerT()), (35, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedComparer((0, 0, 1, new DummyIComparerT()), (36, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedComparer((0, -1, 0, new DummyIComparerT()), (37, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedComparer((0, 1, 2, new DummyIComparerT()), (38, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedComparer((0, -2, -1, new DummyIComparerT()), (39, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+        }
+
+        void DDTIsClampedComparer<T>((T value, T min, T max, Comparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.IsClamped({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.IsClamped(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.If.Value.IsClamped", _file, _method);
+
+        }
+
+        void DDTIsClampedComparer<T>((T value, T min, T max, IComparer comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.IsClamped({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.IsClamped(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.If.Value.IsClamped", _file, _method);
+
+        }
+
+        void DDTIsClampedComparer<T>((T value, T min, T max, IComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.IsClamped({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.IsClamped(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.If.Value.IsClamped", _file, _method);
+
+        }
+
+        [TestMethod]
+        void NotIsClampedComparer() {
+
+            DDTNotIsClampedComparer<Dummy>((null, null, null, null), (1, false, "Parameter 'value' is null."));
+            DDTNotIsClampedComparer((null, 0, 0, new DummyComparer()), (2, false, "Parameter 'value' is null."));
+            DDTNotIsClampedComparer((0, null, 0, new DummyComparer()), (3, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedComparer((0, 0, null, new DummyComparer()), (4, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedComparer<Dummy>((0, 0, 0, null), (5, false, "Parameter 'comparer' is null."));
+            DDTNotIsClampedComparer<Dummy>((0, 0, 0, new ThrowingComparer()), (6, false, "Comparer threw Exception:"));
+
+            DDTNotIsClampedComparer<Dummy>((0, 0, 0, new DummyComparer()), (7, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedComparer<Dummy>((0, -1, 1, new DummyComparer()), (8, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedComparer<Dummy>((0, 1, -1, new DummyComparer()), (9, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedComparer<Dummy>((0, 0, 1, new DummyComparer()), (10, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedComparer<Dummy>((0, -1, 0, new DummyComparer()), (11, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedComparer<Dummy>((0, 1, 2, new DummyComparer()), (12, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedComparer<Dummy>((0, -2, -1, new DummyComparer()), (13, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+            DDTNotIsClampedComparer<Dummy>((null, null, null, (IComparer) null), (14, false, "Parameter 'value' is null."));
+            DDTNotIsClampedComparer<Dummy>((null, 0, 0, new DummyIComparer()), (15, false, "Parameter 'value' is null."));
+            DDTNotIsClampedComparer<Dummy>((0, null, 0, new DummyIComparer()), (16, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedComparer<Dummy>((0, 0, null, new DummyIComparer()), (17, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedComparer<Dummy>((0, 0, 0, (IComparer) null), (18, false, "Parameter 'comparer' is null."));
+            DDTNotIsClampedComparer<Dummy>((0, 0, 0, DynamicComparer.From(new Comparison((x, y) => throw new NotImplementedException()))), (19, false, "Comparer threw Exception:"));
+
+            DDTNotIsClampedComparer<Dummy>((0, 0, 0, new DummyIComparer()), (20, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedComparer<Dummy>((0, -1, 1, new DummyIComparer()), (21, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedComparer<Dummy>((0, 1, -1, new DummyIComparer()), (22, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedComparer<Dummy>((0, 0, 1, new DummyIComparer()), (23, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedComparer<Dummy>((0, -1, 0, new DummyIComparer()), (24, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedComparer<Dummy>((0, 1, 2, new DummyIComparer()), (25, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedComparer<Dummy>((0, -2, -1, new DummyIComparer()), (26, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+            DDTNotIsClampedComparer((null, null, null, (IComparer<Dummy>) null), (27, false, "Parameter 'value' is null."));
+            DDTNotIsClampedComparer((null, 0, 0, new DummyIComparerT()), (28, false, "Parameter 'value' is null."));
+            DDTNotIsClampedComparer((0, null, 0, new DummyIComparerT()), (29, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedComparer((0, 0, null, new DummyIComparerT()), (30, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedComparer((0, 0, 0, (IComparer<Dummy>) null), (31, false, "Parameter 'comparer' is null."));
+            DDTNotIsClampedComparer((0, 0, 0, DynamicComparer<Dummy>.From(new Comparison<Dummy>((x, y) => throw new NotImplementedException()))), (32, false, "Comparer threw Exception:"));
+
+            DDTNotIsClampedComparer((0, 0, 0, new DummyIComparerT()), (33, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedComparer((0, -1, 1, new DummyIComparerT()), (34, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedComparer((0, 1, -1, new DummyIComparerT()), (35, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedComparer((0, 0, 1, new DummyIComparerT()), (36, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedComparer((0, -1, 0, new DummyIComparerT()), (37, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedComparer((0, 1, 2, new DummyIComparerT()), (38, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedComparer((0, -2, -1, new DummyIComparerT()), (39, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+        }
+
+        void DDTNotIsClampedComparer<T>((T value, T min, T max, Comparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Value.IsClamped({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Value.IsClamped(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.IfNot.Value.IsClamped", _file, _method);
+
+        }
+
+        void DDTNotIsClampedComparer<T>((T value, T min, T max, IComparer comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Value.IsClamped({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Value.IsClamped(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.IfNot.Value.IsClamped", _file, _method);
+
+        }
+
+        void DDTNotIsClampedComparer<T>((T value, T min, T max, IComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Value.IsClamped({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Value.IsClamped(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.IfNot.Value.IsClamped", _file, _method);
 
         }
 
@@ -556,34 +795,34 @@ namespace Nuclear.TestSite.TestSuites {
         void IsClampedExclusive() {
 
             DDTIsClampedExclusive<DummyIComparable>((null, null, null), (1, false, "Parameter 'value' is null."));
-            DDTIsClampedExclusive((null, new DummyIComparable(0), new DummyIComparable(0)), (2, false, "Parameter 'value' is null."));
-            DDTIsClampedExclusive((new DummyIComparable(0), null, new DummyIComparable(0)), (3, false, "[Value = '0'; Min = 'null'; Max = '0']"));
-            DDTIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(0), null), (4, false, "[Value = '0'; Min = '0'; Max = 'null']"));
-            DDTIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(0), new DummyIComparable(0)), (5, false, "[Value = '0'; Min = '0'; Max = '0']"));
-            DDTIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(-1), new DummyIComparable(1)), (6, true, "[Value = '0'; Min = '-1'; Max = '1']"));
-            DDTIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(1), new DummyIComparable(-1)), (7, true, "[Value = '0'; Min = '1'; Max = '-1']"));
-            DDTIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(0), new DummyIComparable(1)), (8, false, "[Value = '0'; Min = '0'; Max = '1']"));
-            DDTIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(-1), new DummyIComparable(0)), (9, false, "[Value = '0'; Min = '-1'; Max = '0']"));
-            DDTIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(1), new DummyIComparable(2)), (10, false, "[Value = '0'; Min = '1'; Max = '2']"));
-            DDTIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(-2), new DummyIComparable(-1)), (11, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+            DDTIsClampedExclusive<DummyIComparable>((null, 0, 0), (2, false, "Parameter 'value' is null."));
+            DDTIsClampedExclusive<DummyIComparable>((0, null, 0), (3, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedExclusive<DummyIComparable>((0, 0, null), (4, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedExclusive<DummyIComparable>((0, 0, 0), (5, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedExclusive<DummyIComparable>((0, -1, 1), (6, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedExclusive<DummyIComparable>((0, 1, -1), (7, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedExclusive<DummyIComparable>((0, 0, 1), (8, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedExclusive<DummyIComparable>((0, -1, 0), (9, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedExclusive<DummyIComparable>((0, 1, 2), (10, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedExclusive<DummyIComparable>((0, -2, -1), (11, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
 
             DDTIsClampedExclusiveT<DummyIComparableT>((null, null, null), (12, false, "Parameter 'value' is null."));
-            DDTIsClampedExclusiveT((null, new DummyIComparableT(0), new DummyIComparableT(0)), (13, false, "Parameter 'value' is null."));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), null, new DummyIComparableT(0)), (14, false, "[Value = '0'; Min = 'null'; Max = '0']"));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(0), null), (15, false, "[Value = '0'; Min = '0'; Max = 'null']"));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(0), new DummyIComparableT(0)), (16, false, "[Value = '0'; Min = '0'; Max = '0']"));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(-1), new DummyIComparableT(1)), (17, true, "[Value = '0'; Min = '-1'; Max = '1']"));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(1), new DummyIComparableT(-1)), (18, true, "[Value = '0'; Min = '1'; Max = '-1']"));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(0), new DummyIComparableT(1)), (19, false, "[Value = '0'; Min = '0'; Max = '1']"));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(-1), new DummyIComparableT(0)), (20, false, "[Value = '0'; Min = '-1'; Max = '0']"));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(1), new DummyIComparableT(2)), (21, false, "[Value = '0'; Min = '1'; Max = '2']"));
-            DDTIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(-2), new DummyIComparableT(-1)), (22, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((null, 0, 0), (13, false, "Parameter 'value' is null."));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, null, 0), (14, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, 0, null), (15, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, 0, 0), (16, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, -1, 1), (17, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, 1, -1), (18, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, 0, 1), (19, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, -1, 0), (20, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, 1, 2), (21, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedExclusiveT<DummyIComparableT>((0, -2, -1), (22, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
 
         }
 
-        void DDTIsClampedExclusive<TType>((TType value, TType min, TType max) input, (Int32 count, Boolean result, String message) expected,
+        void DDTIsClampedExclusive<T>((T value, T min, T max) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable {
+            where T : IComparable {
 
             Test.Note(String.Format("Test.If.Value.IsClampedExclusive({0}, {1}, {2})", input.value.Format(), input.min.Format(), input.max.Format()),
                 _file, _method);
@@ -593,15 +832,15 @@ namespace Nuclear.TestSite.TestSuites {
 
         }
 
-        void DDTIsClampedExclusiveT<TType>((TType value, TType min, TType max) input, (Int32 count, Boolean result, String message) expected,
+        void DDTIsClampedExclusiveT<T>((T value, T min, T max) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable<TType> {
+            where T : IComparable<T> {
 
             Test.Note(String.Format("Test.If.Value.IsClampedExclusiveT({0}, {1}, {2})", input.value.Format(), input.min.Format(), input.max.Format()),
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.If.Value.IsClampedExclusiveT(input.value, input.min, input.max, _file, _method),
-                expected, "Test.If.Value.IsClampedExclusiveT", _file, _method);
+                expected, "Test.If.Value.IsClampedExclusive", _file, _method);
 
         }
 
@@ -609,34 +848,34 @@ namespace Nuclear.TestSite.TestSuites {
         void NotIsClampedExclusive() {
 
             DDTNotIsClampedExclusive<DummyIComparable>((null, null, null), (1, false, "Parameter 'value' is null."));
-            DDTNotIsClampedExclusive((null, new DummyIComparable(0), new DummyIComparable(0)), (2, false, "Parameter 'value' is null."));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), null, new DummyIComparable(0)), (3, true, "[Value = '0'; Min = 'null'; Max = '0']"));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(0), null), (4, true, "[Value = '0'; Min = '0'; Max = 'null']"));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(0), new DummyIComparable(0)), (5, true, "[Value = '0'; Min = '0'; Max = '0']"));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(-1), new DummyIComparable(1)), (6, false, "[Value = '0'; Min = '-1'; Max = '1']"));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(1), new DummyIComparable(-1)), (7, false, "[Value = '0'; Min = '1'; Max = '-1']"));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(0), new DummyIComparable(1)), (8, true, "[Value = '0'; Min = '0'; Max = '1']"));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(-1), new DummyIComparable(0)), (9, true, "[Value = '0'; Min = '-1'; Max = '0']"));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(1), new DummyIComparable(2)), (10, true, "[Value = '0'; Min = '1'; Max = '2']"));
-            DDTNotIsClampedExclusive((new DummyIComparable(0), new DummyIComparable(-2), new DummyIComparable(-1)), (11, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((null, 0, 0), (2, false, "Parameter 'value' is null."));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, null, 0), (3, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, 0, null), (4, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, 0, 0), (5, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, -1, 1), (6, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, 1, -1), (7, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, 0, 1), (8, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, -1, 0), (9, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, 1, 2), (10, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedExclusive<DummyIComparable>((0, -2, -1), (11, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
 
             DDTNotIsClampedExclusiveT<DummyIComparableT>((null, null, null), (12, false, "Parameter 'value' is null."));
-            DDTNotIsClampedExclusiveT((null, new DummyIComparableT(0), new DummyIComparableT(0)), (13, false, "Parameter 'value' is null."));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), null, new DummyIComparableT(0)), (14, true, "[Value = '0'; Min = 'null'; Max = '0']"));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(0), null), (15, true, "[Value = '0'; Min = '0'; Max = 'null']"));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(0), new DummyIComparableT(0)), (16, true, "[Value = '0'; Min = '0'; Max = '0']"));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(-1), new DummyIComparableT(1)), (17, false, "[Value = '0'; Min = '-1'; Max = '1']"));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(1), new DummyIComparableT(-1)), (18, false, "[Value = '0'; Min = '1'; Max = '-1']"));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(0), new DummyIComparableT(1)), (19, true, "[Value = '0'; Min = '0'; Max = '1']"));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(-1), new DummyIComparableT(0)), (20, true, "[Value = '0'; Min = '-1'; Max = '0']"));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(1), new DummyIComparableT(2)), (21, true, "[Value = '0'; Min = '1'; Max = '2']"));
-            DDTNotIsClampedExclusiveT((new DummyIComparableT(0), new DummyIComparableT(-2), new DummyIComparableT(-1)), (22, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((null, 0, 0), (13, false, "Parameter 'value' is null."));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, null, 0), (14, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, 0, null), (15, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, 0, 0), (16, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, -1, 1), (17, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, 1, -1), (18, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, 0, 1), (19, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, -1, 0), (20, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, 1, 2), (21, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedExclusiveT<DummyIComparableT>((0, -2, -1), (22, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
 
         }
 
-        void DDTNotIsClampedExclusive<TType>((TType value, TType min, TType max) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotIsClampedExclusive<T>((T value, T min, T max) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable {
+            where T : IComparable {
 
             Test.Note(String.Format("Test.IfNot.Value.IsClampedExclusive({0}, {1}, {2})", input.value.Format(), input.min.Format(), input.max.Format()),
                 _file, _method);
@@ -646,15 +885,185 @@ namespace Nuclear.TestSite.TestSuites {
 
         }
 
-        void DDTNotIsClampedExclusiveT<TType>((TType value, TType min, TType max) input, (Int32 count, Boolean result, String message) expected,
+        void DDTNotIsClampedExclusiveT<T>((T value, T min, T max) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where TType : IComparable<TType> {
+            where T : IComparable<T> {
 
             Test.Note(String.Format("Test.IfNot.Value.IsClampedExclusiveT({0}, {1}, {2})", input.value.Format(), input.min.Format(), input.max.Format()),
                 _file, _method);
 
             Statics.DDTResultState(() => DummyTest.IfNot.Value.IsClampedExclusiveT(input.value, input.min, input.max, _file, _method),
-                expected, "Test.IfNot.Value.IsClampedExclusiveT", _file, _method);
+                expected, "Test.IfNot.Value.IsClampedExclusive", _file, _method);
+
+        }
+
+        #endregion
+
+        #region IsClampedExclusiveComparer
+
+        [TestMethod]
+        void IsClampedExclusiveComparer() {
+
+            DDTIsClampedExclusiveComparer<Dummy>((null, null, null, null), (1, false, "Parameter 'value' is null."));
+            DDTIsClampedExclusiveComparer((null, 0, 0, new DummyComparer()), (2, false, "Parameter 'value' is null."));
+            DDTIsClampedExclusiveComparer((0, null, 0, new DummyComparer()), (3, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedExclusiveComparer((0, 0, null, new DummyComparer()), (4, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, null), (5, false, "Parameter 'comparer' is null."));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, new ThrowingComparer()), (6, false, "Comparer threw Exception:"));
+
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, new DummyComparer()), (7, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, -1, 1, new DummyComparer()), (8, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 1, -1, new DummyComparer()), (9, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 1, new DummyComparer()), (10, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, -1, 0, new DummyComparer()), (11, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 1, 2, new DummyComparer()), (12, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, -2, -1, new DummyComparer()), (13, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+            DDTIsClampedExclusiveComparer<Dummy>((null, null, null, (IComparer) null), (14, false, "Parameter 'value' is null."));
+            DDTIsClampedExclusiveComparer<Dummy>((null, 0, 0, new DummyIComparer()), (15, false, "Parameter 'value' is null."));
+            DDTIsClampedExclusiveComparer<Dummy>((0, null, 0, new DummyIComparer()), (16, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, null, new DummyIComparer()), (17, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, (IComparer) null), (18, false, "Parameter 'comparer' is null."));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, DynamicComparer.From(new Comparison((x, y) => throw new NotImplementedException()))), (19, false, "Comparer threw Exception:"));
+
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, new DummyIComparer()), (20, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, -1, 1, new DummyIComparer()), (21, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 1, -1, new DummyIComparer()), (22, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 1, new DummyIComparer()), (23, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, -1, 0, new DummyIComparer()), (24, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 1, 2, new DummyIComparer()), (25, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, -2, -1, new DummyIComparer()), (26, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+            DDTIsClampedExclusiveComparer((null, null, null, (IComparer<Dummy>) null), (27, false, "Parameter 'value' is null."));
+            DDTIsClampedExclusiveComparer((null, 0, 0, new DummyIComparerT()), (28, false, "Parameter 'value' is null."));
+            DDTIsClampedExclusiveComparer((0, null, 0, new DummyIComparerT()), (29, false, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTIsClampedExclusiveComparer((0, 0, null, new DummyIComparerT()), (30, false, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTIsClampedExclusiveComparer((0, 0, 0, (IComparer<Dummy>) null), (31, false, "Parameter 'comparer' is null."));
+            DDTIsClampedExclusiveComparer((0, 0, 0, DynamicComparer<Dummy>.From(new Comparison<Dummy>((x, y) => throw new NotImplementedException()))), (32, false, "Comparer threw Exception:"));
+
+            DDTIsClampedExclusiveComparer((0, 0, 0, new DummyIComparerT()), (33, false, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTIsClampedExclusiveComparer((0, -1, 1, new DummyIComparerT()), (34, true, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTIsClampedExclusiveComparer((0, 1, -1, new DummyIComparerT()), (35, true, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTIsClampedExclusiveComparer((0, 0, 1, new DummyIComparerT()), (36, false, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTIsClampedExclusiveComparer((0, -1, 0, new DummyIComparerT()), (37, false, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTIsClampedExclusiveComparer((0, 1, 2, new DummyIComparerT()), (38, false, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTIsClampedExclusiveComparer((0, -2, -1, new DummyIComparerT()), (39, false, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+        }
+
+        void DDTIsClampedExclusiveComparer<T>((T value, T min, T max, Comparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.IsClampedExclusive({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.IsClampedExclusive(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.If.Value.IsClampedExclusive", _file, _method);
+
+        }
+
+        void DDTIsClampedExclusiveComparer<T>((T value, T min, T max, IComparer comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.IsClampedExclusive({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.IsClampedExclusive(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.If.Value.IsClampedExclusive", _file, _method);
+
+        }
+
+        void DDTIsClampedExclusiveComparer<T>((T value, T min, T max, IComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Value.IsClampedExclusive({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Value.IsClampedExclusive(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.If.Value.IsClampedExclusive", _file, _method);
+
+        }
+
+        [TestMethod]
+        void NotIsClampedExclusiveComparer() {
+
+            DDTNotIsClampedExclusiveComparer<Dummy>((null, null, null, null), (1, false, "Parameter 'value' is null."));
+            DDTNotIsClampedExclusiveComparer((null, 0, 0, new DummyComparer()), (2, false, "Parameter 'value' is null."));
+            DDTNotIsClampedExclusiveComparer((0, null, 0, new DummyComparer()), (3, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer((0, 0, null, new DummyComparer()), (4, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, null), (5, false, "Parameter 'comparer' is null."));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, new ThrowingComparer()), (6, false, "Comparer threw Exception:"));
+
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, new DummyComparer()), (7, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, -1, 1, new DummyComparer()), (8, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 1, -1, new DummyComparer()), (9, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 1, new DummyComparer()), (10, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, -1, 0, new DummyComparer()), (11, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 1, 2, new DummyComparer()), (12, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, -2, -1, new DummyComparer()), (13, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+            DDTNotIsClampedExclusiveComparer<Dummy>((null, null, null, (IComparer) null), (14, false, "Parameter 'value' is null."));
+            DDTNotIsClampedExclusiveComparer<Dummy>((null, 0, 0, new DummyIComparer()), (15, false, "Parameter 'value' is null."));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, null, 0, new DummyIComparer()), (16, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, null, new DummyIComparer()), (17, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, (IComparer) null), (18, false, "Parameter 'comparer' is null."));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, DynamicComparer.From(new Comparison((x, y) => throw new NotImplementedException()))), (19, false, "Comparer threw Exception:"));
+
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, new DummyIComparer()), (20, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, -1, 1, new DummyIComparer()), (21, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 1, -1, new DummyIComparer()), (22, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 1, new DummyIComparer()), (23, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, -1, 0, new DummyIComparer()), (24, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 1, 2, new DummyIComparer()), (25, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, -2, -1, new DummyIComparer()), (26, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+            DDTNotIsClampedExclusiveComparer((null, null, null, (IComparer<Dummy>) null), (27, false, "Parameter 'value' is null."));
+            DDTNotIsClampedExclusiveComparer((null, 0, 0, new DummyIComparerT()), (28, false, "Parameter 'value' is null."));
+            DDTNotIsClampedExclusiveComparer((0, null, 0, new DummyIComparerT()), (29, true, "[Value = '0'; Min = 'null'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer((0, 0, null, new DummyIComparerT()), (30, true, "[Value = '0'; Min = '0'; Max = 'null']"));
+            DDTNotIsClampedExclusiveComparer((0, 0, 0, (IComparer<Dummy>) null), (31, false, "Parameter 'comparer' is null."));
+            DDTNotIsClampedExclusiveComparer((0, 0, 0, DynamicComparer<Dummy>.From(new Comparison<Dummy>((x, y) => throw new NotImplementedException()))), (32, false, "Comparer threw Exception:"));
+
+            DDTNotIsClampedExclusiveComparer((0, 0, 0, new DummyIComparerT()), (33, true, "[Value = '0'; Min = '0'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer((0, -1, 1, new DummyIComparerT()), (34, false, "[Value = '0'; Min = '-1'; Max = '1']"));
+            DDTNotIsClampedExclusiveComparer((0, 1, -1, new DummyIComparerT()), (35, false, "[Value = '0'; Min = '1'; Max = '-1']"));
+            DDTNotIsClampedExclusiveComparer((0, 0, 1, new DummyIComparerT()), (36, true, "[Value = '0'; Min = '0'; Max = '1']"));
+            DDTNotIsClampedExclusiveComparer((0, -1, 0, new DummyIComparerT()), (37, true, "[Value = '0'; Min = '-1'; Max = '0']"));
+            DDTNotIsClampedExclusiveComparer((0, 1, 2, new DummyIComparerT()), (38, true, "[Value = '0'; Min = '1'; Max = '2']"));
+            DDTNotIsClampedExclusiveComparer((0, -2, -1, new DummyIComparerT()), (39, true, "[Value = '0'; Min = '-2'; Max = '-1']"));
+
+        }
+
+        void DDTNotIsClampedExclusiveComparer<T>((T value, T min, T max, Comparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Value.IsClampedExclusive({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Value.IsClampedExclusive(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.IfNot.Value.IsClampedExclusive", _file, _method);
+
+        }
+
+        void DDTNotIsClampedExclusiveComparer<T>((T value, T min, T max, IComparer comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Value.IsClampedExclusive({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Value.IsClampedExclusive(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.IfNot.Value.IsClampedExclusive", _file, _method);
+
+        }
+
+        void DDTNotIsClampedExclusiveComparer<T>((T value, T min, T max, IComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Value.IsClampedExclusive({input.value.Format()}, {input.min.Format()}, {input.max.Format()}, {input.comparer.FormatType()})",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Value.IsClampedExclusive(input.value, input.min, input.max, input.comparer, _file, _method),
+                expected, "Test.IfNot.Value.IsClampedExclusive", _file, _method);
 
         }
 

@@ -1,8 +1,8 @@
-﻿using Ntt;
+﻿using System;
+using System.Runtime.CompilerServices;
+using Ntt;
 using Nuclear.Extensions;
 using Nuclear.TestSite.Attributes;
-using System;
-using System.Runtime.CompilerServices;
 
 namespace Nuclear.TestSite.TestSuites {
     class TypeTestSuit_uTests {
@@ -11,51 +11,6 @@ namespace Nuclear.TestSite.TestSuites {
 
         [TestMethod]
         void ImplementsGeneric() {
-
-            DDTImplementsGeneric<Zero, Zero>((1, false, "Type 'Ntt.Zero' is not an interface."));
-            DDTImplementsGeneric<Two, ITwo>((2, true, "Type 'Ntt.Two' implements interface 'Ntt.ITwo'."));
-            DDTImplementsGeneric<Two, IZero>((3, false, "Type 'Ntt.Two' doesn't implement interface 'Ntt.IZero'."));
-            DDTImplementsGeneric<Zero, ITwo>((4, true, "Type 'Ntt.Zero' implements interface 'Ntt.ITwo'."));
-            DDTImplementsGeneric<IZero, IZero>((5, false, "Type 'Ntt.IZero' doesn't implement interface 'Ntt.IZero'."));
-            DDTImplementsGeneric<IZero, ITwo>((6, true, "Type 'Ntt.IZero' implements interface 'Ntt.ITwo'."));
-        }
-
-        void DDTImplementsGeneric<TType, TInterface>((Int32 count, Boolean result, String message) expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            Test.Note($"Test.If.Type.Implements<{typeof(TType).Format()}, {typeof(TInterface).Format()}>()",
-                _file, _method);
-
-            Statics.DDTResultState(() => DummyTest.If.Type.Implements<TType, TInterface>(_file, _method),
-                expected, "Test.If.Type.Implements", _file, _method);
-
-        }
-
-        [TestMethod]
-        void NotImplementsGeneric() {
-
-            DDTNotImplementsGeneric<Zero, Zero>((1, false, "Type 'Ntt.Zero' is not an interface."));
-            DDTNotImplementsGeneric<Two, ITwo>((2, false, "Type 'Ntt.Two' implements interface 'Ntt.ITwo'."));
-            DDTNotImplementsGeneric<Two, IZero>((3, true, "Type 'Ntt.Two' doesn't implement interface 'Ntt.IZero'."));
-            DDTNotImplementsGeneric<Zero, ITwo>((4, false, "Type 'Ntt.Zero' implements interface 'Ntt.ITwo'."));
-            DDTNotImplementsGeneric<IZero, IZero>((5, true, "Type 'Ntt.IZero' doesn't implement interface 'Ntt.IZero'."));
-            DDTNotImplementsGeneric<IZero, ITwo>((6, false, "Type 'Ntt.IZero' implements interface 'Ntt.ITwo'."));
-
-        }
-
-        void DDTNotImplementsGeneric<TType, TInterface>((Int32 count, Boolean result, String message) expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            Test.Note($"Test.IfNot.Type.Implements<{typeof(TType).Format()}, {typeof(TInterface).Format()}>()",
-                _file, _method);
-
-            Statics.DDTResultState(() => DummyTest.IfNot.Type.Implements<TType, TInterface>(_file, _method),
-                expected, "Test.IfNot.Type.Implements", _file, _method);
-
-        }
-
-        [TestMethod]
-        void Implements() {
 
             DDTImplements((null, null), (1, false, "Parameter 'type' is null."));
             DDTImplements((null, typeof(Zero)), (2, false, "Parameter 'type' is null."));
@@ -66,6 +21,23 @@ namespace Nuclear.TestSite.TestSuites {
             DDTImplements((typeof(Zero), typeof(ITwo)), (7, true, "Type 'Ntt.Zero' implements interface 'Ntt.ITwo'."));
             DDTImplements((typeof(IZero), typeof(IZero)), (8, false, "Type 'Ntt.IZero' doesn't implement interface 'Ntt.IZero'."));
             DDTImplements((typeof(IZero), typeof(ITwo)), (9, true, "Type 'Ntt.IZero' implements interface 'Ntt.ITwo'."));
+
+            DDTImplements<Zero, Zero>((10, false, "Type 'Ntt.Zero' is not an interface."));
+            DDTImplements<Two, ITwo>((11, true, "Type 'Ntt.Two' implements interface 'Ntt.ITwo'."));
+            DDTImplements<Two, IZero>((12, false, "Type 'Ntt.Two' doesn't implement interface 'Ntt.IZero'."));
+            DDTImplements<Zero, ITwo>((13, true, "Type 'Ntt.Zero' implements interface 'Ntt.ITwo'."));
+            DDTImplements<IZero, IZero>((14, false, "Type 'Ntt.IZero' doesn't implement interface 'Ntt.IZero'."));
+            DDTImplements<IZero, ITwo>((15, true, "Type 'Ntt.IZero' implements interface 'Ntt.ITwo'."));
+        }
+
+        void DDTImplements<TType, TInterface>((Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Type.Implements<{typeof(TType).Format()}, {typeof(TInterface).Format()}>()",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Type.Implements<TType, TInterface>(_file, _method),
+                expected, "Test.If.Type.Implements", _file, _method);
 
         }
 
@@ -81,7 +53,7 @@ namespace Nuclear.TestSite.TestSuites {
         }
 
         [TestMethod]
-        void NotImplements() {
+        void NotImplementsGeneric() {
 
             DDTNotImplements((null, null), (1, false, "Parameter 'type' is null."));
             DDTNotImplements((null, typeof(Zero)), (2, false, "Parameter 'type' is null."));
@@ -92,6 +64,24 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotImplements((typeof(Zero), typeof(ITwo)), (7, false, "Type 'Ntt.Zero' implements interface 'Ntt.ITwo'."));
             DDTNotImplements((typeof(IZero), typeof(IZero)), (8, true, "Type 'Ntt.IZero' doesn't implement interface 'Ntt.IZero'."));
             DDTNotImplements((typeof(IZero), typeof(ITwo)), (9, false, "Type 'Ntt.IZero' implements interface 'Ntt.ITwo'."));
+
+            DDTNotImplements<Zero, Zero>((10, false, "Type 'Ntt.Zero' is not an interface."));
+            DDTNotImplements<Two, ITwo>((11, false, "Type 'Ntt.Two' implements interface 'Ntt.ITwo'."));
+            DDTNotImplements<Two, IZero>((12, true, "Type 'Ntt.Two' doesn't implement interface 'Ntt.IZero'."));
+            DDTNotImplements<Zero, ITwo>((13, false, "Type 'Ntt.Zero' implements interface 'Ntt.ITwo'."));
+            DDTNotImplements<IZero, IZero>((14, true, "Type 'Ntt.IZero' doesn't implement interface 'Ntt.IZero'."));
+            DDTNotImplements<IZero, ITwo>((15, false, "Type 'Ntt.IZero' implements interface 'Ntt.ITwo'."));
+
+        }
+
+        void DDTNotImplements<TType, TInterface>((Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Type.Implements<{typeof(TType).Format()}, {typeof(TInterface).Format()}>()",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Type.Implements<TType, TInterface>(_file, _method),
+                expected, "Test.IfNot.Type.Implements", _file, _method);
 
         }
 
@@ -113,48 +103,6 @@ namespace Nuclear.TestSite.TestSuites {
         [TestMethod]
         void IsSubClassGeneric() {
 
-            DDTIsSubClassGeneric<Zero, Zero>((1, false, "Type 'Ntt.Zero' is no subclass of 'Ntt.Zero'."));
-            DDTIsSubClassGeneric<DerivesFromZero, Zero>((2, true, "Type 'Ntt.DerivesFromZero' is subclass of 'Ntt.Zero'."));
-            DDTIsSubClassGeneric<DerivesFromZero, ITwo>((3, false, "Type 'Ntt.ITwo' is not a class."));
-            DDTIsSubClassGeneric<ITwo, Zero>((4, false, "Type 'Ntt.ITwo' is not a class."));
-
-        }
-
-        void DDTIsSubClassGeneric<TType, TBase>((Int32 count, Boolean result, String message) expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            Test.Note($"Test.If.Type.IsSubClass<{typeof(TType).Format()}, {typeof(TBase).Format()}>()",
-                _file, _method);
-
-            Statics.DDTResultState(() => DummyTest.If.Type.IsSubClass<TType, TBase>(_file, _method),
-                expected, "Test.If.Type.IsSubClass", _file, _method);
-
-        }
-
-        [TestMethod]
-        void NotIsSubClassGeneric() {
-
-            DDTNotIsSubClassGeneric<Zero, Zero>((1, true, "Type 'Ntt.Zero' is no subclass of 'Ntt.Zero'."));
-            DDTNotIsSubClassGeneric<DerivesFromZero, Zero>((2, false, "Type 'Ntt.DerivesFromZero' is subclass of 'Ntt.Zero'."));
-            DDTNotIsSubClassGeneric<DerivesFromZero, ITwo>((3, false, "Type 'Ntt.ITwo' is not a class."));
-            DDTNotIsSubClassGeneric<ITwo, Zero>((4, false, "Type 'Ntt.ITwo' is not a class."));
-
-        }
-
-        void DDTNotIsSubClassGeneric<TType, TBase>((Int32 count, Boolean result, String message) expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            Test.Note($"Test.IfNot.Type.IsSubClass<{typeof(TType).Format()}, {typeof(TBase).Format()}>()",
-                _file, _method);
-
-            Statics.DDTResultState(() => DummyTest.IfNot.Type.IsSubClass<TType, TBase>(_file, _method),
-                expected, "Test.IfNot.Type.IsSubClass", _file, _method);
-
-        }
-
-        [TestMethod]
-        void IsSubClass() {
-
             DDTIsSubClass((null, null), (1, false, "Parameter 'type' is null."));
             DDTIsSubClass((null, typeof(Zero)), (2, false, "Parameter 'type' is null."));
             DDTIsSubClass((typeof(Zero), null), (3, false, "Parameter 'baseType' is null."));
@@ -162,6 +110,22 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsSubClass((typeof(DerivesFromZero), typeof(Zero)), (5, true, "Type 'Ntt.DerivesFromZero' is subclass of 'Ntt.Zero'."));
             DDTIsSubClass((typeof(DerivesFromZero), typeof(ITwo)), (6, false, "Type 'Ntt.ITwo' is not a class."));
             DDTIsSubClass((typeof(ITwo), typeof(Zero)), (7, false, "Type 'Ntt.ITwo' is not a class."));
+
+            DDTIsSubClass<Zero, Zero>((8, false, "Type 'Ntt.Zero' is no subclass of 'Ntt.Zero'."));
+            DDTIsSubClass<DerivesFromZero, Zero>((9, true, "Type 'Ntt.DerivesFromZero' is subclass of 'Ntt.Zero'."));
+            DDTIsSubClass<DerivesFromZero, ITwo>((10, false, "Type 'Ntt.ITwo' is not a class."));
+            DDTIsSubClass<ITwo, Zero>((11, false, "Type 'Ntt.ITwo' is not a class."));
+
+        }
+
+        void DDTIsSubClass<TType, TBase>((Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.If.Type.IsSubClass<{typeof(TType).Format()}, {typeof(TBase).Format()}>()",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.If.Type.IsSubClass<TType, TBase>(_file, _method),
+                expected, "Test.If.Type.IsSubClass", _file, _method);
 
         }
 
@@ -177,7 +141,7 @@ namespace Nuclear.TestSite.TestSuites {
         }
 
         [TestMethod]
-        void NotIsSubClass() {
+        void NotIsSubClassGeneric() {
 
             DDTNotIsSubClass((null, null), (1, false, "Parameter 'type' is null."));
             DDTNotIsSubClass((null, typeof(Zero)), (2, false, "Parameter 'type' is null."));
@@ -186,6 +150,22 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsSubClass((typeof(DerivesFromZero), typeof(Zero)), (5, false, "Type 'Ntt.DerivesFromZero' is subclass of 'Ntt.Zero'."));
             DDTNotIsSubClass((typeof(DerivesFromZero), typeof(ITwo)), (6, false, "Type 'Ntt.ITwo' is not a class."));
             DDTNotIsSubClass((typeof(ITwo), typeof(Zero)), (7, false, "Type 'Ntt.ITwo' is not a class."));
+
+            DDTNotIsSubClass<Zero, Zero>((8, true, "Type 'Ntt.Zero' is no subclass of 'Ntt.Zero'."));
+            DDTNotIsSubClass<DerivesFromZero, Zero>((9, false, "Type 'Ntt.DerivesFromZero' is subclass of 'Ntt.Zero'."));
+            DDTNotIsSubClass<DerivesFromZero, ITwo>((10, false, "Type 'Ntt.ITwo' is not a class."));
+            DDTNotIsSubClass<ITwo, Zero>((11, false, "Type 'Ntt.ITwo' is not a class."));
+
+        }
+
+        void DDTNotIsSubClass<TType, TBase>((Int32 count, Boolean result, String message) expected,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            Test.Note($"Test.IfNot.Type.IsSubClass<{typeof(TType).Format()}, {typeof(TBase).Format()}>()",
+                _file, _method);
+
+            Statics.DDTResultState(() => DummyTest.IfNot.Type.IsSubClass<TType, TBase>(_file, _method),
+                expected, "Test.IfNot.Type.IsSubClass", _file, _method);
 
         }
 

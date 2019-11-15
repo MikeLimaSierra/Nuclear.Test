@@ -1,11 +1,11 @@
-﻿using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Threading;
+using Nuclear.Extensions;
+using Nuclear.TestSite.Attributes;
+using Nuclear.TestSite.TestSuites.Proxies;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ActionTestSuite {
@@ -53,10 +53,10 @@ namespace Nuclear.TestSite.TestSuites {
         #region RaisesPropertyChangedEvent
 
         /// <summary>
-        /// Tests if <paramref name="action"/> on <paramref name="object"/> raises <see cref="INotifyPropertyChanged"/>.
+        /// Tests if <paramref name="action"/> raises one event of <see cref="INotifyPropertyChanged"/> on <paramref name="object"/>.
         /// </summary>
-        /// <param name="action">The action to be invoked on <paramref name="object"/>.</param>
-        /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
+        /// <param name="action">The action to be invoked.</param>
+        /// <param name="object">The object that raises the event.</param>
         /// <param name="eventData">The event data containing sender and arguments.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -104,10 +104,10 @@ namespace Nuclear.TestSite.TestSuites {
         }
 
         /// <summary>
-        /// Tests if <paramref name="action"/> on <paramref name="object"/> raises <see cref="INotifyPropertyChanged"/>.
+        /// Tests if <paramref name="action"/> raises one or many events of <see cref="INotifyPropertyChanged"/> on <paramref name="object"/>.
         /// </summary>
-        /// <param name="action">The action to be invoked on <paramref name="object"/>.</param>
-        /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
+        /// <param name="action">The action to be invoked.</param>
+        /// <param name="object">The object that raises the event.</param>
         /// <param name="eventDatas">The collection of event datas containing senders and arguments.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -160,11 +160,11 @@ namespace Nuclear.TestSite.TestSuites {
         #region RaisesEvent
 
         /// <summary>
-        /// Tests if <paramref name="action"/> on <paramref name="object"/> raises event with <typeparamref name="TEventArgs"/>.
+        /// Tests if <paramref name="action"/> raises one event with <typeparamref name="TEventArgs"/> on <paramref name="object"/>.
         /// </summary>
         /// <typeparam name="TEventArgs">The expected type of event arguments.</typeparam>
-        /// <param name="action">The action to be invoked on <paramref name="object"/>.</param>
-        /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
+        /// <param name="action">The action to be invoked.</param>
+        /// <param name="object">The object that raises the event.</param>
         /// <param name="eventName">The name of the event to be raised.</param>
         /// <param name="eventData">The event data containing sender and arguments.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -237,11 +237,11 @@ namespace Nuclear.TestSite.TestSuites {
         }
 
         /// <summary>
-        /// Tests if <paramref name="action"/> on <paramref name="object"/> raises events with <typeparamref name="TEventArgs"/>.
+        /// Tests if <paramref name="action"/> raises one or many events with <typeparamref name="TEventArgs"/> on <paramref name="object"/>.
         /// </summary>
         /// <typeparam name="TEventArgs">The expected type of event arguments.</typeparam>
-        /// <param name="action">The action to be invoked on <paramref name="object"/>.</param>
-        /// <param name="object">The object to invoke <paramref name="action"/> on.</param>
+        /// <param name="action">The action to be invoked.</param>
+        /// <param name="object">The object that raises the event.</param>
         /// <param name="eventName">The name of the event to be raised.</param>
         /// <param name="eventDatas">The collection of event datas containing senders and arguments.</param>
         /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
@@ -311,42 +311,6 @@ namespace Nuclear.TestSite.TestSuites {
             } finally {
                 eventInfo.GetRemoveMethod().Invoke(@object, new Object[] { d });
             }
-        }
-
-        #endregion
-
-        #region private classes
-
-        private class EventProxy<TEventArgs>
-            where TEventArgs : EventArgs {
-
-            internal Boolean EventRaised { get; private set; } = false;
-
-            internal EventData<TEventArgs> EventData { get; private set; }
-
-            internal void OnEventRaised(Object sender, TEventArgs e) {
-                EventRaised = true;
-                EventData = new EventData<TEventArgs>(sender, e);
-            }
-
-        }
-
-        private class MultiEventProxy<TEventArgs>
-            where TEventArgs : EventArgs {
-
-            private Int32 _raiseCount = 0;
-
-            internal Int32 RaiseCount => _raiseCount;
-
-            internal Boolean EventRaised => RaiseCount > 0;
-
-            internal EventDataCollection<TEventArgs> EventData { get; private set; } = new EventDataCollection<TEventArgs>();
-
-            internal void OnEventRaised(Object sender, TEventArgs e) {
-                Interlocked.Increment(ref _raiseCount);
-                EventData.Add(new EventData<TEventArgs>(sender, e));
-            }
-
         }
 
         #endregion
