@@ -6,14 +6,14 @@ namespace Nuclear.TestSite.Results {
     /// <summary>
     /// Key definition for test results of a fully qualified test method.
     /// </summary>
-    public class ResultKeyMethodLevel : Tuple<String, String, ProcessorArchitecture, String, String, String> {
+    public class ResultKey : Tuple<String, String, ProcessorArchitecture, String, String, String> {
 
         #region statics
 
         /// <summary>
-        /// Gets an empty instance of <see cref="ResultKeyMethodLevel"/>.
+        /// Gets an empty instance of <see cref="ResultKey"/>.
         /// </summary>
-        public static ResultKeyMethodLevel Empty => new ResultKeyMethodLevel(null, null, ProcessorArchitecture.None, null, null, null);
+        public static ResultKey Empty => new ResultKey(null, null, ProcessorArchitecture.None, null, null, null);
 
         #endregion
 
@@ -96,45 +96,45 @@ namespace Nuclear.TestSite.Results {
         #region ctors
 
         /// <summary>
-        /// Creates a new instance of <see cref="ResultKeyMethodLevel"/>.
+        /// Creates a new instance of <see cref="ResultKey"/>.
         /// </summary>
         /// <param name="key">The <see cref="ResultKeyAssemblyNameLevel"/> part of the key.</param>
-        public ResultKeyMethodLevel(ResultKeyAssemblyNameLevel key)
+        public ResultKey(ResultKeyAssemblyNameLevel key)
             : this(key.Assembly) { }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ResultKeyMethodLevel"/>.
+        /// Creates a new instance of <see cref="ResultKey"/>.
         /// </summary>
         /// <param name="key">The <see cref="ResultKeyTargetRuntimeLevel"/> part of the key.</param>
-        public ResultKeyMethodLevel(ResultKeyTargetRuntimeLevel key)
+        public ResultKey(ResultKeyTargetRuntimeLevel key)
             : this(key.Assembly, key.TargetRuntime) { }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ResultKeyMethodLevel"/>.
+        /// Creates a new instance of <see cref="ResultKey"/>.
         /// </summary>
         /// <param name="key">The <see cref="ResultKeyArchitectureLevel"/> part of the key.</param>
-        public ResultKeyMethodLevel(ResultKeyArchitectureLevel key)
+        public ResultKey(ResultKeyArchitectureLevel key)
             : this(key.Assembly, key.TargetRuntime, key.Architecture) { }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ResultKeyMethodLevel"/>.
+        /// Creates a new instance of <see cref="ResultKey"/>.
         /// </summary>
         /// <param name="key">The <see cref="ResultKeyExecutionRuntimeLevel"/> part of the key.</param>
-        public ResultKeyMethodLevel(ResultKeyExecutionRuntimeLevel key)
+        public ResultKey(ResultKeyExecutionRuntimeLevel key)
             : this(key.Assembly, key.TargetRuntime, key.Architecture, key.ExecutionRuntime) { }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ResultKeyMethodLevel"/>.
+        /// Creates a new instance of <see cref="ResultKey"/>.
         /// </summary>
         /// <param name="key">The <see cref="ResultKeyFileLevel"/> part of the key.</param>
-        public ResultKeyMethodLevel(ResultKeyFileLevel key)
+        public ResultKey(ResultKeyFileLevel key)
             : this(key.Assembly, key.TargetRuntime, key.Architecture, key.ExecutionRuntime, key.File) { }
 
         /// <summary>
         /// Creates a new instance of <see cref="ResultKeyFileLevel"/>.
         /// </summary>
         /// <param name="_assembly">The assembly name part of the key.</param>
-        public ResultKeyMethodLevel(String _assembly)
+        public ResultKey(String _assembly)
             : this(_assembly, null) { }
 
         /// <summary>
@@ -142,7 +142,7 @@ namespace Nuclear.TestSite.Results {
         /// </summary>
         /// <param name="_assembly">The assembly name part of the key.</param>
         /// <param name="_targetRuntime">The target assembly part of the key.</param>
-        public ResultKeyMethodLevel(String _assembly, String _targetRuntime)
+        public ResultKey(String _assembly, String _targetRuntime)
             : this(_assembly, _targetRuntime, ProcessorArchitecture.None) { }
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_assembly">The assembly name part of the key.</param>
         /// <param name="_targetRuntime">The target assembly part of the key.</param>
         /// <param name="_architecture">The processor architecture part of the key.</param>
-        public ResultKeyMethodLevel(String _assembly, String _targetRuntime, ProcessorArchitecture _architecture)
+        public ResultKey(String _assembly, String _targetRuntime, ProcessorArchitecture _architecture)
             : this(_assembly, _targetRuntime, _architecture, null) { }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_targetRuntime">The target assembly part of the key.</param>
         /// <param name="_architecture">The processor architecture part of the key.</param>
         /// <param name="_executionRuntime">The execution runtime part of the key.</param>
-        public ResultKeyMethodLevel(String _assembly, String _targetRuntime, ProcessorArchitecture _architecture, String _executionRuntime)
+        public ResultKey(String _assembly, String _targetRuntime, ProcessorArchitecture _architecture, String _executionRuntime)
             : this(_assembly, _targetRuntime, _architecture, _executionRuntime, null) { }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_architecture">The processor architecture part of the key.</param>
         /// <param name="_executionRuntime">The execution runtime part of the key.</param>
         /// <param name="_file">The file name part of the key.</param>
-        public ResultKeyMethodLevel(String _assembly, String _targetRuntime, ProcessorArchitecture _architecture, String _executionRuntime, String _file)
+        public ResultKey(String _assembly, String _targetRuntime, ProcessorArchitecture _architecture, String _executionRuntime, String _file)
             : this(_assembly, _targetRuntime, _architecture, _executionRuntime, _file, null) { }
 
         /// <summary>
@@ -184,15 +184,15 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_executionRuntime">The execution runtime part of the key.</param>
         /// <param name="_file">The file name part of the key.</param>
         /// <param name="_method">The method name part of the key.</param>
-        public ResultKeyMethodLevel(String _assembly, String _targetRuntime, ProcessorArchitecture _architecture, String _executionRuntime, String _file, String _method)
+        public ResultKey(String _assembly, String _targetRuntime, ProcessorArchitecture _architecture, String _executionRuntime, String _file, String _method)
             : base(_assembly, _targetRuntime, _architecture, _executionRuntime, _file, _method) { }
 
         /// <summary>
-        /// Creates a new instance of <see cref="ResultKeyMethodLevel"/>.
+        /// Creates a new instance of <see cref="ResultKey"/>.
         /// </summary>
         /// <param name="key">The <see cref="ResultKeyFileLevel"/> part of the key.</param>
         /// <param name="_method">The method name part of the key.</param>
-        public ResultKeyMethodLevel(ResultKeyFileLevel key, String _method)
+        public ResultKey(ResultKeyFileLevel key, String _method)
             : base(key.Assembly, key.TargetRuntime, key.Architecture, key.ExecutionRuntime, key.File, _method) { }
 
         #endregion

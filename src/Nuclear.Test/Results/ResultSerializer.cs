@@ -23,7 +23,7 @@ namespace Nuclear.Test.Results {
             using(MemoryStream ms = new MemoryStream()) {
                 ms.Write(results.Count);
 
-                foreach(KeyValuePair<ResultKeyMethodLevel, TestResultCollection> result in results) {
+                foreach(KeyValuePair<ResultKey, TestResultCollection> result in results) {
                     ms.Write(result.Key);
                     ms.Write(result.Value);
                 }

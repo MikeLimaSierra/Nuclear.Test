@@ -271,12 +271,12 @@ namespace Nuclear.Test.Extensions {
         #region custom reads
 
         /// <summary>
-        /// Reads a <see cref="ResultKeyMethodLevel"/> from a <see cref="Stream"/>.
+        /// Reads a <see cref="ResultKey"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="ResultKeyMethodLevel"/> that was read from <paramref name="_this"/>.</returns>
-        public static ResultKeyMethodLevel ReadResultKey(this Stream _this)
-            => new ResultKeyMethodLevel(_this.ReadString(), _this.ReadString(), (ProcessorArchitecture) _this.ReadInt32(), _this.ReadString(), _this.ReadString(), _this.ReadString());
+        /// <returns>The <see cref="ResultKey"/> that was read from <paramref name="_this"/>.</returns>
+        public static ResultKey ReadResultKey(this Stream _this)
+            => new ResultKey(_this.ReadString(), _this.ReadString(), (ProcessorArchitecture) _this.ReadInt32(), _this.ReadString(), _this.ReadString(), _this.ReadString());
 
         /// <summary>
         /// Reads a <see cref="TestResult"/> from a <see cref="Stream"/>.
@@ -313,11 +313,11 @@ namespace Nuclear.Test.Extensions {
         #region custom writes
 
         /// <summary>
-        /// Writes a <see cref="ResultKeyMethodLevel"/> to a <see cref="Stream"/>.
+        /// Writes a <see cref="ResultKey"/> to a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="key">The <see cref="ResultKeyMethodLevel"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, ResultKeyMethodLevel key) {
+        /// <param name="key">The <see cref="ResultKey"/> that is written to <paramref name="_this"/>.</param>
+        public static void Write(this Stream _this, ResultKey key) {
             _this.Write(key.Assembly);
             _this.Write(key.TargetRuntime);
             _this.Write((Int32) key.Architecture);

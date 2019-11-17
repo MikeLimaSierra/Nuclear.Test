@@ -157,12 +157,12 @@ namespace Nuclear.Test.Output {
                     .Select(_group => _group.Key)
                     .ToList();
                 keys.Sort();
-                keys.ForEach(_method => PrintResults(results, new ResultKeyMethodLevel(key, _method)));
+                keys.ForEach(_method => PrintResults(results, new ResultKey(key, _method)));
             }
         }
 
         // method level
-        private void PrintResults(TestResultMap results, ResultKeyMethodLevel key) {
+        private void PrintResults(TestResultMap results, ResultKey key) {
             TestResultCollection result = results[key];
 
             if(!result.HasFails && Configuration.Verbosity < Verbosity.Method) { return; }
