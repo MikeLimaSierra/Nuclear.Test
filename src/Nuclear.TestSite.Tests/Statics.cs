@@ -34,8 +34,8 @@ namespace Nuclear.TestSite {
 
         #region methods
 
-        internal static ResultKey GetKey([CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => new ResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, Path.GetFileNameWithoutExtension(_file), _method);
+        internal static TestResultKey GetKey([CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            => new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, Path.GetFileNameWithoutExtension(_file), _method);
 
         internal static TestResultCollection GetResults(ITestResultsEndPoint results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results.ResultMap.GetOrAdd(GetKey(_file, _method), new TestResultCollection());

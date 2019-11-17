@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Results;
 using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Output {
@@ -157,12 +158,12 @@ namespace Nuclear.Test.Output {
                     .Select(_group => _group.Key)
                     .ToList();
                 keys.Sort();
-                keys.ForEach(_method => PrintResults(results, new ResultKey(key, _method)));
+                keys.ForEach(_method => PrintResults(results, (TestResultKey) key));
             }
         }
 
         // method level
-        private void PrintResults(TestResultMap results, ResultKey key) {
+        private void PrintResults(TestResultMap results, TestResultKey key) {
             TestResultCollection result = results[key];
 
             if(!result.HasFails && Configuration.Verbosity < Verbosity.Method) { return; }

@@ -70,15 +70,15 @@ namespace Nuclear.TestSite {
         public void Clear() => ResultMap.Clear();
 
         public void PrepareResults(MethodInfo _method)
-            => ResultMap.GetOrAdd(new ResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
+            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
                 new TestResultCollection());
 
         public void CollectResult(TestResult result, String _file, String _method)
-            => ResultMap.GetOrAdd(new ResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _file, _method),
+            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _file, _method),
                 new TestResultCollection()).Add(result);
 
         public void FailTestMethod(MethodInfo _method, Exception ex)
-            => ResultMap.GetOrAdd(new ResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
+            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
                 new TestResultCollection()).Exception = ex.ToString();
 
         #endregion

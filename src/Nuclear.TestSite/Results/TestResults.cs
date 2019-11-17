@@ -91,7 +91,7 @@ namespace Nuclear.TestSite.Results {
         /// </summary>
         /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
         public void PrepareResults(MethodInfo _method)
-            => ResultMap.GetOrAdd(new ResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
+            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
                 new TestResultCollection());
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_file">The test class name (actually the filename of the test method source).</param>
         /// <param name="_method">The test method name.</param>
         public void CollectResult(TestResult result, String _file, String _method)
-            => ResultMap.GetOrAdd(new ResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _file, _method),
+            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _file, _method),
                 new TestResultCollection()).Add(result);
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
         /// <param name="ex">The <see cref="Exception"/> that was thrown.</param>
         public void FailTestMethod(MethodInfo _method, Exception ex)
-            => ResultMap.GetOrAdd(new ResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
+            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
                 new TestResultCollection()).Exception = ex.ToString();
 
         #endregion

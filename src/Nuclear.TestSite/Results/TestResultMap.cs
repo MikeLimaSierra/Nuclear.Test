@@ -9,24 +9,24 @@ namespace Nuclear.TestSite.Results {
     /// <summary>
     /// Implements a threadsafe collection of <see cref="TestResultCollection"/> that maps to assembly name, <see cref="ProcessorArchitecture"/>, runtime version, class name and method name.
     /// </summary>
-    public class TestResultMap : ConcurrentDictionary<ResultKey, TestResultCollection>, IResultAggregation {
+    public class TestResultMap : ConcurrentDictionary<TestResultKey, TestResultCollection>, IResultAggregation {
 
         #region properties
 
         /// <summary>
         /// Gets the total number of results.
         /// </summary>
-        public Int32 ResultsTotal => GetResultsTotal(ResultKey.Empty);
+        public Int32 ResultsTotal => GetResultsTotal(TestResultKey.Empty);
 
         /// <summary>
         /// Gets the number of successful results.
         /// </summary>
-        public Int32 ResultsOk => GetResultsOk(ResultKey.Empty);
+        public Int32 ResultsOk => GetResultsOk(TestResultKey.Empty);
 
         /// <summary>
         /// Gets the number of failed results.
         /// </summary>
-        public Int32 ResultsFailed => GetResultsFailed(ResultKey.Empty);
+        public Int32 ResultsFailed => GetResultsFailed(TestResultKey.Empty);
 
         /// <summary>
         /// Gets if the collection contains failed results.
@@ -46,7 +46,7 @@ namespace Nuclear.TestSite.Results {
         /// Creates a new instance of <see cref="TestResultMap"/>.
         /// </summary>
         /// <param name="collection">The initial collection.</param>
-        public TestResultMap(IEnumerable<KeyValuePair<ResultKey, TestResultCollection>> collection) : base(collection) { }
+        public TestResultMap(IEnumerable<KeyValuePair<TestResultKey, TestResultCollection>> collection) : base(collection) { }
 
         #endregion
 
@@ -57,12 +57,17 @@ namespace Nuclear.TestSite.Results {
         /// </summary>
         /// <param name="results">The other <see cref="TestResultMap"/>.</param>
         public void AddRange(TestResultMap results) {
-            foreach(KeyValuePair<ResultKey, TestResultCollection> result in results) {
-                AddOrUpdate(result.Key, result.Value, (ResultKey key, TestResultCollection value) => result.Value);
+            foreach(KeyValuePair<TestResultKey, TestResultCollection> result in results) {
+                AddOrUpdate(result.Key, result.Value, (TestResultKey key, TestResultCollection value) => result.Value);
             }
         }
 
-        private IEnumerable<KeyValuePair<ResultKey, TestResultCollection>> FilterResults(ResultKey key)
+        /// <summary>
+        /// Gets a set of <see cref="TestResultCollection"/> that matches the specified <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The <see cref="TestResultKey"/> used to filter results.</param>
+        /// <returns>A set of <see cref="TestResultCollection"/> and their specific keys.</returns>
+        public IEnumerable<KeyValuePair<TestResultKey, TestResultCollection>> FilterResults(TestResultKey key)
             => this.Where(kvp => key.Assembly == null || kvp.Key.Assembly == key.Assembly)
                    .Where(kvp => key.TargetRuntime == null || kvp.Key.TargetRuntime == key.TargetRuntime)
                    .Where(kvp => key.Architecture == ProcessorArchitecture.None || kvp.Key.Architecture == key.Architecture)
@@ -78,148 +83,25 @@ namespace Nuclear.TestSite.Results {
         /// Gets the total number of results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(ResultKeyAssemblyNameLevel key) => GetResultsTotal(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the total number of results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(ResultKeyTargetRuntimeLevel key) => GetResultsTotal(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the total number of results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(ResultKeyArchitectureLevel key) => GetResultsTotal(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the total number of results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(ResultKeyExecutionRuntimeLevel key) => GetResultsTotal(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the total number of results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(ResultKeyFileLevel key) => GetResultsTotal(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the total number of results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsTotal(ResultKey key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsTotal);
-
+        public Int32 GetResultsTotal(TestResultKey key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsTotal);
 
         /// <summary>
         /// Gets the number of successful results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(ResultKeyAssemblyNameLevel key) => GetResultsOk(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of successful results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(ResultKeyTargetRuntimeLevel key) => GetResultsOk(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of successful results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(ResultKeyArchitectureLevel key) => GetResultsOk(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of successful results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(ResultKeyExecutionRuntimeLevel key) => GetResultsOk(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of successful results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(ResultKeyFileLevel key) => GetResultsOk(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of successful results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsOk(ResultKey key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsOk);
-
+        public Int32 GetResultsOk(TestResultKey key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsOk);
 
         /// <summary>
         /// Gets the number of failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(ResultKeyAssemblyNameLevel key) => GetResultsFailed(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(ResultKeyTargetRuntimeLevel key) => GetResultsFailed(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(ResultKeyArchitectureLevel key) => GetResultsFailed(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(ResultKeyExecutionRuntimeLevel key) => GetResultsFailed(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(ResultKeyFileLevel key) => GetResultsFailed(new ResultKey(key));
-
-        /// <summary>
-        /// Gets the number of failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Int32 GetResultsFailed(ResultKey key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsFailed);
-
+        public Int32 GetResultsFailed(TestResultKey key) => FilterResults(key).Sum(kvp => kvp.Value.ResultsFailed);
 
         /// <summary>
         /// Gets if the collection contains failed results for the given <paramref name="key"/>.
         /// </summary>
         /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(ResultKeyAssemblyNameLevel key) => HasFailedTests(new ResultKey(key));
-
-        /// <summary>
-        /// Gets if the collection contains failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(ResultKeyTargetRuntimeLevel key) => HasFailedTests(new ResultKey(key));
-
-        /// <summary>
-        /// Gets if the collection contains failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(ResultKeyArchitectureLevel key) => HasFailedTests(new ResultKey(key));
-
-        /// <summary>
-        /// Gets if the collection contains failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(ResultKeyExecutionRuntimeLevel key) => HasFailedTests(new ResultKey(key));
-
-        /// <summary>
-        /// Gets if the collection contains failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(ResultKeyFileLevel key) => HasFailedTests(new ResultKey(key));
-
-        /// <summary>
-        /// Gets if the collection contains failed results for the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key to filter by.</param>
-        public Boolean HasFailedTests(ResultKey key) => FilterResults(key).Where(kvp => !String.IsNullOrWhiteSpace(kvp.Value.Exception)).Count() > 0;
+        public Boolean HasFailedTests(TestResultKey key) => FilterResults(key).Where(kvp => !String.IsNullOrWhiteSpace(kvp.Value.Exception)).Count() > 0;
 
         #endregion
 
