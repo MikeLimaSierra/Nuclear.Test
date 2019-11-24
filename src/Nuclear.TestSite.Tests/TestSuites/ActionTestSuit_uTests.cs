@@ -211,7 +211,7 @@ namespace Nuclear.TestSite.TestSuites {
                 (expected.count, expected.result, expected.message), "Test.If.Action.RaisesPropertyChangedEvent", _file, _method);
 
             if(expected.eventDatas != null) {
-                Test.If.Enumeration.MatchesExactly(eventDatas, expected.eventDatas, new PropertyChangedEventDataEqualityComparer(), _file, _method);
+                Test.If.Enumerable.MatchesExactly(eventDatas, expected.eventDatas, new PropertyChangedEventDataEqualityComparer(), _file, _method);
             }
 
         }
@@ -258,7 +258,7 @@ namespace Nuclear.TestSite.TestSuites {
                 (expected.count, expected.result, expected.message), "Test.IfNot.Action.RaisesPropertyChangedEvent", _file, _method);
 
             if(expected.eventDatas != null) {
-                Test.If.Enumeration.MatchesExactly(eventDatas, expected.eventDatas, new PropertyChangedEventDataEqualityComparer(), _file, _method);
+                Test.If.Enumerable.MatchesExactly(eventDatas, expected.eventDatas, new PropertyChangedEventDataEqualityComparer(), _file, _method);
             }
 
         }
@@ -423,7 +423,7 @@ namespace Nuclear.TestSite.TestSuites {
                 (expected.count, expected.result, expected.message), "Test.If.Action.RaisesEvent", _file, _method);
 
             if(expected.eventDatas != null) {
-                Test.If.Enumeration.MatchesExactly(eventDatas, expected.eventDatas, input.comparer, _file, _method);
+                Test.If.Enumerable.MatchesExactly(eventDatas, expected.eventDatas, input.comparer, _file, _method);
             }
 
         }
@@ -483,7 +483,7 @@ namespace Nuclear.TestSite.TestSuites {
                 (expected.count, expected.result, expected.message), "Test.IfNot.Action.RaisesEvent", _file, _method);
 
             if(expected.eventDatas != null) {
-                Test.If.Enumeration.MatchesExactly(eventDatas, expected.eventDatas, input.comparer, _file, _method);
+                Test.If.Enumerable.MatchesExactly(eventDatas, expected.eventDatas, input.comparer, _file, _method);
             }
 
         }

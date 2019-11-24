@@ -8,7 +8,7 @@ using Nuclear.Extensions;
 using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
-    class EnumerationTestSuite_uTests {
+    class EnumerableTestSuite_uTests {
 
         #region IsEmpty
 
@@ -32,20 +32,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTIsEmpty(IEnumerable input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.IsEmpty({input.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.IsEmpty({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.IsEmpty(input, _file, _method),
-                expected, "Test.If.Enumeration.IsEmpty", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.IsEmpty(input, _file, _method),
+                expected, "Test.If.Enumerable.IsEmpty", _file, _method);
 
         }
 
         void DDTIsEmptyT<T>(IEnumerable<T> input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.IsEmpty<{typeof(T).Format()}>({input.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.IsEmpty<{typeof(T).Format()}>({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.IsEmpty(input, _file, _method),
-                expected, "Test.If.Enumeration.IsEmpty", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.IsEmpty(input, _file, _method),
+                expected, "Test.If.Enumerable.IsEmpty", _file, _method);
 
         }
 
@@ -69,20 +69,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotIsEmpty(IEnumerable input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.IsEmpty({input.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.IsEmpty({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.IsEmpty(input, _file, _method),
-                expected, "Test.IfNot.Enumeration.IsEmpty", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.IsEmpty(input, _file, _method),
+                expected, "Test.IfNot.Enumerable.IsEmpty", _file, _method);
 
         }
 
         void DDTNotIsEmptyT<T>(IEnumerable<T> input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.IsEmpty<{typeof(T).Format()}>({input.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.IsEmpty<{typeof(T).Format()}>({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.IsEmpty(input, _file, _method),
-                expected, "Test.IfNot.Enumeration.IsEmpty", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.IsEmpty(input, _file, _method),
+                expected, "Test.IfNot.Enumerable.IsEmpty", _file, _method);
 
         }
 
@@ -108,20 +108,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTContainsNull(IEnumerable input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsNull({input.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsNull({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsNull(input, _file, _method),
-                expected, "Test.If.Enumeration.ContainsNull", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsNull(input, _file, _method),
+                expected, "Test.If.Enumerable.ContainsNull", _file, _method);
 
         }
 
         void DDTContainsNullT<T>(IEnumerable<T> input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsNull<{typeof(T).Format()}>({input.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsNull<{typeof(T).Format()}>({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsNull(input, _file, _method),
-                expected, "Test.If.Enumeration.ContainsNull", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsNull(input, _file, _method),
+                expected, "Test.If.Enumerable.ContainsNull", _file, _method);
 
         }
 
@@ -143,20 +143,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotContainsNull(IEnumerable input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsNull({input.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsNull({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsNull(input, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsNull", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsNull(input, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsNull", _file, _method);
 
         }
 
         void DDTNotContainsNullT<T>(IEnumerable<T> input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsNull<{typeof(T).Format()}>({input.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsNull<{typeof(T).Format()}>({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsNull(input, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsNull", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsNull(input, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsNull", _file, _method);
 
         }
 
@@ -184,20 +184,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTContainsNonNull(IEnumerable input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsNonNull({input.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsNonNull({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsNonNull(input, _file, _method),
-                expected, "Test.If.Enumeration.ContainsNonNull", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsNonNull(input, _file, _method),
+                expected, "Test.If.Enumerable.ContainsNonNull", _file, _method);
 
         }
 
         void DDTContainsNonNullT<T>(IEnumerable<T> input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsNonNull<{typeof(T).Format()}>({input.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsNonNull<{typeof(T).Format()}>({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsNonNull(input, _file, _method),
-                expected, "Test.If.Enumeration.ContainsNonNull", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsNonNull(input, _file, _method),
+                expected, "Test.If.Enumerable.ContainsNonNull", _file, _method);
 
         }
 
@@ -221,20 +221,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotContainsNonNull(IEnumerable input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsNonNull({input.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsNonNull({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsNonNull(input, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsNonNull", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsNonNull(input, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsNonNull", _file, _method);
 
         }
 
         void DDTNotContainsNonNullT<T>(IEnumerable<T> input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsNonNull<{typeof(T).Format()}>({input.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsNonNull<{typeof(T).Format()}>({input.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsNonNull(input, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsNonNull", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsNonNull(input, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsNonNull", _file, _method);
 
         }
 
@@ -264,20 +264,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTContains((IEnumerable enumeration, Object element) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Contains({input.enumeration.Format()}, {input.element.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Contains({input.enumeration.Format()}, {input.element.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Contains(input.enumeration, input.element, _file, _method),
-                expected, "Test.If.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Contains(input.enumeration, input.element, _file, _method),
+                expected, "Test.If.Enumerable.Contains", _file, _method);
 
         }
 
         void DDTContainsT<T>((IEnumerable<T> enumeration, T element) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.element.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.element.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Contains(input.enumeration, input.element, _file, _method),
-                expected, "Test.If.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Contains(input.enumeration, input.element, _file, _method),
+                expected, "Test.If.Enumerable.Contains", _file, _method);
 
         }
 
@@ -303,20 +303,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotContains((IEnumerable enumeration, Object element) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Contains({input.enumeration.Format()}, {input.element.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Contains({input.enumeration.Format()}, {input.element.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Contains(input.enumeration, input.element, _file, _method),
-                expected, "Test.IfNot.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Contains(input.enumeration, input.element, _file, _method),
+                expected, "Test.IfNot.Enumerable.Contains", _file, _method);
 
         }
 
         void DDTNotContainsT<T>((IEnumerable<T> enumeration, T element) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.element.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.element.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Contains(input.enumeration, input.element, _file, _method),
-                expected, "Test.IfNot.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Contains(input.enumeration, input.element, _file, _method),
+                expected, "Test.IfNot.Enumerable.Contains", _file, _method);
 
         }
 
@@ -365,30 +365,30 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTContainsWithComparer<T>((IEnumerable<T> enumeration, T element, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Contains({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Contains({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Contains(input.enumeration, input.element, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Contains(input.enumeration, input.element, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.Contains", _file, _method);
 
         }
 
         void DDTContainsWithComparer((IEnumerable enumeration, Object element, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Contains({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Contains({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Contains(input.enumeration, input.element, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Contains(input.enumeration, input.element, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.Contains", _file, _method);
 
         }
 
         void DDTContainsWithComparer<T>((IEnumerable<T> enumeration, T element, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Contains(input.enumeration, input.element, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Contains(input.enumeration, input.element, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.Contains", _file, _method);
 
         }
 
@@ -433,30 +433,30 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotContainsWithComparer<T>((IEnumerable<T> enumeration, T element, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Contains({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Contains({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Contains(input.enumeration, input.element, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Contains(input.enumeration, input.element, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.Contains", _file, _method);
 
         }
 
         void DDTNotContainsWithComparer((IEnumerable enumeration, Object element, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Contains({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Contains({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Contains(input.enumeration, input.element, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Contains(input.enumeration, input.element, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.Contains", _file, _method);
 
         }
 
         void DDTNotContainsWithComparer<T>((IEnumerable<T> enumeration, T element, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.element.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Contains(input.enumeration, input.element, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Contains(input.enumeration, input.element, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.Contains", _file, _method);
 
         }
 
@@ -490,20 +490,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTContainsWithFilter((IEnumerable enumeration, Predicate<Object> predicate) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Contains({input.enumeration.Format()}, {input.predicate.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Contains({input.enumeration.Format()}, {input.predicate.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Contains(input.enumeration, input.predicate, _file, _method),
-                expected, "Test.If.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Contains(input.enumeration, input.predicate, _file, _method),
+                expected, "Test.If.Enumerable.Contains", _file, _method);
 
         }
 
         void DDTContainsWithFilterT<T>((IEnumerable<T> enumeration, Predicate<T> predicate) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.predicate.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.predicate.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Contains(input.enumeration, input.predicate, _file, _method),
-                expected, "Test.If.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Contains(input.enumeration, input.predicate, _file, _method),
+                expected, "Test.If.Enumerable.Contains", _file, _method);
 
         }
 
@@ -533,20 +533,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotContainsWithFilter((IEnumerable enumeration, Predicate<Object> predicate) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Contains({input.enumeration.Format()}, {input.predicate.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Contains({input.enumeration.Format()}, {input.predicate.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Contains(input.enumeration, input.predicate, _file, _method),
-                expected, "Test.IfNot.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Contains(input.enumeration, input.predicate, _file, _method),
+                expected, "Test.IfNot.Enumerable.Contains", _file, _method);
 
         }
 
         void DDTNotContainsWithFilterT<T>((IEnumerable<T> enumeration, Predicate<T> predicate) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.predicate.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Contains<{typeof(T).Format()}>({input.enumeration.Format()}, {input.predicate.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Contains(input.enumeration, input.predicate, _file, _method),
-                expected, "Test.IfNot.Enumeration.Contains", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Contains(input.enumeration, input.predicate, _file, _method),
+                expected, "Test.IfNot.Enumerable.Contains", _file, _method);
 
         }
 
@@ -588,20 +588,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTContainsRange((IEnumerable enumeration, IEnumerable elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsRange({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsRange({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsRange(input.enumeration, input.elements, _file, _method),
-                expected, "Test.If.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsRange(input.enumeration, input.elements, _file, _method),
+                expected, "Test.If.Enumerable.ContainsRange", _file, _method);
 
         }
 
         void DDTContainsRangeT<T>((IEnumerable<T> enumeration, IEnumerable<T> elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsRange(input.enumeration, input.elements, _file, _method),
-                expected, "Test.If.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsRange(input.enumeration, input.elements, _file, _method),
+                expected, "Test.If.Enumerable.ContainsRange", _file, _method);
 
         }
 
@@ -639,20 +639,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotContainsRange((IEnumerable enumeration, IEnumerable elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsRange({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsRange({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsRange(input.enumeration, input.elements, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsRange(input.enumeration, input.elements, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsRange", _file, _method);
 
         }
 
         void DDTNotContainsRangeT<T>((IEnumerable<T> enumeration, IEnumerable<T> elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsRange(input.enumeration, input.elements, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsRange(input.enumeration, input.elements, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsRange", _file, _method);
 
         }
 
@@ -719,30 +719,30 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTContainsRangeComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.ContainsRange", _file, _method);
 
         }
 
         void DDTContainsRangeComparer((IEnumerable enumeration, IEnumerable elements, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsRange({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsRange({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.ContainsRange", _file, _method);
 
         }
 
         void DDTContainsRangeComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.ContainsRange", _file, _method);
 
         }
 
@@ -805,30 +805,30 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotContainsRangeComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsRange", _file, _method);
 
         }
 
         void DDTNotContainsRangeComparer((IEnumerable enumeration, IEnumerable elements, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsRange({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsRange({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsRange", _file, _method);
 
         }
 
         void DDTNotContainsRangeComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.ContainsRange<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.ContainsRange", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.ContainsRange(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.ContainsRange", _file, _method);
 
         }
 
@@ -874,20 +874,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTMatches((IEnumerable enumeration, IEnumerable elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Matches({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Matches({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Matches(input.enumeration, input.elements, _file, _method),
-                expected, "Test.If.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Matches(input.enumeration, input.elements, _file, _method),
+                expected, "Test.If.Enumerable.Matches", _file, _method);
 
         }
 
         void DDTMatchesT<T>((IEnumerable<T> enumeration, IEnumerable<T> elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Matches(input.enumeration, input.elements, _file, _method),
-                expected, "Test.If.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Matches(input.enumeration, input.elements, _file, _method),
+                expected, "Test.If.Enumerable.Matches", _file, _method);
 
         }
 
@@ -929,20 +929,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotMatches((IEnumerable enumeration, IEnumerable elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Matches({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Matches({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Matches(input.enumeration, input.elements, _file, _method),
-                expected, "Test.IfNot.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Matches(input.enumeration, input.elements, _file, _method),
+                expected, "Test.IfNot.Enumerable.Matches", _file, _method);
 
         }
 
         void DDTNotMatchesT<T>((IEnumerable<T> enumeration, IEnumerable<T> elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Matches(input.enumeration, input.elements, _file, _method),
-                expected, "Test.IfNot.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Matches(input.enumeration, input.elements, _file, _method),
+                expected, "Test.IfNot.Enumerable.Matches", _file, _method);
 
         }
 
@@ -1015,30 +1015,30 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTMatchesComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.Matches", _file, _method);
 
         }
 
         void DDTMatchesComparer((IEnumerable enumeration, IEnumerable elements, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Matches({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Matches({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.Matches", _file, _method);
 
         }
 
         void DDTMatchesComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.Matches", _file, _method);
 
         }
 
@@ -1107,30 +1107,30 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotMatchesComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.Matches", _file, _method);
 
         }
 
         void DDTNotMatchesComparer((IEnumerable enumeration, IEnumerable elements, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Matches({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Matches({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.Matches", _file, _method);
 
         }
 
         void DDTNotMatchesComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.Matches<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.Matches", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.Matches(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.Matches", _file, _method);
 
         }
 
@@ -1176,20 +1176,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTMatchesExactly((IEnumerable enumeration, IEnumerable elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.MatchesExactly({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.MatchesExactly({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.MatchesExactly(input.enumeration, input.elements, _file, _method),
-                expected, "Test.If.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.MatchesExactly(input.enumeration, input.elements, _file, _method),
+                expected, "Test.If.Enumerable.MatchesExactly", _file, _method);
 
         }
 
         void DDTMatchesExactlyT<T>((IEnumerable<T> enumeration, IEnumerable<T> elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.MatchesExactly(input.enumeration, input.elements, _file, _method),
-                expected, "Test.If.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.MatchesExactly(input.enumeration, input.elements, _file, _method),
+                expected, "Test.If.Enumerable.MatchesExactly", _file, _method);
 
         }
 
@@ -1231,20 +1231,20 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotMatchesExactly((IEnumerable enumeration, IEnumerable elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.MatchesExactly({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.MatchesExactly({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.MatchesExactly(input.enumeration, input.elements, _file, _method),
-                expected, "Test.IfNot.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.MatchesExactly(input.enumeration, input.elements, _file, _method),
+                expected, "Test.IfNot.Enumerable.MatchesExactly", _file, _method);
 
         }
 
         void DDTNotMatchesExactlyT<T>((IEnumerable<T> enumeration, IEnumerable<T> elements) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.MatchesExactly(input.enumeration, input.elements, _file, _method),
-                expected, "Test.IfNot.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.MatchesExactly(input.enumeration, input.elements, _file, _method),
+                expected, "Test.IfNot.Enumerable.MatchesExactly", _file, _method);
 
         }
 
@@ -1317,30 +1317,30 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTMatchesExactlyComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.MatchesExactly", _file, _method);
 
         }
 
         void DDTMatchesExactlyComparer((IEnumerable enumeration, IEnumerable elements, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.MatchesExactly({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.MatchesExactly({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.MatchesExactly", _file, _method);
 
         }
 
         void DDTMatchesExactlyComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.If.Enumeration.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.If.Enumerable.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.If.Enumeration.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.If.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.If.Enumerable.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.If.Enumerable.MatchesExactly", _file, _method);
 
         }
 
@@ -1409,30 +1409,30 @@ namespace Nuclear.TestSite.TestSuites {
         void DDTNotMatchesExactlyComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, EqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.MatchesExactly", _file, _method);
 
         }
 
         void DDTNotMatchesExactlyComparer((IEnumerable enumeration, IEnumerable elements, IEqualityComparer comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.MatchesExactly({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.MatchesExactly({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.MatchesExactly", _file, _method);
 
         }
 
         void DDTNotMatchesExactlyComparer<T>((IEnumerable<T> enumeration, IEnumerable<T> elements, IEqualityComparer<T> comparer) input, (Int32 count, Boolean result, String message) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
-            Test.Note($"Test.IfNot.Enumeration.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
+            Test.Note($"Test.IfNot.Enumerable.MatchesExactly<{typeof(T).Format()}>({input.enumeration.Format()}, {input.elements.Format()}, {input.comparer.FormatType()})", _file, _method);
 
-            Statics.DDTResultState(() => DummyTest.IfNot.Enumeration.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
-                expected, "Test.IfNot.Enumeration.MatchesExactly", _file, _method);
+            Statics.DDTResultState(() => DummyTest.IfNot.Enumerable.MatchesExactly(input.enumeration, input.elements, input.comparer, _file, _method),
+                expected, "Test.IfNot.Enumerable.MatchesExactly", _file, _method);
 
         }
 
