@@ -319,19 +319,503 @@ namespace Nuclear.TestSite.TestSuites {
 
         #endregion
 
-        #region IsLess
+        #region IsLessThan
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable"/>.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThan(value1, value2);
+        /// </code>
+        /// </example>
+        public void IsLessThan<T>(T value, T other,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable => IsLessThan(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable{T}"/>.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThan(value1, value2);
+        /// </code>
+        /// </example>
+        public void IsLessThanT<T>(T value, T other,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable<T> => IsLessThan(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="Comparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThan(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsLessThan<T>(T value, T other, Comparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsLessThan(value, other, comparer as IComparer<T>, _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="IComparer"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThan(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsLessThan<T>(T value, T other, IComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsLessThan(value, other, DynamicComparer<T>.From(comparer), _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThan(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsLessThan<T>(T value, T other, IComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Boolean result = false;
+
+            try {
+                result = comparer.LessThan(value, other);
+
+            } catch(Exception ex) {
+                FailTest($"Comparer threw Exception: {ex.Message.Format()}",
+                    _file, _method);
+                return;
+            }
+
+            InternalTest(result, $"[Value = {value.Format()}; Other = {other.Format()}]",
+                _file, _method);
+        }
 
         #endregion
 
-        #region IsLessOrEquals
+        #region IsLessThanOrEquals
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable"/>.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThanOrEquals(value1, value2);
+        /// </code>
+        /// </example>
+        public void IsLessThanOrEquals<T>(T value, T other,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable => IsLessThanOrEquals(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable{T}"/>.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThanOrEquals(value1, value2);
+        /// </code>
+        /// </example>
+        public void IsLessThanOrEqualsT<T>(T value, T other,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable<T> => IsLessThanOrEquals(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="Comparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThanOrEquals(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsLessThanOrEquals<T>(T value, T other, Comparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsLessThanOrEquals(value, other, comparer as IComparer<T>, _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="IComparer"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThanOrEquals(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsLessThanOrEquals<T>(T value, T other, IComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsLessThanOrEquals(value, other, DynamicComparer<T>.From(comparer), _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is less than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsLessThanOrEquals(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsLessThanOrEquals<T>(T value, T other, IComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Boolean result = false;
+
+            try {
+                result = comparer.LessThanOrEquals(value, other);
+
+            } catch(Exception ex) {
+                FailTest($"Comparer threw Exception: {ex.Message.Format()}",
+                    _file, _method);
+                return;
+            }
+
+            InternalTest(result, $"[Value = {value.Format()}; Other = {other.Format()}]",
+                _file, _method);
+        }
 
         #endregion
 
-        #region IsGreater
+        #region IsGreaterThan
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable"/>.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThan(value1, value2);
+        /// </code>
+        /// </example>
+        public void IsGreaterThan<T>(T value, T other,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable => IsGreaterThan(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable{T}"/>.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThan(value1, value2);
+        /// </code>
+        /// </example>
+        public void IsGreaterThanT<T>(T value, T other,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable<T> => IsGreaterThan(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="Comparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThan(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsGreaterThan<T>(T value, T other, Comparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsGreaterThan(value, other, comparer as IComparer<T>, _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="IComparer"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThan(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsGreaterThan<T>(T value, T other, IComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsGreaterThan(value, other, DynamicComparer<T>.From(comparer), _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/>.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThan(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsGreaterThan<T>(T value, T other, IComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Boolean result = false;
+
+            try {
+                result = comparer.GreaterThan(value, other);
+
+            } catch(Exception ex) {
+                FailTest($"Comparer threw Exception: {ex.Message.Format()}",
+                    _file, _method);
+                return;
+            }
+
+            InternalTest(result, $"[Value = {value.Format()}; Other = {other.Format()}]",
+                _file, _method);
+        }
 
         #endregion
 
-        #region IsGreaterOrEquals
+        #region IsGreaterThanOrEquals
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable"/>.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThanOrEquals(value1, value2);
+        /// </code>
+        /// </example>
+        public void IsGreaterThanOrEquals<T>(T value, T other,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable => IsGreaterThanOrEquals(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare - must derive from <see cref="IComparable{T}"/>.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThanOrEquals(value1, value2);
+        /// </code>
+        /// </example>
+        public void IsGreaterThanOrEqualsT<T>(T value, T other,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            where T : IComparable<T> => IsGreaterThanOrEquals(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="Comparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThanOrEquals(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsGreaterThanOrEquals<T>(T value, T other, Comparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsGreaterThanOrEquals(value, other, comparer as IComparer<T>, _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="IComparer"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThanOrEquals(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsGreaterThanOrEquals<T>(T value, T other, IComparer comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            IsGreaterThanOrEquals(value, other, DynamicComparer<T>.From(comparer), _file, _method);
+        }
+
+        /// <summary>
+        /// Tests if <paramref name="value"/> is greater than <paramref name="other"/> or equal.
+        /// </summary>
+        /// <typeparam name="T">The type of the objects to compare.</typeparam>
+        /// <param name="value">The value that is checked against <paramref name="other"/>.</param>
+        /// <param name="other">The other value.</param>
+        /// <param name="comparer">The <see cref="IComparer{T}"/> to be used for comparison.</param>
+        /// <param name="_file">The file name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
+        /// <example>
+        /// <code>
+        /// Test.If.Value.IsGreaterThanOrEquals(value1, value2, new MyComparer());
+        /// </code>
+        /// </example>
+        public void IsGreaterThanOrEquals<T>(T value, T other, IComparer<T> comparer,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+
+            if(comparer == null) {
+                FailTest("Parameter 'comparer' is null.", _file, _method);
+                return;
+            }
+
+            Boolean result = false;
+
+            try {
+                result = comparer.GreaterThanOrEquals(value, other);
+
+            } catch(Exception ex) {
+                FailTest($"Comparer threw Exception: {ex.Message.Format()}",
+                    _file, _method);
+                return;
+            }
+
+            InternalTest(result, $"[Value = {value.Format()}; Other = {other.Format()}]",
+                _file, _method);
+        }
 
         #endregion
 
@@ -439,7 +923,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </example>
         public void IsClamped<T>(T value, T min, T max,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where T : IComparable => IsClamped(value, min, max, Comparer<T>.Create(new Comparison<T>((x, y) => x.CompareTo(y))), _file, _method);
+            where T : IComparable => IsClamped(value, min, max, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
 
         /// <summary>
         /// Tests if <paramref name="value"/> is clamped in a given inclusive range.
@@ -457,7 +941,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </example>
         public void IsClampedT<T>(T value, T min, T max,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where T : IComparable<T> => IsClamped(value, min, max, Comparer<T>.Create(new Comparison<T>((x, y) => x.CompareTo(y))), _file, _method);
+            where T : IComparable<T> => IsClamped(value, min, max, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
 
         /// <summary>
         /// Tests if <paramref name="value"/> is clamped in a given inclusive range.
@@ -584,7 +1068,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </example>
         public void IsClampedExclusive<T>(T value, T min, T max,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where T : IComparable => IsClampedExclusive(value, min, max, Comparer<T>.Create(new Comparison<T>((x, y) => x.CompareTo(y))), _file, _method);
+            where T : IComparable => IsClampedExclusive(value, min, max, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
 
         /// <summary>
         /// Tests if <paramref name="value"/> is clamped in a given exclusive range.
@@ -602,7 +1086,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </example>
         public void IsClampedExclusiveT<T>(T value, T min, T max,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where T : IComparable<T> => IsClampedExclusive(value, min, max, Comparer<T>.Create(new Comparison<T>((x, y) => x.CompareTo(y))), _file, _method);
+            where T : IComparable<T> => IsClampedExclusive(value, min, max, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
 
         /// <summary>
         /// Tests if <paramref name="value"/> is clamped in a given exclusive range.

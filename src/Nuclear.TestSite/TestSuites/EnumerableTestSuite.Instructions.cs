@@ -7,7 +7,7 @@ using Nuclear.Extensions;
 using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
-    public partial class EnumerationTestSuite {
+    public partial class EnumerableTestSuite {
 
         #region IsEmpty
 

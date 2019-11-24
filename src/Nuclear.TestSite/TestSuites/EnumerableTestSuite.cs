@@ -8,7 +8,7 @@ namespace Nuclear.TestSite.TestSuites {
     /// Provides conditional test instructions for enumerations.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial class EnumerationTestSuite : TestSuite {
+    public partial class EnumerableTestSuite : TestSuite {
 
         #region fields
 
@@ -18,7 +18,7 @@ namespace Nuclear.TestSite.TestSuites {
 
         #region ctors
 
-        internal EnumerationTestSuite(TestSuiteCollection parent) {
+        internal EnumerableTestSuite(TestSuiteCollection parent) {
             _parent = parent;
         }
 
