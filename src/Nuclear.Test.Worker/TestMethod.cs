@@ -12,7 +12,7 @@ namespace Nuclear.Test.Worker {
 
         private MethodInfo _method;
 
-        private ITestResultsEndPoint _results;
+        private ITestResultsSink _results;
 
         #endregion
 
@@ -37,7 +37,7 @@ namespace Nuclear.Test.Worker {
         /// </summary>
         /// <param name="results">The test results sink to use.</param>
         /// <param name="method">The method to invoke.</param>
-        internal TestMethod(ITestResultsEndPoint results, MethodInfo method) {
+        internal TestMethod(ITestResultsSink results, MethodInfo method) {
             Throw.If.Null(results, "results");
             Throw.If.Null(method, "method");
 

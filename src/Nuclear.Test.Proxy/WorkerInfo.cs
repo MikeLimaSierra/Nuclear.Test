@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Nuclear.Test.NetVersions;
+using Nuclear.TestSite;
 
 namespace Nuclear.Test.Proxy {
 
@@ -14,7 +14,7 @@ namespace Nuclear.Test.Proxy {
         /// <summary>
         /// Gets the runtime platform.
         /// </summary>
-        public NetPlatforms Platform { get; }
+        public FrameworkIdentifiers Platform { get; }
 
         /// <summary>
         /// Gets the runtime version
@@ -45,7 +45,7 @@ namespace Nuclear.Test.Proxy {
         /// </summary>
         /// <param name="targetRuntime">The target runtime that is associated with this object.</param>
         /// <param name="executable">The attached executable.</param>
-        public WorkerInfo((NetPlatforms platform, Version version) targetRuntime, FileInfo executable) {
+        public WorkerInfo((FrameworkIdentifiers platform, Version version) targetRuntime, FileInfo executable) {
             Platform = targetRuntime.platform;
             Version = targetRuntime.version;
             Executable = executable;

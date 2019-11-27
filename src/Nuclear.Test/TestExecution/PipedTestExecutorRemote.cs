@@ -51,7 +51,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Gets the test results sink that is in use.
         /// </summary>
-        protected ITestResultsEndPoint Results { get; private set; }
+        protected TestResults Results { get; } = new TestResults();
 
         /// <summary>
         /// Gets the <see cref="NamedPipeServerStream"/> that is used for communication.
@@ -75,19 +75,16 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Creates a new instance of <see cref="PipedTestExecutorRemote"/>.
         /// </summary>
-        /// <param name="results">The test results sink to use.</param>
         /// <param name="executable">The test client executable to start.</param>
         /// <param name="file">The test assembly file.</param>
         /// <param name="testConfig">The test configuration.</param>
         /// <param name="outputConfig">The output configuration.</param>
-        public PipedTestExecutorRemote(ITestResultsEndPoint results, FileInfo executable, FileInfo file, TestConfiguration testConfig, OutputConfiguration outputConfig) {
-            Throw.If.Null(results, "results");
+        public PipedTestExecutorRemote(FileInfo executable, FileInfo file, TestConfiguration testConfig, OutputConfiguration outputConfig) {
             Throw.If.Null(executable, "executable");
             Throw.If.Null(file, "file");
             Throw.If.Null(testConfig, "testConfig");
             Throw.If.Null(outputConfig, "outputConfig");
 
-            Results = results;
             Executable = executable;
             File = file;
             TestConfiguration = testConfig;
@@ -102,7 +99,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Creates the process, thread and pipe required to remote control the test client.
         /// </summary>
-        public void Execute() {
+        public ITestResultsSource Execute() {
             if(Executable != null && Executable.Exists) {
                 if(!_processStarted) {
                     _processStarted = true;
@@ -120,6 +117,8 @@ namespace Nuclear.Test.TestExecution {
                 DiagnosticOutput.LogError("Unable to find file at '{0}'", Executable != null ? Executable.FullName : "null");
                 _exitEvent.Set();
             }
+
+            return Results;
         }
 
         /// <summary>
@@ -161,8 +160,8 @@ namespace Nuclear.Test.TestExecution {
                     if(TryReceiveResultData(pipeStream, out Byte[] data)) {
                         TestDataAvailable?.Invoke(this, new TestDataAvailableEventArgs(data));
 
-                        if(ResultSerializer.TryDeserialize(data, out TestResultMap results)) {
-                            Results.ResultMap.AddRange(results);
+                        if(ResultSerializer.TryDeserialize(data, out TestResults results)) {
+                            Results.Add(results.Values);
                         }
                     }
                 }

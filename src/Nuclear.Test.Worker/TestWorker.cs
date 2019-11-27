@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Versioning;
 using System.Threading.Tasks;
 using Nuclear.Test.Output;
 using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;
+using Nuclear.TestSite;
 using Nuclear.TestSite.Attributes;
 using Nuclear.TestSite.Results;
 
@@ -16,10 +16,10 @@ namespace Nuclear.Test.Worker {
 
         #region ctors
 
-        internal TestWorker(ITestResultsEndPoint results, String pipeName)
-            : base(results, pipeName) {
+        internal TestWorker(String pipeName)
+            : base(pipeName) {
 
-            TestSite.Test.SetTestResultsEndPoint(Results);
+            TestSite.Test.SetTestResultsSink(Results);
 
             HeaderContent.Add(@" _   _               _                    _____           _   ");
             HeaderContent.Add(@"| \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_ ");
@@ -39,16 +39,21 @@ namespace Nuclear.Test.Worker {
         #region protected methods
 
         protected override void ExecuteInternal() {
-            TestSite.Test.SetAssemblyInfo(
-                TestAssemblyName.Name,
-                TestAssembly.GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName,
-                TestAssemblyName.ProcessorArchitecture,
-                Assembly.GetEntryAssembly().GetCustomAttribute<TargetFrameworkAttribute>().FrameworkName);
+            (FrameworkIdentifiers platform, Version version) testAssemblyInfo = NetVersionTree.GetTargetRuntimeFromAssembly(TestAssembly);
+            Assembly executionAssembly = Assembly.GetEntryAssembly();
+            (FrameworkIdentifiers platform, Version version) executionAssemblyInfo = NetVersionTree.GetTargetRuntimeFromAssembly(executionAssembly);
+
+            TestScenario scenario = new TestScenario(TestAssemblyName.Name,
+                testAssemblyInfo.platform, testAssemblyInfo.version, TestAssemblyName.ProcessorArchitecture,
+                executionAssemblyInfo.platform, executionAssemblyInfo.version, executionAssembly.GetName().ProcessorArchitecture);
+
+            Results.Initialize(scenario);
+            TestSite.Test.SetTestResultsSink(Results);
 
             CollectTestMethods(TestAssembly, Results, out List<TestMethod> sequential, out List<TestMethod> parallel);
             InvokeTestMethods(sequential, parallel);
 
-            if(ResultSerializer.TrySerialize(Results.ResultMap, out Byte[] data)) {
+            if(ResultSerializer.TrySerialize(Results, out Byte[] data)) {
                 OutputConfiguration.ClientsAwaitInput |= !TrySendResultData(PipeStream, data);
 
             } else {
@@ -60,7 +65,7 @@ namespace Nuclear.Test.Worker {
 
         #region private methods
 
-        private void CollectTestMethods(Assembly assembly, ITestResultsEndPoint results, out List<TestMethod> sequentialTestMethods, out List<TestMethod> parallelTestMethods) {
+        private void CollectTestMethods(Assembly assembly, ITestResultsSink results, out List<TestMethod> sequentialTestMethods, out List<TestMethod> parallelTestMethods) {
             sequentialTestMethods = new List<TestMethod>();
             parallelTestMethods = new List<TestMethod>();
 

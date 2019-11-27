@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Nuclear.Exceptions;
+using Nuclear.Test.Results;
 using Nuclear.TestSite.Results;
 using Nuclear.TestSite.TestSuites;
 
@@ -20,66 +22,65 @@ namespace Nuclear.TestSite {
         #region ctors
 
         static DummyTest() {
-            DummyTestResults.Instance.Architecture = Statics.Architecture;
-            DummyTestResults.Instance.TargetRuntime = Statics.TargetRuntime;
-            DummyTestResults.Instance.AssemblyName = Statics.AssemblyName;
-            DummyTestResults.Instance.ExecutionRuntime = Statics.ExecutionRuntime;
+            DummyTestResults.Instance.Initialize(Statics._scenario);
         }
 
         #endregion
 
         #region methods
 
-        public static void Note(String note, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-            TestResult result = new TestResult(note);
-            DummyTestResults.Instance.CollectResult(result, Path.GetFileNameWithoutExtension(_file), _method);
-        }
+        public static void Note(String note, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            => DummyTestResults.Instance.Add(note, Path.GetFileNameWithoutExtension(_file), _method);
 
         #endregion
 
     }
 
-    class DummyTestResults : ITestResultsEndPoint {
+    class DummyTestResults : ITestResultsSink, ITestResultsSource {
 
-        #region properties
+        #region fields
 
-        public static ITestResultsEndPoint Instance { get; } = new DummyTestResults();
-
-        public TestResultMap ResultMap { get; } = new TestResultMap();
-
-        public String AssemblyName { get; set; }
-
-        public String TargetRuntime { get; set; }
-
-        public ProcessorArchitecture Architecture { get; set; }
-
-        public String ExecutionRuntime { get; set; }
+        private ConcurrentDictionary<TestResultKey, TestMethodResult> _results { get; } = new ConcurrentDictionary<TestResultKey, TestMethodResult>();
 
         #endregion
 
-        #region ctors
+        #region properties
 
-        private DummyTestResults() {
-            Throw.IfNot.Null(Instance, "Instance", "Constructor must not be called twice.");
-        }
+        internal static DummyTestResults Instance { get; } = new DummyTestResults();
+
+        public TestScenario Scenario { get; private set; }
+
+        public IEnumerable<KeyValuePair<TestResultKey, TestMethodResult>> Values => _results;
+
+        public IEnumerable<TestResultKey> Keys => _results.Keys;
+
+        public IEnumerable<TestMethodResult> Results => _results.Values;
+
+        public TestMethodResult this[TestResultKey key] => _results.GetOrAdd(key, new TestMethodResult());
 
         #endregion
 
         #region methods
 
-        public void Clear() => ResultMap.Clear();
+        public void Initialize(TestScenario scenario) => Scenario = scenario;
+
+        public void Clear() => _results.Clear();
 
         public void PrepareResults(MethodInfo _method)
-            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
-                new TestResultCollection());
+            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
+                new TestMethodResult());
 
-        public void CollectResult(TestResult result, String _file, String _method)
-            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _file, _method),
-                new TestResultCollection()).Add(result);
+        public void Add(Boolean result, String testInstruction, String message, String _file, String _method)
+            => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
+                new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(result, testInstruction, message));
+
+        public void Add(String message, String _file, String _method)
+            => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
+                new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(message));
 
         public void FailTestMethod(MethodInfo _method, Exception ex)
-            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
-                new TestResultCollection()).Exception = ex.ToString();
+            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
+                new TestMethodResult()).Fail(ex.ToString());
 
         #endregion
 

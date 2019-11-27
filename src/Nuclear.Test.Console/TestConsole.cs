@@ -5,8 +5,8 @@ using System.Reflection;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Output;
+using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Console {
 
@@ -20,7 +20,7 @@ namespace Nuclear.Test.Console {
 
         #region ctors
 
-        internal TestConsole(ITestResultsEndPoint results, TestConfiguration testConfiguration, OutputConfiguration outputConfiguration) : base(results) {
+        internal TestConsole(TestConfiguration testConfiguration, OutputConfiguration outputConfiguration) {
             Throw.If.Null(testConfiguration, "testConfiguration");
             Throw.If.Null(outputConfiguration, "outputConfiguration");
 
@@ -45,7 +45,7 @@ namespace Nuclear.Test.Console {
 
         #region public methods
 
-        public override TestResultMap Execute() {
+        public override ITestResultsSource Execute() {
             base.Execute();
 
             List<ProxyInfo> proxyInfos = GetProxyInfos(Files);
@@ -53,14 +53,14 @@ namespace Nuclear.Test.Console {
 
             foreach(ProxyInfo proxyInfo in proxyInfos) {
                 if(proxyInfo.HasExecutable && proxyInfo.Executable.Exists && proxyInfo.HasFile && proxyInfo.File.Exists) {
-                    remotes.Add(new PipedTestExecutorRemote(Results, proxyInfo.Executable, proxyInfo.File, TestConfiguration, OutputConfiguration));
+                    remotes.Add(new PipedTestExecutorRemote(proxyInfo.Executable, proxyInfo.File, TestConfiguration, OutputConfiguration));
                 }
             }
 
-            remotes.ForEach(remote => remote.Execute());
+            remotes.ForEach(remote => Results.Add(remote.Execute().Values));
             remotes.ForEach(remote => remote.WaitToExit());
 
-            return Results.ResultMap;
+            return Results;
         }
 
         #endregion

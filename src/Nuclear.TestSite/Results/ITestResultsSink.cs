@@ -6,34 +6,14 @@ namespace Nuclear.TestSite.Results {
     /// <summary>
     /// Defines a result sink.
     /// </summary>
-    public interface ITestResultsEndPoint {
+    public interface ITestResultsSink {
 
         #region properties
 
         /// <summary>
-        /// Gets the collection of results.
+        /// Gets the current test scenario.
         /// </summary>
-        TestResultMap ResultMap { get; }
-
-        /// <summary>
-        /// Gets or sets the assembly name.
-        /// </summary>
-        String AssemblyName { get; set; }
-
-        /// <summary>
-        /// Gets or sets the targeted runtime.
-        /// </summary>
-        String TargetRuntime { get; set; }
-
-        /// <summary>
-        /// Gets or sets the processor architecture.
-        /// </summary>
-        ProcessorArchitecture Architecture { get; set; }
-
-        /// <summary>
-        /// Gets or sets the executed runtime.
-        /// </summary>
-        String ExecutionRuntime { get; set; }
+        TestScenario Scenario { get; }
 
         #endregion
 
@@ -51,12 +31,22 @@ namespace Nuclear.TestSite.Results {
         void PrepareResults(MethodInfo _method);
 
         /// <summary>
-        /// Collects a given <see cref="TestResult"/> and maps that to the combination of architecture, assembly, class and method.
+        /// Adds a given test result.
         /// </summary>
-        /// <param name="result">The <see cref="TestResult"/> to collect.</param>
+        /// <param name="result">The success state.</param>
+        /// <param name="testInstruction">The test instruction.</param>
+        /// <param name="message">The message.</param>
         /// <param name="_file">The test class name (actually the filename of the test method source).</param>
         /// <param name="_method">The test method name.</param>
-        void CollectResult(TestResult result, String _file, String _method);
+        void Add(Boolean result, String testInstruction, String message, String _file, String _method);
+
+        /// <summary>
+        /// Adds a given test note.
+        /// </summary>
+        /// <param name="message">The message that is to be displayed as note.</param>
+        /// <param name="_file">The test class name (actually the filename of the test method source).</param>
+        /// <param name="_method">The test method name.</param>
+        void Add(String message, String _file, String _method);
 
         /// <summary>
         /// Sets an entire test method to failed with an <see cref="Exception"/>.
@@ -64,6 +54,16 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
         /// <param name="ex">The <see cref="Exception"/> that was thrown.</param>
         void FailTestMethod(MethodInfo _method, Exception ex);
+
+        #endregion
+
+        #region methods
+
+        /// <summary>
+        /// Initializes the <see cref="ITestResultsSink"/> by giving a <see cref="TestScenario"/>.
+        /// </summary>
+        /// <param name="scenario">The <see cref="TestScenario"/> relevant to the results.</param>
+        void Initialize(TestScenario scenario);
 
         #endregion
 

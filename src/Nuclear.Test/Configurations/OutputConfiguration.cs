@@ -1,4 +1,5 @@
 ﻿using System;
+using Nuclear.Test.ConsolePrinter;
 
 namespace Nuclear.Test.Configurations {
 
@@ -36,7 +37,7 @@ namespace Nuclear.Test.Configurations {
         /// <summary>
         /// Gets or sets the verbosity of the results output.
         /// </summary>
-        public Verbosity Verbosity { get; set; }
+        public PrintVerbosity Verbosity { get; set; }
 
         /// <summary>
         /// Gets or sets if client processes should be started in visible windows.

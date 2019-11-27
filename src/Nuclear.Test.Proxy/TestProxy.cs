@@ -5,9 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Nuclear.Test.Configurations;
-using Nuclear.Test.NetVersions;
 using Nuclear.Test.TestExecution;
-using Nuclear.TestSite.Results;
+using Nuclear.TestSite;
 
 namespace Nuclear.Test.Proxy {
 
@@ -15,7 +14,8 @@ namespace Nuclear.Test.Proxy {
 
         #region ctors
 
-        internal TestProxy(ITestResultsEndPoint results, String pipeName) : base(results, pipeName) {
+        internal TestProxy(String pipeName)
+            : base(pipeName) {
 
             HeaderContent.Add(@" _   _               _                    _____           _   ");
             HeaderContent.Add(@"| \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_ ");
@@ -52,13 +52,13 @@ namespace Nuclear.Test.Proxy {
 
             foreach(WorkerInfo workerInfo in workerInfos) {
                 if(workerInfo.ExecutionRequired && workerInfo.HasExecutable && workerInfo.Executable.Exists) {
-                    PipedTestExecutorRemote remote = new PipedTestExecutorRemote(Results, workerInfo.Executable, File, TestConfiguration, OutputConfiguration);
+                    PipedTestExecutorRemote remote = new PipedTestExecutorRemote(workerInfo.Executable, File, TestConfiguration, OutputConfiguration);
                     remote.TestDataAvailable += OnTestDataAvailable;
                     remotes.Add(remote);
                 }
             }
 
-            remotes.ForEach(remote => remote.Execute());
+            remotes.ForEach(remote => Results.Add(remote.Execute().Values));
             remotes.ForEach(remote => remote.WaitToExit());
         }
 
@@ -87,7 +87,7 @@ namespace Nuclear.Test.Proxy {
             Console.Write(sb);
         }
 
-        private Boolean TryGetWorker((NetPlatforms platform, Version version) framework, ProcessorArchitecture architecture, out FileInfo worker) {
+        private Boolean TryGetWorker((FrameworkIdentifiers platform, Version version) framework, ProcessorArchitecture architecture, out FileInfo worker) {
             worker = null;
 
             switch(architecture) {
@@ -101,9 +101,9 @@ namespace Nuclear.Test.Proxy {
             return worker != null;
         }
 
-        private List<WorkerInfo> GetWorkerInfos((NetPlatforms platform, Version version) targetRuntime, AssemblyName asmName) {
+        private List<WorkerInfo> GetWorkerInfos((FrameworkIdentifiers platform, Version version) targetRuntime, AssemblyName asmName) {
             List<WorkerInfo> workerInfos = new List<WorkerInfo>();
-            List<(NetPlatforms platform, Version version)> matchingRuntimes = NetVersionTree.GetMatchingTargetRuntimes(targetRuntime);
+            List<(FrameworkIdentifiers platform, Version version)> matchingRuntimes = NetVersionTree.GetMatchingTargetRuntimes(targetRuntime);
 
             matchingRuntimes.ForEach(_runtime => {
                 if(TryGetWorker(_runtime, asmName.ProcessorArchitecture, out FileInfo worker)) {
@@ -111,8 +111,8 @@ namespace Nuclear.Test.Proxy {
                 }
             });
 
-            List<NetPlatforms> platforms = matchingRuntimes.GroupBy(_runtime => _runtime.platform).Select(_group => _group.Key).ToList();
-            Dictionary<NetPlatforms, Version> maxVersions = new Dictionary<NetPlatforms, Version>();
+            List<FrameworkIdentifiers> platforms = matchingRuntimes.GroupBy(_runtime => _runtime.platform).Select(_group => _group.Key).ToList();
+            Dictionary<FrameworkIdentifiers, Version> maxVersions = new Dictionary<FrameworkIdentifiers, Version>();
 
             if(TestConfiguration.TestAllVersions) {
                 platforms.ForEach(_platform => maxVersions.Add(_platform, matchingRuntimes.Where(_runtime => _runtime.platform == _platform).Select(_runtime => _runtime.version).Max()));

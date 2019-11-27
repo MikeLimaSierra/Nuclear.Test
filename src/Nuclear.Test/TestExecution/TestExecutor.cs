@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
-using Nuclear.Test.NetVersions;
-using Nuclear.TestSite.Results;
+using Nuclear.Test.Results;
+using Nuclear.TestSite;
 
 namespace Nuclear.Test.TestExecution {
 
@@ -29,26 +28,12 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Gets the test results sink that is in use.
         /// </summary>
-        protected ITestResultsEndPoint Results { get; set; }
+        protected TestResults Results { get; } = new TestResults();
 
         /// <summary>
         /// Gets or sets the header content as a <see cref="List{String}"/>.
         /// </summary>
         protected List<String> HeaderContent { get; set; } = new List<String>();
-
-        #endregion
-
-        #region ctors
-
-        /// <summary>
-        /// Creates a new instance of <see cref="TestExecutor"/>
-        /// </summary>
-        /// <param name="results">The test results sink to use.</param>
-        public TestExecutor(ITestResultsEndPoint results) {
-            Throw.If.Null(results, "results");
-
-            Results = results;
-        }
 
         #endregion
 
@@ -58,15 +43,15 @@ namespace Nuclear.Test.TestExecution {
         /// Execute tests.
         /// </summary>
         /// <returns>The collective results of all executed tests.</returns>
-        public virtual TestResultMap Execute() {
+        public virtual ITestResultsSource Execute() {
             Assembly entryAsm = Assembly.GetEntryAssembly();
             AssemblyName entryAsmName = entryAsm.GetName();
-            (NetPlatforms platform, Version version) entryAsmtargetRuntime = NetVersionTree.GetTargetRuntimeFromAssembly(entryAsm);
+            (FrameworkIdentifiers platform, Version version) entryAsmtargetRuntime = NetVersionTree.GetTargetRuntimeFromAssembly(entryAsm);
 
             PrintProcessInfo(entryAsmName, entryAsmtargetRuntime);
             Console.Title = String.Format("{0} - {1} - {2}", entryAsmtargetRuntime, entryAsmName.ProcessorArchitecture, entryAsmName.Name);
 
-            return Results.ResultMap;
+            return Results;
         }
 
         #endregion
@@ -78,7 +63,7 @@ namespace Nuclear.Test.TestExecution {
         /// </summary>
         /// <param name="asmName"></param>
         /// <param name="targetRuntime"></param>
-        protected void PrintProcessInfo(AssemblyName asmName, (NetPlatforms platform, Version version) targetRuntime) {
+        protected void PrintProcessInfo(AssemblyName asmName, (FrameworkIdentifiers platform, Version version) targetRuntime) {
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
@@ -100,7 +85,7 @@ namespace Nuclear.Test.TestExecution {
         /// </summary>
         /// <param name="asmName"></param>
         /// <param name="targetRuntime"></param>
-        protected void PrintAssemblyInfo(AssemblyName asmName, (NetPlatforms platform, Version version) targetRuntime) {
+        protected void PrintAssemblyInfo(AssemblyName asmName, (FrameworkIdentifiers platform, Version version) targetRuntime) {
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
