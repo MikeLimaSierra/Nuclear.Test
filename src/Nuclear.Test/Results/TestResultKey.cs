@@ -4,11 +4,11 @@ using Nuclear.Extensions;
 using Nuclear.TestSite;
 
 namespace Nuclear.Test.Results {
-    public class TestResultKey : IEquatable<TestResultKey>, IComparable<TestResultKey> {
+    internal class TestResultKey : ITestResultKey {
 
         #region statics
 
-        public static TestResultKey Empty => new TestResultKey(null,
+        internal static ITestResultKey Empty => new TestResultKey(null,
             FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
             FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
             null, null);
@@ -81,10 +81,10 @@ namespace Nuclear.Test.Results {
 
         #region ctors
 
-        public TestResultKey(TestScenario scenario, MethodInfo methodInfo)
+        internal TestResultKey(ITestScenario scenario, MethodInfo methodInfo)
             : this(scenario, methodInfo.DeclaringType.Name, methodInfo.Name) { }
 
-        public TestResultKey(TestScenario scenario, String fileName, String methodName)
+        internal TestResultKey(ITestScenario scenario, String fileName, String methodName)
             : this(scenario.AssemblyName,
                   scenario.TargetFrameworkIdentifier,
                   scenario.TargetFrameworkVersion,
@@ -95,7 +95,7 @@ namespace Nuclear.Test.Results {
                   fileName,
                   methodName) { }
 
-        public TestResultKey(
+        internal TestResultKey(
             String assemblyName,
             FrameworkIdentifiers targetFrameworkIdentifier,
             Version targetFrameworkVersion,
@@ -121,7 +121,7 @@ namespace Nuclear.Test.Results {
 
         #region methods
 
-        public Boolean Matches(TestResultKey match) {
+        public Boolean Matches(ITestResultKey match) {
             if(match.HasAssemblyName && match.AssemblyName != AssemblyName) { return false; }
             if(match.HasTargetFrameworkIdentifier && match.TargetFrameworkIdentifier != TargetFrameworkIdentifier) { return false; }
             if(match.HasTargetFrameworkVersion && match.TargetFrameworkVersion != TargetFrameworkVersion) { return false; }
@@ -135,7 +135,7 @@ namespace Nuclear.Test.Results {
             return true;
         }
 
-        public TestResultKey Clip(TestResultKeyPrecisions precision) {
+        public ITestResultKey Clip(TestResultKeyPrecisions precision) {
             switch(precision) {
                 case TestResultKeyPrecisions.FileName:
                     return new TestResultKey(AssemblyName,
@@ -189,13 +189,21 @@ namespace Nuclear.Test.Results {
             return this;
         }
 
-        public Boolean Equals(TestResultKey other) {
+        public override Boolean Equals(Object obj) {
+            if(obj != null && obj is ITestResultKey other) {
+                return Equals(other);
+            }
+
+            return false;
+        }
+
+        public Boolean Equals(ITestResultKey other) {
             if(Precision != other.Precision) { return false; }
 
             return Equals(other, Precision);
         }
 
-        public Boolean Equals(TestResultKey other, TestResultKeyPrecisions precision) {
+        public Boolean Equals(ITestResultKey other, TestResultKeyPrecisions precision) {
             if(Precision != other.Precision) { return false; }
 
             switch(precision) {
@@ -236,7 +244,7 @@ namespace Nuclear.Test.Results {
             return false;
         }
 
-        public Int32 CompareTo(TestResultKey other) {
+        public Int32 CompareTo(ITestResultKey other) {
             if(!Equals(other)) {
                 Int32 result = AssemblyName.CompareTo(other.AssemblyName);
                 if(result != 0) { return result; }
@@ -269,10 +277,13 @@ namespace Nuclear.Test.Results {
             return 0;
         }
 
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
+        public override Int32 GetHashCode() => AssemblyName.GetHashCode()
+                + (Int32) TargetFrameworkIdentifier - TargetFrameworkVersion.GetHashCode() + (Int32) TargetArchitecture
+                - (Int32) TargetFrameworkIdentifier + TargetFrameworkVersion.GetHashCode() - (Int32) TargetArchitecture
+                + FileName.GetHashCode() - MethodName.GetHashCode();
+
         public override String ToString() =>
             $"{AssemblyName.Format()};{TargetFrameworkIdentifier.Format()};{TargetFrameworkVersion.Format()};{TargetArchitecture.Format()};{ExecutionFrameworkIdentifier.Format()};{ExecutionFrameworkVersion.Format()};{ExecutionArchitecture.Format()};{FileName.Format()};{MethodName.Format()}";
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 

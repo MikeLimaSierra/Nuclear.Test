@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Nuclear.Test.ConsolePrinter.Tree.Leafs;
 using Nuclear.Test.Results;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
     internal class MethodNode : TreeNode {
@@ -13,7 +12,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         internal override String Title => Key.MethodName;
 
-        internal TestMethodResult Results { get; private set; }
+        internal ITestMethodResult Results { get; private set; }
 
         internal List<TreeLeaf> Leafs { get; } = new List<TreeLeaf>();
 
@@ -21,14 +20,14 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region ctors
 
-        internal MethodNode(PrintVerbosity verbosity, TestResultKey key, ITestResultsSource results)
+        internal MethodNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultsSource results)
             : base(verbosity, key, results) {
 
             Results = results[key];
             Int32 index = 1;
 
             if(Verbosity > PrintVerbosity.MethodName || Results.Failed) {
-                foreach(TestInstructionResult result in Results.InstructionResults) {
+                foreach(ITestInstructionResult result in Results.InstructionResults) {
                     if(result.Result.HasValue) {
                         Leafs.Add(new ResultLeaf(Verbosity, result, index++));
                     } else {

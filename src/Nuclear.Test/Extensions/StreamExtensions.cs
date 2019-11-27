@@ -5,7 +5,6 @@ using System.Text;
 using Nuclear.Extensions;
 using Nuclear.Test.Results;
 using Nuclear.TestSite;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Extensions {
 
@@ -290,22 +289,22 @@ namespace Nuclear.Test.Extensions {
             => (ProcessorArchitecture) _this.ReadInt32();
 
         /// <summary>
-        /// Reads a <see cref="TestResultKey"/> from a <see cref="Stream"/>.
+        /// Reads a <see cref="ITestResultKey"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="TestResultKey"/> that was read from <paramref name="_this"/>.</returns>
-        public static TestResultKey ReadResultKey(this Stream _this)
+        /// <returns>The <see cref="ITestResultKey"/> that was read from <paramref name="_this"/>.</returns>
+        public static ITestResultKey ReadResultKey(this Stream _this)
             => new TestResultKey(_this.ReadString(),
                 _this.ReadMonikers(), new Version(_this.ReadString()), _this.ReadArchitecture(),
                 _this.ReadMonikers(), new Version(_this.ReadString()), _this.ReadArchitecture(),
                 _this.ReadString(), _this.ReadString());
 
         /// <summary>
-        /// Reads a <see cref="TestInstructionResult"/> from a <see cref="Stream"/>.
+        /// Reads a <see cref="ITestInstructionResult"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="TestInstructionResult"/> that was read from <paramref name="_this"/>.</returns>
-        public static TestInstructionResult ReadTestResult(this Stream _this) {
+        /// <returns>The <see cref="ITestInstructionResult"/> that was read from <paramref name="_this"/>.</returns>
+        public static ITestInstructionResult ReadTestResult(this Stream _this) {
             Boolean isResult = _this.ReadBoolean();
             if(isResult) {
                 return new TestInstructionResult(_this.ReadBoolean(), _this.ReadString(), _this.ReadString());
@@ -315,12 +314,12 @@ namespace Nuclear.Test.Extensions {
         }
 
         /// <summary>
-        /// Reads a <see cref="TestMethodResult"/> from a <see cref="Stream"/>.
+        /// Reads a <see cref="ITestMethodResult"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="TestMethodResult"/> that was read from <paramref name="_this"/>.</returns>
-        public static TestMethodResult ReadTestResults(this Stream _this) {
-            TestMethodResult results = new TestMethodResult();
+        /// <returns>The <see cref="ITestMethodResult"/> that was read from <paramref name="_this"/>.</returns>
+        public static ITestMethodResult ReadTestResults(this Stream _this) {
+            ITestMethodResult results = new TestMethodResult();
             results.Fail(_this.ReadString());
             Int32 count = _this.ReadInt32();
 
@@ -352,11 +351,11 @@ namespace Nuclear.Test.Extensions {
             => _this.Write((Int32) value);
 
         /// <summary>
-        /// Writes a <see cref="TestResultKey"/> to a <see cref="Stream"/>.
+        /// Writes a <see cref="ITestResultKey"/> to a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="key">The <see cref="TestResultKey"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, TestResultKey key) {
+        /// <param name="key">The <see cref="ITestResultKey"/> that is written to <paramref name="_this"/>.</param>
+        public static void Write(this Stream _this, ITestResultKey key) {
             _this.Write(key.AssemblyName);
             _this.Write(key.TargetFrameworkIdentifier);
             _this.Write(key.TargetFrameworkVersion.ToString());
@@ -369,11 +368,11 @@ namespace Nuclear.Test.Extensions {
         }
 
         /// <summary>
-        /// Writes a <see cref="TestInstructionResult"/> to a <see cref="Stream"/>.
+        /// Writes a <see cref="ITestInstructionResult"/> to a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="TestInstructionResult"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, TestInstructionResult value) {
+        /// <param name="value">The <see cref="ITestInstructionResult"/> that is written to <paramref name="_this"/>.</param>
+        public static void Write(this Stream _this, ITestInstructionResult value) {
             _this.Write(value.Result.HasValue);
 
             if(value.Result.HasValue) {
@@ -385,11 +384,11 @@ namespace Nuclear.Test.Extensions {
         }
 
         /// <summary>
-        /// Writes a <see cref="TestMethodResult"/> to a <see cref="Stream"/>.
+        /// Writes a <see cref="ITestMethodResult"/> to a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="values">The <see cref="TestMethodResult"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, TestMethodResult values) {
+        /// <param name="values">The <see cref="ITestMethodResult"/> that is written to <paramref name="_this"/>.</param>
+        public static void Write(this Stream _this, ITestMethodResult values) {
             _this.Write(values.FailMessage);
             _this.Write(values.InstructionResults.Count);
             values.InstructionResults.ForEach(value => _this.Write(value));

@@ -1,52 +1,19 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using Nuclear.Test.Results;
-using Nuclear.TestSite.Results;
-using Nuclear.TestSite.TestSuites;
+using Nuclear.TestSite;
 
-namespace Nuclear.TestSite {
-    static class DummyTest {
-
-        #region properties
-
-        public static TestSuiteCollection If { get; private set; } = new TestSuiteCollection(DummyTestResults.Instance);
-
-        public static TestSuiteCollection IfNot { get; private set; } = new TestSuiteCollection(DummyTestResults.Instance, invert: true);
-
-        #endregion
-
-        #region ctors
-
-        static DummyTest() {
-            DummyTestResults.Instance.Initialize(Statics._scenario);
-        }
-
-        #endregion
-
-        #region methods
-
-        public static void Note(String note, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => DummyTestResults.Instance.Add(note, Path.GetFileNameWithoutExtension(_file), _method);
-
-        #endregion
-
-    }
-
-    class DummyTestResults : ITestResultsSink, ITestResultsSource {
+namespace Nuclear.Test.Results {
+    internal class TestResultEndPoint : ITestResultEndPoint {
 
         #region fields
 
-        private ConcurrentDictionary<ITestResultKey, ITestMethodResult> _results { get; } = new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(new TestResultKeyEqualityComparer());
+        private readonly ConcurrentDictionary<ITestResultKey, ITestMethodResult> _results = new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(new TestResultKeyEqualityComparer());
 
         #endregion
 
         #region properties
-
-        internal static DummyTestResults Instance { get; } = new DummyTestResults();
 
         public ITestScenario Scenario { get; private set; }
 
@@ -61,6 +28,16 @@ namespace Nuclear.TestSite {
         #endregion
 
         #region methods
+
+        public void Add(ITestResultKey key, ITestMethodResult results)
+            => _results.AddOrUpdate(key, results, (_key, value) => results);
+
+        public void Add(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
+            foreach(KeyValuePair<ITestResultKey, ITestMethodResult> result in results) {
+                Add(result.Key, result.Value);
+            }
+        }
+
 
         public void Initialize(ITestScenario scenario) => Scenario = scenario;
 

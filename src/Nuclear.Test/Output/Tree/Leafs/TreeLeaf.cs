@@ -6,7 +6,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region properties
 
-        internal TestInstructionResult Result { get; private set; }
+        internal ITestInstructionResult Result { get; private set; }
 
         internal override Int32 Padding => 12;
 
@@ -14,7 +14,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region ctors
 
-        internal TreeLeaf(PrintVerbosity verbosity, TestInstructionResult result)
+        internal TreeLeaf(PrintVerbosity verbosity, ITestInstructionResult result)
             : base(verbosity) {
 
             Result = result;

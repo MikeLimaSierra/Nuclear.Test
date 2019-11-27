@@ -28,7 +28,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Gets the test results sink that is in use.
         /// </summary>
-        protected TestResults Results { get; } = new TestResults();
+        protected ITestResultEndPoint Results { get; } = new TestResultEndPoint();
 
         /// <summary>
         /// Gets or sets the header content as a <see cref="List{String}"/>.

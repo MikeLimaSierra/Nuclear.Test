@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Nuclear.Exceptions;
+using Nuclear.Test;
 using Nuclear.Test.Results;
 
 namespace Nuclear.TestSite {
@@ -11,7 +12,7 @@ namespace Nuclear.TestSite {
 
         #region fields
 
-        internal static TestScenario _scenario = null;
+        internal static ITestScenario _scenario = null;
 
         #endregion
 
@@ -34,18 +35,18 @@ namespace Nuclear.TestSite {
 
         #region methods
 
-        internal static TestResultKey GetKey([CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+        internal static ITestResultKey GetKey([CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
             Throw.If.Null(_scenario, "scenario");
             return new TestResultKey(_scenario, Path.GetFileNameWithoutExtension(_file), _method);
         }
 
-        internal static TestMethodResult GetResults(ITestResultsSource results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+        internal static ITestMethodResult GetResults(ITestResultsSource results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results[GetKey(_file, _method)];
 
-        internal static TestInstructionResult GetResult(ITestResultsSource results, Int32 index, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+        internal static ITestInstructionResult GetResult(ITestResultsSource results, Int32 index, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results[GetKey(_file, _method)].InstructionResults[index];
 
-        internal static TestInstructionResult GetLastResult(ITestResultsSource results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+        internal static ITestInstructionResult GetLastResult(ITestResultsSource results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results[GetKey(_file, _method)].InstructionResults.Last();
 
         internal static void DDTResultState(Action action, (Int32 count, Boolean result, String message) expected, String instruction,
@@ -53,8 +54,8 @@ namespace Nuclear.TestSite {
 
             Test.IfNot.Action.ThrowsException(action, out Exception ex, _file, _method);
 
-            TestMethodResult results = GetResults(DummyTestResults.Instance, _file, _method);
-            TestInstructionResult lastResult = GetLastResult(DummyTestResults.Instance, _file, _method);
+            ITestMethodResult results = GetResults(DummyTestResults.Instance, _file, _method);
+            ITestInstructionResult lastResult = GetLastResult(DummyTestResults.Instance, _file, _method);
 
             Test.If.Value.Equals(results.InstructionResults.Count, expected.count, _file, _method);
             Test.If.Value.Equals(lastResult.Result, expected.result, _file, _method);

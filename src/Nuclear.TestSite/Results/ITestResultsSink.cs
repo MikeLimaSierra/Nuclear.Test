@@ -13,7 +13,7 @@ namespace Nuclear.TestSite.Results {
         /// <summary>
         /// Gets the current test scenario.
         /// </summary>
-        TestScenario Scenario { get; }
+        ITestScenario Scenario { get; }
 
         #endregion
 
@@ -60,10 +60,10 @@ namespace Nuclear.TestSite.Results {
         #region methods
 
         /// <summary>
-        /// Initializes the <see cref="ITestResultsSink"/> by giving a <see cref="TestScenario"/>.
+        /// Initializes the <see cref="ITestResultsSink"/> by giving a <see cref="ITestScenario"/>.
         /// </summary>
-        /// <param name="scenario">The <see cref="TestScenario"/> relevant to the results.</param>
-        void Initialize(TestScenario scenario);
+        /// <param name="scenario">The <see cref="ITestScenario"/> relevant to the results.</param>
+        void Initialize(ITestScenario scenario);
 
         #endregion
 

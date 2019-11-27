@@ -14,7 +14,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region ctors
 
-        internal ResultLeaf(PrintVerbosity verbosity, TestInstructionResult result, Int32 index)
+        internal ResultLeaf(PrintVerbosity verbosity, ITestInstructionResult result, Int32 index)
             : base(verbosity, result) {
 
             Index = index;

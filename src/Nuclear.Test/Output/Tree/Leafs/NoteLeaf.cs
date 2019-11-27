@@ -12,7 +12,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region ctors
 
-        internal NoteLeaf(PrintVerbosity verbosity, TestInstructionResult result) : base(verbosity, result) { }
+        internal NoteLeaf(PrintVerbosity verbosity, ITestInstructionResult result) : base(verbosity, result) { }
 
         #endregion
 

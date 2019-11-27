@@ -8,7 +8,6 @@ using Nuclear.Test.Configurations;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Output;
 using Nuclear.Test.Results;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.TestExecution {
 
@@ -51,7 +50,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Gets the test results sink that is in use.
         /// </summary>
-        protected TestResults Results { get; } = new TestResults();
+        protected ITestResultEndPoint Results { get; } = new TestResultEndPoint();
 
         /// <summary>
         /// Gets the <see cref="NamedPipeServerStream"/> that is used for communication.
@@ -160,7 +159,7 @@ namespace Nuclear.Test.TestExecution {
                     if(TryReceiveResultData(pipeStream, out Byte[] data)) {
                         TestDataAvailable?.Invoke(this, new TestDataAvailableEventArgs(data));
 
-                        if(ResultSerializer.TryDeserialize(data, out TestResults results)) {
+                        if(ResultSerializer.TryDeserialize(data, out ITestResultEndPoint results)) {
                             Results.Add(results.Values);
                         }
                     }

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Results {
 
@@ -13,24 +12,24 @@ namespace Nuclear.Test.Results {
         /// <summary>
         /// Gets all contained results and their corresponding keys.
         /// </summary>
-        IEnumerable<KeyValuePair<TestResultKey, TestMethodResult>> Values { get; }
+        IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> Values { get; }
 
         /// <summary>
         /// Gets all available keys.
         /// </summary>
-        IEnumerable<TestResultKey> Keys { get; }
+        IEnumerable<ITestResultKey> Keys { get; }
 
         /// <summary>
         /// Gets all available results.
         /// </summary>
-        IEnumerable<TestMethodResult> Results { get; }
+        IEnumerable<ITestMethodResult> Results { get; }
 
         /// <summary>
-        /// Gets the <see cref="TestMethodResult"/> to a specific <see cref="TestResultKey"/>.
+        /// Gets the <see cref="ITestMethodResult"/> to a specific <see cref="ITestResultKey"/>.
         /// </summary>
         /// <param name="key">The given key that identifies results.</param>
         /// <returns>The results or an empty result collection if the key was not found.</returns>
-        TestMethodResult this[TestResultKey key] { get; }
+        ITestMethodResult this[ITestResultKey key] { get; }
 
         #endregion
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Results;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
     internal class TargetNode : TreeNode {
@@ -33,10 +32,10 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region ctors
 
-        internal TargetNode(PrintVerbosity verbosity, TestResultKey key, ITestResultsSource results)
+        internal TargetNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultsSource results)
             : base(verbosity, key, results) {
 
-            List<TestResultKey> keys = new List<TestResultKey>();
+            List<ITestResultKey> keys = new List<ITestResultKey>();
 
             if(Verbosity > PrintVerbosity.ExecutionFrameworkVersion || Failed) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.ExecutionArchitecture).ToList();

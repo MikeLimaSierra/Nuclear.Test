@@ -6,10 +6,10 @@ namespace Nuclear.Test.Results {
     class TestResults_uTests {
 
         [TestMethod]
-        void TestImplementation() {
+        void Implementation() {
 
-            TestX.If.Type.Implements<TestResults, ITestResultsSink>();
-            TestX.If.Type.Implements<TestResults, ITestResultsSource>();
+            TestX.If.Type.Implements<TestResultEndPoint, ITestResultsSink>();
+            TestX.If.Type.Implements<TestResultEndPoint, ITestResultsSource>();
 
         }
 

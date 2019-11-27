@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Results;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
     internal abstract class TreeNode : TreeElement {
 
         #region properties
 
-        internal TestResultKey Key { get; private set; }
+        internal ITestResultKey Key { get; private set; }
 
         internal Int32 Total { get; private set; }
 
@@ -23,12 +22,12 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region ctors
 
-        internal TreeNode(PrintVerbosity verbosity, TestResultKey key, ITestResultsSource results)
+        internal TreeNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultsSource results)
             : base(verbosity) {
 
             Key = key;
 
-            IEnumerable<TestMethodResult> _results = results.GetResults(Key);
+            IEnumerable<ITestMethodResult> _results = results.GetResults(Key);
             Total = _results.CountResults();
             Successes = _results.CountSuccesses();
             Fails = _results.CountFails();
