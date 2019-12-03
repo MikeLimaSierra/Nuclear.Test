@@ -8,7 +8,22 @@ namespace Nuclear.Test.Results {
     /// </summary>
     public interface ITestResultEndPoint : ITestResultsSink, ITestResultsSource {
 
+        #region properties
+
+        /// <summary>
+        /// Gets the current test scenario.
+        /// </summary>
+        ITestScenario Scenario { get; }
+
+        #endregion
+
         #region methods
+
+        /// <summary>
+        /// Initializes the <see cref="ITestResultsSink"/> by giving a <see cref="ITestScenario"/>.
+        /// </summary>
+        /// <param name="scenario">The <see cref="ITestScenario"/> relevant to the results.</param>
+        void Initialize(ITestScenario scenario);
 
         /// <summary>
         /// Adds an <see cref="ITestMethodResult"/> and its <see cref="ITestResultKey"/>.

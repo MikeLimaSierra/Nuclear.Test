@@ -6,14 +6,14 @@ using Nuclear.TestSite.TestSuites.Base;
 namespace Nuclear.TestSite.TestSuites {
 
     /// <summary>
-    /// Provides conditional test instructions for strings.
+    /// Provides conditional test instructions for references.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial class StringTestSuite : ChildTestSuite {
+    public partial class ReferenceTestSuite : ChildTestSuite {
 
         #region ctors
 
-        internal StringTestSuite(TestSuiteCollection parent) : base(parent) { }
+        internal ReferenceTestSuite(TestSuiteCollection parent) : base(parent) { }
 
         #endregion
 

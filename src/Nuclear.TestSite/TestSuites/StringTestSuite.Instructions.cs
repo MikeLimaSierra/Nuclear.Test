@@ -1,7 +1,6 @@
-﻿using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
-using System;
+﻿using System;
 using System.Runtime.CompilerServices;
+using Nuclear.Extensions;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class StringTestSuite {

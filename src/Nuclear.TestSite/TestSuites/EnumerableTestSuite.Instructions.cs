@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class EnumerableTestSuite {
@@ -872,8 +871,7 @@ namespace Nuclear.TestSite.TestSuites {
 
                 using(IEnumerator<T> enum1 = enumeration.GetEnumerator()) {
                     using(IEnumerator<T> enum2 = other.GetEnumerator()) {
-
-                        do {
+                        while(enum1.MoveNext() && enum2.MoveNext()) {
                             T element1 = enum1.Current;
                             T element2 = enum2.Current;
 
@@ -881,8 +879,7 @@ namespace Nuclear.TestSite.TestSuites {
                                 result = false;
                                 break;
                             }
-
-                        } while(enum1.MoveNext() && enum2.MoveNext());
+                        }
                     }
                 }
             }

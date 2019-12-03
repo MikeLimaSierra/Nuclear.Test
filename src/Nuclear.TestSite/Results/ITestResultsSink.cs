@@ -8,15 +8,6 @@ namespace Nuclear.TestSite.Results {
     /// </summary>
     public interface ITestResultsSink {
 
-        #region properties
-
-        /// <summary>
-        /// Gets the current test scenario.
-        /// </summary>
-        ITestScenario Scenario { get; }
-
-        #endregion
-
         #region methods
 
         /// <summary>
@@ -54,16 +45,6 @@ namespace Nuclear.TestSite.Results {
         /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
         /// <param name="ex">The <see cref="Exception"/> that was thrown.</param>
         void FailTestMethod(MethodInfo _method, Exception ex);
-
-        #endregion
-
-        #region methods
-
-        /// <summary>
-        /// Initializes the <see cref="ITestResultsSink"/> by giving a <see cref="ITestScenario"/>.
-        /// </summary>
-        /// <param name="scenario">The <see cref="ITestScenario"/> relevant to the results.</param>
-        void Initialize(ITestScenario scenario);
 
         #endregion
 

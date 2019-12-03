@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reflection;
 using Nuclear.Extensions;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.Results {
     internal class TestResultKey : ITestResultKey {
@@ -122,6 +121,8 @@ namespace Nuclear.Test.Results {
         #region methods
 
         public Boolean Matches(ITestResultKey match) {
+            if(match == null) { return false; }
+
             if(match.HasAssemblyName && match.AssemblyName != AssemblyName) { return false; }
             if(match.HasTargetFrameworkIdentifier && match.TargetFrameworkIdentifier != TargetFrameworkIdentifier) { return false; }
             if(match.HasTargetFrameworkVersion && match.TargetFrameworkVersion != TargetFrameworkVersion) { return false; }
@@ -198,50 +199,17 @@ namespace Nuclear.Test.Results {
         }
 
         public Boolean Equals(ITestResultKey other) {
-            if(Precision != other.Precision) { return false; }
+            if(other == null || Precision != other.Precision) { return false; }
 
             return Equals(other, Precision);
         }
 
         public Boolean Equals(ITestResultKey other, TestResultKeyPrecisions precision) {
-            if(Precision != other.Precision) { return false; }
+            if(other == null) { return false; }
 
-            switch(precision) {
-                case TestResultKeyPrecisions.None:
-                    return true;
+            if(Precision != other.Precision && (Precision < precision || other.Precision < precision)) { return false; }
 
-                case TestResultKeyPrecisions.AssemblyName:
-                    return HasAssemblyName && other.HasAssemblyName && AssemblyName == other.AssemblyName;
-
-                case TestResultKeyPrecisions.TargetFrameworkIdentifier:
-                    return HasTargetFrameworkIdentifier && other.HasTargetFrameworkIdentifier && TargetFrameworkIdentifier == other.TargetFrameworkIdentifier;
-
-                case TestResultKeyPrecisions.TargetFrameworkVersion:
-                    return HasTargetFrameworkVersion && other.HasTargetFrameworkVersion && TargetFrameworkVersion == other.TargetFrameworkVersion;
-
-                case TestResultKeyPrecisions.TargetArchitecture:
-                    return HasTargetArchitecture && other.HasTargetArchitecture && TargetArchitecture == other.TargetArchitecture;
-
-                case TestResultKeyPrecisions.ExecutionFrameworkIdentifier:
-                    return HasExecutionFrameworkIdentifier && other.HasExecutionFrameworkIdentifier && ExecutionFrameworkIdentifier == other.ExecutionFrameworkIdentifier;
-
-                case TestResultKeyPrecisions.ExecutionFrameworkVersion:
-                    return HasExecutionFrameworkVersion && other.HasExecutionFrameworkVersion && ExecutionFrameworkVersion == other.ExecutionFrameworkVersion;
-
-                case TestResultKeyPrecisions.ExecutionArchitecture:
-                    return HasExecutionArchitecture && other.HasExecutionArchitecture && ExecutionArchitecture == other.ExecutionArchitecture;
-
-                case TestResultKeyPrecisions.FileName:
-                    return HasFileName && other.HasFileName && FileName == other.FileName;
-
-                case TestResultKeyPrecisions.MethodName:
-                    return HasMethodName && other.HasMethodName && MethodName == other.MethodName;
-
-                default:
-                    break;
-            }
-
-            return false;
+            return Matches(other.Clip(precision));
         }
 
         public Int32 CompareTo(ITestResultKey other) {
@@ -283,7 +251,7 @@ namespace Nuclear.Test.Results {
                 + FileName.GetHashCode() - MethodName.GetHashCode();
 
         public override String ToString() =>
-            $"{AssemblyName.Format()};{TargetFrameworkIdentifier.Format()};{TargetFrameworkVersion.Format()};{TargetArchitecture.Format()};{ExecutionFrameworkIdentifier.Format()};{ExecutionFrameworkVersion.Format()};{ExecutionArchitecture.Format()};{FileName.Format()};{MethodName.Format()}";
+            $"[{AssemblyName.Format()};{TargetFrameworkIdentifier.Format()};{TargetFrameworkVersion.Format()};{TargetArchitecture.Format()};{ExecutionFrameworkIdentifier.Format()};{ExecutionFrameworkVersion.Format()};{ExecutionArchitecture.Format()};{FileName.Format()};{MethodName.Format()}]";
 
         #endregion
 

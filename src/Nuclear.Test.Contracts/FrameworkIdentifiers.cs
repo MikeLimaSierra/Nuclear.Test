@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nuclear.TestSite {
+namespace Nuclear.Test {
     /// <summary>
     /// Temporary and incomplete dummy collection of .net platforms
     /// </summary>

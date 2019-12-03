@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Ntt;
 using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     class ActionTestSuit_uTests {
@@ -309,7 +308,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             if(expected.eventRaised) {
                 Test.IfNot.Object.IsNull(eventData.Sender, _file, _method);
-                Test.If.ReferencesEqual(input.@object, eventData.Sender, _file, _method);
+                Test.If.Reference.Equals(input.@object, eventData.Sender, _file, _method);
                 Test.IfNot.Object.IsNull(eventData.EventArgs, _file, _method);
             }
 
@@ -357,7 +356,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             if(expected.eventRaised) {
                 Test.IfNot.Object.IsNull(eventData.Sender, _file, _method);
-                Test.If.ReferencesEqual(input.@object, eventData.Sender, _file, _method);
+                Test.If.Reference.Equals(input.@object, eventData.Sender, _file, _method);
                 Test.IfNot.Object.IsNull(eventData.EventArgs, _file, _method);
             }
 

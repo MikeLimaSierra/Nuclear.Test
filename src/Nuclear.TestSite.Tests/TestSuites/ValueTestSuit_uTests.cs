@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Ntt;
 using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     class ValueTestSuit_uTests {

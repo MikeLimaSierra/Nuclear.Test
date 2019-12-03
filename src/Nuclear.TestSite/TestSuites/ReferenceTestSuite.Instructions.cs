@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
-    public partial class TestSuiteCollection {
+    public partial class ReferenceTestSuite {
+
+        #region Equals
 
         /// <summary>
         /// Tests if references <paramref name="obj"/> and <paramref name="_other"/> are equal.
@@ -17,10 +18,12 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.ReferencesEqual(obj1, obj2);
         /// </code>
         /// </example>
-        public void ReferencesEqual(Object obj, Object _other,
+        public void Equals(Object obj, Object _other,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => InternalTest(ReferenceEquals(obj, _other), System.String.Format("References {0}equal.", ReferenceEquals(obj, _other) ? "" : "don't "),
+            => InternalTest(ReferenceEquals(obj, _other), String.Format("References {0}equal.", ReferenceEquals(obj, _other) ? "" : "don't "),
                 _file, _method);
+
+        #endregion
 
     }
 }

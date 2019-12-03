@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Nuclear.Test;
 using Nuclear.Test.Results;
 using Nuclear.TestSite.Results;
 using Nuclear.TestSite.TestSuites;

@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using Nuclear.Exceptions;
 using Nuclear.TestSite.Results;
+using Nuclear.TestSite.TestSuites.Base;
 
 namespace Nuclear.TestSite.TestSuites {
 
@@ -53,6 +54,11 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         public EnumerableTestSuite Enumerable { get; private set; }
 
+        /// <summary>
+        /// Test suite with instructions for testing enumerations.
+        /// </summary>
+        public ReferenceTestSuite Reference { get; private set; }
+
         internal ITestResultsSink Results {
             get => _results;
             set {
@@ -84,6 +90,7 @@ namespace Nuclear.TestSite.TestSuites {
             String = new StringTestSuite(this);
             Value = new ValueTestSuite(this);
             Enumerable = new EnumerableTestSuite(this);
+            Reference = new ReferenceTestSuite(this);
         }
 
         #endregion

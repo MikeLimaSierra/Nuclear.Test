@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nuclear.TestSite.Attributes {
+namespace Nuclear.TestSite {
 
     /// <summary>
     /// Explicitly marks a class as containing test methods.

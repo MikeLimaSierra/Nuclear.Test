@@ -4,7 +4,6 @@ using System.Reflection;
 using System.Text;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Results;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.TestExecution {
 

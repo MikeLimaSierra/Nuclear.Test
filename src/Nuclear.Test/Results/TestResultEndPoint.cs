@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Reflection;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.Results {
     internal class TestResultEndPoint : ITestResultEndPoint {

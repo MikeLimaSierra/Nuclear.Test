@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Nuclear.TestSite.Attributes;
 using Nuclear.TestSite.Results;
 using Nuclear.TestSite.TestSuites;
 

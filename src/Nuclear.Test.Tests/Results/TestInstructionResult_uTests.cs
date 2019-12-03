@@ -1,5 +1,5 @@
 ﻿using System;
-using Nuclear.TestSite.Attributes;
+using Nuclear.TestSite;
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test.Results {

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Reflection;
+using Nuclear.TestSite;
 
-namespace Nuclear.TestSite {
+namespace Nuclear.Test {
 
     /// <summary>
     /// Defines a scenario relevant to running tests.

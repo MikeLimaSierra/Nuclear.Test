@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Nuclear.TestSite.TestSuites.Base;
 
 namespace Nuclear.TestSite.TestSuites {
 
@@ -8,19 +9,11 @@ namespace Nuclear.TestSite.TestSuites {
     /// Provides conditional test instructions for actions.
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public partial class ActionTestSuite : TestSuite {
-
-        #region fields
-
-        private TestSuiteCollection _parent;
-
-        #endregion
+    public partial class ActionTestSuite : ChildTestSuite {
 
         #region ctors
 
-        internal ActionTestSuite(TestSuiteCollection parent) {
-            _parent = parent;
-        }
+        internal ActionTestSuite(TestSuiteCollection parent) : base(parent) { }
 
         #endregion
 
@@ -36,7 +29,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="testInstruction">The test instruction.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void InternalTest(Boolean condition, String message, String file, String method, [CallerMemberName] String testInstruction = null)
-            => _parent.CreateResult(condition, message, file, method, testInstruction);
+            => Parent.CreateResult(condition, message, file, method, testInstruction);
 
         /// <summary>
         /// Fails the calling test.
@@ -47,7 +40,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="testInstruction">The test instruction.</param>
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void FailTest(String message, String file, String method, [CallerMemberName] String testInstruction = null)
-            => _parent.InternalFail(message, file, method, testInstruction);
+            => Parent.InternalFail(message, file, method, testInstruction);
 
         #endregion
 

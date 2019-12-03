@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
 using Nuclear.TestSite.TestSuites.Proxies;
 
 namespace Nuclear.TestSite.TestSuites {

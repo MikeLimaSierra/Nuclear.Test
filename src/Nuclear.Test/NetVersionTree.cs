@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.Versioning;
 using Nuclear.Exceptions;
 
-namespace Nuclear.TestSite {
+namespace Nuclear.Test {
 
     /// <summary>
     /// Offers information about .NETStandard implementations in .NET runtimes.

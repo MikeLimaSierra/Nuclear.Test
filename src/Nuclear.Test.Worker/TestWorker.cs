@@ -7,7 +7,6 @@ using Nuclear.Test.Output;
 using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;
 using Nuclear.TestSite;
-using Nuclear.TestSite.Attributes;
 using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Worker {
@@ -18,8 +17,6 @@ namespace Nuclear.Test.Worker {
 
         internal TestWorker(String pipeName)
             : base(pipeName) {
-
-            TestSite.Test.SetTestResultsSink(Results);
 
             HeaderContent.Add(@" _   _               _                    _____           _   ");
             HeaderContent.Add(@"| \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_ ");

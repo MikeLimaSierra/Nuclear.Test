@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nuclear.TestSite.Attributes {
+namespace Nuclear.TestSite {
 
     /// <summary>
     /// Defines possible test modes.
