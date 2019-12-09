@@ -13,7 +13,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region ctors
 
-        public ResultTree(PrintVerbosity verbosity, ITestResultsSource results) {
+        public ResultTree(PrintVerbosity verbosity, ITestResultSource results) {
             Node = new SummaryNode(verbosity, TestResultKey.Empty, results);
         }
 

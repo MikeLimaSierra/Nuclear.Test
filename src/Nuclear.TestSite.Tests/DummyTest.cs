@@ -31,13 +31,13 @@ namespace Nuclear.TestSite {
         #region methods
 
         public static void Note(String note, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => DummyTestResults.Instance.Add(note, Path.GetFileNameWithoutExtension(_file), _method);
+            => DummyTestResults.Instance.AddNote(note, Path.GetFileNameWithoutExtension(_file), _method);
 
         #endregion
 
     }
 
-    class DummyTestResults : ITestResultsSink, ITestResultsSource {
+    class DummyTestResults : ITestResultSink, ITestResultSource {
 
         #region fields
 
@@ -71,11 +71,11 @@ namespace Nuclear.TestSite {
             => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
                 new TestMethodResult());
 
-        public void Add(Boolean result, String testInstruction, String message, String _file, String _method)
+        public void AddResult(Boolean result, String testInstruction, String message, String _file, String _method)
             => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
                 new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(result, testInstruction, message));
 
-        public void Add(String message, String _file, String _method)
+        public void AddNote(String message, String _file, String _method)
             => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
                 new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(message));
 

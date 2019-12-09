@@ -46,11 +46,11 @@ namespace Nuclear.Test.Results {
             => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
                 new TestMethodResult());
 
-        public void Add(Boolean result, String testInstruction, String message, String _file, String _method)
+        public void AddResult(Boolean result, String testInstruction, String message, String _file, String _method)
             => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
                 new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(result, testInstruction, message));
 
-        public void Add(String message, String _file, String _method)
+        public void AddNote(String message, String _file, String _method)
             => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
                 new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(message));
 

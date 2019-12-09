@@ -40,13 +40,13 @@ namespace Nuclear.TestSite {
             return new TestResultKey(_scenario, Path.GetFileNameWithoutExtension(_file), _method);
         }
 
-        internal static ITestMethodResult GetResults(ITestResultsSource results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+        internal static ITestMethodResult GetResults(ITestResultSource results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results[GetKey(_file, _method)];
 
-        internal static ITestInstructionResult GetResult(ITestResultsSource results, Int32 index, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+        internal static ITestInstructionResult GetResult(ITestResultSource results, Int32 index, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results[GetKey(_file, _method)].InstructionResults[index];
 
-        internal static ITestInstructionResult GetLastResult(ITestResultsSource results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+        internal static ITestInstructionResult GetLastResult(ITestResultSource results, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => results[GetKey(_file, _method)].InstructionResults.Last();
 
         internal static void DDTResultState(Action action, (Int32 count, Boolean result, String message) expected, String instruction,

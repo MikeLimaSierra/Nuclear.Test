@@ -98,7 +98,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Creates the process, thread and pipe required to remote control the test client.
         /// </summary>
-        public ITestResultsSource Execute() {
+        public ITestResultSource Execute() {
             if(Executable != null && Executable.Exists) {
                 if(!_processStarted) {
                     _processStarted = true;

@@ -72,7 +72,7 @@ namespace Nuclear.Test.TestExecution {
         /// Execute tests.
         /// </summary>
         /// <returns>The collective results of all executed tests.</returns>
-        public override ITestResultsSource Execute() {
+        public override ITestResultSource Execute() {
             base.Execute();
 
             try {

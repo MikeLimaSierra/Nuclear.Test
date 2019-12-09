@@ -42,7 +42,7 @@ namespace Nuclear.Test.TestExecution {
         /// Execute tests.
         /// </summary>
         /// <returns>The collective results of all executed tests.</returns>
-        public virtual ITestResultsSource Execute() {
+        public virtual ITestResultSource Execute() {
             Assembly entryAsm = Assembly.GetEntryAssembly();
             AssemblyName entryAsmName = entryAsm.GetName();
             (FrameworkIdentifiers platform, Version version) entryAsmtargetRuntime = NetVersionTree.GetTargetRuntimeFromAssembly(entryAsm);

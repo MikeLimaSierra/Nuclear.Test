@@ -14,7 +14,7 @@ namespace Nuclear.TestSite {
 
         #region fields
 
-        private static ITestResultsSink _results;
+        private static ITestResultSink _results;
 
         #endregion
 
@@ -54,15 +54,15 @@ namespace Nuclear.TestSite {
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         public static void Note(String note,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => _results.Add(note, Path.GetFileNameWithoutExtension(_file), _method);
+            => _results.AddNote(note, Path.GetFileNameWithoutExtension(_file), _method);
 
         /// <summary>
-        /// Sets the test result sink to a specific <see cref="ITestResultsSink"/>. Should only ever be used by test client implementations.
+        /// Sets the test result sink to a specific <see cref="ITestResultSink"/>. Should only ever be used by test client implementations.
         /// </summary>
         /// <param name="results"></param>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="results"/> is null.</exception>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void SetTestResultsSink(ITestResultsSink results) {
+        public static void SetTestResultsSink(ITestResultSink results) {
             _results = results;
 
             If = new TestSuiteCollection(_results);

@@ -16,7 +16,7 @@ namespace Nuclear.TestSite.TestSuites {
 
         #region fields
 
-        private ITestResultsSink _results;
+        private ITestResultSink _results;
 
         private Boolean _invert;
 
@@ -59,7 +59,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         public ReferenceTestSuite Reference { get; private set; }
 
-        internal ITestResultsSink Results {
+        internal ITestResultSink Results {
             get => _results;
             set {
                 Throw.If.Null(value, "value");
@@ -78,7 +78,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// <param name="results">The result sink to be used.</param>
         /// <param name="invert">True if result inversion is desired, false if not.</param>
         /// <exception cref="ArgumentNullException">Throws if <paramref name="results"/> is null.</exception>
-        public TestSuiteCollection(ITestResultsSink results, Boolean invert = false) {
+        public TestSuiteCollection(ITestResultSink results, Boolean invert = false) {
             Throw.If.Null(results, "results");
 
             Results = results;
@@ -136,7 +136,7 @@ namespace Nuclear.TestSite.TestSuites {
                 isCollectionMember ? System.String.Empty : ".",
                 testInstruction);
 
-            Results.Add(adjustedCondition, testInstructionString, message, Path.GetFileNameWithoutExtension(testClassPath), testMethod);
+            Results.AddResult(adjustedCondition, testInstructionString, message, Path.GetFileNameWithoutExtension(testClassPath), testMethod);
         }
 
         internal void InternalFail(String message, String testClassPath, String testMethod, String testInstruction, [CallerFilePath] String testSuitePath = null)
