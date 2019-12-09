@@ -45,7 +45,7 @@ namespace Nuclear.Test.Console {
 
         #region public methods
 
-        public override ITestResultsSource Execute() {
+        public override ITestResultSource Execute() {
             base.Execute();
 
             List<ProxyInfo> proxyInfos = GetProxyInfos(Files);

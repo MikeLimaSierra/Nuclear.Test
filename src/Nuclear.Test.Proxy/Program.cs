@@ -11,7 +11,7 @@ namespace Nuclear.Test.Proxy {
 
         static void Main(String[] args) {
             TestExecutor process = new TestProxy(args[0]);
-            ITestResultsSource results = process.Execute();
+            ITestResultSource results = process.Execute();
 
             DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
             new ResultTree(process.OutputConfiguration.Verbosity, results).Print();

@@ -8,8 +8,8 @@ namespace Nuclear.Test.Results {
         [TestMethod]
         void Implementation() {
 
-            TestX.If.Type.Implements<ITestResultEndPoint, ITestResultsSink>();
-            TestX.If.Type.Implements<ITestResultEndPoint, ITestResultsSource>();
+            TestX.If.Type.Implements<ITestResultEndPoint, ITestResultSink>();
+            TestX.If.Type.Implements<ITestResultEndPoint, ITestResultSource>();
             TestX.If.Type.Implements<TestResultEndPoint, ITestResultEndPoint>();
 
         }

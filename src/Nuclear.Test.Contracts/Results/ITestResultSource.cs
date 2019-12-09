@@ -5,7 +5,7 @@ namespace Nuclear.Test.Results {
     /// <summary>
     /// Defines a result source.
     /// </summary>
-    public interface ITestResultsSource {
+    public interface ITestResultSource {
 
         #region properties
 

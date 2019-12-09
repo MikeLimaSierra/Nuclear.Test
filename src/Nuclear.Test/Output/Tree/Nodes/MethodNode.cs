@@ -20,7 +20,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region ctors
 
-        internal MethodNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultsSource results)
+        internal MethodNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
             : base(verbosity, key, results) {
 
             Results = results[key];

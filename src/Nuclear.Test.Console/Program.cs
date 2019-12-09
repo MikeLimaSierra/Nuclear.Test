@@ -38,7 +38,7 @@ namespace Nuclear.Test.Console {
             TestAssemblyLocator locator = new TestAssemblyLocator(_assemblyLocatorConfiguration);
             TestConsole executor = new TestConsole(_testConfiguration, _outputConfiguration);
             executor.Files.AddRange(locator.GetAssemblies());
-            ITestResultsSource results = executor.Execute();
+            ITestResultSource results = executor.Execute();
 
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
             new ResultTree(_outputConfiguration.Verbosity, results).Print();

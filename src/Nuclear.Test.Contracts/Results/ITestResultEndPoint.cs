@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Results {
@@ -6,7 +8,7 @@ namespace Nuclear.Test.Results {
     /// <summary>
     /// Defines a test results endpoint that can act as a sink and a source.
     /// </summary>
-    public interface ITestResultEndPoint : ITestResultsSink, ITestResultsSource {
+    public interface ITestResultEndPoint : ITestResultSink, ITestResultSource {
 
         #region properties
 
@@ -20,10 +22,28 @@ namespace Nuclear.Test.Results {
         #region methods
 
         /// <summary>
-        /// Initializes the <see cref="ITestResultsSink"/> by giving a <see cref="ITestScenario"/>.
+        /// Initializes the <see cref="ITestResultSink"/> by giving a <see cref="ITestScenario"/>.
         /// </summary>
         /// <param name="scenario">The <see cref="ITestScenario"/> relevant to the results.</param>
         void Initialize(ITestScenario scenario);
+
+        /// <summary>
+        /// Clears all results.
+        /// </summary>
+        void Clear();
+
+        /// <summary>
+        /// Prepares for test results by creating the result collection.
+        /// </summary>
+        /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
+        void PrepareResults(MethodInfo _method);
+
+        /// <summary>
+        /// Sets an entire test method to failed with an <see cref="Exception"/>.
+        /// </summary>
+        /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
+        /// <param name="ex">The <see cref="Exception"/> that was thrown.</param>
+        void FailTestMethod(MethodInfo _method, Exception ex);
 
         /// <summary>
         /// Adds an <see cref="ITestMethodResult"/> and its <see cref="ITestResultKey"/>.

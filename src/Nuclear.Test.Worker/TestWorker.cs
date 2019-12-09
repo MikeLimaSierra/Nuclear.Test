@@ -7,7 +7,6 @@ using Nuclear.Test.Output;
 using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;
 using Nuclear.TestSite;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Worker {
 
@@ -62,7 +61,7 @@ namespace Nuclear.Test.Worker {
 
         #region private methods
 
-        private void CollectTestMethods(Assembly assembly, ITestResultsSink results, out List<TestMethod> sequentialTestMethods, out List<TestMethod> parallelTestMethods) {
+        private void CollectTestMethods(Assembly assembly, ITestResultEndPoint results, out List<TestMethod> sequentialTestMethods, out List<TestMethod> parallelTestMethods) {
             sequentialTestMethods = new List<TestMethod>();
             parallelTestMethods = new List<TestMethod>();
 

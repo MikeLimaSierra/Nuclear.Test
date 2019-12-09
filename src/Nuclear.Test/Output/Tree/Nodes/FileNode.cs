@@ -19,7 +19,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region ctors
 
-        internal FileNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultsSource results)
+        internal FileNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
             : base(verbosity, key, results) {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
