@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
@@ -8,7 +9,6 @@ using Nuclear.Test.Configurations;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Output;
 using Nuclear.Test.Results;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.TestExecution {
 
@@ -20,19 +20,25 @@ namespace Nuclear.Test.TestExecution {
         #region events
 
         /// <summary>
-        /// Is raised when test data is received from the attached test client.
+        /// Is raised when raw test data is received from the attached test client.
         /// </summary>
-        public event TestDataAvailableEventHandler TestDataAvailable;
+        public event RawTestDataReceivedEventHandler ResultsReceived;
+
+        /// <summary>
+        /// Is raised when test results are deserialized and added to the results.
+        /// </summary>
+        public event TestResultsAvailableEventHandler ResultsAvailable;
+
+        /// <summary>
+        /// Is raised when all test results have been sent.
+        /// </summary>
+        public event EventHandler Finished;
 
         #endregion
 
         #region fields
 
         private readonly String _pipeName;
-
-        private Boolean _processStarted = false;
-
-        private readonly ManualResetEventSlim _exitEvent = new ManualResetEventSlim(false);
 
         #endregion
 
@@ -47,11 +53,6 @@ namespace Nuclear.Test.TestExecution {
         /// Configuration values for output and logging.
         /// </summary>
         public OutputConfiguration OutputConfiguration { get; } = new OutputConfiguration();
-
-        /// <summary>
-        /// Gets the test results sink that is in use.
-        /// </summary>
-        protected ITestResultsEndPoint Results { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="NamedPipeServerStream"/> that is used for communication.
@@ -75,19 +76,16 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Creates a new instance of <see cref="PipedTestExecutorRemote"/>.
         /// </summary>
-        /// <param name="results">The test results sink to use.</param>
         /// <param name="executable">The test client executable to start.</param>
         /// <param name="file">The test assembly file.</param>
         /// <param name="testConfig">The test configuration.</param>
         /// <param name="outputConfig">The output configuration.</param>
-        public PipedTestExecutorRemote(ITestResultsEndPoint results, FileInfo executable, FileInfo file, TestConfiguration testConfig, OutputConfiguration outputConfig) {
-            Throw.If.Null(results, "results");
+        public PipedTestExecutorRemote(FileInfo executable, FileInfo file, TestConfiguration testConfig, OutputConfiguration outputConfig) {
             Throw.If.Null(executable, "executable");
             Throw.If.Null(file, "file");
             Throw.If.Null(testConfig, "testConfig");
             Throw.If.Null(outputConfig, "outputConfig");
 
-            Results = results;
             Executable = executable;
             File = file;
             TestConfiguration = testConfig;
@@ -104,28 +102,20 @@ namespace Nuclear.Test.TestExecution {
         /// </summary>
         public void Execute() {
             if(Executable != null && Executable.Exists) {
-                if(!_processStarted) {
-                    _processStarted = true;
-                    Thread pipeThread = new Thread(StartThread);
-                    pipeThread.Start();
+                Thread pipeThread = new Thread(StartThread);
+                pipeThread.Start();
 
-                    StartProcess(Executable, _pipeName);
+                StartProcess(Executable, _pipeName);
 
-                    if(TestConfiguration.ForceAsmSequential) {
-                        pipeThread.Join();
-                    }
+                if(TestConfiguration.ForceAsmSequential) {
+                    pipeThread.Join();
                 }
 
             } else {
                 DiagnosticOutput.LogError("Unable to find file at '{0}'", Executable != null ? Executable.FullName : "null");
-                _exitEvent.Set();
+                InvokeResultsAvailable();
             }
         }
-
-        /// <summary>
-        /// Waits until all test results have been received and stored.
-        /// </summary>
-        public void WaitToExit() => _exitEvent.Wait();
 
         #endregion
 
@@ -159,13 +149,16 @@ namespace Nuclear.Test.TestExecution {
 
                 while(pipeStream.ReadString() == TestConfiguration.TEST_RESULTS) {
                     if(TryReceiveResultData(pipeStream, out Byte[] data)) {
-                        TestDataAvailable?.Invoke(this, new TestDataAvailableEventArgs(data));
+                        ResultsReceived?.Invoke(this, new RawTestDataReceivedEventArgs(data));
 
-                        if(ResultSerializer.TryDeserialize(data, out TestResultMap results)) {
-                            Results.ResultMap.AddRange(results);
+                        if(ResultSerializer.TryDeserialize(data, out ITestResultEndPoint results)) {
+                            IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection = results.GetKeyedResults();
+                            InvokeResultsAvailable(resultCollection);
                         }
                     }
                 }
+
+                Finished?.Invoke(this, new EventArgs());
 
             } catch(Exception ex) {
                 DiagnosticOutput.LogError("An exception was thrown while running tests in '{0}': {1}", File.FullName, ex);
@@ -177,7 +170,7 @@ namespace Nuclear.Test.TestExecution {
                 } catch(Exception ex) {
                     DiagnosticOutput.LogError("An exception was thrown while closing the pipe for '{0}': {1}", File.FullName, ex);
                 } finally {
-                    _exitEvent.Set();
+                    InvokeResultsAvailable();
                 }
             }
         }
@@ -195,6 +188,9 @@ namespace Nuclear.Test.TestExecution {
 
             return data != null && data.Length > 0;
         }
+
+        private void InvokeResultsAvailable(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection = null)
+            => ResultsAvailable?.Invoke(this, new TestResultsAvailableEventArgs(resultCollection ?? new Dictionary<ITestResultKey, ITestMethodResult>()));
 
         #endregion
 

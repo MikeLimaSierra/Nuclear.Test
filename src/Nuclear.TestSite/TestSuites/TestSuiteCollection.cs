@@ -2,8 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Nuclear.Exceptions;
-using Nuclear.TestSite.Results;
+using Nuclear.TestSite.TestSuites.Base;
 
 namespace Nuclear.TestSite.TestSuites {
 
@@ -15,7 +14,7 @@ namespace Nuclear.TestSite.TestSuites {
 
         #region fields
 
-        private ITestResultsEndPoint _results;
+        private ITestResultSink _results;
 
         private Boolean _invert;
 
@@ -51,15 +50,22 @@ namespace Nuclear.TestSite.TestSuites {
         /// <summary>
         /// Test suite with instructions for testing enumerations.
         /// </summary>
-        public EnumerationTestSuite Enumeration { get; private set; }
+        public EnumerableTestSuite Enumerable { get; private set; }
 
-        internal ITestResultsEndPoint Results {
-            get => _results;
-            set {
-                Throw.If.Null(value, "value");
+        /// <summary>
+        /// Test suite with instructions for testing enumerations.
+        /// </summary>
+        public ReferenceTestSuite Reference { get; private set; }
 
-                _results = value;
+        internal ITestResultSink Results {
+            get {
+                if(_results == null) {
+                    _results = ResultProxy.Results;
+                }
+
+                return _results;
             }
+            set => _results = value;
         }
 
         #endregion
@@ -67,20 +73,11 @@ namespace Nuclear.TestSite.TestSuites {
         #region ctors
 
         /// <summary>
-        /// Creates a new instance of <see cref="TestSuiteCollection"/> with <see cref="TestResults"/> as result sink.
-        /// </summary>
-        /// <param name="invert">True if result inversion is desired, false if not.</param>
-        public TestSuiteCollection(Boolean invert = false) : this(TestResults.Instance, invert) { }
-
-        /// <summary>
         /// Creates a new instance of <see cref="TestSuiteCollection"/> with <paramref name="results"/> as result sink.
         /// </summary>
         /// <param name="results">The result sink to be used.</param>
         /// <param name="invert">True if result inversion is desired, false if not.</param>
-        /// <exception cref="ArgumentNullException">Throws if <paramref name="results"/> is null.</exception>
-        public TestSuiteCollection(ITestResultsEndPoint results, Boolean invert = false) {
-            Throw.If.Null(results, "results");
-
+        public TestSuiteCollection(ITestResultSink results, Boolean invert = false) {
             Results = results;
             _invert = invert;
 
@@ -89,7 +86,8 @@ namespace Nuclear.TestSite.TestSuites {
             Object = new ObjectTestSuite(this);
             String = new StringTestSuite(this);
             Value = new ValueTestSuite(this);
-            Enumeration = new EnumerationTestSuite(this);
+            Enumerable = new EnumerableTestSuite(this);
+            Reference = new ReferenceTestSuite(this);
         }
 
         #endregion
@@ -135,9 +133,7 @@ namespace Nuclear.TestSite.TestSuites {
                 isCollectionMember ? System.String.Empty : ".",
                 testInstruction);
 
-            TestResult result = new TestResult(adjustedCondition, testInstructionString, message);
-
-            Results.CollectResult(result, Path.GetFileNameWithoutExtension(testClassPath), testMethod);
+            Results.AddResult(adjustedCondition, testInstructionString, message, Path.GetFileNameWithoutExtension(testClassPath), testMethod);
         }
 
         internal void InternalFail(String message, String testClassPath, String testMethod, String testInstruction, [CallerFilePath] String testSuitePath = null)

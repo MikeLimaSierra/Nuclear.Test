@@ -1,7 +1,8 @@
 ﻿using System;
+using Nuclear.Test.ConsolePrinter.Tree;
 using Nuclear.Test.Output;
+using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Worker {
     static class Program {
@@ -9,11 +10,11 @@ namespace Nuclear.Test.Worker {
         #region public methods
 
         static void Main(String[] args) {
-            TestExecutor process = new TestWorker(TestResults.Instance, args[0]);
-            TestResultMap results = process.Execute();
+            TestExecutor process = new TestWorker(args[0]);
+            ITestResultSource results = process.Execute();
 
-            DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
-            new ResultPrinter(process.OutputConfiguration).PrintResults(results);
+            DiagnosticOutput.Log(process.OutputConfiguration, " =========================");
+            new ResultTree(process.OutputConfiguration.Verbosity, results).Print();
             DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
 
             if(process.OutputConfiguration.ClientsAwaitInput && process.OutputConfiguration.ShowClients) {

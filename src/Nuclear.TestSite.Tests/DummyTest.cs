@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using Nuclear.Exceptions;
-using Nuclear.TestSite.Results;
+using Nuclear.Extensions;
+using Nuclear.Test;
+using Nuclear.Test.Results;
 using Nuclear.TestSite.TestSuites;
 
 namespace Nuclear.TestSite {
@@ -20,66 +24,94 @@ namespace Nuclear.TestSite {
         #region ctors
 
         static DummyTest() {
-            DummyTestResults.Instance.Architecture = Statics.Architecture;
-            DummyTestResults.Instance.TargetRuntime = Statics.TargetRuntime;
-            DummyTestResults.Instance.AssemblyName = Statics.AssemblyName;
-            DummyTestResults.Instance.ExecutionRuntime = Statics.ExecutionRuntime;
+            DummyTestResults.Instance.Initialize(Statics._scenario);
         }
 
         #endregion
 
         #region methods
 
-        public static void Note(String note, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-            TestResult result = new TestResult(note);
-            DummyTestResults.Instance.CollectResult(result, Path.GetFileNameWithoutExtension(_file), _method);
-        }
+        public static void Note(String note, [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
+            => DummyTestResults.Instance.AddNote(note, Path.GetFileNameWithoutExtension(_file), _method);
 
         #endregion
 
     }
 
-    class DummyTestResults : ITestResultsEndPoint {
+    class DummyTestResults : ITestResultSink, ITestResultSource {
 
-        #region properties
+        #region fields
 
-        public static ITestResultsEndPoint Instance { get; } = new DummyTestResults();
+        private ConcurrentDictionary<ITestResultKey, ITestMethodResult> _results { get; } =
+            new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(DynamicEqualityComparer.FromIEquatable<ITestResultKey>());
 
-        public TestResultMap ResultMap { get; } = new TestResultMap();
-
-        public String AssemblyName { get; set; }
-
-        public String TargetRuntime { get; set; }
-
-        public ProcessorArchitecture Architecture { get; set; }
-
-        public String ExecutionRuntime { get; set; }
+        private static readonly IEqualityComparer<ITestResultKey> _comparer = DynamicEqualityComparer.FromIEquatable<ITestResultKey>();
 
         #endregion
 
-        #region ctors
+        #region properties
 
-        private DummyTestResults() {
-            Throw.IfNot.Null(Instance, "Instance", "Constructor must not be called twice.");
-        }
+        internal static DummyTestResults Instance { get; } = new DummyTestResults();
+
+        public ITestScenario Scenario { get; private set; }
 
         #endregion
 
         #region methods
 
-        public void Clear() => ResultMap.Clear();
+        public void Initialize(ITestScenario scenario) => Scenario = scenario;
+
+        public void Clear() => _results.Clear();
 
         public void PrepareResults(MethodInfo _method)
-            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
-                new TestResultCollection());
-
-        public void CollectResult(TestResult result, String _file, String _method)
-            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _file, _method),
-                new TestResultCollection()).Add(result);
+            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
+                new TestMethodResult());
 
         public void FailTestMethod(MethodInfo _method, Exception ex)
-            => ResultMap.GetOrAdd(new TestResultKey(AssemblyName, TargetRuntime, Architecture, ExecutionRuntime, _method.DeclaringType.Name, _method.Name),
-                new TestResultCollection()).Exception = ex.ToString();
+            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
+                new TestMethodResult()).Fail(ex.ToString());
+
+        #endregion
+
+        #region ITestResultSource
+
+        public IEnumerable<ITestResultKey> GetKeys() => _results.Keys;
+
+        public IEnumerable<ITestResultKey> GetKeys(ITestResultKey match) => GetKeys().Where(key => key.Matches(match));
+
+        public IEnumerable<ITestResultKey> GetKeys(ITestResultKey match, TestResultKeyPrecisions precision) {
+            List<ITestResultKey> keys = new List<ITestResultKey>();
+
+            foreach(ITestResultKey key in GetKeys(match)) {
+                ITestResultKey clippedKey = key.Clip(precision);
+
+                if(!keys.Contains(clippedKey, _comparer)) {
+                    keys.Add(clippedKey);
+                }
+            }
+
+            return keys;
+        }
+
+        public ITestMethodResult GetResult(ITestResultKey key) => _results.GetOrAdd(key, new TestMethodResult());
+
+        public IEnumerable<ITestMethodResult> GetResults() => _results.Values;
+
+        public IEnumerable<ITestMethodResult> GetResults(ITestResultKey match) => _results.Where(value => value.Key.Matches(match)).Select(value => value.Value);
+
+        public IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> GetKeyedResults() => _results;
+
+        #endregion
+
+        #region ITestResultSink
+
+        public void AddResult(Boolean result, String testInstruction, String message, String _file, String _method)
+            => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
+                new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(result, testInstruction, message));
+
+        public void AddNote(String message, String _file, String _method)
+            => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
+                new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(message));
 
         #endregion
 

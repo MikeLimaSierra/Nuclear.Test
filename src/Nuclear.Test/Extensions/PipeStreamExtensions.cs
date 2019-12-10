@@ -2,6 +2,7 @@
 using System.IO;
 using System.IO.Pipes;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.ConsolePrinter;
 
 namespace Nuclear.Test.Extensions {
 
@@ -98,7 +99,7 @@ namespace Nuclear.Test.Extensions {
                     value = config.DiagnosticOutput.ToString();
                     break;
                 case OutputConfiguration.VERBOSITY:
-                    config.Verbosity = (Verbosity) _this.ReadInt32();
+                    config.Verbosity = (PrintVerbosity) _this.ReadInt32();
                     value = config.Verbosity.ToString();
                     break;
                 case OutputConfiguration.SHOW_CLIENTS:

@@ -6,9 +6,8 @@ using System.Security.Principal;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Extensions;
-using Nuclear.Test.NetVersions;
 using Nuclear.Test.Output;
-using Nuclear.TestSite.Results;
+using Nuclear.Test.Results;
 
 namespace Nuclear.Test.TestExecution {
 
@@ -48,7 +47,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Gets the target runtime of the test <see cref="Assembly"/>.
         /// </summary>
-        protected (NetPlatforms platform, Version version) TestAssemblyTargetRuntime { get; private set; }
+        protected (FrameworkIdentifiers platform, Version version) TestAssemblyTargetRuntime { get; private set; }
 
         #endregion
 
@@ -57,9 +56,8 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Creates a new instance of <see cref="PipedTestExecutor"/>.
         /// </summary>
-        /// <param name="results">The test results sink to use.</param>
         /// <param name="pipeName">The pipe name to use.</param>
-        protected PipedTestExecutor(ITestResultsEndPoint results, String pipeName) : base(results) {
+        protected PipedTestExecutor(String pipeName) {
             Throw.If.NullOrWhiteSpace(pipeName, "pipeName");
 
             PipeStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.None);
@@ -73,7 +71,7 @@ namespace Nuclear.Test.TestExecution {
         /// Execute tests.
         /// </summary>
         /// <returns>The collective results of all executed tests.</returns>
-        public override TestResultMap Execute() {
+        public override ITestResultEndPoint Execute() {
             base.Execute();
 
             try {
@@ -84,7 +82,7 @@ namespace Nuclear.Test.TestExecution {
                     DiagnosticOutput.Log(OutputConfiguration, "Received assembly path: {0}", File.FullName);
                     Console.Title += String.Format(": {0}", File.Name);
 
-                    if(File.Exists && TryLoadAssembly(File, out Assembly assembly, out AssemblyName assemblyName, out (NetPlatforms platform, Version version) assemblyTargetRuntime)) {
+                    if(File.Exists && TryLoadAssembly(File, out Assembly assembly, out AssemblyName assemblyName, out (FrameworkIdentifiers platform, Version version) assemblyTargetRuntime)) {
                         TestAssembly = assembly;
                         TestAssemblyName = assemblyName;
                         TestAssemblyTargetRuntime = assemblyTargetRuntime;
@@ -101,7 +99,7 @@ namespace Nuclear.Test.TestExecution {
                 CloseClientPipe(PipeStream);
             }
 
-            return Results.ResultMap;
+            return Results;
         }
 
         #endregion
@@ -175,10 +173,10 @@ namespace Nuclear.Test.TestExecution {
         /// <param name="assemblyName">The <see cref="AssemblyName"/> of <paramref name="assembly"/>.</param>
         /// <param name="assemblyTargetRuntime">The targeted runtime of <paramref name="assembly"/>.</param>
         /// <returns>True if loading was successful or false if not.</returns>
-        protected Boolean TryLoadAssembly(FileInfo file, out Assembly assembly, out AssemblyName assemblyName, out (NetPlatforms platform, Version version) assemblyTargetRuntime) {
+        protected Boolean TryLoadAssembly(FileInfo file, out Assembly assembly, out AssemblyName assemblyName, out (FrameworkIdentifiers platform, Version version) assemblyTargetRuntime) {
             assembly = null;
             assemblyName = null;
-            assemblyTargetRuntime = (NetPlatforms.Unknown, new Version());
+            assemblyTargetRuntime = (FrameworkIdentifiers.Unknown, new Version());
 
             try {
                 assembly = Assembly.LoadFrom(file.FullName);
@@ -198,7 +196,7 @@ namespace Nuclear.Test.TestExecution {
                 DiagnosticOutput.LogError("File path is too long: '{0}'", file.FullName);
             }
 
-            return assembly != null && assemblyName != null && assemblyTargetRuntime.platform != NetPlatforms.Unknown;
+            return assembly != null && assemblyName != null && assemblyTargetRuntime.platform != FrameworkIdentifiers.Unknown;
         }
 
         #endregion
@@ -214,7 +212,7 @@ namespace Nuclear.Test.TestExecution {
         /// <returns></returns>
         protected Boolean TrySendResultData(PipeStream pipe, Byte[] data) {
             try {
-                DiagnosticOutput.Log(OutputConfiguration, "Sending {0} ({1} Bytes) results back to server.", Results.ResultMap.ResultsTotal, data.Length);
+                DiagnosticOutput.Log(OutputConfiguration, "Sending {0} ({1} Bytes) results back to server.", Results.GetResults().CountResults(), data.Length);
 
                 lock(_pipeLock) {
                     pipe.Write(TestConfiguration.TEST_RESULTS);
