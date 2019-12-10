@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Nuclear.TestSite.Results;
 using Nuclear.TestSite.TestSuites;
 
 namespace Nuclear.TestSite {
@@ -23,12 +22,23 @@ namespace Nuclear.TestSite {
         /// <summary>
         /// Gets conditional test functionality.
         /// </summary>
-        public static TestSuiteCollection If { get; private set; }
+        public static TestSuiteCollection If { get; } = new TestSuiteCollection(null);
 
         /// <summary>
         /// Gets conditional test functionality with inverted results.
         /// </summary>
-        public static TestSuiteCollection IfNot { get; private set; }
+        public static TestSuiteCollection IfNot { get; } = new TestSuiteCollection(null, invert: true);
+
+        internal static ITestResultSink Results {
+            get {
+                if(_results == null) {
+                    _results = ResultProxy.Results;
+                }
+
+                return _results;
+            }
+            set => _results = value;
+        }
 
         #endregion
 
@@ -54,20 +64,7 @@ namespace Nuclear.TestSite {
         /// <param name="_method">The name of the caller. Do not use in methods decorated with <see cref="TestMethodAttribute"/>!</param>
         public static void Note(String note,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            => _results.AddNote(note, Path.GetFileNameWithoutExtension(_file), _method);
-
-        /// <summary>
-        /// Sets the test result sink to a specific <see cref="ITestResultSink"/>. Should only ever be used by test client implementations.
-        /// </summary>
-        /// <param name="results"></param>
-        /// <exception cref="ArgumentNullException">Throws if <paramref name="results"/> is null.</exception>
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static void SetTestResultsSink(ITestResultSink results) {
-            _results = results;
-
-            If = new TestSuiteCollection(_results);
-            IfNot = new TestSuiteCollection(_results, invert: true);
-        }
+            => Results.AddNote(note, Path.GetFileNameWithoutExtension(_file), _method);
 
         #endregion
 

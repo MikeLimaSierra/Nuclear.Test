@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Nuclear.TestSite.Results;
+using Nuclear.TestSite;
 
 namespace Nuclear.Test.Results {
 

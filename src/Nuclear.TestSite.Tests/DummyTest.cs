@@ -2,11 +2,12 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using Nuclear.Extensions;
 using Nuclear.Test;
 using Nuclear.Test.Results;
-using Nuclear.TestSite.Results;
 using Nuclear.TestSite.TestSuites;
 
 namespace Nuclear.TestSite {
@@ -41,7 +42,10 @@ namespace Nuclear.TestSite {
 
         #region fields
 
-        private ConcurrentDictionary<ITestResultKey, ITestMethodResult> _results { get; } = new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(new TestResultKeyEqualityComparer());
+        private ConcurrentDictionary<ITestResultKey, ITestMethodResult> _results { get; } =
+            new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(DynamicEqualityComparer.FromIEquatable<ITestResultKey>());
+
+        private static readonly IEqualityComparer<ITestResultKey> _comparer = DynamicEqualityComparer.FromIEquatable<ITestResultKey>();
 
         #endregion
 
@@ -50,14 +54,6 @@ namespace Nuclear.TestSite {
         internal static DummyTestResults Instance { get; } = new DummyTestResults();
 
         public ITestScenario Scenario { get; private set; }
-
-        public IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> Values => _results;
-
-        public IEnumerable<ITestResultKey> Keys => _results.Keys;
-
-        public IEnumerable<ITestMethodResult> Results => _results.Values;
-
-        public ITestMethodResult this[ITestResultKey key] => _results.GetOrAdd(key, new TestMethodResult());
 
         #endregion
 
@@ -71,6 +67,44 @@ namespace Nuclear.TestSite {
             => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
                 new TestMethodResult());
 
+        public void FailTestMethod(MethodInfo _method, Exception ex)
+            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
+                new TestMethodResult()).Fail(ex.ToString());
+
+        #endregion
+
+        #region ITestResultSource
+
+        public IEnumerable<ITestResultKey> GetKeys() => _results.Keys;
+
+        public IEnumerable<ITestResultKey> GetKeys(ITestResultKey match) => GetKeys().Where(key => key.Matches(match));
+
+        public IEnumerable<ITestResultKey> GetKeys(ITestResultKey match, TestResultKeyPrecisions precision) {
+            List<ITestResultKey> keys = new List<ITestResultKey>();
+
+            foreach(ITestResultKey key in GetKeys(match)) {
+                ITestResultKey clippedKey = key.Clip(precision);
+
+                if(!keys.Contains(clippedKey, _comparer)) {
+                    keys.Add(clippedKey);
+                }
+            }
+
+            return keys;
+        }
+
+        public ITestMethodResult GetResult(ITestResultKey key) => _results.GetOrAdd(key, new TestMethodResult());
+
+        public IEnumerable<ITestMethodResult> GetResults() => _results.Values;
+
+        public IEnumerable<ITestMethodResult> GetResults(ITestResultKey match) => _results.Where(value => value.Key.Matches(match)).Select(value => value.Value);
+
+        public IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> GetKeyedResults() => _results;
+
+        #endregion
+
+        #region ITestResultSink
+
         public void AddResult(Boolean result, String testInstruction, String message, String _file, String _method)
             => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
                 new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(result, testInstruction, message));
@@ -78,10 +112,6 @@ namespace Nuclear.TestSite {
         public void AddNote(String message, String _file, String _method)
             => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
                 new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(message));
-
-        public void FailTestMethod(MethodInfo _method, Exception ex)
-            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
-                new TestMethodResult()).Fail(ex.ToString());
 
         #endregion
 

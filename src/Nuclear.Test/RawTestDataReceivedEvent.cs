@@ -3,16 +3,16 @@
 namespace Nuclear.Test {
 
     /// <summary>
-    /// An event handler delegate to handle <see cref="TestDataAvailableEventArgs"/>.
+    /// An event handler delegate to handle <see cref="RawTestDataReceivedEventArgs"/>.
     /// </summary>
-    /// <param name="sender"></param>
-    /// <param name="e"></param>
-    public delegate void TestDataAvailableEventHandler(Object sender, TestDataAvailableEventArgs e);
+    /// <param name="sender">The sender.</param>
+    /// <param name="e">The arguments.</param>
+    public delegate void RawTestDataReceivedEventHandler(Object sender, RawTestDataReceivedEventArgs e);
 
     /// <summary>
     /// An event holding test data in raw format.
     /// </summary>
-    public class TestDataAvailableEventArgs : EventArgs {
+    public class RawTestDataReceivedEventArgs : EventArgs {
 
         #region properties
 
@@ -26,10 +26,10 @@ namespace Nuclear.Test {
         #region ctors
 
         /// <summary>
-        /// Creates an instance of <see cref="TestDataAvailableEventArgs"/>.
+        /// Creates an instance of <see cref="RawTestDataReceivedEventArgs"/>.
         /// </summary>
         /// <param name="data">The raw test data.</param>
-        public TestDataAvailableEventArgs(Byte[] data) {
+        public RawTestDataReceivedEventArgs(Byte[] data) {
             Data = data;
         }
 

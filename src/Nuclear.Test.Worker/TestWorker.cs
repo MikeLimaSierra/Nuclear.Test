@@ -36,15 +36,14 @@ namespace Nuclear.Test.Worker {
 
         protected override void ExecuteInternal() {
             (FrameworkIdentifiers platform, Version version) testAssemblyInfo = NetVersionTree.GetTargetRuntimeFromAssembly(TestAssembly);
-            Assembly executionAssembly = Assembly.GetEntryAssembly();
-            (FrameworkIdentifiers platform, Version version) executionAssemblyInfo = NetVersionTree.GetTargetRuntimeFromAssembly(executionAssembly);
+            (FrameworkIdentifiers platform, Version version) executionAssemblyInfo = NetVersionTree.GetTargetRuntimeFromAssembly(EntryAssembly);
 
             TestScenario scenario = new TestScenario(TestAssemblyName.Name,
                 testAssemblyInfo.platform, testAssemblyInfo.version, TestAssemblyName.ProcessorArchitecture,
-                executionAssemblyInfo.platform, executionAssemblyInfo.version, executionAssembly.GetName().ProcessorArchitecture);
+                executionAssemblyInfo.platform, executionAssemblyInfo.version, RuntimeArchitecure);
 
             Results.Initialize(scenario);
-            TestSite.Test.SetTestResultsSink(Results);
+            ResultProxy.Results = Results;
 
             CollectTestMethods(TestAssembly, Results, out List<TestMethod> sequential, out List<TestMethod> parallel);
             InvokeTestMethods(sequential, parallel);

@@ -8,7 +8,6 @@ using Nuclear.Test.Configurations;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Output;
 using Nuclear.Test.Results;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.TestExecution {
 
@@ -72,7 +71,7 @@ namespace Nuclear.Test.TestExecution {
         /// Execute tests.
         /// </summary>
         /// <returns>The collective results of all executed tests.</returns>
-        public override ITestResultSource Execute() {
+        public override ITestResultEndPoint Execute() {
             base.Execute();
 
             try {
@@ -213,7 +212,7 @@ namespace Nuclear.Test.TestExecution {
         /// <returns></returns>
         protected Boolean TrySendResultData(PipeStream pipe, Byte[] data) {
             try {
-                DiagnosticOutput.Log(OutputConfiguration, "Sending {0} ({1} Bytes) results back to server.", Results.Results.CountResults(), data.Length);
+                DiagnosticOutput.Log(OutputConfiguration, "Sending {0} ({1} Bytes) results back to server.", Results.GetResults().CountResults(), data.Length);
 
                 lock(_pipeLock) {
                     pipe.Write(TestConfiguration.TEST_RESULTS);

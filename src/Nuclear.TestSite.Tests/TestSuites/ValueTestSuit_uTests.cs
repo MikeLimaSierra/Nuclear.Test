@@ -106,14 +106,14 @@ namespace Nuclear.TestSite.TestSuites {
             DDTEqualsComparer<Dummy>((5, 5, new ThrowingEqualityComparer()), (7, false, "Comparison threw Exception:"));
 
             DDTEqualsComparer<Dummy>((null, null, (IEqualityComparer) null), (8, false, "Parameter 'comparer' is null."));
-            DDTEqualsComparer<Dummy>((null, 0, new DummyIEqualityComparer()), (9, false, "('DynamicEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTEqualsComparer<Dummy>((0, null, new DummyIEqualityComparer()), (10, false, "('DynamicEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTEqualsComparer<Dummy>((null, 0, new DummyIEqualityComparer()), (9, false, "('InternalEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTEqualsComparer<Dummy>((0, null, new DummyIEqualityComparer()), (10, false, "('InternalEqualityComparer`1') [Left = '0'; Right = 'null']"));
             DDTEqualsComparer<Dummy>((0, 0, (IEqualityComparer) null), (11, false, "Parameter 'comparer' is null."));
-            DDTEqualsComparer<Dummy>((5, 0, new DummyIEqualityComparer()), (12, false, "('DynamicEqualityComparer`1') [Left = '5'; Right = '0']"));
-            DDTEqualsComparer<Dummy>((5, 5, new DummyIEqualityComparer()), (13, true, "('DynamicEqualityComparer`1') [Left = '5'; Right = '5']"));
-            DDTEqualsComparer<Dummy>((5, 5, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTEqualsComparer<Dummy>((5, 0, new DummyIEqualityComparer()), (12, false, "('InternalEqualityComparer`1') [Left = '5'; Right = '0']"));
+            DDTEqualsComparer<Dummy>((5, 5, new DummyIEqualityComparer()), (13, true, "('InternalEqualityComparer`1') [Left = '5'; Right = '5']"));
+            DDTEqualsComparer<Dummy>((5, 5, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (14, false, "Comparison threw Exception:"));
 
             DDTEqualsComparer((null, null, (IEqualityComparer<Dummy>) null), (15, false, "Parameter 'comparer' is null."));
@@ -122,9 +122,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTEqualsComparer((0, 0, (IEqualityComparer<Dummy>) null), (18, false, "Parameter 'comparer' is null."));
             DDTEqualsComparer((5, 0, new DummyIEqualityComparerT()), (19, false, "('DummyIEqualityComparerT') [Left = '5'; Right = '0']"));
             DDTEqualsComparer((5, 5, new DummyIEqualityComparerT()), (20, true, "('DummyIEqualityComparerT') [Left = '5'; Right = '5']"));
-            DDTEqualsComparer((5, 5, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTEqualsComparer((5, 5, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (21, false, "Comparison threw Exception:"));
 
         }
@@ -174,14 +174,14 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotEqualsComparer<Dummy>((5, 5, new ThrowingEqualityComparer()), (7, false, "Comparison threw Exception:"));
 
             DDTNotEqualsComparer<Dummy>((null, null, (IEqualityComparer) null), (8, false, "Parameter 'comparer' is null."));
-            DDTNotEqualsComparer<Dummy>((null, 0, new DummyIEqualityComparer()), (9, true, "('DynamicEqualityComparer`1') [Left = 'null'; Right = '0']"));
-            DDTNotEqualsComparer<Dummy>((0, null, new DummyIEqualityComparer()), (10, true, "('DynamicEqualityComparer`1') [Left = '0'; Right = 'null']"));
+            DDTNotEqualsComparer<Dummy>((null, 0, new DummyIEqualityComparer()), (9, true, "('InternalEqualityComparer`1') [Left = 'null'; Right = '0']"));
+            DDTNotEqualsComparer<Dummy>((0, null, new DummyIEqualityComparer()), (10, true, "('InternalEqualityComparer`1') [Left = '0'; Right = 'null']"));
             DDTNotEqualsComparer<Dummy>((0, 0, (IEqualityComparer) null), (11, false, "Parameter 'comparer' is null."));
-            DDTNotEqualsComparer<Dummy>((5, 0, new DummyIEqualityComparer()), (12, true, "('DynamicEqualityComparer`1') [Left = '5'; Right = '0']"));
-            DDTNotEqualsComparer<Dummy>((5, 5, new DummyIEqualityComparer()), (13, false, "('DynamicEqualityComparer`1') [Left = '5'; Right = '5']"));
-            DDTNotEqualsComparer<Dummy>((5, 5, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTNotEqualsComparer<Dummy>((5, 0, new DummyIEqualityComparer()), (12, true, "('InternalEqualityComparer`1') [Left = '5'; Right = '0']"));
+            DDTNotEqualsComparer<Dummy>((5, 5, new DummyIEqualityComparer()), (13, false, "('InternalEqualityComparer`1') [Left = '5'; Right = '5']"));
+            DDTNotEqualsComparer<Dummy>((5, 5, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (14, false, "Comparison threw Exception:"));
 
             DDTNotEqualsComparer((null, null, (IEqualityComparer<Dummy>) null), (15, false, "Parameter 'comparer' is null."));
@@ -190,9 +190,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotEqualsComparer((0, 0, (IEqualityComparer<Dummy>) null), (18, false, "Parameter 'comparer' is null."));
             DDTNotEqualsComparer((5, 0, new DummyIEqualityComparerT()), (19, true, "('DummyIEqualityComparerT') [Left = '5'; Right = '0']"));
             DDTNotEqualsComparer((5, 5, new DummyIEqualityComparerT()), (20, false, "('DummyIEqualityComparerT') [Left = '5'; Right = '5']"));
-            DDTNotEqualsComparer((5, 5, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTNotEqualsComparer((5, 5, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (21, false, "Comparison threw Exception:"));
 
         }
@@ -464,7 +464,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsLessThanComparer<Dummy>((null, 0, new DummyIComparer()), (10, true, "[Value = 'null'; Other = '0']"));
             DDTIsLessThanComparer<Dummy>((0, null, new DummyIComparer()), (11, false, "[Value = '0'; Other = 'null']"));
             DDTIsLessThanComparer<Dummy>((0, 0, (IComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTIsLessThanComparer<Dummy>((0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
+            DDTIsLessThanComparer<Dummy>((0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
 
             DDTIsLessThanComparer<Dummy>((0, 0, new DummyIComparer()), (14, false, "[Value = '0'; Other = '0']"));
             DDTIsLessThanComparer<Dummy>((0, 1, new DummyIComparer()), (15, true, "[Value = '0'; Other = '1']"));
@@ -474,7 +474,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsLessThanComparer((null, 0, new DummyIComparerT()), (18, true, "[Value = 'null'; Other = '0']"));
             DDTIsLessThanComparer((0, null, new DummyIComparerT()), (19, false, "[Value = '0'; Other = 'null']"));
             DDTIsLessThanComparer((0, 0, (IComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTIsLessThanComparer((0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
+            DDTIsLessThanComparer((0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
 
             DDTIsLessThanComparer((0, 0, new DummyIComparerT()), (22, false, "[Value = '0'; Other = '0']"));
             DDTIsLessThanComparer((0, 1, new DummyIComparerT()), (23, true, "[Value = '0'; Other = '1']"));
@@ -532,7 +532,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsLessThanComparer<Dummy>((null, 0, new DummyIComparer()), (10, false, "[Value = 'null'; Other = '0']"));
             DDTNotIsLessThanComparer<Dummy>((0, null, new DummyIComparer()), (11, true, "[Value = '0'; Other = 'null']"));
             DDTNotIsLessThanComparer<Dummy>((0, 0, (IComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTNotIsLessThanComparer<Dummy>((0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
+            DDTNotIsLessThanComparer<Dummy>((0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
 
             DDTNotIsLessThanComparer<Dummy>((0, 0, new DummyIComparer()), (14, true, "[Value = '0'; Other = '0']"));
             DDTNotIsLessThanComparer<Dummy>((0, 1, new DummyIComparer()), (15, false, "[Value = '0'; Other = '1']"));
@@ -542,7 +542,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsLessThanComparer((null, 0, new DummyIComparerT()), (18, false, "[Value = 'null'; Other = '0']"));
             DDTNotIsLessThanComparer((0, null, new DummyIComparerT()), (19, true, "[Value = '0'; Other = 'null']"));
             DDTNotIsLessThanComparer((0, 0, (IComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTNotIsLessThanComparer((0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
+            DDTNotIsLessThanComparer((0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
 
             DDTNotIsLessThanComparer((0, 0, new DummyIComparerT()), (22, true, "[Value = '0'; Other = '0']"));
             DDTNotIsLessThanComparer((0, 1, new DummyIComparerT()), (23, false, "[Value = '0'; Other = '1']"));
@@ -677,7 +677,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsLessThanOrEqualsComparer<Dummy>((null, 0, new DummyIComparer()), (10, true, "[Value = 'null'; Other = '0']"));
             DDTIsLessThanOrEqualsComparer<Dummy>((0, null, new DummyIComparer()), (11, false, "[Value = '0'; Other = 'null']"));
             DDTIsLessThanOrEqualsComparer<Dummy>((0, 0, (IComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTIsLessThanOrEqualsComparer<Dummy>((0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
+            DDTIsLessThanOrEqualsComparer<Dummy>((0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
 
             DDTIsLessThanOrEqualsComparer<Dummy>((0, 0, new DummyIComparer()), (14, true, "[Value = '0'; Other = '0']"));
             DDTIsLessThanOrEqualsComparer<Dummy>((0, 1, new DummyIComparer()), (15, true, "[Value = '0'; Other = '1']"));
@@ -687,7 +687,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsLessThanOrEqualsComparer((null, 0, new DummyIComparerT()), (18, true, "[Value = 'null'; Other = '0']"));
             DDTIsLessThanOrEqualsComparer((0, null, new DummyIComparerT()), (19, false, "[Value = '0'; Other = 'null']"));
             DDTIsLessThanOrEqualsComparer((0, 0, (IComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTIsLessThanOrEqualsComparer((0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
+            DDTIsLessThanOrEqualsComparer((0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
 
             DDTIsLessThanOrEqualsComparer((0, 0, new DummyIComparerT()), (22, true, "[Value = '0'; Other = '0']"));
             DDTIsLessThanOrEqualsComparer((0, 1, new DummyIComparerT()), (23, true, "[Value = '0'; Other = '1']"));
@@ -745,7 +745,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsLessThanOrEqualsComparer<Dummy>((null, 0, new DummyIComparer()), (10, false, "[Value = 'null'; Other = '0']"));
             DDTNotIsLessThanOrEqualsComparer<Dummy>((0, null, new DummyIComparer()), (11, true, "[Value = '0'; Other = 'null']"));
             DDTNotIsLessThanOrEqualsComparer<Dummy>((0, 0, (IComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTNotIsLessThanOrEqualsComparer<Dummy>((0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
+            DDTNotIsLessThanOrEqualsComparer<Dummy>((0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
 
             DDTNotIsLessThanOrEqualsComparer<Dummy>((0, 0, new DummyIComparer()), (14, false, "[Value = '0'; Other = '0']"));
             DDTNotIsLessThanOrEqualsComparer<Dummy>((0, 1, new DummyIComparer()), (15, false, "[Value = '0'; Other = '1']"));
@@ -755,7 +755,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsLessThanOrEqualsComparer((null, 0, new DummyIComparerT()), (18, false, "[Value = 'null'; Other = '0']"));
             DDTNotIsLessThanOrEqualsComparer((0, null, new DummyIComparerT()), (19, true, "[Value = '0'; Other = 'null']"));
             DDTNotIsLessThanOrEqualsComparer((0, 0, (IComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTNotIsLessThanOrEqualsComparer((0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
+            DDTNotIsLessThanOrEqualsComparer((0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
 
             DDTNotIsLessThanOrEqualsComparer((0, 0, new DummyIComparerT()), (22, false, "[Value = '0'; Other = '0']"));
             DDTNotIsLessThanOrEqualsComparer((0, 1, new DummyIComparerT()), (23, false, "[Value = '0'; Other = '1']"));
@@ -890,7 +890,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsGreaterThanComparer<Dummy>((null, 0, new DummyIComparer()), (10, false, "[Value = 'null'; Other = '0']"));
             DDTIsGreaterThanComparer<Dummy>((0, null, new DummyIComparer()), (11, true, "[Value = '0'; Other = 'null']"));
             DDTIsGreaterThanComparer<Dummy>((0, 0, (IComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTIsGreaterThanComparer<Dummy>((0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
+            DDTIsGreaterThanComparer<Dummy>((0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
 
             DDTIsGreaterThanComparer<Dummy>((0, 0, new DummyIComparer()), (14, false, "[Value = '0'; Other = '0']"));
             DDTIsGreaterThanComparer<Dummy>((0, 1, new DummyIComparer()), (15, false, "[Value = '0'; Other = '1']"));
@@ -900,7 +900,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsGreaterThanComparer((null, 0, new DummyIComparerT()), (18, false, "[Value = 'null'; Other = '0']"));
             DDTIsGreaterThanComparer((0, null, new DummyIComparerT()), (19, true, "[Value = '0'; Other = 'null']"));
             DDTIsGreaterThanComparer((0, 0, (IComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTIsGreaterThanComparer((0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
+            DDTIsGreaterThanComparer((0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
 
             DDTIsGreaterThanComparer((0, 0, new DummyIComparerT()), (22, false, "[Value = '0'; Other = '0']"));
             DDTIsGreaterThanComparer((0, 1, new DummyIComparerT()), (23, false, "[Value = '0'; Other = '1']"));
@@ -958,7 +958,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsGreaterThanComparer<Dummy>((null, 0, new DummyIComparer()), (10, true, "[Value = 'null'; Other = '0']"));
             DDTNotIsGreaterThanComparer<Dummy>((0, null, new DummyIComparer()), (11, false, "[Value = '0'; Other = 'null']"));
             DDTNotIsGreaterThanComparer<Dummy>((0, 0, (IComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTNotIsGreaterThanComparer<Dummy>((0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
+            DDTNotIsGreaterThanComparer<Dummy>((0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
 
             DDTNotIsGreaterThanComparer<Dummy>((0, 0, new DummyIComparer()), (14, true, "[Value = '0'; Other = '0']"));
             DDTNotIsGreaterThanComparer<Dummy>((0, 1, new DummyIComparer()), (15, true, "[Value = '0'; Other = '1']"));
@@ -968,7 +968,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsGreaterThanComparer((null, 0, new DummyIComparerT()), (18, true, "[Value = 'null'; Other = '0']"));
             DDTNotIsGreaterThanComparer((0, null, new DummyIComparerT()), (19, false, "[Value = '0'; Other = 'null']"));
             DDTNotIsGreaterThanComparer((0, 0, (IComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTNotIsGreaterThanComparer((0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
+            DDTNotIsGreaterThanComparer((0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
 
             DDTNotIsGreaterThanComparer((0, 0, new DummyIComparerT()), (22, true, "[Value = '0'; Other = '0']"));
             DDTNotIsGreaterThanComparer((0, 1, new DummyIComparerT()), (23, true, "[Value = '0'; Other = '1']"));
@@ -1103,7 +1103,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsGreaterThanOrEqualsComparer<Dummy>((null, 0, new DummyIComparer()), (10, false, "[Value = 'null'; Other = '0']"));
             DDTIsGreaterThanOrEqualsComparer<Dummy>((0, null, new DummyIComparer()), (11, true, "[Value = '0'; Other = 'null']"));
             DDTIsGreaterThanOrEqualsComparer<Dummy>((0, 0, (IComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTIsGreaterThanOrEqualsComparer<Dummy>((0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
+            DDTIsGreaterThanOrEqualsComparer<Dummy>((0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
 
             DDTIsGreaterThanOrEqualsComparer<Dummy>((0, 0, new DummyIComparer()), (14, true, "[Value = '0'; Other = '0']"));
             DDTIsGreaterThanOrEqualsComparer<Dummy>((0, 1, new DummyIComparer()), (15, false, "[Value = '0'; Other = '1']"));
@@ -1113,7 +1113,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsGreaterThanOrEqualsComparer((null, 0, new DummyIComparerT()), (18, false, "[Value = 'null'; Other = '0']"));
             DDTIsGreaterThanOrEqualsComparer((0, null, new DummyIComparerT()), (19, true, "[Value = '0'; Other = 'null']"));
             DDTIsGreaterThanOrEqualsComparer((0, 0, (IComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTIsGreaterThanOrEqualsComparer((0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
+            DDTIsGreaterThanOrEqualsComparer((0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
 
             DDTIsGreaterThanOrEqualsComparer((0, 0, new DummyIComparerT()), (22, true, "[Value = '0'; Other = '0']"));
             DDTIsGreaterThanOrEqualsComparer((0, 1, new DummyIComparerT()), (23, false, "[Value = '0'; Other = '1']"));
@@ -1171,7 +1171,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsGreaterThanOrEqualsComparer<Dummy>((null, 0, new DummyIComparer()), (10, true, "[Value = 'null'; Other = '0']"));
             DDTNotIsGreaterThanOrEqualsComparer<Dummy>((0, null, new DummyIComparer()), (11, false, "[Value = '0'; Other = 'null']"));
             DDTNotIsGreaterThanOrEqualsComparer<Dummy>((0, 0, (IComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTNotIsGreaterThanOrEqualsComparer<Dummy>((0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
+            DDTNotIsGreaterThanOrEqualsComparer<Dummy>((0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (13, false, "Comparer threw Exception:"));
 
             DDTNotIsGreaterThanOrEqualsComparer<Dummy>((0, 0, new DummyIComparer()), (14, false, "[Value = '0'; Other = '0']"));
             DDTNotIsGreaterThanOrEqualsComparer<Dummy>((0, 1, new DummyIComparer()), (15, true, "[Value = '0'; Other = '1']"));
@@ -1181,7 +1181,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsGreaterThanOrEqualsComparer((null, 0, new DummyIComparerT()), (18, true, "[Value = 'null'; Other = '0']"));
             DDTNotIsGreaterThanOrEqualsComparer((0, null, new DummyIComparerT()), (19, false, "[Value = '0'; Other = 'null']"));
             DDTNotIsGreaterThanOrEqualsComparer((0, 0, (IComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTNotIsGreaterThanOrEqualsComparer((0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
+            DDTNotIsGreaterThanOrEqualsComparer((0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (21, false, "Comparer threw Exception:"));
 
             DDTNotIsGreaterThanOrEqualsComparer((0, 0, new DummyIComparerT()), (22, false, "[Value = '0'; Other = '0']"));
             DDTNotIsGreaterThanOrEqualsComparer((0, 1, new DummyIComparerT()), (23, true, "[Value = '0'; Other = '1']"));
@@ -1495,7 +1495,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsClampedComparer<Dummy>((0, null, 0, new DummyIComparer()), (16, true, "[Value = '0'; Min = 'null'; Max = '0']"));
             DDTIsClampedComparer<Dummy>((0, 0, null, new DummyIComparer()), (17, true, "[Value = '0'; Min = '0'; Max = 'null']"));
             DDTIsClampedComparer<Dummy>((0, 0, 0, (IComparer) null), (18, false, "Parameter 'comparer' is null."));
-            DDTIsClampedComparer<Dummy>((0, 0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (19, false, "Comparer threw Exception:"));
+            DDTIsClampedComparer<Dummy>((0, 0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (19, false, "Comparer threw Exception:"));
 
             DDTIsClampedComparer<Dummy>((0, 0, 0, new DummyIComparer()), (20, true, "[Value = '0'; Min = '0'; Max = '0']"));
             DDTIsClampedComparer<Dummy>((0, -1, 1, new DummyIComparer()), (21, true, "[Value = '0'; Min = '-1'; Max = '1']"));
@@ -1510,7 +1510,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsClampedComparer((0, null, 0, new DummyIComparerT()), (29, true, "[Value = '0'; Min = 'null'; Max = '0']"));
             DDTIsClampedComparer((0, 0, null, new DummyIComparerT()), (30, true, "[Value = '0'; Min = '0'; Max = 'null']"));
             DDTIsClampedComparer((0, 0, 0, (IComparer<Dummy>) null), (31, false, "Parameter 'comparer' is null."));
-            DDTIsClampedComparer((0, 0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (32, false, "Comparer threw Exception:"));
+            DDTIsClampedComparer((0, 0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (32, false, "Comparer threw Exception:"));
 
             DDTIsClampedComparer((0, 0, 0, new DummyIComparerT()), (33, true, "[Value = '0'; Min = '0'; Max = '0']"));
             DDTIsClampedComparer((0, -1, 1, new DummyIComparerT()), (34, true, "[Value = '0'; Min = '-1'; Max = '1']"));
@@ -1578,7 +1578,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsClampedComparer<Dummy>((0, null, 0, new DummyIComparer()), (16, false, "[Value = '0'; Min = 'null'; Max = '0']"));
             DDTNotIsClampedComparer<Dummy>((0, 0, null, new DummyIComparer()), (17, false, "[Value = '0'; Min = '0'; Max = 'null']"));
             DDTNotIsClampedComparer<Dummy>((0, 0, 0, (IComparer) null), (18, false, "Parameter 'comparer' is null."));
-            DDTNotIsClampedComparer<Dummy>((0, 0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (19, false, "Comparer threw Exception:"));
+            DDTNotIsClampedComparer<Dummy>((0, 0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (19, false, "Comparer threw Exception:"));
 
             DDTNotIsClampedComparer<Dummy>((0, 0, 0, new DummyIComparer()), (20, false, "[Value = '0'; Min = '0'; Max = '0']"));
             DDTNotIsClampedComparer<Dummy>((0, -1, 1, new DummyIComparer()), (21, false, "[Value = '0'; Min = '-1'; Max = '1']"));
@@ -1593,7 +1593,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsClampedComparer((0, null, 0, new DummyIComparerT()), (29, false, "[Value = '0'; Min = 'null'; Max = '0']"));
             DDTNotIsClampedComparer((0, 0, null, new DummyIComparerT()), (30, false, "[Value = '0'; Min = '0'; Max = 'null']"));
             DDTNotIsClampedComparer((0, 0, 0, (IComparer<Dummy>) null), (31, false, "Parameter 'comparer' is null."));
-            DDTNotIsClampedComparer((0, 0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (32, false, "Comparer threw Exception:"));
+            DDTNotIsClampedComparer((0, 0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (32, false, "Comparer threw Exception:"));
 
             DDTNotIsClampedComparer((0, 0, 0, new DummyIComparerT()), (33, false, "[Value = '0'; Min = '0'; Max = '0']"));
             DDTNotIsClampedComparer((0, -1, 1, new DummyIComparerT()), (34, false, "[Value = '0'; Min = '-1'; Max = '1']"));
@@ -1775,7 +1775,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsClampedExclusiveComparer<Dummy>((0, null, 0, new DummyIComparer()), (16, false, "[Value = '0'; Min = 'null'; Max = '0']"));
             DDTIsClampedExclusiveComparer<Dummy>((0, 0, null, new DummyIComparer()), (17, false, "[Value = '0'; Min = '0'; Max = 'null']"));
             DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, (IComparer) null), (18, false, "Parameter 'comparer' is null."));
-            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (19, false, "Comparer threw Exception:"));
+            DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (19, false, "Comparer threw Exception:"));
 
             DDTIsClampedExclusiveComparer<Dummy>((0, 0, 0, new DummyIComparer()), (20, false, "[Value = '0'; Min = '0'; Max = '0']"));
             DDTIsClampedExclusiveComparer<Dummy>((0, -1, 1, new DummyIComparer()), (21, true, "[Value = '0'; Min = '-1'; Max = '1']"));
@@ -1790,7 +1790,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTIsClampedExclusiveComparer((0, null, 0, new DummyIComparerT()), (29, false, "[Value = '0'; Min = 'null'; Max = '0']"));
             DDTIsClampedExclusiveComparer((0, 0, null, new DummyIComparerT()), (30, false, "[Value = '0'; Min = '0'; Max = 'null']"));
             DDTIsClampedExclusiveComparer((0, 0, 0, (IComparer<Dummy>) null), (31, false, "Parameter 'comparer' is null."));
-            DDTIsClampedExclusiveComparer((0, 0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (32, false, "Comparer threw Exception:"));
+            DDTIsClampedExclusiveComparer((0, 0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (32, false, "Comparer threw Exception:"));
 
             DDTIsClampedExclusiveComparer((0, 0, 0, new DummyIComparerT()), (33, false, "[Value = '0'; Min = '0'; Max = '0']"));
             DDTIsClampedExclusiveComparer((0, -1, 1, new DummyIComparerT()), (34, true, "[Value = '0'; Min = '-1'; Max = '1']"));
@@ -1858,7 +1858,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsClampedExclusiveComparer<Dummy>((0, null, 0, new DummyIComparer()), (16, true, "[Value = '0'; Min = 'null'; Max = '0']"));
             DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, null, new DummyIComparer()), (17, true, "[Value = '0'; Min = '0'; Max = 'null']"));
             DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, (IComparer) null), (18, false, "Parameter 'comparer' is null."));
-            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, DynamicComparer.From((x, y) => throw new NotImplementedException())), (19, false, "Comparer threw Exception:"));
+            DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, DynamicComparer.FromDelegate((x, y) => throw new NotImplementedException())), (19, false, "Comparer threw Exception:"));
 
             DDTNotIsClampedExclusiveComparer<Dummy>((0, 0, 0, new DummyIComparer()), (20, true, "[Value = '0'; Min = '0'; Max = '0']"));
             DDTNotIsClampedExclusiveComparer<Dummy>((0, -1, 1, new DummyIComparer()), (21, false, "[Value = '0'; Min = '-1'; Max = '1']"));
@@ -1873,7 +1873,7 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotIsClampedExclusiveComparer((0, null, 0, new DummyIComparerT()), (29, true, "[Value = '0'; Min = 'null'; Max = '0']"));
             DDTNotIsClampedExclusiveComparer((0, 0, null, new DummyIComparerT()), (30, true, "[Value = '0'; Min = '0'; Max = 'null']"));
             DDTNotIsClampedExclusiveComparer((0, 0, 0, (IComparer<Dummy>) null), (31, false, "Parameter 'comparer' is null."));
-            DDTNotIsClampedExclusiveComparer((0, 0, 0, DynamicComparer<Dummy>.From((x, y) => throw new NotImplementedException())), (32, false, "Comparer threw Exception:"));
+            DDTNotIsClampedExclusiveComparer((0, 0, 0, DynamicComparer.FromDelegate<Dummy>((x, y) => throw new NotImplementedException())), (32, false, "Comparer threw Exception:"));
 
             DDTNotIsClampedExclusiveComparer((0, 0, 0, new DummyIComparerT()), (33, true, "[Value = '0'; Min = '0'; Max = '0']"));
             DDTNotIsClampedExclusiveComparer((0, -1, 1, new DummyIComparerT()), (34, false, "[Value = '0'; Min = '-1'; Max = '1']"));

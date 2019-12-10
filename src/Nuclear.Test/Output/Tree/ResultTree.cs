@@ -1,6 +1,5 @@
 ﻿using Nuclear.Test.ConsolePrinter.Tree.Nodes;
 using Nuclear.Test.Results;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree {
     public class ResultTree {

@@ -10,7 +10,6 @@ namespace Nuclear.Test.Worker {
         #region public methods
 
         static void Main(String[] args) {
-            //args = new String[] { "" };
             TestExecutor process = new TestWorker(args[0]);
             ITestResultSource results = process.Execute();
 

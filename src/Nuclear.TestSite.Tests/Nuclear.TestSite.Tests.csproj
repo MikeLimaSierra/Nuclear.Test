@@ -10,6 +10,7 @@
   <Import Project="..\Configurations.targets" />
   
   <ItemGroup>
+    <ProjectReference Include="..\Nuclear.TestSite\Nuclear.TestSite.csproj" />
     <ProjectReference Include="..\Nuclear.Test\Nuclear.Test.csproj" />
   </ItemGroup>
 

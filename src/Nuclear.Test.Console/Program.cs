@@ -46,7 +46,7 @@ namespace Nuclear.Test.Console {
 
             WaitOnDebug();
 
-            Environment.ExitCode = (Int32) (results.Results.HasFails() ? ExitCode.Fail : ExitCode.OK);
+            Environment.ExitCode = (Int32) (results.GetResults().HasFails() ? ExitCode.Fail : ExitCode.OK);
 
         }
 

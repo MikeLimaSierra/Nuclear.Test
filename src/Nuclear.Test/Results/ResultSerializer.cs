@@ -21,7 +21,7 @@ namespace Nuclear.Test.Results {
         /// <returns>The <see cref="Array"/> of bytes after successful serialization.</returns>
         public static Byte[] Serialize(ITestResultEndPoint results) {
             using(MemoryStream ms = new MemoryStream()) {
-                IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> values = results.Values;
+                IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> values = results.GetKeyedResults();
 
                 ms.Write(values.Count());
 

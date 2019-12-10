@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using Nuclear.TestSite;
+using System.Reflection;
 
 namespace Nuclear.Test.Proxy {
 
@@ -43,12 +43,14 @@ namespace Nuclear.Test.Proxy {
         /// <summary>
         /// Creates a new instance of <see cref="WorkerInfo"/>.
         /// </summary>
+        /// <param name="directory">The directory where the executable is located.</param>
         /// <param name="targetRuntime">The target runtime that is associated with this object.</param>
-        /// <param name="executable">The attached executable.</param>
-        public WorkerInfo((FrameworkIdentifiers platform, Version version) targetRuntime, FileInfo executable) {
+        /// <param name="runtimeArchitecture">The target runtime architecture.</param>
+        public WorkerInfo(DirectoryInfo directory, (FrameworkIdentifiers platform, Version version) targetRuntime, ProcessorArchitecture runtimeArchitecture) {
             Platform = targetRuntime.platform;
             Version = targetRuntime.version;
-            Executable = executable;
+            Executable = new FileInfo(Path.Combine(directory.FullName, runtimeArchitecture.ToString(),
+                targetRuntime.platform.ToString() + targetRuntime.version.ToString(), "Nuclear.Test.Worker.exe"));
         }
 
         #endregion

@@ -260,7 +260,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Contains(enumeration.Cast<Object>(), element, DynamicEqualityComparer<Object>.From(comparer), _file, _method);
+            Contains(enumeration.Cast<Object>(), element, DynamicEqualityComparer.FromComparer<Object>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -527,7 +527,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            ContainsRange(enumeration.Cast<Object>(), elements.Cast<Object>(), DynamicEqualityComparer<Object>.From(comparer), _file, _method);
+            ContainsRange(enumeration.Cast<Object>(), elements.Cast<Object>(), DynamicEqualityComparer.FromComparer<Object>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -736,7 +736,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Matches(enumeration.Cast<Object>(), other.Cast<Object>(), DynamicEqualityComparer<Object>.From(comparer), _file, _method);
+            Matches(enumeration.Cast<Object>(), other.Cast<Object>(), DynamicEqualityComparer.FromComparer<Object>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -958,7 +958,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            MatchesExactly(enumeration.Cast<Object>(), other.Cast<Object>(), DynamicEqualityComparer<Object>.From(comparer), _file, _method);
+            MatchesExactly(enumeration.Cast<Object>(), other.Cast<Object>(), DynamicEqualityComparer.FromComparer<Object>(comparer), _file, _method);
         }
 
         /// <summary>

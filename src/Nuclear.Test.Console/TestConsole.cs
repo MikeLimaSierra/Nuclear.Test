@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Output;
@@ -11,6 +12,12 @@ using Nuclear.Test.TestExecution;
 namespace Nuclear.Test.Console {
 
     internal class TestConsole : TestExecutor {
+
+        #region fields
+
+        private CountdownEvent _exitEvent = null;
+
+        #endregion
 
         #region properties
 
@@ -43,9 +50,23 @@ namespace Nuclear.Test.Console {
 
         #endregion
 
+        #region eventhandlers
+
+        private void OnResultsAvailable(Object sender, TestResultsAvailableEventArgs e) => Results.Add(e.Results);
+
+        private void OnFinished(Object sender, EventArgs e) {
+            if(sender is PipedTestExecutorRemote remote) {
+                remote.ResultsAvailable -= OnResultsAvailable;
+                remote.Finished -= OnFinished;
+                _exitEvent.Signal();
+            }
+        }
+
+        #endregion
+
         #region public methods
 
-        public override ITestResultSource Execute() {
+        public override ITestResultEndPoint Execute() {
             base.Execute();
 
             List<ProxyInfo> proxyInfos = GetProxyInfos(Files);
@@ -53,12 +74,17 @@ namespace Nuclear.Test.Console {
 
             foreach(ProxyInfo proxyInfo in proxyInfos) {
                 if(proxyInfo.HasExecutable && proxyInfo.Executable.Exists && proxyInfo.HasFile && proxyInfo.File.Exists) {
-                    remotes.Add(new PipedTestExecutorRemote(proxyInfo.Executable, proxyInfo.File, TestConfiguration, OutputConfiguration));
+                    PipedTestExecutorRemote remote = new PipedTestExecutorRemote(proxyInfo.Executable, proxyInfo.File, TestConfiguration, OutputConfiguration);
+                    remote.ResultsAvailable += OnResultsAvailable;
+                    remotes.Add(remote);
+                    remote.Finished += OnFinished;
                 }
             }
 
-            remotes.ForEach(remote => Results.Add(remote.Execute().Values));
-            remotes.ForEach(remote => remote.WaitToExit());
+            _exitEvent = new CountdownEvent(remotes.Count);
+
+            remotes.ForEach(remote => remote.Execute());
+            _exitEvent.Wait();
 
             return Results;
         }
@@ -84,26 +110,32 @@ namespace Nuclear.Test.Console {
             DiagnosticOutput.Log(OutputConfiguration, "Configuration end");
         }
 
-        private Boolean TryGetProxy(ProcessorArchitecture architecture, out FileInfo proxy) {
-            proxy = null;
+        private Boolean TryGetProxies(ProcessorArchitecture architecture, out List<FileInfo> proxies) {
+            proxies = new List<FileInfo>();
 
             switch(architecture) {
                 case ProcessorArchitecture.None:
                     break;
+
+                case ProcessorArchitecture.MSIL:
+                    proxies.Add(new FileInfo(Path.Combine(TestConfiguration.ProxyBaseDir.FullName, ProcessorArchitecture.X86.ToString(), "Nuclear.Test.Proxy.exe")));
+                    proxies.Add(new FileInfo(Path.Combine(TestConfiguration.ProxyBaseDir.FullName, ProcessorArchitecture.Amd64.ToString(), "Nuclear.Test.Proxy.exe")));
+                    break;
+
                 default:
-                    proxy = new FileInfo(Path.Combine(TestConfiguration.ProxyBaseDir.FullName, architecture.ToString(), "Nuclear.Test.Proxy.exe"));
+                    proxies.Add(new FileInfo(Path.Combine(TestConfiguration.ProxyBaseDir.FullName, architecture.ToString(), "Nuclear.Test.Proxy.exe")));
                     break;
             }
 
-            return proxy != null;
+            return proxies != null;
         }
 
         private List<ProxyInfo> GetProxyInfos(List<FileInfo> files) {
             List<ProxyInfo> proxyInfos = new List<ProxyInfo>();
 
             files.ForEach(file => {
-                if(TryGetProxy(AssemblyName.GetAssemblyName(file.FullName).ProcessorArchitecture, out FileInfo proxy)) {
-                    proxyInfos.Add(new ProxyInfo(proxy, file));
+                if(TryGetProxies(AssemblyName.GetAssemblyName(file.FullName).ProcessorArchitecture, out List<FileInfo> proxies)) {
+                    proxies.ForEach(proxy => proxyInfos.Add(new ProxyInfo(proxy, file)));
                 }
             });
 

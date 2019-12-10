@@ -2,8 +2,6 @@
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
-using Nuclear.Exceptions;
-using Nuclear.TestSite.Results;
 using Nuclear.TestSite.TestSuites.Base;
 
 namespace Nuclear.TestSite.TestSuites {
@@ -60,12 +58,14 @@ namespace Nuclear.TestSite.TestSuites {
         public ReferenceTestSuite Reference { get; private set; }
 
         internal ITestResultSink Results {
-            get => _results;
-            set {
-                Throw.If.Null(value, "value");
+            get {
+                if(_results == null) {
+                    _results = ResultProxy.Results;
+                }
 
-                _results = value;
+                return _results;
             }
+            set => _results = value;
         }
 
         #endregion
@@ -77,10 +77,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// </summary>
         /// <param name="results">The result sink to be used.</param>
         /// <param name="invert">True if result inversion is desired, false if not.</param>
-        /// <exception cref="ArgumentNullException">Throws if <paramref name="results"/> is null.</exception>
         public TestSuiteCollection(ITestResultSink results, Boolean invert = false) {
-            Throw.If.Null(results, "results");
-
             Results = results;
             _invert = invert;
 

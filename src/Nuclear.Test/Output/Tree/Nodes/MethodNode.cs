@@ -23,7 +23,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
         internal MethodNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
             : base(verbosity, key, results) {
 
-            Results = results[key];
+            Results = results.GetResult(key);
             Int32 index = 1;
 
             if(Verbosity > PrintVerbosity.MethodName || Results.Failed) {
