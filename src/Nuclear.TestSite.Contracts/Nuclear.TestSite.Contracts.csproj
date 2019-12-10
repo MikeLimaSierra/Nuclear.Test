@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard1.0</TargetFramework>
     <RootNamespace>Nuclear.TestSite</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Platforms>AnyCPU</Platforms>
@@ -9,13 +9,5 @@
   </PropertyGroup>
   
   <Import Project="..\Configurations.targets" />
-  
-  <ItemGroup>
-    <PackageReference Include="Nuclear.Extensions" Version="1.8.0" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Nuclear.TestSite.Contracts\Nuclear.TestSite.Contracts.csproj" />
-  </ItemGroup>
 
 </Project>

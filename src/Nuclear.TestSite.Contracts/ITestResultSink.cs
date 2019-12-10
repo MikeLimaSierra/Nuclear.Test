@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nuclear.TestSite.Results {
+namespace Nuclear.TestSite {
 
     /// <summary>
     /// Defines a result sink.
