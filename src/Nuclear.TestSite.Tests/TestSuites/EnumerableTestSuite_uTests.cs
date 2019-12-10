@@ -5,7 +5,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Ntt;
 using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     class EnumerableTestSuite_uTests {
@@ -340,9 +339,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTContainsWithComparer((null, 1, new DummyIEqualityComparer()), (10, false, "Parameter 'enumeration' is null."));
             DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, null, new DummyIEqualityComparer()), (11, false, "Enumeration doesn't contain element 'null'."));
             DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, (IEqualityComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (13, false, "Comparer threw Exception:"));
             DDTContainsWithComparer((new List<Dummy>() { 1, null, 3 }, null, new DummyIEqualityComparer()), (14, true, "Enumeration contains element 'null'."));
             DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, (Dummy) 2, new DummyIEqualityComparer()), (15, true, "Enumeration contains element '2'."));
@@ -352,9 +351,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTContainsWithComparer((null, 1, new DummyIEqualityComparerT()), (18, false, "Parameter 'enumeration' is null."));
             DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, null, new DummyIEqualityComparerT()), (19, false, "Enumeration doesn't contain element 'null'."));
             DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, (IEqualityComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (21, false, "Comparer threw Exception:"));
             DDTContainsWithComparer((new List<Dummy>() { 1, null, 3 }, null, new DummyIEqualityComparerT()), (22, true, "Enumeration contains element 'null'."));
             DDTContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 2, new DummyIEqualityComparerT()), (23, true, "Enumeration contains element '2'."));
@@ -408,9 +407,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotContainsWithComparer((null, 1, new DummyIEqualityComparer()), (10, false, "Parameter 'enumeration' is null."));
             DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, null, new DummyIEqualityComparer()), (11, true, "Enumeration doesn't contain element 'null'."));
             DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, (IEqualityComparer) null), (12, false, "Parameter 'comparer' is null."));
-            DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (13, false, "Comparer threw Exception:"));
             DDTNotContainsWithComparer((new List<Dummy>() { 1, null, 3 }, null, new DummyIEqualityComparer()), (14, false, "Enumeration contains element 'null'."));
             DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, (Dummy) 2, new DummyIEqualityComparer()), (15, false, "Enumeration contains element '2'."));
@@ -420,9 +419,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotContainsWithComparer((null, 1, new DummyIEqualityComparerT()), (18, false, "Parameter 'enumeration' is null."));
             DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, null, new DummyIEqualityComparerT()), (19, true, "Enumeration doesn't contain element 'null'."));
             DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, (IEqualityComparer<Dummy>) null), (20, false, "Parameter 'comparer' is null."));
-            DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 1, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (21, false, "Comparer threw Exception:"));
             DDTNotContainsWithComparer((new List<Dummy>() { 1, null, 3 }, null, new DummyIEqualityComparerT()), (22, false, "Enumeration contains element 'null'."));
             DDTNotContainsWithComparer((new List<Dummy>() { 1, 2, 3 }, 2, new DummyIEqualityComparerT()), (23, false, "Enumeration contains element '2'."));
@@ -682,9 +681,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTContainsRangeComparer((null, new List<Dummy>(), new DummyIEqualityComparer()), (14, false, "Parameter 'enumeration' is null."));
             DDTContainsRangeComparer((new List<Dummy>(), null, new DummyIEqualityComparer()), (15, false, "Parameter 'elements' is null."));
             DDTContainsRangeComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer) null), (16, false, "Parameter 'comparer' is null."));
-            DDTContainsRangeComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTContainsRangeComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (17, false, "Comparer threw Exception:"));
 
             DDTContainsRangeComparer((new List<Dummy>(), new List<Dummy>(), new DummyIEqualityComparer()), (18, true, "Enumeration contains 0 of 0 elements."));
@@ -700,9 +699,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTContainsRangeComparer((null, new List<Dummy>(), new DummyIEqualityComparerT()), (26, false, "Parameter 'enumeration' is null."));
             DDTContainsRangeComparer((new List<Dummy>(), null, new DummyIEqualityComparerT()), (27, false, "Parameter 'elements' is null."));
             DDTContainsRangeComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer<Dummy>) null), (28, false, "Parameter 'comparer' is null."));
-            DDTContainsRangeComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTContainsRangeComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (29, false, "Comparer threw Exception:"));
 
             DDTContainsRangeComparer((new List<Dummy>(), new List<Dummy>(), new DummyIEqualityComparerT()), (30, true, "Enumeration contains 0 of 0 elements."));
@@ -768,9 +767,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotContainsRangeComparer((null, new List<Dummy>(), new DummyIEqualityComparer()), (14, false, "Parameter 'enumeration' is null."));
             DDTNotContainsRangeComparer((new List<Dummy>(), null, new DummyIEqualityComparer()), (15, false, "Parameter 'elements' is null."));
             DDTNotContainsRangeComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer) null), (16, false, "Parameter 'comparer' is null."));
-            DDTNotContainsRangeComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTNotContainsRangeComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (17, false, "Comparer threw Exception:"));
 
             DDTNotContainsRangeComparer((new List<Dummy>(), new List<Dummy>(), new DummyIEqualityComparer()), (18, false, "Enumeration contains 0 of 0 elements."));
@@ -786,9 +785,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotContainsRangeComparer((null, new List<Dummy>(), new DummyIEqualityComparerT()), (26, false, "Parameter 'enumeration' is null."));
             DDTNotContainsRangeComparer((new List<Dummy>(), null, new DummyIEqualityComparerT()), (27, false, "Parameter 'elements' is null."));
             DDTNotContainsRangeComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer<Dummy>) null), (28, false, "Parameter 'comparer' is null."));
-            DDTNotContainsRangeComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTNotContainsRangeComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (29, false, "Comparer threw Exception:"));
 
             DDTNotContainsRangeComparer((new List<Dummy>(), new List<Dummy>(), new DummyIEqualityComparerT()), (30, false, "Enumeration contains 0 of 0 elements."));
@@ -974,9 +973,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTMatchesComparer((null, new List<Dummy>(), new DummyIEqualityComparer()), (17, false, "Parameter 'enumeration' is null."));
             DDTMatchesComparer((new List<Dummy>(), null, new DummyIEqualityComparer()), (18, false, "Parameter 'other' is null."));
             DDTMatchesComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer) null), (19, false, "Parameter 'comparer' is null."));
-            DDTMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (20, false, "Comparer threw Exception:"));
 
             DDTMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, new DummyIEqualityComparer()), (21, true, "Enumerations match."));
@@ -994,9 +993,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTMatchesComparer((null, new List<Dummy>(), new DummyIEqualityComparerT()), (32, false, "Parameter 'enumeration' is null."));
             DDTMatchesComparer((new List<Dummy>(), null, new DummyIEqualityComparerT()), (33, false, "Parameter 'other' is null."));
             DDTMatchesComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer<Dummy>) null), (34, false, "Parameter 'comparer' is null."));
-            DDTMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (35, false, "Comparer threw Exception:"));
 
             DDTMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, new DummyIEqualityComparerT()), (36, true, "Enumerations match."));
@@ -1066,9 +1065,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotMatchesComparer((null, new List<Dummy>(), new DummyIEqualityComparer()), (17, false, "Parameter 'enumeration' is null."));
             DDTNotMatchesComparer((new List<Dummy>(), null, new DummyIEqualityComparer()), (18, false, "Parameter 'other' is null."));
             DDTNotMatchesComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer) null), (19, false, "Parameter 'comparer' is null."));
-            DDTNotMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTNotMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (20, false, "Comparer threw Exception:"));
 
             DDTNotMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, new DummyIEqualityComparer()), (21, false, "Enumerations match."));
@@ -1086,9 +1085,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotMatchesComparer((null, new List<Dummy>(), new DummyIEqualityComparerT()), (32, false, "Parameter 'enumeration' is null."));
             DDTNotMatchesComparer((new List<Dummy>(), null, new DummyIEqualityComparerT()), (33, false, "Parameter 'other' is null."));
             DDTNotMatchesComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer<Dummy>) null), (34, false, "Parameter 'comparer' is null."));
-            DDTNotMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTNotMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (35, false, "Comparer threw Exception:"));
 
             DDTNotMatchesComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, new DummyIEqualityComparerT()), (36, false, "Enumerations match."));
@@ -1276,9 +1275,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTMatchesExactlyComparer((null, new List<Dummy>(), new DummyIEqualityComparer()), (17, false, "Parameter 'enumeration' is null."));
             DDTMatchesExactlyComparer((new List<Dummy>(), null, new DummyIEqualityComparer()), (18, false, "Parameter 'other' is null."));
             DDTMatchesExactlyComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer) null), (19, false, "Parameter 'comparer' is null."));
-            DDTMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (20, false, "Comparer threw Exception:"));
 
             DDTMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, new DummyIEqualityComparer()), (21, true, "Enumerations match."));
@@ -1296,9 +1295,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTMatchesExactlyComparer((null, new List<Dummy>(), new DummyIEqualityComparerT()), (32, false, "Parameter 'enumeration' is null."));
             DDTMatchesExactlyComparer((new List<Dummy>(), null, new DummyIEqualityComparerT()), (33, false, "Parameter 'other' is null."));
             DDTMatchesExactlyComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer<Dummy>) null), (34, false, "Parameter 'comparer' is null."));
-            DDTMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (35, false, "Comparer threw Exception:"));
 
             DDTMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, new DummyIEqualityComparerT()), (36, true, "Enumerations match."));
@@ -1368,9 +1367,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotMatchesExactlyComparer((null, new List<Dummy>(), new DummyIEqualityComparer()), (17, false, "Parameter 'enumeration' is null."));
             DDTNotMatchesExactlyComparer((new List<Dummy>(), null, new DummyIEqualityComparer()), (18, false, "Parameter 'other' is null."));
             DDTNotMatchesExactlyComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer) null), (19, false, "Parameter 'comparer' is null."));
-            DDTNotMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.From(
-                new EqualityComparison<Object>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Object>((obj) => throw new NotImplementedException()))),
+            DDTNotMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (20, false, "Comparer threw Exception:"));
 
             DDTNotMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, new DummyIEqualityComparer()), (21, false, "Enumerations match."));
@@ -1388,9 +1387,9 @@ namespace Nuclear.TestSite.TestSuites {
             DDTNotMatchesExactlyComparer((null, new List<Dummy>(), new DummyIEqualityComparerT()), (32, false, "Parameter 'enumeration' is null."));
             DDTNotMatchesExactlyComparer((new List<Dummy>(), null, new DummyIEqualityComparerT()), (33, false, "Parameter 'other' is null."));
             DDTNotMatchesExactlyComparer((new List<Dummy>(), new List<Dummy>(), (IEqualityComparer<Dummy>) null), (34, false, "Parameter 'comparer' is null."));
-            DDTNotMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer<Dummy>.From(
-                new EqualityComparison<Dummy>((x, y) => throw new NotImplementedException()),
-                new GetHashCode<Dummy>((obj) => throw new NotImplementedException()))),
+            DDTNotMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, DynamicEqualityComparer.FromDelegate<Dummy>(
+                (x, y) => throw new NotImplementedException(),
+                (obj) => throw new NotImplementedException())),
                 (35, false, "Comparer threw Exception:"));
 
             DDTNotMatchesExactlyComparer((new List<Dummy>() { 1 }, new List<Dummy>() { 1 }, new DummyIEqualityComparerT()), (36, false, "Enumerations match."));

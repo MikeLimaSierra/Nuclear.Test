@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Nuclear.Exceptions;
-using Nuclear.TestSite.Results;
+using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Worker {
     internal class TestMethod {
@@ -12,7 +12,7 @@ namespace Nuclear.Test.Worker {
 
         private MethodInfo _method;
 
-        private ITestResultsEndPoint _results;
+        private ITestResultEndPoint _results;
 
         #endregion
 
@@ -35,9 +35,9 @@ namespace Nuclear.Test.Worker {
         /// <summary>
         /// Creates a new instance of <see cref="TestMethod"/>.
         /// </summary>
-        /// <param name="results">The test results sink to use.</param>
+        /// <param name="results">The test results end point to use.</param>
         /// <param name="method">The method to invoke.</param>
-        internal TestMethod(ITestResultsEndPoint results, MethodInfo method) {
+        internal TestMethod(ITestResultEndPoint results, MethodInfo method) {
             Throw.If.Null(results, "results");
             Throw.If.Null(method, "method");
 

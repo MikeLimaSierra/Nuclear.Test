@@ -1,7 +1,8 @@
 ﻿using System;
+using Nuclear.Test.ConsolePrinter.Tree;
 using Nuclear.Test.Output;
+using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;
-using Nuclear.TestSite.Results;
 
 namespace Nuclear.Test.Proxy {
     static class Program {
@@ -9,11 +10,11 @@ namespace Nuclear.Test.Proxy {
         #region methods
 
         static void Main(String[] args) {
-            TestExecutor process = new TestProxy(TestResults.Instance, args[0]);
-            TestResultMap results = process.Execute();
+            TestExecutor process = new TestProxy(args[0]);
+            ITestResultSource results = process.Execute();
 
             DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
-            new ResultPrinter(process.OutputConfiguration).PrintResults(results);
+            new ResultTree(process.OutputConfiguration.Verbosity, results).Print();
             DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
 
             if(process.OutputConfiguration.ClientsAwaitInput && process.OutputConfiguration.ShowClients) {

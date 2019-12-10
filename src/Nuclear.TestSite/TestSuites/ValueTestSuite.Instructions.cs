@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Nuclear.Extensions;
-using Nuclear.TestSite.Attributes;
 
 namespace Nuclear.TestSite.TestSuites {
     public partial class ValueTestSuite {
@@ -120,7 +119,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Equals(left, right, DynamicEqualityComparer<T>.From(comparer), _file, _method);
+            Equals(left, right, DynamicEqualityComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -207,7 +206,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Equals(left, right, DynamicComparer<T>.From(comparer), _file, _method);
+            Equals(left, right, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -402,7 +401,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsLessThan(value, other, DynamicComparer<T>.From(comparer), _file, _method);
+            IsLessThan(value, other, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -527,7 +526,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsLessThanOrEquals(value, other, DynamicComparer<T>.From(comparer), _file, _method);
+            IsLessThanOrEquals(value, other, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -652,7 +651,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsGreaterThan(value, other, DynamicComparer<T>.From(comparer), _file, _method);
+            IsGreaterThan(value, other, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -777,7 +776,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsGreaterThanOrEquals(value, other, DynamicComparer<T>.From(comparer), _file, _method);
+            IsGreaterThanOrEquals(value, other, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -1002,7 +1001,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsClamped(value, min, max, DynamicComparer<T>.From(comparer), _file, _method);
+            IsClamped(value, min, max, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -1147,7 +1146,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsClampedExclusive(value, min, max, DynamicComparer<T>.From(comparer), _file, _method);
+            IsClampedExclusive(value, min, max, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
