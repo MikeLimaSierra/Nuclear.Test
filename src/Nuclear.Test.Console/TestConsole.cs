@@ -28,8 +28,8 @@ namespace Nuclear.Test.Console {
         #region ctors
 
         internal TestConsole(TestConfiguration testConfiguration, OutputConfiguration outputConfiguration) {
-            Throw.If.Null(testConfiguration, "testConfiguration");
-            Throw.If.Null(outputConfiguration, "outputConfiguration");
+            Throw.If.Object.IsNull(testConfiguration, nameof(testConfiguration));
+            Throw.If.Object.IsNull(outputConfiguration, nameof(outputConfiguration));
 
             TestConfiguration = testConfiguration;
             OutputConfiguration = outputConfiguration;

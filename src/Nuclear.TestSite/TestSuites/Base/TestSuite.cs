@@ -16,10 +16,7 @@ namespace Nuclear.TestSite.TestSuites.Base {
         public override Int32 GetHashCode() => throw new MethodAccessException("This method is currently out of order.");
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public override String ToString() {
-            return "";
-            //throw new MethodAccessException("This method is currently out of order.");
-        }
+        public override String ToString() => throw new MethodAccessException("This method is currently out of order.");
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public new Type GetType() => throw new MethodAccessException("This method is currently out of order.");

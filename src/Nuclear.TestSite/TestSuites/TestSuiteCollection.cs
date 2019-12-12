@@ -43,7 +43,7 @@ namespace Nuclear.TestSite.TestSuites {
         public StringTestSuite String { get; private set; }
 
         /// <summary>
-        /// Test suite with instructions for testing multiple values.
+        /// Test suite with instructions for testing values.
         /// </summary>
         public ValueTestSuite Value { get; private set; }
 

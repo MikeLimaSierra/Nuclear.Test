@@ -231,7 +231,7 @@ namespace Nuclear.TestSite.TestSuites {
 
         #endregion
 
-        #region
+        #region Null
 
         /// <summary>
         /// Tests if a <see cref="String"/> is null or empty.

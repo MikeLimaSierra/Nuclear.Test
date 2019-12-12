@@ -36,7 +36,7 @@ namespace Nuclear.TestSite {
         #region methods
 
         internal static ITestResultKey GetKey([CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-            Throw.If.Null(_scenario, "scenario");
+            Throw.If.Object.IsNull(_scenario, nameof(_scenario));
             return new TestResultKey(_scenario, Path.GetFileNameWithoutExtension(_file), _method);
         }
 

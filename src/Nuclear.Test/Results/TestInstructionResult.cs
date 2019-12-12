@@ -17,7 +17,7 @@ namespace Nuclear.Test.Results {
         #region ctors
 
         internal TestInstructionResult(Boolean result, String instruction, String message) {
-            Throw.If.NullOrWhiteSpace(instruction, "testInstruction");
+            Throw.If.String.IsNullOrWhiteSpace(instruction, nameof(instruction));
 
             Result = result;
             Instruction = instruction;
@@ -25,7 +25,7 @@ namespace Nuclear.Test.Results {
         }
 
         internal TestInstructionResult(String message) {
-            Throw.If.NullOrWhiteSpace(message, "message");
+            Throw.If.String.IsNullOrWhiteSpace(message, nameof(message));
 
             Result = null;
             Instruction = null;

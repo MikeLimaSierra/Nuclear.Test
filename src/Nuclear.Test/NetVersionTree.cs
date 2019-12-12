@@ -24,7 +24,7 @@ namespace Nuclear.Test {
         #region ctors
 
         private NetVersionTree() {
-            Throw.IfNot.Null(Instance, "Instance", "Constructor must not be called twice.");
+            Throw.IfNot.Object.IsNull(Instance, nameof(Instance), "Constructor must not be called twice.");
 
             Add((FrameworkIdentifiers.NETFramework, new Version(4, 5)), new Version(1, 1));
             Add((FrameworkIdentifiers.NETFramework, new Version(4, 5, 1)), new Version(1, 2));

@@ -16,7 +16,7 @@ namespace Nuclear.TestSite.TestSuites.Base {
         #region ctors
 
         internal ChildTestSuite(TestSuiteCollection parent) {
-            Throw.If.Null(parent, nameof(parent));
+            Throw.If.Object.IsNull(parent, nameof(parent));
 
             Parent = parent;
         }
