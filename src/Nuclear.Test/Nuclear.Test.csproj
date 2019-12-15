@@ -6,17 +6,24 @@
     <LangVersion>latest</LangVersion>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>1.0.0</Version>
+    <Configurations>Debug;Release;Integration</Configurations>
   </PropertyGroup>
   
   <Import Project="..\Configurations.targets" />
   
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Nuclear.Extensions" Version="1.8.0" />
+    <PackageReference Include="Nuclear.Test.Contracts" Version="1.0.0" />
   </ItemGroup>
   
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
     <ProjectReference Include="..\Nuclear.Test.Contracts\Nuclear.Test.Contracts.csproj" />
-    <ProjectReference Include="..\Nuclear.TestSite.Contracts\Nuclear.TestSite.Contracts.csproj" />
+    <Reference Include="Nuclear.Exceptions">
+      <HintPath>..\..\..\Nuclear.Net\src\bin\Nuclear.Exceptions\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Exceptions.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclear.Extensions">
+      <HintPath>..\..\..\Nuclear.Net\src\bin\Nuclear.Extensions\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Extensions.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
