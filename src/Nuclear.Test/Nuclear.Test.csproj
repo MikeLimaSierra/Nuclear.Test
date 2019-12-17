@@ -5,15 +5,15 @@
     <RootNamespace>Nuclear.Test</RootNamespace>
     <LangVersion>latest</LangVersion>
     <Platforms>AnyCPU;x64;x86</Platforms>
-    <Version>1.0.0</Version>
-    <Configurations>Debug;Release;Integration</Configurations>
+    <Configurations>Release;Integration;Debug</Configurations>
+    <Version>2.0.0</Version>
   </PropertyGroup>
   
   <Import Project="..\Configurations.targets" />
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Nuclear.Extensions" Version="1.8.0" />
-    <PackageReference Include="Nuclear.Test.Contracts" Version="1.0.0" />
+    <PackageReference Include="Nuclear.Extensions" Version="2.0.0" />
+    <PackageReference Include="Nuclear.Test.Contracts" Version="2.0.0" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
