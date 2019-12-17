@@ -20,13 +20,13 @@ namespace Nuclear.Test.Results {
             TestX.Note("new TestResult(false, null, null)");
             TestX.If.Action.ThrowsException(() => result = new TestInstructionResult(false, null, null), out ArgumentNullException argNullEx);
             TestX.IfNot.Object.IsNull(argNullEx);
-            TestX.If.Value.Equals(argNullEx.ParamName, "testInstruction");
+            TestX.If.Value.Equals(argNullEx.ParamName, "instruction");
             TestX.If.Object.IsNull(result);
 
             TestX.Note("new TestResult(false, String.Empty, null)");
             TestX.If.Action.ThrowsException(() => result = new TestInstructionResult(false, String.Empty, null), out ArgumentException argEx);
             TestX.IfNot.Object.IsNull(argEx);
-            TestX.If.Value.Equals(argEx.ParamName, "testInstruction");
+            TestX.If.Value.Equals(argEx.ParamName, "instruction");
             TestX.If.Object.IsNull(result);
 
             TestX.Note("new TestResult(false, \"SomeInstruction\", null)");
