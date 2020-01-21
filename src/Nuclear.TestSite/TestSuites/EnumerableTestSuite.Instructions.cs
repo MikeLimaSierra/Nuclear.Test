@@ -875,7 +875,7 @@ namespace Nuclear.TestSite.TestSuites {
                             T element1 = enum1.Current;
                             T element2 = enum2.Current;
 
-                            if(!element1.Equals<T>(element2)) {
+                            if(!element1.IsEqual<T>(element2)) {
                                 result = false;
                                 break;
                             }
