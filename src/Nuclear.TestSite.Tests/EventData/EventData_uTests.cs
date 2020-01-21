@@ -20,8 +20,8 @@ namespace Nuclear.TestSite {
 
             Test.IfNot.Action.ThrowsException(() => eventData = new EventData<PropertyChangedEventArgs>(sender, e), out Exception ex);
             Test.IfNot.Object.IsNull(eventData);
-            Test.If.Reference.Equals(sender, eventData.Sender);
-            Test.If.Reference.Equals(e.PropertyName, eventData.EventArgs.PropertyName);
+            Test.If.Reference.IsEqual(sender, eventData.Sender);
+            Test.If.Reference.IsEqual(e.PropertyName, eventData.EventArgs.PropertyName);
 
         }
 
@@ -32,8 +32,8 @@ namespace Nuclear.TestSite {
             PropertyChangedEventArgs e = new PropertyChangedEventArgs("dummy");
             EventData<PropertyChangedEventArgs> eventData = new EventData<PropertyChangedEventArgs>(sender, e);
 
-            Test.If.Reference.Equals(eventData.Sender, eventData.Item1);
-            Test.If.Reference.Equals(eventData.EventArgs, eventData.Item2);
+            Test.If.Reference.IsEqual(eventData.Sender, eventData.Item1);
+            Test.If.Reference.IsEqual(eventData.EventArgs, eventData.Item2);
 
         }
 

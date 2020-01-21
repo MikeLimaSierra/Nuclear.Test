@@ -31,8 +31,8 @@ namespace Nuclear.TestSite.TestSuites.Proxies {
             Test.IfNot.Action.ThrowsException(() => proxy.OnEventRaised(sender, e), out ex);
             Test.If.Value.IsTrue(proxy.EventRaised);
             Test.IfNot.Object.IsNull(proxy.EventData);
-            Test.If.Reference.Equals(proxy.EventData.Sender, sender);
-            Test.If.Reference.Equals(proxy.EventData.EventArgs, e);
+            Test.If.Reference.IsEqual(proxy.EventData.Sender, sender);
+            Test.If.Reference.IsEqual(proxy.EventData.EventArgs, e);
 
         }
 

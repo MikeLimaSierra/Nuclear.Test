@@ -121,7 +121,7 @@ namespace Nuclear.TestSite.TestSuites {
                 (expected.count, expected.result, expected.message), "Test.If.Action.RaisesPropertyChangedEvent", _file, _method);
 
             if(expected.eventData != null) {
-                Test.If.Value.Equals(eventData, expected.eventData, new PropertyChangedEventDataEqualityComparer(), _file, _method);
+                Test.If.Value.IsEqual(eventData, expected.eventData, new PropertyChangedEventDataEqualityComparer(), _file, _method);
             }
 
         }
@@ -159,7 +159,7 @@ namespace Nuclear.TestSite.TestSuites {
                 (expected.count, expected.result, expected.message), "Test.IfNot.Action.RaisesPropertyChangedEvent", _file, _method);
 
             if(expected.eventData != null) {
-                Test.If.Value.Equals(eventData, expected.eventData, new PropertyChangedEventDataEqualityComparer(), _file, _method);
+                Test.If.Value.IsEqual(eventData, expected.eventData, new PropertyChangedEventDataEqualityComparer(), _file, _method);
             }
 
         }
@@ -308,7 +308,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             if(expected.eventRaised) {
                 Test.IfNot.Object.IsNull(eventData.Sender, _file, _method);
-                Test.If.Reference.Equals(input.@object, eventData.Sender, _file, _method);
+                Test.If.Reference.IsEqual(input.@object, eventData.Sender, _file, _method);
                 Test.IfNot.Object.IsNull(eventData.EventArgs, _file, _method);
             }
 
@@ -356,7 +356,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             if(expected.eventRaised) {
                 Test.IfNot.Object.IsNull(eventData.Sender, _file, _method);
-                Test.If.Reference.Equals(input.@object, eventData.Sender, _file, _method);
+                Test.If.Reference.IsEqual(input.@object, eventData.Sender, _file, _method);
                 Test.IfNot.Object.IsNull(eventData.EventArgs, _file, _method);
             }
 

@@ -17,10 +17,10 @@ namespace Nuclear.TestSite.TestSuites.Base {
             TestSuiteCollection suites = new TestSuiteCollection(DummyTestResults.Instance);
 
             Test.If.Action.ThrowsException(() => suite = new ChildTestSuite(null), out ArgumentNullException ex1);
-            Test.If.Value.Equals(ex1.ParamName, "parent");
+            Test.If.Value.IsEqual(ex1.ParamName, "parent");
 
             Test.IfNot.Action.ThrowsException(() => suite = new ChildTestSuite(suites), out Exception ex2);
-            Test.If.Reference.Equals(suites, suite.Parent);
+            Test.If.Reference.IsEqual(suites, suite.Parent);
 
         }
 

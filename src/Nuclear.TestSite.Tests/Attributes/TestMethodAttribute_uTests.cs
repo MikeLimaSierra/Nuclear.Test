@@ -10,15 +10,15 @@ namespace Nuclear.TestSite {
 
             Test.IfNot.Action.ThrowsException(() => attr = new TestMethodAttribute(), out Exception ex);
             Test.IfNot.Object.IsNull(attr);
-            Test.If.Value.Equals(attr.TestMode, TestMode.Parallel);
+            Test.If.Value.IsEqual(attr.TestMode, TestMode.Parallel);
 
             Test.IfNot.Action.ThrowsException(() => attr = new TestMethodAttribute(TestMode.Parallel), out ex);
             Test.IfNot.Object.IsNull(attr);
-            Test.If.Value.Equals(attr.TestMode, TestMode.Parallel);
+            Test.If.Value.IsEqual(attr.TestMode, TestMode.Parallel);
 
             Test.IfNot.Action.ThrowsException(() => attr = new TestMethodAttribute(TestMode.Sequential), out ex);
             Test.IfNot.Object.IsNull(attr);
-            Test.If.Value.Equals(attr.TestMode, TestMode.Sequential);
+            Test.If.Value.IsEqual(attr.TestMode, TestMode.Sequential);
 
         }
 

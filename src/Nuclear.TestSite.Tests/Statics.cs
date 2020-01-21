@@ -57,10 +57,10 @@ namespace Nuclear.TestSite {
             ITestMethodResult results = GetResults(DummyTestResults.Instance, _file, _method);
             ITestInstructionResult lastResult = GetLastResult(DummyTestResults.Instance, _file, _method);
 
-            Test.If.Value.Equals(results.InstructionResults.Count, expected.count, _file, _method);
-            Test.If.Value.Equals(lastResult.Result, expected.result, _file, _method);
+            Test.If.Value.IsEqual(results.InstructionResults.Count, expected.count, _file, _method);
+            Test.If.Value.IsEqual(lastResult.Result, expected.result, _file, _method);
             Test.If.String.StartsWith(lastResult.Message, expected.message, _file, _method);
-            Test.If.Value.Equals(lastResult.Instruction, instruction, _file, _method);
+            Test.If.Value.IsEqual(lastResult.Instruction, instruction, _file, _method);
 
         }
 

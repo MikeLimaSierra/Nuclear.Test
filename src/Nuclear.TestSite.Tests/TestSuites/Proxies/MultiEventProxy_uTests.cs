@@ -10,7 +10,7 @@ namespace Nuclear.TestSite.TestSuites.Proxies {
             MultiEventProxy<PropertyChangedEventArgs> proxy = null;
 
             Test.IfNot.Action.ThrowsException(() => proxy = new MultiEventProxy<PropertyChangedEventArgs>(), out Exception ex);
-            Test.If.Value.Equals(proxy.RaiseCount, 0);
+            Test.If.Value.IsEqual(proxy.RaiseCount, 0);
             Test.If.Value.IsFalse(proxy.EventRaised);
             Test.IfNot.Object.IsNull(proxy.EventData);
             Test.If.Enumerable.IsEmpty(proxy.EventData);
@@ -32,12 +32,12 @@ namespace Nuclear.TestSite.TestSuites.Proxies {
             };
 
             Test.IfNot.Action.ThrowsException(() => proxy.OnEventRaised(null, null), out Exception ex);
-            Test.If.Value.Equals(proxy.RaiseCount, 1);
+            Test.If.Value.IsEqual(proxy.RaiseCount, 1);
             Test.If.Value.IsTrue(proxy.EventRaised);
             Test.If.Enumerable.MatchesExactly(proxy.EventData, first);
 
             Test.IfNot.Action.ThrowsException(() => proxy.OnEventRaised(sender, e), out ex);
-            Test.If.Value.Equals(proxy.RaiseCount, 2);
+            Test.If.Value.IsEqual(proxy.RaiseCount, 2);
             Test.If.Value.IsTrue(proxy.EventRaised);
             Test.If.Enumerable.MatchesExactly(proxy.EventData, second);
 
