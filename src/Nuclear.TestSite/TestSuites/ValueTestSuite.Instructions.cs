@@ -7,7 +7,7 @@ using Nuclear.Extensions;
 namespace Nuclear.TestSite.TestSuites {
     public partial class ValueTestSuite {
 
-        #region Equals
+        #region IsEqual
 
         /// <summary>
         /// Tests if two objects are equal.
@@ -27,7 +27,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(obj1, obj2);
         /// </code>
         /// </example>
-        public void Equals<T>(T left, T right,
+        public void IsEqual<T>(T left, T right,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(left == null && right == null) {
@@ -65,12 +65,12 @@ namespace Nuclear.TestSite.TestSuites {
 
             }
 
-            Equals(left, right, EqualityComparer<T>.Default, _file, _method);
+            IsEqual(left, right, EqualityComparer<T>.Default, _file, _method);
         }
 
         #endregion
 
-        #region EqualsComparer
+        #region IsEqualComparer
 
         /// <summary>
         /// Tests if two objects are equal by using a supplied <see cref="EqualityComparer{T}"/>.
@@ -86,7 +86,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void Equals<T>(T left, T right, EqualityComparer<T> comparer,
+        public void IsEqual<T>(T left, T right, EqualityComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -94,7 +94,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Equals(left, right, comparer as IEqualityComparer<T>, _file, _method);
+            IsEqual(left, right, comparer as IEqualityComparer<T>, _file, _method);
         }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void Equals<T>(T left, T right, IEqualityComparer comparer,
+        public void IsEqual<T>(T left, T right, IEqualityComparer comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -119,7 +119,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Equals(left, right, DynamicEqualityComparer.FromComparer<T>(comparer), _file, _method);
+            IsEqual(left, right, DynamicEqualityComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -136,7 +136,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void Equals<T>(T left, T right, IEqualityComparer<T> comparer,
+        public void IsEqual<T>(T left, T right, IEqualityComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Boolean result = false;
@@ -173,7 +173,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void Equals<T>(T left, T right, Comparer<T> comparer,
+        public void IsEqual<T>(T left, T right, Comparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -181,7 +181,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Equals(left, right, comparer as IComparer<T>, _file, _method);
+            IsEqual(left, right, comparer as IComparer<T>, _file, _method);
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void Equals<T>(T left, T right, IComparer comparer,
+        public void IsEqual<T>(T left, T right, IComparer comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -206,7 +206,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            Equals(left, right, DynamicComparer.FromComparer<T>(comparer), _file, _method);
+            IsEqual(left, right, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -223,7 +223,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(obj1, obj2, new MyEqualityComparer());
         /// </code>
         /// </example>
-        public void Equals<T>(T left, T right, IComparer<T> comparer,
+        public void IsEqual<T>(T left, T right, IComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             Boolean result = false;
@@ -248,7 +248,7 @@ namespace Nuclear.TestSite.TestSuites {
 
         #endregion
 
-        #region EqualsFloat
+        #region IsEqualFloat
 
         /// <summary>
         /// Tests if two <see cref="Single"/> values are equal by a margin of 1e-12.
@@ -262,8 +262,8 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(val1, val2);
         /// </code>
         /// </example>
-        public void Equals(Single left, Single right,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) => Equals(left, right, 1e-12f, _file, _method);
+        public void IsEqual(Single left, Single right,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) => IsEqual(left, right, 1e-12f, _file, _method);
 
         /// <summary>
         /// Tests if two <see cref="Single"/> values are equal by a <paramref name="margin"/>.
@@ -278,7 +278,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(val1, val2, 1e-28f);
         /// </code>
         /// </example>
-        public void Equals(Single left, Single right, Single margin,
+        public void IsEqual(Single left, Single right, Single margin,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Format()}; Right = {right.Format()}; Margin = {margin.Format()}]",
                 _file, _method);
@@ -295,8 +295,8 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(val1, val2);
         /// </code>
         /// </example>
-        public void Equals(Double left, Double right,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) => Equals(left, right, 1e-12d, _file, _method);
+        public void IsEqual(Double left, Double right,
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) => IsEqual(left, right, 1e-12d, _file, _method);
 
         /// <summary>
         /// Tests if two <see cref="Double"/> values are equal by a <paramref name="margin"/>.
@@ -311,7 +311,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.Equals(val1, val2, 1e-28f);
         /// </code>
         /// </example>
-        public void Equals(Double left, Double right, Double margin,
+        public void IsEqual(Double left, Double right, Double margin,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => InternalTest(Math.Abs(left - right) <= margin, $"[Left = {left.Format()}; Right = {right.Format()}; Margin = {margin.Format()}]",
                 _file, _method);
@@ -429,7 +429,7 @@ namespace Nuclear.TestSite.TestSuites {
             Boolean result = false;
 
             try {
-                result = comparer.LessThan(value, other);
+                result = comparer.IsLessThan(value, other);
 
             } catch(Exception ex) {
                 FailTest($"Comparer threw Exception: {ex.Message.Format()}",
@@ -443,7 +443,7 @@ namespace Nuclear.TestSite.TestSuites {
 
         #endregion
 
-        #region IsLessThanOrEquals
+        #region IsLessThanOrEqual
 
         /// <summary>
         /// Tests if <paramref name="value"/> is less than <paramref name="other"/> or equal.
@@ -458,9 +458,9 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsLessThanOrEquals(value1, value2);
         /// </code>
         /// </example>
-        public void IsLessThanOrEquals<T>(T value, T other,
+        public void IsLessThanOrEqual<T>(T value, T other,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where T : IComparable => IsLessThanOrEquals(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+            where T : IComparable => IsLessThanOrEqual(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
 
         /// <summary>
         /// Tests if <paramref name="value"/> is less than <paramref name="other"/> or equal.
@@ -475,9 +475,9 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsLessThanOrEquals(value1, value2);
         /// </code>
         /// </example>
-        public void IsLessThanOrEqualsT<T>(T value, T other,
+        public void IsLessThanOrEqualT<T>(T value, T other,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where T : IComparable<T> => IsLessThanOrEquals(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+            where T : IComparable<T> => IsLessThanOrEqual(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
 
         /// <summary>
         /// Tests if <paramref name="value"/> is less than <paramref name="other"/> or equal.
@@ -493,7 +493,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsLessThanOrEquals(value1, value2, new MyComparer());
         /// </code>
         /// </example>
-        public void IsLessThanOrEquals<T>(T value, T other, Comparer<T> comparer,
+        public void IsLessThanOrEqual<T>(T value, T other, Comparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -501,7 +501,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsLessThanOrEquals(value, other, comparer as IComparer<T>, _file, _method);
+            IsLessThanOrEqual(value, other, comparer as IComparer<T>, _file, _method);
         }
 
         /// <summary>
@@ -518,7 +518,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsLessThanOrEquals(value1, value2, new MyComparer());
         /// </code>
         /// </example>
-        public void IsLessThanOrEquals<T>(T value, T other, IComparer comparer,
+        public void IsLessThanOrEqual<T>(T value, T other, IComparer comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -526,7 +526,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsLessThanOrEquals(value, other, DynamicComparer.FromComparer<T>(comparer), _file, _method);
+            IsLessThanOrEqual(value, other, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -543,7 +543,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsLessThanOrEquals(value1, value2, new MyComparer());
         /// </code>
         /// </example>
-        public void IsLessThanOrEquals<T>(T value, T other, IComparer<T> comparer,
+        public void IsLessThanOrEqual<T>(T value, T other, IComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -554,7 +554,7 @@ namespace Nuclear.TestSite.TestSuites {
             Boolean result = false;
 
             try {
-                result = comparer.LessThanOrEquals(value, other);
+                result = comparer.IsLessThanOrEqual(value, other);
 
             } catch(Exception ex) {
                 FailTest($"Comparer threw Exception: {ex.Message.Format()}",
@@ -679,7 +679,7 @@ namespace Nuclear.TestSite.TestSuites {
             Boolean result = false;
 
             try {
-                result = comparer.GreaterThan(value, other);
+                result = comparer.IsGreaterThan(value, other);
 
             } catch(Exception ex) {
                 FailTest($"Comparer threw Exception: {ex.Message.Format()}",
@@ -693,7 +693,7 @@ namespace Nuclear.TestSite.TestSuites {
 
         #endregion
 
-        #region IsGreaterThanOrEquals
+        #region IsGreaterThanOrEqual
 
         /// <summary>
         /// Tests if <paramref name="value"/> is greater than <paramref name="other"/> or equal.
@@ -708,9 +708,9 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsGreaterThanOrEquals(value1, value2);
         /// </code>
         /// </example>
-        public void IsGreaterThanOrEquals<T>(T value, T other,
+        public void IsGreaterThanOrEqual<T>(T value, T other,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where T : IComparable => IsGreaterThanOrEquals(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+            where T : IComparable => IsGreaterThanOrEqual(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
 
         /// <summary>
         /// Tests if <paramref name="value"/> is greater than <paramref name="other"/> or equal.
@@ -725,9 +725,9 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsGreaterThanOrEquals(value1, value2);
         /// </code>
         /// </example>
-        public void IsGreaterThanOrEqualsT<T>(T value, T other,
+        public void IsGreaterThanOrEqualT<T>(T value, T other,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
-            where T : IComparable<T> => IsGreaterThanOrEquals(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
+            where T : IComparable<T> => IsGreaterThanOrEqual(value, other, Comparer<T>.Create((x, y) => x.CompareTo(y)), _file, _method);
 
         /// <summary>
         /// Tests if <paramref name="value"/> is greater than <paramref name="other"/> or equal.
@@ -743,7 +743,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsGreaterThanOrEquals(value1, value2, new MyComparer());
         /// </code>
         /// </example>
-        public void IsGreaterThanOrEquals<T>(T value, T other, Comparer<T> comparer,
+        public void IsGreaterThanOrEqual<T>(T value, T other, Comparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -751,7 +751,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsGreaterThanOrEquals(value, other, comparer as IComparer<T>, _file, _method);
+            IsGreaterThanOrEqual(value, other, comparer as IComparer<T>, _file, _method);
         }
 
         /// <summary>
@@ -768,7 +768,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsGreaterThanOrEquals(value1, value2, new MyComparer());
         /// </code>
         /// </example>
-        public void IsGreaterThanOrEquals<T>(T value, T other, IComparer comparer,
+        public void IsGreaterThanOrEqual<T>(T value, T other, IComparer comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -776,7 +776,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            IsGreaterThanOrEquals(value, other, DynamicComparer.FromComparer<T>(comparer), _file, _method);
+            IsGreaterThanOrEqual(value, other, DynamicComparer.FromComparer<T>(comparer), _file, _method);
         }
 
         /// <summary>
@@ -793,7 +793,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.Value.IsGreaterThanOrEquals(value1, value2, new MyComparer());
         /// </code>
         /// </example>
-        public void IsGreaterThanOrEquals<T>(T value, T other, IComparer<T> comparer,
+        public void IsGreaterThanOrEqual<T>(T value, T other, IComparer<T> comparer,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             if(comparer == null) {
@@ -804,7 +804,7 @@ namespace Nuclear.TestSite.TestSuites {
             Boolean result = false;
 
             try {
-                result = comparer.GreaterThanOrEquals(value, other);
+                result = comparer.IsGreaterThanOrEqual(value, other);
 
             } catch(Exception ex) {
                 FailTest($"Comparer threw Exception: {ex.Message.Format()}",

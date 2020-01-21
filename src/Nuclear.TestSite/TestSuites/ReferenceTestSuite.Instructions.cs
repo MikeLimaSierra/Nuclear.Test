@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace Nuclear.TestSite.TestSuites {
     public partial class ReferenceTestSuite {
 
-        #region Equals
+        #region IsEqual
 
         /// <summary>
         /// Tests if references <paramref name="obj"/> and <paramref name="_other"/> are equal.
@@ -18,7 +18,7 @@ namespace Nuclear.TestSite.TestSuites {
         /// Test.If.ReferencesEqual(obj1, obj2);
         /// </code>
         /// </example>
-        public void Equals(Object obj, Object _other,
+        public void IsEqual(Object obj, Object _other,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null)
             => InternalTest(ReferenceEquals(obj, _other), String.Format("References {0}equal.", ReferenceEquals(obj, _other) ? "" : "don't "),
                 _file, _method);
