@@ -44,7 +44,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             Boolean result = enumeration.Count() == 0;
 
-            InternalTest(result, String.Format("Enumeration is {0}empty.", result ? String.Empty : "not "),
+            InternalTest(result, String.Format("Enumeration is {0}empty. Enumeration is: {1}", result ? String.Empty : "not ", enumeration.Format()),
                 _file, _method);
         }
 
@@ -93,7 +93,7 @@ namespace Nuclear.TestSite.TestSuites {
                 }
             }
 
-            InternalTest(result, String.Format("Enumeration {0} null.", result ? "contains" : "doesn't contain"),
+            InternalTest(result, String.Format("Enumeration {0} null. Enumeration is: {1}", result ? "contains" : "doesn't contain", enumeration.Format()),
                 _file, _method);
         }
 
@@ -142,7 +142,7 @@ namespace Nuclear.TestSite.TestSuites {
                 }
             }
 
-            InternalTest(result, String.Format("Enumeration {0} a non null value.", result ? "contains" : "doesn't contain"),
+            InternalTest(result, String.Format("Enumeration {0} a non null value. Enumeration is: {1}", result ? "contains" : "doesn't contain", enumeration.Format()),
                 _file, _method);
         }
 
@@ -196,7 +196,7 @@ namespace Nuclear.TestSite.TestSuites {
 
             Boolean result = enumeration.Contains(element);
 
-            InternalTest(result, String.Format("Enumeration {0} element {1}.", result ? "contains" : "doesn't contain", element.Format()),
+            InternalTest(result, String.Format("Enumeration {0} element {1}. Enumeration is: {2}", result ? "contains" : "doesn't contain", element.Format(), enumeration.Format()),
                 _file, _method);
         }
 
@@ -301,7 +301,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(result, String.Format("Enumeration {0} element {1}.", result ? "contains" : "doesn't contain", element.Format()),
+            InternalTest(result, String.Format("Enumeration {0} element {1}. Enumeration is: {2}", result ? "contains" : "doesn't contain", element.Format(), enumeration.Format()),
                 _file, _method);
         }
 
@@ -379,7 +379,7 @@ namespace Nuclear.TestSite.TestSuites {
                 return;
             }
 
-            InternalTest(result, String.Format("Enumeration {0} a matching element.", result ? "contains" : "doesn't contain"),
+            InternalTest(result, String.Format("Enumeration {0} a matching element. Enumeration is: {1}", result ? "contains" : "doesn't contain", enumeration.Format()),
             _file, _method);
 
         }
@@ -453,7 +453,7 @@ namespace Nuclear.TestSite.TestSuites {
                 }
             }
 
-            InternalTest(elementsCount == elementsFound, $"Enumeration contains {elementsFound} of {elementsCount} elements.",
+            InternalTest(elementsCount == elementsFound, $"Enumeration contains {elementsFound} of {elementsCount} elements. Enumeration is: {enumeration.Format()}; Elements are: {elements.Format()}",
                 _file, _method);
         }
 
@@ -582,7 +582,7 @@ namespace Nuclear.TestSite.TestSuites {
                 if(contains) { elementsFound++; }
             }
 
-            InternalTest(elementsCount == elementsFound, $"Enumeration contains {elementsFound} of {elementsCount} elements.",
+            InternalTest(elementsCount == elementsFound, $"Enumeration contains {elementsFound} of {elementsCount} elements. Enumeration is: {enumeration.Format()}; Elements are: {elements.Format()}",
                 _file, _method);
         }
 
@@ -662,7 +662,7 @@ namespace Nuclear.TestSite.TestSuites {
                 }
             }
 
-            InternalTest(result, String.Format("Enumerations {0}.", result ? "match" : "don't match"),
+            InternalTest(result, String.Format("Enumerations {0}. Enumeration is: {1}; Elements are: {2}", result ? "match" : "don't match", enumeration.Format(), other.Format()),
                 _file, _method);
         }
 
@@ -800,7 +800,7 @@ namespace Nuclear.TestSite.TestSuites {
                 }
             }
 
-            InternalTest(result, String.Format("Enumerations {0}.", result ? "match" : "don't match"),
+            InternalTest(result, String.Format("Enumerations {0}. Enumeration is: {1}; Elements are: {2}", result ? "match" : "don't match", enumeration.Format(), other.Format()),
                 _file, _method);
         }
 
@@ -884,7 +884,7 @@ namespace Nuclear.TestSite.TestSuites {
                 }
             }
 
-            InternalTest(result, String.Format("Enumerations {0}.", result ? "match" : "don't match"),
+            InternalTest(result, String.Format("Enumerations {0}. Enumeration is: {1}; Elements are: {2}", result ? "match" : "don't match", enumeration.Format(), other.Format()),
                 _file, _method);
         }
 
@@ -1027,7 +1027,7 @@ namespace Nuclear.TestSite.TestSuites {
                 }
             }
 
-            InternalTest(result, String.Format("Enumerations {0}.", result ? "match" : "don't match"),
+            InternalTest(result, String.Format("Enumerations {0}. Enumeration is: {1}; Elements are: {2}", result ? "match" : "don't match", enumeration.Format(), other.Format()),
                 _file, _method);
         }
 
