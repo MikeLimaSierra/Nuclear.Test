@@ -16,7 +16,9 @@
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
-    <ProjectReference Include="..\Nuclear.TestSite.Contracts\Nuclear.TestSite.Contracts.csproj" />
+    <Reference Include="Nuclear.TestSite.Contracts">
+      <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
