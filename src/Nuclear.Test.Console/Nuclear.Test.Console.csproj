@@ -30,6 +30,9 @@
     <Reference Include="Nuclear.Arguments">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Arguments\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Arguments.dll</HintPath>
     </Reference>
+    <Reference Include="Nuclear.TestSite.Contracts">
+      <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

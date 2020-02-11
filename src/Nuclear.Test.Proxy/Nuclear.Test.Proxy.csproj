@@ -25,6 +25,9 @@
     <Reference Include="Nuclear.Extensions">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Extensions\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="Nuclear.TestSite.Contracts">
+      <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

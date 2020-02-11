@@ -17,12 +17,17 @@
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
     <ProjectReference Include="..\Nuclear.Test\Nuclear.Test.csproj" />
-    <ProjectReference Include="..\Nuclear.TestSite\Nuclear.TestSite.csproj" />
     <Reference Include="Nuclear.Exceptions">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Exceptions\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Exceptions.dll</HintPath>
     </Reference>
     <Reference Include="Nuclear.Extensions">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Extensions\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclear.TestSite.Contracts">
+      <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclear.TestSite">
+      <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.TestSite.dll</HintPath>
     </Reference>
   </ItemGroup>
 
