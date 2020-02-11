@@ -9,16 +9,30 @@
     <StartupObject>Nuclear.Test.Console.Program</StartupObject>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Version>1.0.0</Version>
+    <Configurations>Debug;Release;Integration</Configurations>
   </PropertyGroup>
   
   <Import Project="..\Configurations.targets" />
   
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Nuclear.Arguments" Version="1.0.1" />
+    <PackageReference Include="Nuclear.Test" Version="1.0.0" />
   </ItemGroup>
   
-  <ItemGroup>
+  <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
     <ProjectReference Include="..\Nuclear.Test\Nuclear.Test.csproj" />
+    <Reference Include="Nuclear.Exceptions">
+      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Exceptions\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Exceptions.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclear.Extensions">
+      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Extensions\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclear.Arguments">
+      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Arguments\$(Platform)\$(Configuration)\netstandard1.0\Nuclear.Arguments.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclear.TestSite.Contracts">
+      <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

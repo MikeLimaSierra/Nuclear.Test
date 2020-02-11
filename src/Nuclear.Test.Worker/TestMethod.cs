@@ -38,8 +38,8 @@ namespace Nuclear.Test.Worker {
         /// <param name="results">The test results end point to use.</param>
         /// <param name="method">The method to invoke.</param>
         internal TestMethod(ITestResultEndPoint results, MethodInfo method) {
-            Throw.If.Null(results, "results");
-            Throw.If.Null(method, "method");
+            Throw.If.Object.IsNull(results, nameof(results));
+            Throw.If.Object.IsNull(method, nameof(method));
 
             _results = results;
             _method = method;

@@ -58,7 +58,7 @@ namespace Nuclear.Test.TestExecution {
         /// </summary>
         /// <param name="pipeName">The pipe name to use.</param>
         protected PipedTestExecutor(String pipeName) {
-            Throw.If.NullOrWhiteSpace(pipeName, "pipeName");
+            Throw.If.String.IsNullOrWhiteSpace(pipeName, nameof(pipeName));
 
             PipeStream = new NamedPipeClientStream(".", pipeName, PipeDirection.InOut, PipeOptions.None, TokenImpersonationLevel.None);
         }

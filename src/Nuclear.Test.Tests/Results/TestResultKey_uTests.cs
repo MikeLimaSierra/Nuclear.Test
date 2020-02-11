@@ -168,15 +168,15 @@ namespace Nuclear.Test.Results {
             TestX.IfNot.Action.ThrowsException(action, out Exception ex, _file, _method);
             TestX.IfNot.Object.IsNull(scenario, _file, _method);
 
-            TestX.If.Value.Equals(scenario.AssemblyName, expected.assemblyName, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetFrameworkIdentifier, expected.targetFrameworkIdentifier, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetFrameworkVersion, expected.targetFrameworkVersion, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetArchitecture, expected.targetArchitecture, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionFrameworkIdentifier, expected.executionFrameworkIdentifier, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionFrameworkVersion, expected.executionFrameworkVersion, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionArchitecture, expected.executionArchitecture, _file, _method);
-            TestX.If.Value.Equals(scenario.FileName, expected.file, _file, _method);
-            TestX.If.Value.Equals(scenario.MethodName, expected.method, _file, _method);
+            TestX.If.Value.IsEqual(scenario.AssemblyName, expected.assemblyName, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetFrameworkIdentifier, expected.targetFrameworkIdentifier, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetFrameworkVersion, expected.targetFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.targetArchitecture, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkIdentifier, expected.executionFrameworkIdentifier, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkVersion, expected.executionFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.executionArchitecture, _file, _method);
+            TestX.If.Value.IsEqual(scenario.FileName, expected.file, _file, _method);
+            TestX.If.Value.IsEqual(scenario.MethodName, expected.method, _file, _method);
 
         }
 
@@ -191,15 +191,15 @@ namespace Nuclear.Test.Results {
             TestX.IfNot.Action.ThrowsException(() => scenario = new TestResultKey(input.scenario, input.file, input.method), out Exception ex, _file, _method);
             TestX.IfNot.Object.IsNull(scenario, _file, _method);
 
-            TestX.If.Value.Equals(scenario.AssemblyName, expected.scenario.AssemblyName, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetFrameworkIdentifier, expected.scenario.TargetFrameworkIdentifier, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetFrameworkVersion, expected.scenario.TargetFrameworkVersion, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetArchitecture, expected.scenario.TargetArchitecture, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionFrameworkIdentifier, expected.scenario.ExecutionFrameworkIdentifier, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionFrameworkVersion, expected.scenario.ExecutionFrameworkVersion, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionArchitecture, expected.scenario.ExecutionArchitecture, _file, _method);
-            TestX.If.Value.Equals(scenario.FileName, expected.file, _file, _method);
-            TestX.If.Value.Equals(scenario.MethodName, expected.method, _file, _method);
+            TestX.If.Value.IsEqual(scenario.AssemblyName, expected.scenario.AssemblyName, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetFrameworkIdentifier, expected.scenario.TargetFrameworkIdentifier, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetFrameworkVersion, expected.scenario.TargetFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.scenario.TargetArchitecture, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkIdentifier, expected.scenario.ExecutionFrameworkIdentifier, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkVersion, expected.scenario.ExecutionFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.scenario.ExecutionArchitecture, _file, _method);
+            TestX.If.Value.IsEqual(scenario.FileName, expected.file, _file, _method);
+            TestX.If.Value.IsEqual(scenario.MethodName, expected.method, _file, _method);
 
         }
 
@@ -216,12 +216,12 @@ namespace Nuclear.Test.Results {
             TestX.IfNot.Object.IsNull(key);
 
             TestX.If.Object.IsNull(key.AssemblyName);
-            TestX.If.Value.Equals(key.TargetFrameworkIdentifier, FrameworkIdentifiers.Unknown);
+            TestX.If.Value.IsEqual(key.TargetFrameworkIdentifier, FrameworkIdentifiers.Unknown);
             TestX.If.Object.IsNull(key.TargetFrameworkVersion);
-            TestX.If.Value.Equals(key.TargetArchitecture, ProcessorArchitecture.None);
-            TestX.If.Value.Equals(key.ExecutionFrameworkIdentifier, FrameworkIdentifiers.Unknown);
+            TestX.If.Value.IsEqual(key.TargetArchitecture, ProcessorArchitecture.None);
+            TestX.If.Value.IsEqual(key.ExecutionFrameworkIdentifier, FrameworkIdentifiers.Unknown);
             TestX.If.Object.IsNull(key.ExecutionFrameworkVersion);
-            TestX.If.Value.Equals(key.ExecutionArchitecture, ProcessorArchitecture.None);
+            TestX.If.Value.IsEqual(key.ExecutionArchitecture, ProcessorArchitecture.None);
             TestX.If.Object.IsNull(key.FileName);
             TestX.If.Object.IsNull(key.MethodName);
 
@@ -392,7 +392,7 @@ namespace Nuclear.Test.Results {
             TestResultKeyPrecisions precision = TestResultKeyPrecisions.None;
 
             TestX.IfNot.Action.ThrowsException(() => precision = input.Precision, out Exception ex, _file, _method);
-            TestX.If.Value.Equals(precision, expected, _file, _method);
+            TestX.If.Value.IsEqual(precision, expected, _file, _method);
 
         }
 
@@ -466,7 +466,7 @@ namespace Nuclear.Test.Results {
             Boolean result = false;
 
             TestX.IfNot.Action.ThrowsException(() => result = key.Matches(match), out Exception ex, _file, _method);
-            TestX.If.Value.Equals(result, expected, _file, _method);
+            TestX.If.Value.IsEqual(result, expected, _file, _method);
 
         }
 
@@ -499,7 +499,7 @@ namespace Nuclear.Test.Results {
             ITestResultKey result = null;
 
             TestX.IfNot.Action.ThrowsException(() => result = key.Clip(precision), out Exception ex, _file, _method);
-            TestX.If.Value.Equals(result, expected, _file, _method);
+            TestX.If.Value.IsEqual(result, expected, _file, _method);
 
         }
 
@@ -572,7 +572,7 @@ namespace Nuclear.Test.Results {
             Boolean result = false;
 
             TestX.IfNot.Action.ThrowsException(() => result = key.Equals(other), out Exception ex, _file, _method);
-            TestX.If.Value.Equals(result, expected, _file, _method);
+            TestX.If.Value.IsEqual(result, expected, _file, _method);
 
         }
 
@@ -649,7 +649,7 @@ namespace Nuclear.Test.Results {
             Boolean result = false;
 
             TestX.IfNot.Action.ThrowsException(() => result = key.Equals(other, precision), out Exception ex, _file, _method);
-            TestX.If.Value.Equals(result, expected, _file, _method);
+            TestX.If.Value.IsEqual(result, expected, _file, _method);
 
         }
 

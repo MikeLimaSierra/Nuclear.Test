@@ -47,13 +47,13 @@ namespace Nuclear.Test {
             TestX.IfNot.Action.ThrowsException(action, out Exception ex, _file, _method);
             TestX.IfNot.Object.IsNull(scenario, _file, _method);
 
-            TestX.If.Value.Equals(scenario.AssemblyName, expected.assemblyName, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetFrameworkIdentifier, expected.targetFrameworkIdentifier, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetFrameworkVersion, expected.targetFrameworkVersion, _file, _method);
-            TestX.If.Value.Equals(scenario.TargetArchitecture, expected.targetArchitecture, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionFrameworkIdentifier, expected.executionFrameworkIdentifier, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionFrameworkVersion, expected.executionFrameworkVersion, _file, _method);
-            TestX.If.Value.Equals(scenario.ExecutionArchitecture, expected.executionArchitecture, _file, _method);
+            TestX.If.Value.IsEqual(scenario.AssemblyName, expected.assemblyName, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetFrameworkIdentifier, expected.targetFrameworkIdentifier, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetFrameworkVersion, expected.targetFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.targetArchitecture, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkIdentifier, expected.executionFrameworkIdentifier, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkVersion, expected.executionFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.executionArchitecture, _file, _method);
 
         }
 

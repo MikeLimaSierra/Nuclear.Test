@@ -25,7 +25,7 @@ namespace Nuclear.Test {
         /// </summary>
         /// <param name="config">The <see cref="AssemblyLocatorConfiguration"/> to use.</param>
         public TestAssemblyLocator(AssemblyLocatorConfiguration config) {
-            Throw.If.Null(config, "config");
+            Throw.If.Object.IsNull(config, nameof(config));
 
             Configuration = config;
         }

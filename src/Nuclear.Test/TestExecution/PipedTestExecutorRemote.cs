@@ -81,10 +81,10 @@ namespace Nuclear.Test.TestExecution {
         /// <param name="testConfig">The test configuration.</param>
         /// <param name="outputConfig">The output configuration.</param>
         public PipedTestExecutorRemote(FileInfo executable, FileInfo file, TestConfiguration testConfig, OutputConfiguration outputConfig) {
-            Throw.If.Null(executable, "executable");
-            Throw.If.Null(file, "file");
-            Throw.If.Null(testConfig, "testConfig");
-            Throw.If.Null(outputConfig, "outputConfig");
+            Throw.If.Object.IsNull(executable, nameof(executable));
+            Throw.If.Object.IsNull(file, nameof(file));
+            Throw.If.Object.IsNull(testConfig, nameof(testConfig));
+            Throw.If.Object.IsNull(outputConfig, nameof(outputConfig));
 
             Executable = executable;
             File = file;
