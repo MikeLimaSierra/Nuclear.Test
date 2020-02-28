@@ -46,6 +46,13 @@ namespace Nuclear.Test.Results {
         void FailTestMethod(MethodInfo _method, Exception ex);
 
         /// <summary>
+        /// Set an entire test method to ignored.
+        /// </summary>
+        /// <param name="_method">The test method to ignore.</param>
+        /// <param name="ignoreReason">The reason why it is being ignored.</param>
+        void IgnoreTestMethod(MethodInfo _method, String ignoreReason);
+
+        /// <summary>
         /// Adds an <see cref="ITestMethodResult"/> and its <see cref="ITestResultKey"/>.
         /// </summary>
         /// <param name="key">The key.</param>

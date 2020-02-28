@@ -35,6 +35,11 @@ namespace Nuclear.Test.Results {
         /// </summary>
         String FailMessage { get; }
 
+        /// <summary>
+        /// Gets the reason why the test method is being ignored.
+        /// </summary>
+        String IgnoreReason { get; }
+
 
         /// <summary>
         /// Gets if the collection contains failed results.
@@ -51,6 +56,11 @@ namespace Nuclear.Test.Results {
         /// </summary>
         Boolean Failed { get; }
 
+        /// <summary>
+        /// Gets if the test method was ignored.
+        /// </summary>
+        Boolean IsIgnored { get; }
+
         #endregion
 
         #region methods
@@ -60,6 +70,12 @@ namespace Nuclear.Test.Results {
         /// </summary>
         /// <param name="message">The message of the caught exception.</param>
         void Fail(String message);
+
+        /// <summary>
+        /// Sets the results to ignored.
+        /// </summary>
+        /// <param name="message">The reason why the testmethod is being ignored.</param>
+        void Ignore(String message);
 
         #endregion
 

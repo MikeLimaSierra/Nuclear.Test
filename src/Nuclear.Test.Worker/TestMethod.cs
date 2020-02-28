@@ -8,8 +8,6 @@ namespace Nuclear.Test.Worker {
 
         #region fields
 
-        private Object _callingObject;
-
         private MethodInfo _method;
 
         private ITestResultEndPoint _results;
@@ -18,15 +16,7 @@ namespace Nuclear.Test.Worker {
 
         #region properties
 
-        private Object CallingObject {
-            get {
-                if(_callingObject == null) {
-                    _callingObject = Activator.CreateInstance(_method.DeclaringType, true);
-                }
-
-                return _callingObject;
-            }
-        }
+        private Object CallingObject => Activator.CreateInstance(_method.DeclaringType, true);
 
         #endregion
 

@@ -17,6 +17,8 @@ namespace Nuclear.Test.Results {
 
         public String FailMessage { get; private set; }
 
+        public String IgnoreReason { get; private set; }
+
 
         public Boolean HasFails => CountFails > 0;
 
@@ -24,11 +26,15 @@ namespace Nuclear.Test.Results {
 
         public Boolean Failed => HasFails || HasFailMessage;
 
+        public Boolean IsIgnored => !String.IsNullOrWhiteSpace(IgnoreReason);
+
         #endregion
 
         #region methods
 
         public void Fail(String message) => FailMessage = message;
+
+        public void Ignore(String reason) => IgnoreReason = reason;
 
         #endregion
 
