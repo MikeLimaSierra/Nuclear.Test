@@ -65,16 +65,33 @@ namespace Nuclear.Test.Worker {
             parallelTestMethods = new List<TestMethod>();
 
             foreach(Type type in assembly.GetTypes()) {
-                TestClassAttribute attr = type.GetCustomAttribute<TestClassAttribute>();
-                TestMode classLevelMode = attr != null ? attr.TestMode : TestMode.Parallel;
+                TestMode classLevelMode = TestMode.Parallel;
+                Boolean classLevelIgnore = false;
+
+                TestClassAttribute c_attr = type.GetCustomAttribute<TestClassAttribute>();
+
+                if(c_attr != null) {
+                    classLevelMode = c_attr.TestMode;
+                    classLevelIgnore = c_attr.IsIgnored;
+                }
 
                 foreach(MethodInfo testMethod in type.GetRuntimeMethods().Where(m => m.GetCustomAttributes<TestMethodAttribute>().Count() > 0)) {
-                    TestMode methodLevelMode = testMethod.GetCustomAttribute<TestMethodAttribute>().TestMode;
+                    TestMethodAttribute m_attr = testMethod.GetCustomAttribute<TestMethodAttribute>();
 
-                    if(classLevelMode == TestMode.Sequential || methodLevelMode == TestMode.Sequential || TestConfiguration.ForceSequential) {
-                        sequentialTestMethods.Add(new TestMethod(results, testMethod));
+                    if(classLevelIgnore) {
+                        results.IgnoreTestMethod(testMethod, $"Class ignored: '{c_attr.IgnoreReason}'");
+
+                    } else if(m_attr.IsIgnored) {
+                        results.IgnoreTestMethod(testMethod, $"Method ignored: '{m_attr.IgnoreReason}'");
+
                     } else {
-                        parallelTestMethods.Add(new TestMethod(results, testMethod));
+                        TestMode methodLevelMode = m_attr.TestMode;
+
+                        if(classLevelMode == TestMode.Sequential || methodLevelMode == TestMode.Sequential || TestConfiguration.ForceSequential) {
+                            sequentialTestMethods.Add(new TestMethod(results, testMethod));
+                        } else {
+                            parallelTestMethods.Add(new TestMethod(results, testMethod));
+                        }
                     }
                 }
             }

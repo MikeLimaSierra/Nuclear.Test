@@ -47,6 +47,11 @@ namespace Nuclear.Test.Results {
             => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
                 new TestMethodResult()).Fail(ex.ToString());
 
+        public void IgnoreTestMethod(MethodInfo _method, String ignoreReason) {
+            _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
+                new TestMethodResult()).Ignore(ignoreReason);
+        }
+
         #endregion
 
         #region ITestResultSource

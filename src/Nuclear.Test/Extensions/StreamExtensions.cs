@@ -321,6 +321,7 @@ namespace Nuclear.Test.Extensions {
         public static ITestMethodResult ReadTestResults(this Stream _this) {
             ITestMethodResult results = new TestMethodResult();
             results.Fail(_this.ReadString());
+            results.Ignore(_this.ReadString());
             Int32 count = _this.ReadInt32();
 
             for(Int32 i = 0; i < count; i++) {
@@ -390,6 +391,7 @@ namespace Nuclear.Test.Extensions {
         /// <param name="values">The <see cref="ITestMethodResult"/> that is written to <paramref name="_this"/>.</param>
         public static void Write(this Stream _this, ITestMethodResult values) {
             _this.Write(values.FailMessage);
+            _this.Write(values.IgnoreReason);
             _this.Write(values.InstructionResults.Count);
             values.InstructionResults.ForEach(value => _this.Write(value));
         }
