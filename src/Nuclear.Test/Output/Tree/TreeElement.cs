@@ -27,12 +27,13 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         internal abstract void Print();
 
-        protected void Print(String format, params Object[] args) => Console.Write(format, args);
+        protected internal static void Print(String format, params Object[] args) => Console.Write(format, args);
 
-        protected void Print(ConsoleColor color, String format, params Object[] args) {
+        protected internal static void Print(ConsoleColor color, String format, params Object[] args) {
+            ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
             Print(format, args);
-            Console.ResetColor();
+            Console.ForegroundColor = defaultColor;
         }
 
         protected void PrintResult(Boolean result) {
@@ -42,7 +43,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
             Print(color, content);
         }
 
-        protected void PrintEOL() => Console.WriteLine();
+        protected internal static void PrintEOL() => Console.WriteLine();
 
         #endregion
 
