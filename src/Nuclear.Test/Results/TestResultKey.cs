@@ -245,10 +245,21 @@ namespace Nuclear.Test.Results {
             return 0;
         }
 
-        public override Int32 GetHashCode() => AssemblyName.GetHashCode()
-                + (Int32) TargetFrameworkIdentifier - TargetFrameworkVersion.GetHashCode() + (Int32) TargetArchitecture
-                - (Int32) TargetFrameworkIdentifier + TargetFrameworkVersion.GetHashCode() - (Int32) TargetArchitecture
-                + FileName.GetHashCode() - MethodName.GetHashCode();
+        public override Int32 GetHashCode() {
+            Int32 hashCode = 0;
+
+            hashCode += AssemblyName != null ? AssemblyName.GetHashCode() : 0;
+            hashCode -= TargetFrameworkIdentifier.GetHashCode();
+            hashCode += TargetFrameworkVersion != null ? TargetFrameworkVersion.GetHashCode() : 0;
+            hashCode -= TargetArchitecture.GetHashCode();
+            hashCode += ExecutionFrameworkIdentifier.GetHashCode();
+            hashCode -= ExecutionFrameworkVersion != null ? ExecutionFrameworkVersion.GetHashCode() : 0;
+            hashCode += ExecutionArchitecture.GetHashCode();
+            hashCode -= FileName != null ? FileName.GetHashCode() : 0;
+            hashCode += MethodName != null ? MethodName.GetHashCode() : 0;
+
+            return hashCode;
+        }
 
         public override String ToString() =>
             $"[{AssemblyName.Format()};{TargetFrameworkIdentifier.Format()};{TargetFrameworkVersion.Format()};{TargetArchitecture.Format()};{ExecutionFrameworkIdentifier.Format()};{ExecutionFrameworkVersion.Format()};{ExecutionArchitecture.Format()};{FileName.Format()};{MethodName.Format()}]";
