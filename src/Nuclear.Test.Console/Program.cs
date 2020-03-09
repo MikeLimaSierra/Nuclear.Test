@@ -42,7 +42,7 @@ namespace Nuclear.Test.Console {
 
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
             new ResultTree(_outputConfiguration.Verbosity, results).Print();
-            new Summary(results).Print();
+            new Summary(results).PrintOverview();
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
 
             WaitOnDebug();
