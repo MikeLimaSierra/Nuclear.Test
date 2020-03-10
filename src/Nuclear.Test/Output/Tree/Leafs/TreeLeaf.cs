@@ -8,8 +8,6 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         internal ITestInstructionResult Result { get; private set; }
 
-        internal override Int32 Padding => 12;
-
         #endregion
 
         #region ctors

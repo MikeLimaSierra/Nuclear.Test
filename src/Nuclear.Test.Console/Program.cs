@@ -41,8 +41,9 @@ namespace Nuclear.Test.Console {
             ITestResultSource results = executor.Execute();
 
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
-            new ResultTree(_outputConfiguration.Verbosity, results).Print();
-            new Summary(results).PrintOverview();
+            ResultTree tree = new ResultTree(_outputConfiguration.Verbosity, results);
+            tree.PrintResults();
+            tree.PrintOverview();
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
 
             WaitOnDebug();

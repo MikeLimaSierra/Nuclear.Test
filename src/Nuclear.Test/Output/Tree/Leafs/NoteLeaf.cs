@@ -18,8 +18,8 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region methods
 
-        internal override void PrintResults() {
-            PrintTitle();
+        internal override void PrintResults(Int32 padding) {
+            PrintTitle(padding);
             Write(ConsoleColor.Yellow, $"'{Result.Message}'");
             WriteEOL();
         }

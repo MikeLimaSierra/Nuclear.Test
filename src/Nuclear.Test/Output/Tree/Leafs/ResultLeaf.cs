@@ -24,8 +24,8 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region methods
 
-        internal override void PrintResults() {
-            PrintTitle();
+        internal override void PrintResults(Int32 padding) {
+            PrintTitle(padding);
             PrintResult(Result.Result.Value);
 
             if(!Result.Result.Value) {

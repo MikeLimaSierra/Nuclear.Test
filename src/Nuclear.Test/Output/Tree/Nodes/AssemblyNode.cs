@@ -9,8 +9,6 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region properties
 
-        internal override Int32 Padding => 2;
-
         internal override String Title => Key.AssemblyName;
 
         internal List<TreeNode> Nodes { get; } = new List<TreeNode>();
@@ -42,13 +40,13 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region methods
 
-        internal override void PrintResults() {
-            PrintTitle();
+        internal override void PrintResults(Int32 padding) {
+            PrintTitle(padding);
             PrintResult(!Failed);
             PrintDetails(Total, Successes, Fails);
             WriteEOL();
 
-            Nodes.ForEach(node => node.PrintResults());
+            Nodes.ForEach(node => node.PrintResults(padding + 2));
         }
 
         #endregion

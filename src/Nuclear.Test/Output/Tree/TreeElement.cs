@@ -5,19 +5,17 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region properties
 
-        internal abstract Int32 Padding { get; }
-
         internal abstract String Title { get; }
 
         #endregion
 
         #region methods
 
-        protected void PrintTitle() => Console.Write("{0}{1} => ", String.Empty.PadLeft(Padding), Title);
+        protected void PrintTitle(Int32 padding) => Console.Write("{0}{1} => ", String.Empty.PadLeft(padding), Title);
 
         protected void PrintResult(Boolean result) => Write(result ? ConsoleColor.Green : ConsoleColor.Red, result ? "ok" : "failed");
 
-        internal abstract void PrintResults();
+        internal abstract void PrintResults(Int32 padding);
 
         protected internal static void Write(String format, params Object[] args) => Console.Write(format, args);
 

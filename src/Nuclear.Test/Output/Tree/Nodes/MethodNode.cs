@@ -8,8 +8,6 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region properties
 
-        internal override Int32 Padding => 10;
-
         internal override String Title => Key.MethodName;
 
         internal ITestMethodResult Results { get; private set; }
@@ -41,8 +39,8 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region methods
 
-        internal override void PrintResults() {
-            PrintTitle();
+        internal override void PrintResults(Int32 padding) {
+            PrintTitle(padding);
             PrintResult(!Failed);
             PrintDetails(Total, Successes, Fails);
 
@@ -53,7 +51,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
             WriteEOL();
 
-            Leafs.ForEach(leaf => leaf.PrintResults());
+            Leafs.ForEach(leaf => leaf.PrintResults(padding + 2));
         }
 
         #endregion
