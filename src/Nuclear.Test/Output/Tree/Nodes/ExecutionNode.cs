@@ -33,16 +33,16 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
         #region ctors
 
         internal ExecutionNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
-            : base(verbosity, key, results) {
+            : base(key, results) {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(Verbosity > PrintVerbosity.ExecutionArchitecture || Failed) {
+            if(verbosity > PrintVerbosity.ExecutionArchitecture || Failed) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.FileName).ToList();
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new FileNode(Verbosity, _key, results)));
+            keys.ForEach(_key => Nodes.Add(new FileNode(verbosity, _key, results)));
         }
 
         #endregion

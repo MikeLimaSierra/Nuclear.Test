@@ -21,17 +21,17 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
         #region ctors
 
         internal MethodNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
-            : base(verbosity, key, results) {
+            : base(key, results) {
 
             Results = results.GetResult(key);
             Int32 index = 1;
 
-            if(Verbosity > PrintVerbosity.MethodName || Results.Failed) {
+            if(verbosity > PrintVerbosity.MethodName || Results.Failed) {
                 foreach(ITestInstructionResult result in Results.InstructionResults) {
                     if(result.Result.HasValue) {
-                        Leafs.Add(new ResultLeaf(Verbosity, result, index++));
+                        Leafs.Add(new ResultLeaf(result, index++));
                     } else {
-                        Leafs.Add(new NoteLeaf(Verbosity, result));
+                        Leafs.Add(new NoteLeaf(result));
                     }
                 }
             }

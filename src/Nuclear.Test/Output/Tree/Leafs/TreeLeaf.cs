@@ -14,9 +14,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region ctors
 
-        internal TreeLeaf(PrintVerbosity verbosity, ITestInstructionResult result)
-            : base(verbosity) {
-
+        internal TreeLeaf(ITestInstructionResult result) {
             Result = result;
         }
 

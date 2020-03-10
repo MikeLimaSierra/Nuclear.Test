@@ -20,22 +20,22 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
         #region ctors
 
         internal AssemblyNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
-            : base(verbosity, key, results) {
+            : base(key, results) {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(Verbosity > PrintVerbosity.TargetFrameworkVersion || Failed) {
+            if(verbosity > PrintVerbosity.TargetFrameworkVersion || Failed) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetArchitecture).ToList();
 
-            } else if(Verbosity > PrintVerbosity.TargetFrameworkIdentifier) {
+            } else if(verbosity > PrintVerbosity.TargetFrameworkIdentifier) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetFrameworkVersion).ToList();
 
-            } else if(Verbosity > PrintVerbosity.AssemblyName) {
+            } else if(verbosity > PrintVerbosity.AssemblyName) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetFrameworkIdentifier).ToList();
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new TargetNode(Verbosity, _key, results)));
+            keys.ForEach(_key => Nodes.Add(new TargetNode(verbosity, _key, results)));
         }
 
         #endregion

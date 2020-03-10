@@ -5,19 +5,9 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region properties
 
-        internal PrintVerbosity Verbosity { get; private set; }
-
         internal abstract Int32 Padding { get; }
 
         internal abstract String Title { get; }
-
-        #endregion
-
-        #region ctors
-
-        internal TreeElement(PrintVerbosity verbosity) {
-            Verbosity = verbosity;
-        }
 
         #endregion
 

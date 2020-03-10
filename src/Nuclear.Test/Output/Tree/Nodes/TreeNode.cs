@@ -22,9 +22,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region ctors
 
-        internal TreeNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
-            : base(verbosity) {
-
+        internal TreeNode(ITestResultKey key, ITestResultSource results) {
             Key = key;
 
             IEnumerable<ITestMethodResult> _results = results.GetResults(Key);
