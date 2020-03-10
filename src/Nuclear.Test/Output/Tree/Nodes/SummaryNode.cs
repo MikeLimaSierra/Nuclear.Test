@@ -36,13 +36,13 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region methods
 
-        internal override void Print() {
+        internal override void PrintResults() {
             PrintTitle();
             PrintResult(!Failed);
             PrintDetails(Total, Successes, Fails);
-            PrintEOL();
+            WriteEOL();
 
-            Nodes.ForEach(node => node.Print());
+            Nodes.ForEach(node => node.PrintResults());
         }
 
         #endregion

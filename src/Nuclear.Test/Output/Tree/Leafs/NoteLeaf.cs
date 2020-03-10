@@ -18,10 +18,10 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region methods
 
-        internal override void Print() {
+        internal override void PrintResults() {
             PrintTitle();
-            Print(ConsoleColor.Yellow, $"'{Result.Message}'");
-            PrintEOL();
+            Write(ConsoleColor.Yellow, $"'{Result.Message}'");
+            WriteEOL();
         }
 
         #endregion

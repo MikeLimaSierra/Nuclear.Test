@@ -37,17 +37,17 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
         #region methods
 
         protected void PrintDetails(Int32 total, Int32 succeeded, Int32 failed) {
-            Print($" [Total: {total}; Ok: ");
-            Print(ConsoleColor.Green, $"{succeeded}");
-            Print("; Failed: ");
+            Write($" [Total: {total}; Ok: ");
+            Write(ConsoleColor.Green, $"{succeeded}");
+            Write("; Failed: ");
 
             if(failed > 0) {
-                Print(ConsoleColor.Red, $"{failed}");
+                Write(ConsoleColor.Red, $"{failed}");
             } else {
-                Print($"{failed}");
+                Write($"{failed}");
             }
 
-            Print("]");
+            Write("]");
         }
 
         #endregion

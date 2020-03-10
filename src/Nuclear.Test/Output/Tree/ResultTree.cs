@@ -20,7 +20,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region methods
 
-        public void Print() => Node.Print();
+        public void Print() => Node.PrintResults();
 
         #endregion
 

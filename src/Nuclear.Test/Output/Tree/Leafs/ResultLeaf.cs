@@ -24,16 +24,16 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region methods
 
-        internal override void Print() {
+        internal override void PrintResults() {
             PrintTitle();
             PrintResult(Result.Result.Value);
 
             if(!Result.Result.Value) {
-                Print(": ");
-                Print(ConsoleColor.Red, Result.Message);
+                Write(": ");
+                Write(ConsoleColor.Red, Result.Message);
             }
 
-            PrintEOL();
+            WriteEOL();
         }
 
         #endregion

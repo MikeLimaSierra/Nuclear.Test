@@ -15,25 +15,20 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         protected void PrintTitle() => Console.Write("{0}{1} => ", String.Empty.PadLeft(Padding), Title);
 
-        internal abstract void Print();
+        protected void PrintResult(Boolean result) => Write(result ? ConsoleColor.Green : ConsoleColor.Red, result ? "ok" : "failed");
 
-        protected internal static void Print(String format, params Object[] args) => Console.Write(format, args);
+        internal abstract void PrintResults();
 
-        protected internal static void Print(ConsoleColor color, String format, params Object[] args) {
+        protected internal static void Write(String format, params Object[] args) => Console.Write(format, args);
+
+        protected internal static void Write(ConsoleColor color, String format, params Object[] args) {
             ConsoleColor defaultColor = Console.ForegroundColor;
             Console.ForegroundColor = color;
-            Print(format, args);
+            Write(format, args);
             Console.ForegroundColor = defaultColor;
         }
 
-        protected void PrintResult(Boolean result) {
-            ConsoleColor color = result ? ConsoleColor.Green : ConsoleColor.Red;
-            String content = result ? "ok" : "failed";
-
-            Print(color, content);
-        }
-
-        protected internal static void PrintEOL() => Console.WriteLine();
+        protected internal static void WriteEOL() => Console.WriteLine();
 
         #endregion
 
