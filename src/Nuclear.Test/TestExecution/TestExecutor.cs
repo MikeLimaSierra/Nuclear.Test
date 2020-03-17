@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Results;
 
@@ -65,9 +66,7 @@ namespace Nuclear.Test.TestExecution {
             EntryAssembly = Assembly.GetEntryAssembly();
             EntryAssemblyName = EntryAssembly.GetName();
             Runtime = NetVersionTree.GetTargetRuntimeFromAssembly(EntryAssembly);
-            RuntimeArchitecure = EntryAssemblyName.ProcessorArchitecture == ProcessorArchitecture.MSIL
-                ? (Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86)
-                : EntryAssemblyName.ProcessorArchitecture;
+            RuntimeArchitecure = Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86;
         }
 
         #endregion
