@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclear.Test.Extensions;
+
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
@@ -9,11 +9,9 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region properties
 
-        internal override Int32 Padding => 0;
-
         internal override String Title => "Summary";
 
-        internal List<TreeNode> Nodes { get; } = new List<TreeNode>();
+        private ITestResultSource Results { get; set; }
 
         #endregion
 
@@ -22,27 +20,34 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
         internal SummaryNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
             : base(verbosity, key, results) {
 
+            Results = results;
+
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(Verbosity > PrintVerbosity.Collapsed || Failed) {
+            if(Verbosity > PrintVerbosity.Collapsed || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.AssemblyName).ToList();
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new AssemblyNode(Verbosity, _key, results)));
+            keys.ForEach(_key => Children.Add(new AssemblyNode(Verbosity, _key, results)));
         }
 
         #endregion
 
         #region methods
 
-        internal override void Print() {
-            PrintTitle();
-            PrintResult(!Failed);
-            PrintDetails(Total, Successes, Fails);
-            PrintEOL();
+        internal override void Print(Int32 padding) {
+            base.Print(padding);
 
-            Nodes.ForEach(node => node.Print());
+            PrintOverview();
+        }
+
+        private void PrintOverview() {
+            Console.WriteLine("=> {0} workers running {1} test assemblies with {2} test methods in {3} classes.",
+                Results.GetKeys().Select(key => (key.AssemblyName, key.TargetFrameworkIdentifier, key.TargetFrameworkVersion, key.TargetArchitecture, key.ExecutionFrameworkIdentifier, key.ExecutionFrameworkVersion, key.ExecutionArchitecture)).Distinct().Count(),
+                Results.GetKeys().Select(key => (key.AssemblyName, key.TargetFrameworkIdentifier, key.TargetFrameworkVersion, key.TargetArchitecture)).Distinct().Count(),
+                Results.GetKeys().Select(key => (key.AssemblyName, key.FileName, key.MethodName)).Distinct().Count(),
+                Results.GetKeys().Select(key => (key.AssemblyName, key.FileName)).Distinct().Count());
         }
 
         #endregion

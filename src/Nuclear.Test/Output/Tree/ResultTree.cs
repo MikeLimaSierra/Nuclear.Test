@@ -6,6 +6,11 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region properties
 
+        /// <summary>
+        /// Gets or sets the global <see cref="TreeColorScheme"/>.
+        /// </summary>
+        public static TreeColorScheme ColorScheme { get; set; } = ColorScheme = TreeColorScheme.Default;
+
         internal SummaryNode Node { get; private set; }
 
         #endregion
@@ -20,7 +25,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region methods
 
-        public void Print() => Node.Print();
+        public void PrintResults() => Node.Print(0);
 
         #endregion
 

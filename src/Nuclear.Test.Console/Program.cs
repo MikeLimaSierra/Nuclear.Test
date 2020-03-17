@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+
 using Nuclear.Arguments;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.ConsolePrinter;
@@ -41,8 +42,8 @@ namespace Nuclear.Test.Console {
             ITestResultSource results = executor.Execute();
 
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
-            new ResultTree(_outputConfiguration.Verbosity, results).Print();
-            new Summary(results).PrintOverview();
+            ResultTree tree = new ResultTree(_outputConfiguration.Verbosity, results);
+            tree.PrintResults();
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
 
             WaitOnDebug();

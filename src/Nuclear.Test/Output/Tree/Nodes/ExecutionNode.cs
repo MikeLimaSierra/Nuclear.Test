@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclear.Test.Extensions;
+
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
     internal class ExecutionNode : TreeNode {
 
         #region properties
-
-        internal override Int32 Padding => 6;
 
         internal override String Title {
             get {
@@ -26,8 +24,6 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
             }
         }
 
-        internal List<TreeNode> Nodes { get; } = new List<TreeNode>();
-
         #endregion
 
         #region ctors
@@ -37,25 +33,12 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(Verbosity > PrintVerbosity.ExecutionArchitecture || Failed) {
+            if(Verbosity > PrintVerbosity.ExecutionArchitecture || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.FileName).ToList();
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new FileNode(Verbosity, _key, results)));
-        }
-
-        #endregion
-
-        #region methods
-
-        internal override void Print() {
-            PrintTitle();
-            PrintResult(!Failed);
-            PrintDetails(Total, Successes, Fails);
-            PrintEOL();
-
-            Nodes.ForEach(node => node.Print());
+            keys.ForEach(_key => Children.Add(new FileNode(Verbosity, _key, results)));
         }
 
         #endregion

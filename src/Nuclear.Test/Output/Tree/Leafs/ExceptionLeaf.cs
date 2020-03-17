@@ -1,11 +1,11 @@
 ﻿using System;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
-    internal class NoteLeaf : TreeLeaf {
+    internal class ExceptionLeaf : TreeLeaf {
 
         #region properties
 
-        internal override String Title => "Note";
+        internal override String Title => "Exception";
 
         internal String Message { get; private set; }
 
@@ -13,7 +13,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region ctors
 
-        internal NoteLeaf(PrintVerbosity verbosity, String message) : base(verbosity) {
+        internal ExceptionLeaf(PrintVerbosity verbosity, String message) : base(verbosity) {
             Message = message;
         }
 
@@ -23,7 +23,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         protected override void PrintResult() { }
 
-        protected override void PrintDetails() => Write(ResultTree.ColorScheme.NoteMessage, $"'{Message}'");
+        protected override void PrintDetails() => Write(ResultTree.ColorScheme.ExceptionDetails, $"'{Message}'");
 
         #endregion
 

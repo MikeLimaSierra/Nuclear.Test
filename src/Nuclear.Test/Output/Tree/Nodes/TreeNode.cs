@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Results;
 
@@ -10,13 +11,19 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         internal ITestResultKey Key { get; private set; }
 
-        internal Int32 Total { get; private set; }
+        internal Int32 ResultsTotal { get; private set; }
 
-        internal Int32 Successes { get; private set; }
+        internal Int32 ResultsSuccessful { get; private set; }
 
-        internal Int32 Fails { get; private set; }
+        internal Int32 ResultsFailed { get; private set; }
 
-        internal Boolean Failed { get; private set; }
+        internal Boolean HasFails { get; private set; }
+
+        internal Boolean HasIgnores { get; private set; }
+
+        internal Boolean HasBlanks { get; private set; }
+
+        internal List<TreeElement> Children { get; } = new List<TreeElement>();
 
         #endregion
 
@@ -28,29 +35,41 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
             Key = key;
 
             IEnumerable<ITestMethodResult> _results = results.GetResults(Key);
-            Total = _results.CountResults();
-            Successes = _results.CountSuccesses();
-            Fails = _results.CountFails();
-            Failed = _results.Failed();
+            ResultsTotal = _results.CountResults();
+            ResultsSuccessful = _results.CountResultsOk();
+            ResultsFailed = _results.CountResultsFailed();
+            HasFails = _results.HasFails();
+            HasIgnores = _results.HasIgnores();
+            HasBlanks = _results.HasBlanks();
         }
 
         #endregion
 
         #region methods
 
-        protected void PrintDetails(Int32 total, Int32 succeeded, Int32 failed) {
-            Print($" [Total: {total}; Ok: ");
-            Print(ConsoleColor.Green, $"{succeeded}");
-            Print("; Failed: ");
+        internal override void Print(Int32 padding) {
+            base.Print(padding);
 
-            if(failed > 0) {
-                Print(ConsoleColor.Red, $"{failed}");
+            PrintChildren(padding + 2);
+        }
+
+        protected override void PrintResult() => Write(HasFails ? ResultTree.ColorScheme.StateFailed : ResultTree.ColorScheme.StateOk, HasFails ? "Failed" : "Ok");
+
+        protected override void PrintDetails() {
+            Write($" [Total: {ResultsTotal}; Ok: ");
+            Write(ResultTree.ColorScheme.ResultsOk, $"{ResultsSuccessful}");
+            Write("; Failed: ");
+
+            if(ResultsFailed > 0) {
+                Write(ResultTree.ColorScheme.ResultsFailed, $"{ResultsFailed}");
             } else {
-                Print($"{failed}");
+                Write($"{ResultsFailed}");
             }
 
-            Print("]");
+            Write("]");
         }
+
+        protected virtual void PrintChildren(Int32 padding) => Children.ForEach(child => child.Print(padding));
 
         #endregion
 

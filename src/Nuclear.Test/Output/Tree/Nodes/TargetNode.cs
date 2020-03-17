@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclear.Test.Extensions;
+
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
     internal class TargetNode : TreeNode {
 
         #region properties
-
-        internal override Int32 Padding => 4;
 
         internal override String Title {
             get {
@@ -26,8 +24,6 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
             }
         }
 
-        internal List<TreeNode> Nodes { get; } = new List<TreeNode>();
-
         #endregion
 
         #region ctors
@@ -37,31 +33,18 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(Verbosity > PrintVerbosity.ExecutionFrameworkVersion || Failed) {
+            if(Verbosity > PrintVerbosity.ExecutionFrameworkVersion || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.ExecutionArchitecture).ToList();
 
-            } else if(Verbosity > PrintVerbosity.ExecutionFrameworkIdentifier) {
+            } else if(verbosity > PrintVerbosity.ExecutionFrameworkIdentifier) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.ExecutionFrameworkVersion).ToList();
 
-            } else if(Verbosity > PrintVerbosity.TargetArchitecture) {
+            } else if(verbosity > PrintVerbosity.TargetArchitecture) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.ExecutionFrameworkIdentifier).ToList();
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new ExecutionNode(Verbosity, _key, results)));
-        }
-
-        #endregion
-
-        #region methods
-
-        internal override void Print() {
-            PrintTitle();
-            PrintResult(!Failed);
-            PrintDetails(Total, Successes, Fails);
-            PrintEOL();
-
-            Nodes.ForEach(node => node.Print());
+            keys.ForEach(_key => Children.Add(new ExecutionNode(Verbosity, _key, results)));
         }
 
         #endregion

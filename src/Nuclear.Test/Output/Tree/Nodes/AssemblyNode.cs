@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclear.Test.Extensions;
+
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
@@ -9,11 +9,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region properties
 
-        internal override Int32 Padding => 2;
-
         internal override String Title => Key.AssemblyName;
-
-        internal List<TreeNode> Nodes { get; } = new List<TreeNode>();
 
         #endregion
 
@@ -24,31 +20,18 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(Verbosity > PrintVerbosity.TargetFrameworkVersion || Failed) {
+            if(Verbosity > PrintVerbosity.TargetFrameworkVersion || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetArchitecture).ToList();
 
-            } else if(Verbosity > PrintVerbosity.TargetFrameworkIdentifier) {
+            } else if(verbosity > PrintVerbosity.TargetFrameworkIdentifier) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetFrameworkVersion).ToList();
 
-            } else if(Verbosity > PrintVerbosity.AssemblyName) {
+            } else if(verbosity > PrintVerbosity.AssemblyName) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetFrameworkIdentifier).ToList();
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new TargetNode(Verbosity, _key, results)));
-        }
-
-        #endregion
-
-        #region methods
-
-        internal override void Print() {
-            PrintTitle();
-            PrintResult(!Failed);
-            PrintDetails(Total, Successes, Fails);
-            PrintEOL();
-
-            Nodes.ForEach(node => node.Print());
+            keys.ForEach(_key => Children.Add(new TargetNode(Verbosity, _key, results)));
         }
 
         #endregion
