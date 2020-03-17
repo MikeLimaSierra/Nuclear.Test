@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
@@ -8,15 +9,18 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         internal override String Title => $"#{Index}: {Result.Instruction}";
 
+        internal ITestInstructionResult Result { get; private set; }
+
         internal Int32 Index { get; private set; }
 
         #endregion
 
         #region ctors
 
-        internal ResultLeaf(ITestInstructionResult result, Int32 index)
-            : base(result) {
+        internal ResultLeaf(PrintVerbosity verbosity, ITestInstructionResult result, Int32 index)
+            : base(verbosity) {
 
+            Result = result;
             Index = index;
         }
 
@@ -24,16 +28,13 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Leafs {
 
         #region methods
 
-        internal override void PrintResults(Int32 padding) {
-            PrintTitle(padding);
-            PrintResult(Result.Result.Value);
+        protected override void PrintResult() => Write(Result.Result.Value ? ResultTree.ColorScheme.StateOk : ResultTree.ColorScheme.StateFailed, Result.Result.Value ? "Ok" : "Failed");
 
+        protected override void PrintDetails() {
             if(!Result.Result.Value) {
                 Write(": ");
-                Write(ConsoleColor.Red, Result.Message);
+                Write(ResultTree.ColorScheme.ResultFailMessage, Result.Message);
             }
-
-            WriteEOL();
         }
 
         #endregion

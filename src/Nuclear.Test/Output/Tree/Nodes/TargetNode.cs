@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclear.Test.Extensions;
+
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
@@ -24,18 +24,16 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
             }
         }
 
-        internal List<TreeNode> Nodes { get; } = new List<TreeNode>();
-
         #endregion
 
         #region ctors
 
         internal TargetNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
-            : base(key, results) {
+            : base(verbosity, key, results) {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(verbosity > PrintVerbosity.ExecutionFrameworkVersion || Failed) {
+            if(Verbosity > PrintVerbosity.ExecutionFrameworkVersion || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.ExecutionArchitecture).ToList();
 
             } else if(verbosity > PrintVerbosity.ExecutionFrameworkIdentifier) {
@@ -46,20 +44,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new ExecutionNode(verbosity, _key, results)));
-        }
-
-        #endregion
-
-        #region methods
-
-        internal override void PrintResults(Int32 padding) {
-            PrintTitle(padding);
-            PrintResult(!Failed);
-            PrintDetails(Total, Successes, Fails);
-            WriteEOL();
-
-            Nodes.ForEach(node => node.PrintResults(padding + 2));
+            keys.ForEach(_key => Children.Add(new ExecutionNode(Verbosity, _key, results)));
         }
 
         #endregion

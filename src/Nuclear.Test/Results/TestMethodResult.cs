@@ -11,22 +11,24 @@ namespace Nuclear.Test.Results {
 
         public Int32 CountResults => InstructionResults.Where(result => result.Result.HasValue).Count();
 
-        public Int32 CountSuccesses => InstructionResults.Where(result => result.Result.HasValue && result.Result.Value).Count();
+        public Int32 CountResultsOk => InstructionResults.Where(result => result.Result.HasValue && result.Result.Value).Count();
 
-        public Int32 CountFails => InstructionResults.Where(result => result.Result.HasValue && !result.Result.Value).Count();
+        public Int32 CountResultsFailed => InstructionResults.Where(result => result.Result.HasValue && !result.Result.Value).Count();
 
         public String FailMessage { get; private set; }
 
         public String IgnoreReason { get; private set; }
 
 
-        public Boolean HasFails => CountFails > 0;
+        public Boolean HasFailedResults => CountResultsFailed > 0;
 
-        public Boolean HasFailMessage => !String.IsNullOrWhiteSpace(FailMessage);
+        public Boolean HasFailedExceptional => !String.IsNullOrWhiteSpace(FailMessage);
 
-        public Boolean Failed => HasFails || HasFailMessage;
+        public Boolean IsFailed => HasFailedResults || HasFailedExceptional;
 
         public Boolean IsIgnored => !String.IsNullOrWhiteSpace(IgnoreReason);
+
+        public Boolean IsEmpty => CountResults == 0;
 
         #endregion
 

@@ -5,17 +5,34 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region properties
 
+        internal PrintVerbosity Verbosity { get; private set; }
+
         internal abstract String Title { get; }
+
+        #endregion
+
+        #region ctors
+
+        internal TreeElement(PrintVerbosity verbosity) {
+            Verbosity = verbosity;
+        }
 
         #endregion
 
         #region methods
 
-        protected void PrintTitle(Int32 padding) => Console.Write("{0}{1} => ", String.Empty.PadLeft(padding), Title);
+        internal virtual void Print(Int32 padding) {
+            PrintTitle(padding);
+            PrintResult();
+            PrintDetails();
+            WriteEOL();
+        }
 
-        protected void PrintResult(Boolean result) => Write(result ? ConsoleColor.Green : ConsoleColor.Red, result ? "ok" : "failed");
+        protected virtual void PrintTitle(Int32 padding) => Console.Write("{0}{1} => ", String.Empty.PadLeft(padding), Title);
 
-        internal abstract void PrintResults(Int32 padding);
+        protected abstract void PrintResult();
+
+        protected abstract void PrintDetails();
 
         protected internal static void Write(String format, params Object[] args) => Console.Write(format, args);
 

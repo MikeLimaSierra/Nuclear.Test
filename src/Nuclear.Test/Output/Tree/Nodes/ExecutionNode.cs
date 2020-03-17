@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclear.Test.Extensions;
+
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
@@ -24,36 +24,21 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
             }
         }
 
-        internal List<TreeNode> Nodes { get; } = new List<TreeNode>();
-
         #endregion
 
         #region ctors
 
         internal ExecutionNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
-            : base(key, results) {
+            : base(verbosity, key, results) {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(verbosity > PrintVerbosity.ExecutionArchitecture || Failed) {
+            if(Verbosity > PrintVerbosity.ExecutionArchitecture || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.FileName).ToList();
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new FileNode(verbosity, _key, results)));
-        }
-
-        #endregion
-
-        #region methods
-
-        internal override void PrintResults(Int32 padding) {
-            PrintTitle(padding);
-            PrintResult(!Failed);
-            PrintDetails(Total, Successes, Fails);
-            WriteEOL();
-
-            Nodes.ForEach(node => node.PrintResults(padding + 2));
+            keys.ForEach(_key => Children.Add(new FileNode(Verbosity, _key, results)));
         }
 
         #endregion

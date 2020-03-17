@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+
 using Nuclear.Test.ConsolePrinter.Tree.Leafs;
 using Nuclear.Test.Results;
 
@@ -12,25 +12,27 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         internal ITestMethodResult Results { get; private set; }
 
-        internal List<TreeLeaf> Leafs { get; } = new List<TreeLeaf>();
-
         #endregion
 
         #region ctors
 
         internal MethodNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
-            : base(key, results) {
+            : base(verbosity, key, results) {
 
-            Results = results.GetResult(key);
+            Results = results.GetResult(Key);
             Int32 index = 1;
 
-            if(verbosity > PrintVerbosity.MethodName || Results.Failed) {
+            if(Verbosity > PrintVerbosity.MethodName || Results.IsFailed) {
                 foreach(ITestInstructionResult result in Results.InstructionResults) {
                     if(result.Result.HasValue) {
-                        Leafs.Add(new ResultLeaf(result, index++));
+                        Children.Add(new ResultLeaf(Verbosity, result, index++));
                     } else {
-                        Leafs.Add(new NoteLeaf(result));
+                        Children.Add(new NoteLeaf(Verbosity, result.Message));
                     }
+                }
+
+                if(Results.HasFailedExceptional) {
+                    Children.Add(new ExceptionLeaf(Verbosity, Results.FailMessage));
                 }
             }
         }
@@ -39,19 +41,25 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         #region methods
 
-        internal override void PrintResults(Int32 padding) {
-            PrintTitle(padding);
-            PrintResult(!Failed);
-            PrintDetails(Total, Successes, Fails);
+        protected override void PrintResult() {
+            if(Results.IsIgnored) {
+                Write(ResultTree.ColorScheme.IgnoreMessage, Results.IgnoreReason);
 
-            if(Results.HasFailMessage) {
-                Write(": ");
-                Write(ConsoleColor.Red, Results.FailMessage);
+            } else if(Results.IsEmpty) {
+                Write(ResultTree.ColorScheme.StateEmpty, "Method has no test instructions!");
+
+            } else if(Results.IsFailed) {
+                Write(ResultTree.ColorScheme.StateFailed, "Failed");
+
+            } else {
+                Write(ResultTree.ColorScheme.StateOk, "Ok");
             }
+        }
 
-            WriteEOL();
-
-            Leafs.ForEach(leaf => leaf.PrintResults(padding + 2));
+        protected override void PrintDetails() {
+            if(!Results.IsEmpty) {
+                base.PrintDetails();
+            }
         }
 
         #endregion

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Nuclear.Test.ConsolePrinter.Tree.Nodes;
+﻿using Nuclear.Test.ConsolePrinter.Tree.Nodes;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree {
@@ -8,7 +6,10 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region properties
 
-        internal ITestResultSource Results { get; private set; }
+        /// <summary>
+        /// Gets or sets the global <see cref="TreeColorScheme"/>.
+        /// </summary>
+        public static TreeColorScheme ColorScheme { get; set; } = ColorScheme = TreeColorScheme.Default;
 
         internal SummaryNode Node { get; private set; }
 
@@ -17,7 +18,6 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
         #region ctors
 
         public ResultTree(PrintVerbosity verbosity, ITestResultSource results) {
-            Results = results;
             Node = new SummaryNode(verbosity, TestResultKey.Empty, results);
         }
 
@@ -25,15 +25,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree {
 
         #region methods
 
-        public void PrintResults() => Node.PrintResults(0);
-
-        public void PrintOverview() {
-            Console.WriteLine("=> {0} workers running {1} test assemblies with {2} test methods in {3} classes.",
-                Results.GetKeys().Select(key => (key.AssemblyName, key.TargetFrameworkIdentifier, key.TargetFrameworkVersion, key.TargetArchitecture, key.ExecutionFrameworkIdentifier, key.ExecutionFrameworkVersion, key.ExecutionArchitecture)).Distinct().Count(),
-                Results.GetKeys().Select(key => (key.AssemblyName, key.TargetFrameworkIdentifier, key.TargetFrameworkVersion, key.TargetArchitecture)).Distinct().Count(),
-                Results.GetKeys().Select(key => (key.AssemblyName, key.FileName, key.MethodName)).Distinct().Count(),
-                Results.GetKeys().Select(key => (key.AssemblyName, key.FileName)).Distinct().Count());
-        }
+        public void PrintResults() => Node.Print(0);
 
         #endregion
 

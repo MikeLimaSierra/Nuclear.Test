@@ -23,12 +23,12 @@ namespace Nuclear.Test.Results {
         /// <summary>
         /// Gets the number of successful results.
         /// </summary>
-        Int32 CountSuccesses { get; }
+        Int32 CountResultsOk { get; }
 
         /// <summary>
         /// Gets the number of failed results.
         /// </summary>
-        Int32 CountFails { get; }
+        Int32 CountResultsFailed { get; }
 
         /// <summary>
         /// Gets the message of the <see cref="Exception"/> that was thrown during execution.
@@ -44,22 +44,27 @@ namespace Nuclear.Test.Results {
         /// <summary>
         /// Gets if the collection contains failed results.
         /// </summary>
-        Boolean HasFails { get; }
+        Boolean HasFailedResults { get; }
 
         /// <summary>
         /// Gets if an exceptional fail message has been recorded.
         /// </summary>
-        Boolean HasFailMessage { get; }
+        Boolean HasFailedExceptional { get; }
 
         /// <summary>
         /// Gets if the method is considered failed due to exceptions or negative test results.
         /// </summary>
-        Boolean Failed { get; }
+        Boolean IsFailed { get; }
 
         /// <summary>
         /// Gets if the test method was ignored.
         /// </summary>
         Boolean IsIgnored { get; }
+
+        /// <summary>
+        /// Gets if the test method has no results.
+        /// </summary>
+        Boolean IsEmpty { get; }
 
         #endregion
 

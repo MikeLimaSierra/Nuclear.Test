@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Nuclear.Test.Extensions;
+
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
@@ -11,18 +11,16 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
 
         internal override String Title => Key.AssemblyName;
 
-        internal List<TreeNode> Nodes { get; } = new List<TreeNode>();
-
         #endregion
 
         #region ctors
 
         internal AssemblyNode(PrintVerbosity verbosity, ITestResultKey key, ITestResultSource results)
-            : base(key, results) {
+            : base(verbosity, key, results) {
 
             List<ITestResultKey> keys = new List<ITestResultKey>();
 
-            if(verbosity > PrintVerbosity.TargetFrameworkVersion || Failed) {
+            if(Verbosity > PrintVerbosity.TargetFrameworkVersion || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetArchitecture).ToList();
 
             } else if(verbosity > PrintVerbosity.TargetFrameworkIdentifier) {
@@ -33,20 +31,7 @@ namespace Nuclear.Test.ConsolePrinter.Tree.Nodes {
             }
 
             keys.Sort();
-            keys.ForEach(_key => Nodes.Add(new TargetNode(verbosity, _key, results)));
-        }
-
-        #endregion
-
-        #region methods
-
-        internal override void PrintResults(Int32 padding) {
-            PrintTitle(padding);
-            PrintResult(!Failed);
-            PrintDetails(Total, Successes, Fails);
-            WriteEOL();
-
-            Nodes.ForEach(node => node.PrintResults(padding + 2));
+            keys.ForEach(_key => Children.Add(new TargetNode(Verbosity, _key, results)));
         }
 
         #endregion
