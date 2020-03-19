@@ -4,6 +4,10 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
+
+using Nuclear.Assemblies;
+using Nuclear.Assemblies.Runtimes;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.TestExecution;
 
@@ -96,7 +100,7 @@ namespace Nuclear.Test.Proxy {
                 Console.ForegroundColor = (runtimeInfo.HasExecutable && runtimeInfo.Executable.Exists) ? (runtimeInfo.ExecutionRequired ? ConsoleColor.Green : ConsoleColor.DarkYellow) : ConsoleColor.DarkGray;
                 Console.Write("[{0}]", (runtimeInfo.HasExecutable && runtimeInfo.Executable.Exists) ? (runtimeInfo.ExecutionRequired ? "Y" : "N") : "?");
                 Console.ResetColor();
-                Console.WriteLine(" {0}    ║", String.Format("{0} {1}", runtimeInfo.Platform, runtimeInfo.Version).PadRight(58, ' '));
+                Console.WriteLine(" {0}    ║", runtimeInfo.TargetRuntime.ToString().PadRight(58, ' '));
             }
 
             sb.Clear();
@@ -104,23 +108,29 @@ namespace Nuclear.Test.Proxy {
             Console.Write(sb);
         }
 
-        private List<WorkerInfo> GetWorkerInfos((FrameworkIdentifiers platform, Version version) targetRuntime, AssemblyName asmName) {
+        private List<WorkerInfo> GetWorkerInfos(RuntimeInfo targetRuntime, AssemblyName asmName) {
             List<WorkerInfo> workerInfos = new List<WorkerInfo>();
-            List<(FrameworkIdentifiers platform, Version version)> matchingRuntimes = NetVersionTree.GetMatchingTargetRuntimes(targetRuntime);
+            IEnumerable<RuntimeInfo> matchingRuntimes = RuntimesHelper.TryGetMatchingRuntimes(targetRuntime, out IEnumerable<RuntimeInfo> runtimes) ? runtimes : Enumerable.Empty<RuntimeInfo>();
 
-            matchingRuntimes.ForEach(_runtime => workerInfos.Add(new WorkerInfo(TestConfiguration.WorkerBaseDir, _runtime, RuntimeArchitecure)));
+            matchingRuntimes.Foreach(_runtime => workerInfos.Add(new WorkerInfo(TestConfiguration.WorkerBaseDir, _runtime, RuntimeArchitecure)));
 
-            List<FrameworkIdentifiers> platforms = matchingRuntimes.GroupBy(_runtime => _runtime.platform).Select(_group => _group.Key).ToList();
+            List<FrameworkIdentifiers> platforms = matchingRuntimes.GroupBy(_runtime => _runtime.Framework).Select(_group => _group.Key).ToList();
             Dictionary<FrameworkIdentifiers, Version> maxVersions = new Dictionary<FrameworkIdentifiers, Version>();
 
             if(TestConfiguration.TestAllVersions) {
-                platforms.ForEach(_platform => maxVersions.Add(_platform, matchingRuntimes.Where(_runtime => _runtime.platform == _platform).Select(_runtime => _runtime.version).Max()));
+                platforms.ForEach(_platform => maxVersions.Add(_platform, matchingRuntimes
+                    .Where(_runtime => _runtime.Framework == _platform)
+                    .Select(_runtime => _runtime.Version)
+                    .Max()));
             } else {
-                platforms.ForEach(_platform => maxVersions.Add(_platform, matchingRuntimes.Where(_runtime => _runtime.platform == _platform).Select(_runtime => _runtime.version).Min()));
+                platforms.ForEach(_platform => maxVersions.Add(_platform, matchingRuntimes
+                    .Where(_runtime => _runtime.Framework == _platform)
+                    .Select(_runtime => _runtime.Version)
+                    .Min()));
             }
 
             foreach(WorkerInfo workerInfo in workerInfos.ToArray()) {
-                workerInfo.ExecutionRequired = workerInfo.Version <= maxVersions[workerInfo.Platform];
+                workerInfo.ExecutionRequired = workerInfo.TargetRuntime.Version <= maxVersions[workerInfo.TargetRuntime.Framework];
             }
 
             return workerInfos;
