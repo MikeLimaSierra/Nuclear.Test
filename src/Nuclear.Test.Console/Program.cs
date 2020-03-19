@@ -5,10 +5,9 @@ using System.Reflection;
 
 using Nuclear.Arguments;
 using Nuclear.Test.Configurations;
-using Nuclear.Test.ConsolePrinter;
-using Nuclear.Test.ConsolePrinter.Tree;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Output;
+using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Console {
@@ -42,8 +41,7 @@ namespace Nuclear.Test.Console {
             ITestResultSource results = executor.Execute();
 
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
-            ResultTree tree = new ResultTree(_outputConfiguration.Verbosity, results);
-            tree.PrintResults();
+            new ResultTree(_outputConfiguration.Verbosity, TestResultKey.Empty, results).Print();
             DiagnosticOutput.Log(_outputConfiguration, "=========================");
 
             WaitOnDebug();
@@ -112,24 +110,24 @@ namespace Nuclear.Test.Console {
             _outputConfiguration.DiagnosticOutput = _arguments.TryGetSwitch("diagnostic-output", out arg);
 
             if((_arguments.TryGetSwitch("v", out arg) || _arguments.TryGetSwitch("verbosity", out arg)) && arg.HasValue && Int32.TryParse(arg.Value, out Int32 vLevel)) {
-                PrintVerbosity verbosity = (PrintVerbosity) vLevel;
+                Verbosity verbosity = (Verbosity) vLevel;
 
                 switch(verbosity) {
-                    case PrintVerbosity.AssemblyName:
-                    case PrintVerbosity.TargetFrameworkIdentifier:
-                    case PrintVerbosity.TargetFrameworkVersion:
-                    case PrintVerbosity.TargetArchitecture:
-                    case PrintVerbosity.ExecutionFrameworkIdentifier:
-                    case PrintVerbosity.ExecutionFrameworkVersion:
-                    case PrintVerbosity.ExecutionArchitecture:
-                    case PrintVerbosity.FileName:
-                    case PrintVerbosity.MethodName:
-                    case PrintVerbosity.Instruction:
-                    case PrintVerbosity.Collapsed:
+                    case Verbosity.AssemblyName:
+                    case Verbosity.TargetFrameworkIdentifier:
+                    case Verbosity.TargetFrameworkVersion:
+                    case Verbosity.TargetArchitecture:
+                    case Verbosity.ExecutionFrameworkIdentifier:
+                    case Verbosity.ExecutionFrameworkVersion:
+                    case Verbosity.ExecutionArchitecture:
+                    case Verbosity.FileName:
+                    case Verbosity.MethodName:
+                    case Verbosity.Instruction:
+                    case Verbosity.Collapsed:
                         _outputConfiguration.Verbosity = verbosity;
                         break;
                     default:
-                        _outputConfiguration.Verbosity = PrintVerbosity.Collapsed;
+                        _outputConfiguration.Verbosity = Verbosity.Collapsed;
                         break;
                 }
             }
