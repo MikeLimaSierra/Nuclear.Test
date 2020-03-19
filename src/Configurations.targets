@@ -9,7 +9,8 @@
         <PlatformTarget>$(Platform)</PlatformTarget>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
-	    <LangVersion>latest</LangVersion>
+        <LangVersion>latest</LangVersion>
+        <Configurations>Release;Integration;Debug</Configurations>
     </PropertyGroup>
 
     <!-- Conditional -->
