@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 
+using Nuclear.Assemblies.Runtimes;
+
 namespace Nuclear.Test {
 
     /// <summary>
@@ -16,14 +18,9 @@ namespace Nuclear.Test {
         String AssemblyName { get; }
 
         /// <summary>
-        /// Gets the targeted framework.
+        /// Gets or sets the targeted runtime version.
         /// </summary>
-        FrameworkIdentifiers TargetFrameworkIdentifier { get; }
-
-        /// <summary>
-        /// Gets the targeted framework version.
-        /// </summary>
-        Version TargetFrameworkVersion { get; }
+        RuntimeInfo TargetRuntime { get; }
 
         /// <summary>
         /// Gets the targeted processor architecture.
@@ -31,14 +28,9 @@ namespace Nuclear.Test {
         ProcessorArchitecture TargetArchitecture { get; }
 
         /// <summary>
-        /// Gets the executing framework.
+        /// Gets or sets the executing runtime version.
         /// </summary>
-        FrameworkIdentifiers ExecutionFrameworkIdentifier { get; }
-
-        /// <summary>
-        /// Gets the executing framework version.
-        /// </summary>
-        Version ExecutionFrameworkVersion { get; }
+        RuntimeInfo ExecutionRuntime { get; }
 
         /// <summary>
         /// Gets the executing processor architecture.
