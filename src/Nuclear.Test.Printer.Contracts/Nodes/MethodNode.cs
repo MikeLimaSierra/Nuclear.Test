@@ -45,7 +45,7 @@ namespace Nuclear.Test.Printer.Nodes {
             if(Results.IsIgnored) {
                 Write(ResultTree.ColorScheme.IgnoreMessage, Results.IgnoreReason);
 
-            } else if(Results.IsEmpty) {
+            } else if(Results.IsEmpty && ! Results.IsFailed) {
                 Write(ResultTree.ColorScheme.StateEmpty, "Method has no test instructions!");
 
             } else if(Results.IsFailed) {
