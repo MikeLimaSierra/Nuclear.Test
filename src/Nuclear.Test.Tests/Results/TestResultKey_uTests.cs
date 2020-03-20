@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Extensions;
 using Nuclear.TestSite;
+
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test.Results {
@@ -11,96 +14,96 @@ namespace Nuclear.Test.Results {
         #region statics
 
         private static readonly ITestResultKey _isFullyQualified =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-                  FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86, "FileA", "MethodA");
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+                 new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", "MethodA");
 
         #endregion
 
         #region hasValue statics
 
         private static readonly ITestResultKey _hasAssemblyName =
-            new TestResultKey("asm", FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
-                  FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _hasTargetFramework =
-            new TestResultKey(null, FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+           new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _hasTargetFrameworkIdentifier =
-            new TestResultKey(null, FrameworkIdentifiers.NETStandard, null, ProcessorArchitecture.None,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version()), ProcessorArchitecture.None,
+          new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _hasTargetFrameworkVersion =
-            new TestResultKey(null, FrameworkIdentifiers.Unknown, new Version(1, 0), ProcessorArchitecture.None,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version(1, 0)), ProcessorArchitecture.None,
+           new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _hasTargetArchitecture =
-            new TestResultKey(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.X86,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.X86,
+          new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _hasExecutionFramework =
-            new TestResultKey(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
-            FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86, null, null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+           new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, null, null);
 
         private static readonly ITestResultKey _hasExecutionFrameworkIdentifier =
-            new TestResultKey(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
-            FrameworkIdentifiers.NETFramework, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+          new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _hasExecutionFrameworkVersion =
-            new TestResultKey(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
-            FrameworkIdentifiers.Unknown, new Version(1, 0), ProcessorArchitecture.None, null, null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+          new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version(1, 0)), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _hasExecutionArchitecture =
-            new TestResultKey(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.X86, null, null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+           new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.X86, null, null);
 
         private static readonly ITestResultKey _hasFileName =
-            new TestResultKey(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, "FileA", null);
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+          new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, "FileA", null);
 
         private static readonly ITestResultKey _hasMethodName =
-            new TestResultKey(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, "MethodA");
+            new TestResultKey(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+          new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, "MethodA");
 
         #endregion
 
         #region matchValue statics
 
         private static readonly ITestResultKey _matchAssemblyName =
-            new TestResultKey("asm", FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None,
-                  FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+              new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _matchTargetFrameworkIdentifier =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, null, ProcessorArchitecture.None,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version()), ProcessorArchitecture.None,
+           new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _matchTargetFrameworkVersion =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.None,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.None,
+           new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _matchTargetArchitecture =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-            FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+           new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _matchExecutionFrameworkIdentifier =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-            FrameworkIdentifiers.NETFramework, null, ProcessorArchitecture.None, null, null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+            new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version()), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _matchExecutionFrameworkVersion =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-            FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.None, null, null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+           new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.None, null, null);
 
         private static readonly ITestResultKey _matchExecutionArchitecture =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-            FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86, null, null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+          new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, null, null);
 
         private static readonly ITestResultKey _matchFileName =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-            FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86, "FileA", null);
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+          new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", null);
 
         private static readonly ITestResultKey _matchMethodName =
-            new TestResultKey("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-            FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86, "FileA", "MethodA");
+            new TestResultKey("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+           new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", "MethodA");
 
         #endregion
 
@@ -121,47 +124,41 @@ namespace Nuclear.Test.Results {
             TestX.If.Action.ThrowsException(() => new TestResultKey(null, null), out NullReferenceException ex);
             TestX.If.Action.ThrowsException(() => new TestResultKey(null, "", ""), out ex);
 
-            DDTDefaultCtor((null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null),
-                (null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, null, null));
+            DDTDefaultCtor((null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null),
+                (null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null));
 
-            DDTDefaultCtor(("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-                FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86,
-                "FileA", "MethodA"),
-                ("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-                FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86,
-                "FileA", "MethodA"));
+            DDTDefaultCtor(("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+                new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", "MethodA"),
+                ("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+                new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", "MethodA"));
 
-            DDTScenarioCtor((new TestScenario(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None), null, null),
-                (new TestScenario(null, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None, FrameworkIdentifiers.Unknown, null, ProcessorArchitecture.None), null, null));
+            DDTScenarioCtor((new TestScenario(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), null, null),
+                (new TestScenario(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
+                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), null, null));
 
-            DDTScenarioCtor((new TestScenario("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-                FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86),
-                "FileA", "MethodA"),
-                (new TestScenario("asm", FrameworkIdentifiers.NETStandard, new Version(1, 0), ProcessorArchitecture.X86,
-                FrameworkIdentifiers.NETFramework, new Version(1, 0), ProcessorArchitecture.X86),
-                "FileA", "MethodA"));
+            DDTScenarioCtor((new TestScenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+                new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", "MethodA"),
+                (new TestScenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
+                new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", "MethodA"));
 
         }
 
-        void DDTDefaultCtor((String assemblyName,
-            FrameworkIdentifiers targetFrameworkIdentifier, Version targetFrameworkVersion, ProcessorArchitecture targetArchitecture,
-            FrameworkIdentifiers executionFrameworkIdentifier, Version executionFrameworkVersion, ProcessorArchitecture executionArchitecture,
-            String file, String method) input,
-            (String assemblyName,
-            FrameworkIdentifiers targetFrameworkIdentifier, Version targetFrameworkVersion, ProcessorArchitecture targetArchitecture,
-            FrameworkIdentifiers executionFrameworkIdentifier, Version executionFrameworkVersion, ProcessorArchitecture executionArchitecture,
-            String file, String method) expected,
+        void DDTDefaultCtor((String assemblyName, RuntimeInfo target, ProcessorArchitecture targetArchitecture, RuntimeInfo execution, ProcessorArchitecture executionArchitecture, String file, String method) input,
+            (String assemblyName, RuntimeInfo target, ProcessorArchitecture targetArchitecture, RuntimeInfo execution, ProcessorArchitecture executionArchitecture, String file, String method) expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             ITestResultKey scenario = null;
             Action action = () => scenario = new TestResultKey(input.assemblyName,
-                input.targetFrameworkIdentifier, input.targetFrameworkVersion, input.targetArchitecture,
-                input.executionFrameworkIdentifier, input.executionFrameworkVersion, input.executionArchitecture,
+                input.target, input.targetArchitecture,
+                input.execution, input.executionArchitecture,
                 input.file, input.method);
 
-            TestX.Note(String.Format("new TestResultKey({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", input.assemblyName.Format(),
-                input.targetFrameworkIdentifier.Format(), input.targetFrameworkVersion.Format(), input.targetArchitecture.Format(),
-                input.executionFrameworkIdentifier.Format(), input.executionFrameworkVersion.Format(), input.executionArchitecture.Format(),
+            TestX.Note(String.Format("new TestResultKey({0}, {1}, {2}, {3}, {4}, {5}, {6})", input.assemblyName.Format(),
+                input.target.Format(), input.targetArchitecture.Format(),
+                input.execution.Format(), input.executionArchitecture.Format(),
                 input.file.Format(), input.method.Format()),
                 _file, _method);
 
@@ -169,11 +166,9 @@ namespace Nuclear.Test.Results {
             TestX.IfNot.Object.IsNull(scenario, _file, _method);
 
             TestX.If.Value.IsEqual(scenario.AssemblyName, expected.assemblyName, _file, _method);
-            TestX.If.Value.IsEqual(scenario.TargetFrameworkIdentifier, expected.targetFrameworkIdentifier, _file, _method);
-            TestX.If.Value.IsEqual(scenario.TargetFrameworkVersion, expected.targetFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetRuntime, expected.target, _file, _method);
             TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.targetArchitecture, _file, _method);
-            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkIdentifier, expected.executionFrameworkIdentifier, _file, _method);
-            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkVersion, expected.executionFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionRuntime, expected.execution, _file, _method);
             TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.executionArchitecture, _file, _method);
             TestX.If.Value.IsEqual(scenario.FileName, expected.file, _file, _method);
             TestX.If.Value.IsEqual(scenario.MethodName, expected.method, _file, _method);
@@ -192,11 +187,9 @@ namespace Nuclear.Test.Results {
             TestX.IfNot.Object.IsNull(scenario, _file, _method);
 
             TestX.If.Value.IsEqual(scenario.AssemblyName, expected.scenario.AssemblyName, _file, _method);
-            TestX.If.Value.IsEqual(scenario.TargetFrameworkIdentifier, expected.scenario.TargetFrameworkIdentifier, _file, _method);
-            TestX.If.Value.IsEqual(scenario.TargetFrameworkVersion, expected.scenario.TargetFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.TargetRuntime, expected.scenario.TargetRuntime, _file, _method);
             TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.scenario.TargetArchitecture, _file, _method);
-            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkIdentifier, expected.scenario.ExecutionFrameworkIdentifier, _file, _method);
-            TestX.If.Value.IsEqual(scenario.ExecutionFrameworkVersion, expected.scenario.ExecutionFrameworkVersion, _file, _method);
+            TestX.If.Value.IsEqual(scenario.ExecutionRuntime, expected.scenario.ExecutionRuntime, _file, _method);
             TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.scenario.ExecutionArchitecture, _file, _method);
             TestX.If.Value.IsEqual(scenario.FileName, expected.file, _file, _method);
             TestX.If.Value.IsEqual(scenario.MethodName, expected.method, _file, _method);
@@ -216,11 +209,11 @@ namespace Nuclear.Test.Results {
             TestX.IfNot.Object.IsNull(key);
 
             TestX.If.Object.IsNull(key.AssemblyName);
-            TestX.If.Value.IsEqual(key.TargetFrameworkIdentifier, FrameworkIdentifiers.Unknown);
-            TestX.If.Object.IsNull(key.TargetFrameworkVersion);
+            TestX.If.Value.IsEqual(key.TargetRuntime.Framework, FrameworkIdentifiers.Unsupported);
+            TestX.If.Value.IsEqual(key.TargetRuntime.Version, new Version());
             TestX.If.Value.IsEqual(key.TargetArchitecture, ProcessorArchitecture.None);
-            TestX.If.Value.IsEqual(key.ExecutionFrameworkIdentifier, FrameworkIdentifiers.Unknown);
-            TestX.If.Object.IsNull(key.ExecutionFrameworkVersion);
+            TestX.If.Value.IsEqual(key.ExecutionRuntime.Framework, FrameworkIdentifiers.Unsupported);
+            TestX.If.Value.IsEqual(key.ExecutionRuntime.Version, new Version());
             TestX.If.Value.IsEqual(key.ExecutionArchitecture, ProcessorArchitecture.None);
             TestX.If.Object.IsNull(key.FileName);
             TestX.If.Object.IsNull(key.MethodName);
@@ -239,9 +232,9 @@ namespace Nuclear.Test.Results {
             TestX.If.Value.IsTrue(result);
 
             TestX.Note("HasTargetFramework");
-            TestX.IfNot.Action.ThrowsException(() => result = TestResultKey.Empty.HasTargetFramework, out ex);
-            TestX.If.Value.IsFalse(result);
-            TestX.IfNot.Action.ThrowsException(() => result = _hasTargetFramework.HasTargetFramework, out ex);
+            TestX.IfNot.Action.ThrowsException(() => result = TestResultKey.Empty.HasTargetRuntime, out ex);
+            TestX.If.Value.IsTrue(result);
+            TestX.IfNot.Action.ThrowsException(() => result = _hasTargetFramework.HasTargetRuntime, out ex);
             TestX.If.Value.IsTrue(result);
 
             TestX.Note("HasTargetFrameworkIdentifier");
@@ -256,6 +249,12 @@ namespace Nuclear.Test.Results {
             TestX.IfNot.Action.ThrowsException(() => result = _hasTargetFrameworkVersion.HasTargetFrameworkVersion, out ex);
             TestX.If.Value.IsTrue(result);
 
+            TestX.Note("HasFullyQualifiedTargetRuntime");
+            TestX.IfNot.Action.ThrowsException(() => result = TestResultKey.Empty.HasFullyQualifiedTargetRuntime, out ex);
+            TestX.If.Value.IsFalse(result);
+            TestX.IfNot.Action.ThrowsException(() => result = _hasTargetFramework.HasFullyQualifiedTargetRuntime, out ex);
+            TestX.If.Value.IsTrue(result);
+
             TestX.Note("HasTargetArchitecture");
             TestX.IfNot.Action.ThrowsException(() => result = TestResultKey.Empty.HasTargetArchitecture, out ex);
             TestX.If.Value.IsFalse(result);
@@ -263,9 +262,9 @@ namespace Nuclear.Test.Results {
             TestX.If.Value.IsTrue(result);
 
             TestX.Note("HasExecutionFramework");
-            TestX.IfNot.Action.ThrowsException(() => result = TestResultKey.Empty.HasExecutionFramework, out ex);
-            TestX.If.Value.IsFalse(result);
-            TestX.IfNot.Action.ThrowsException(() => result = _hasExecutionFramework.HasExecutionFramework, out ex);
+            TestX.IfNot.Action.ThrowsException(() => result = TestResultKey.Empty.HasExecutionRuntime, out ex);
+            TestX.If.Value.IsTrue(result);
+            TestX.IfNot.Action.ThrowsException(() => result = _hasExecutionFramework.HasExecutionRuntime, out ex);
             TestX.If.Value.IsTrue(result);
 
             TestX.Note("HasExecutionFrameworkIdentifier");
@@ -278,6 +277,12 @@ namespace Nuclear.Test.Results {
             TestX.IfNot.Action.ThrowsException(() => result = TestResultKey.Empty.HasExecutionFrameworkVersion, out ex);
             TestX.If.Value.IsFalse(result);
             TestX.IfNot.Action.ThrowsException(() => result = _hasExecutionFrameworkVersion.HasExecutionFrameworkVersion, out ex);
+            TestX.If.Value.IsTrue(result);
+
+            TestX.Note("HasFullyQualifiedExecutionRuntime");
+            TestX.IfNot.Action.ThrowsException(() => result = TestResultKey.Empty.HasFullyQualifiedExecutionRuntime, out ex);
+            TestX.If.Value.IsFalse(result);
+            TestX.IfNot.Action.ThrowsException(() => result = _hasExecutionFramework.HasFullyQualifiedExecutionRuntime, out ex);
             TestX.If.Value.IsTrue(result);
 
             TestX.Note("HasExecutionArchitecture");
