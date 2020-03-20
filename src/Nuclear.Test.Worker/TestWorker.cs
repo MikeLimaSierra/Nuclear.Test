@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Output;
 using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;
@@ -35,12 +37,12 @@ namespace Nuclear.Test.Worker {
         #region protected methods
 
         protected override void ExecuteInternal() {
-            (FrameworkIdentifiers platform, Version version) testAssemblyInfo = NetVersionTree.GetTargetRuntimeFromAssembly(TestAssembly);
-            (FrameworkIdentifiers platform, Version version) executionAssemblyInfo = NetVersionTree.GetTargetRuntimeFromAssembly(EntryAssembly);
+            RuntimeInfo testAssemblyInfo = GetRuntimeInfoFromAssembly(TestAssembly);
+            RuntimeInfo executionAssemblyInfo = GetRuntimeInfoFromAssembly(EntryAssembly);
 
             TestScenario scenario = new TestScenario(TestAssemblyName.Name,
-                testAssemblyInfo.platform, testAssemblyInfo.version, TestAssemblyName.ProcessorArchitecture,
-                executionAssemblyInfo.platform, executionAssemblyInfo.version, RuntimeArchitecure);
+                testAssemblyInfo, TestAssemblyName.ProcessorArchitecture,
+                executionAssemblyInfo, RuntimeArchitecure);
 
             Results.Initialize(scenario);
             ResultProxy.Results = Results;

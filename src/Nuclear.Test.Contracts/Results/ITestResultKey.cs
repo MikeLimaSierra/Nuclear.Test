@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 
+using Nuclear.Assemblies.Runtimes;
+
 namespace Nuclear.Test.Results {
 
     /// <summary>
@@ -16,14 +18,9 @@ namespace Nuclear.Test.Results {
         String AssemblyName { get; }
 
         /// <summary>
-        /// Gets the targeted framework.
+        /// Gets or sets the targeted runtime version.
         /// </summary>
-        FrameworkIdentifiers TargetFrameworkIdentifier { get; }
-
-        /// <summary>
-        /// Gets the targeted framework version.
-        /// </summary>
-        Version TargetFrameworkVersion { get; }
+        RuntimeInfo TargetRuntime { get; }
 
         /// <summary>
         /// Gets the targeted processor architecture.
@@ -31,14 +28,9 @@ namespace Nuclear.Test.Results {
         ProcessorArchitecture TargetArchitecture { get; }
 
         /// <summary>
-        /// Gets the executing framework.
+        /// Gets or sets the executing runtime version.
         /// </summary>
-        FrameworkIdentifiers ExecutionFrameworkIdentifier { get; }
-
-        /// <summary>
-        /// Gets the executing framework version.
-        /// </summary>
-        Version ExecutionFrameworkVersion { get; }
+        RuntimeInfo ExecutionRuntime { get; }
 
         /// <summary>
         /// Gets the executing processor architecture.
@@ -62,9 +54,9 @@ namespace Nuclear.Test.Results {
         Boolean HasAssemblyName { get; }
 
         /// <summary>
-        /// Gets if the key has fully qualified target runtime defined.
+        /// Gets if the key has a target runtime defined.
         /// </summary>
-        Boolean HasTargetFramework { get; }
+        Boolean HasTargetRuntime { get; }
 
         /// <summary>
         /// Gets if the key has a target framework defined.
@@ -77,14 +69,19 @@ namespace Nuclear.Test.Results {
         Boolean HasTargetFrameworkVersion { get; }
 
         /// <summary>
+        /// Gets if the key has a fully qualified target runtime defined.
+        /// </summary>
+        Boolean HasFullyQualifiedTargetRuntime { get; }
+
+        /// <summary>
         /// Gets if the key has a targeted processor architecture defined.
         /// </summary>
         Boolean HasTargetArchitecture { get; }
 
         /// <summary>
-        /// Gets if the key has a fully qualified executing runtime defined.
+        /// Gets if the key has an executing runtime defined.
         /// </summary>
-        Boolean HasExecutionFramework { get; }
+        Boolean HasExecutionRuntime { get; }
 
         /// <summary>
         /// Gets if the key has an executing framework defined.
@@ -95,6 +92,11 @@ namespace Nuclear.Test.Results {
         /// Gets if the key has an executing framework version defined.
         /// </summary>
         Boolean HasExecutionFrameworkVersion { get; }
+
+        /// <summary>
+        /// Gets if the key has a fully qualified executing runtime defined.
+        /// </summary>
+        Boolean HasFullyQualifiedExecutionRuntime { get; }
 
         /// <summary>
         /// Gets if the key has an executing processor architecture defined.

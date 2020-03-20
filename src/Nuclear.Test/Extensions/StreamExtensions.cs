@@ -2,9 +2,10 @@
 using System.IO;
 using System.Reflection;
 using System.Text;
+
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Extensions;
 using Nuclear.Test.Results;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.Extensions {
 
@@ -295,8 +296,8 @@ namespace Nuclear.Test.Extensions {
         /// <returns>The <see cref="ITestResultKey"/> that was read from <paramref name="_this"/>.</returns>
         public static ITestResultKey ReadResultKey(this Stream _this)
             => new TestResultKey(_this.ReadString(),
-                _this.ReadMonikers(), new Version(_this.ReadString()), _this.ReadArchitecture(),
-                _this.ReadMonikers(), new Version(_this.ReadString()), _this.ReadArchitecture(),
+                new RuntimeInfo(_this.ReadMonikers(), new Version(_this.ReadString())), _this.ReadArchitecture(),
+                new RuntimeInfo(_this.ReadMonikers(), new Version(_this.ReadString())), _this.ReadArchitecture(),
                 _this.ReadString(), _this.ReadString());
 
         /// <summary>
@@ -358,11 +359,11 @@ namespace Nuclear.Test.Extensions {
         /// <param name="key">The <see cref="ITestResultKey"/> that is written to <paramref name="_this"/>.</param>
         public static void Write(this Stream _this, ITestResultKey key) {
             _this.Write(key.AssemblyName);
-            _this.Write(key.TargetFrameworkIdentifier);
-            _this.Write(key.TargetFrameworkVersion.ToString());
+            _this.Write(key.TargetRuntime.Framework);
+            _this.Write(key.TargetRuntime.Version.ToString());
             _this.Write(key.TargetArchitecture);
-            _this.Write(key.ExecutionFrameworkIdentifier);
-            _this.Write(key.ExecutionFrameworkVersion.ToString());
+            _this.Write(key.ExecutionRuntime.Framework);
+            _this.Write(key.ExecutionRuntime.Version.ToString());
             _this.Write(key.ExecutionArchitecture);
             _this.Write(key.FileName);
             _this.Write(key.MethodName);
@@ -393,7 +394,7 @@ namespace Nuclear.Test.Extensions {
             _this.Write(values.FailMessage);
             _this.Write(values.IgnoreReason);
             _this.Write(values.InstructionResults.Count);
-            values.InstructionResults.ForEach(value => _this.Write(value));
+            values.InstructionResults.Foreach(value => _this.Write(value));
         }
 
         #endregion

@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 
+using Nuclear.Assemblies.Runtimes;
+
 namespace Nuclear.Test.Proxy {
 
     /// <summary>
@@ -14,12 +16,7 @@ namespace Nuclear.Test.Proxy {
         /// <summary>
         /// Gets the runtime platform.
         /// </summary>
-        public FrameworkIdentifiers Platform { get; }
-
-        /// <summary>
-        /// Gets the runtime version
-        /// </summary>
-        public Version Version { get; }
+        public RuntimeInfo TargetRuntime { get; }
 
         /// <summary>
         /// Gets the attached worker executable.
@@ -46,11 +43,10 @@ namespace Nuclear.Test.Proxy {
         /// <param name="directory">The directory where the executable is located.</param>
         /// <param name="targetRuntime">The target runtime that is associated with this object.</param>
         /// <param name="runtimeArchitecture">The target runtime architecture.</param>
-        public WorkerInfo(DirectoryInfo directory, (FrameworkIdentifiers platform, Version version) targetRuntime, ProcessorArchitecture runtimeArchitecture) {
-            Platform = targetRuntime.platform;
-            Version = targetRuntime.version;
+        public WorkerInfo(DirectoryInfo directory, RuntimeInfo targetRuntime, ProcessorArchitecture runtimeArchitecture) {
+            TargetRuntime = targetRuntime;
             Executable = new FileInfo(Path.Combine(directory.FullName, runtimeArchitecture.ToString(),
-                targetRuntime.platform.ToString() + targetRuntime.version.ToString(), "Nuclear.Test.Worker.exe"));
+                targetRuntime.Framework.ToString() + targetRuntime.Version.ToString(), "Nuclear.Test.Worker.exe"));
         }
 
         #endregion
@@ -61,7 +57,7 @@ namespace Nuclear.Test.Proxy {
         /// Gets a <see cref="String"/> representation of this object.
         /// </summary>
         /// <returns>The <see cref="String"/> representing this <see cref="WorkerInfo"/> and all its properties.</returns>
-        public override String ToString() => String.Format("('{0}', v'{1}') => Required: {2}; Executable: {3}", Platform, Version, ExecutionRequired, HasExecutable ? Executable.FullName : "null");
+        public override String ToString() => String.Format("('{0}', v'{1}') => Required: {2}; Executable: {3}", TargetRuntime.Framework, TargetRuntime.Version, ExecutionRequired, HasExecutable ? Executable.FullName : "null");
 
         #endregion
 

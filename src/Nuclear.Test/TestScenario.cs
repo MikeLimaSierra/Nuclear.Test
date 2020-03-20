@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 
+using Nuclear.Assemblies.Runtimes;
+
 namespace Nuclear.Test {
 
     /// <summary>
@@ -16,14 +18,9 @@ namespace Nuclear.Test {
         public String AssemblyName { get; private set; }
 
         /// <summary>
-        /// Gets the targeted framework.
+        /// Gets or sets the targeted runtime version.
         /// </summary>
-        public FrameworkIdentifiers TargetFrameworkIdentifier { get; private set; }
-
-        /// <summary>
-        /// Gets the targeted framework version.
-        /// </summary>
-        public Version TargetFrameworkVersion { get; private set; }
+        public RuntimeInfo TargetRuntime { get; private set; }
 
         /// <summary>
         /// Gets the targeted processor architecture.
@@ -31,14 +28,9 @@ namespace Nuclear.Test {
         public ProcessorArchitecture TargetArchitecture { get; private set; }
 
         /// <summary>
-        /// Gets the executing framework.
+        /// Gets or sets the executing runtime version.
         /// </summary>
-        public FrameworkIdentifiers ExecutionFrameworkIdentifier { get; private set; }
-
-        /// <summary>
-        /// Gets the executing framework version.
-        /// </summary>
-        public Version ExecutionFrameworkVersion { get; private set; }
+        public RuntimeInfo ExecutionRuntime { get; private set; }
 
         /// <summary>
         /// Gets the executing processor architecture.
@@ -53,27 +45,21 @@ namespace Nuclear.Test {
         /// Creates a new instance of <see cref="TestScenario"/>.
         /// </summary>
         /// <param name="assemblyName">The name of the test assembly.</param>
-        /// <param name="targetFrameworkIdentifier">The targeted framework.</param>
-        /// <param name="targetFrameworkVersion">The targeted framework version.</param>
+        /// <param name="targetRuntime">The targeted runtime version.</param>
         /// <param name="targetArchitecture">The targeted processor architecture.</param>
-        /// <param name="executionFrameworkIdentifier">The executing framework.</param>
-        /// <param name="executionFrameworkVersion">The executing framework version.</param>
+        /// <param name="executionRuntime">The executing runtime version.</param>
         /// <param name="executionArchitecture">The executing processor architecture.</param>
         public TestScenario(
             String assemblyName,
-            FrameworkIdentifiers targetFrameworkIdentifier,
-            Version targetFrameworkVersion,
+            RuntimeInfo targetRuntime,
             ProcessorArchitecture targetArchitecture,
-            FrameworkIdentifiers executionFrameworkIdentifier,
-            Version executionFrameworkVersion,
+            RuntimeInfo executionRuntime,
             ProcessorArchitecture executionArchitecture) {
 
             AssemblyName = assemblyName;
-            TargetFrameworkIdentifier = targetFrameworkIdentifier;
-            TargetFrameworkVersion = targetFrameworkVersion;
+            TargetRuntime = targetRuntime;
             TargetArchitecture = targetArchitecture;
-            ExecutionFrameworkIdentifier = executionFrameworkIdentifier;
-            ExecutionFrameworkVersion = executionFrameworkVersion;
+            ExecutionRuntime = executionRuntime;
             ExecutionArchitecture = executionArchitecture;
         }
 

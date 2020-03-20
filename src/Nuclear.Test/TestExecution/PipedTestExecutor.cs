@@ -3,6 +3,9 @@ using System.IO;
 using System.IO.Pipes;
 using System.Reflection;
 using System.Security.Principal;
+
+using Nuclear.Assemblies;
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Extensions;
@@ -47,7 +50,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Gets the target runtime of the test <see cref="Assembly"/>.
         /// </summary>
-        protected (FrameworkIdentifiers platform, Version version) TestAssemblyTargetRuntime { get; private set; }
+        protected RuntimeInfo TestAssemblyTargetRuntime { get; private set; }
 
         #endregion
 
@@ -82,7 +85,7 @@ namespace Nuclear.Test.TestExecution {
                     DiagnosticOutput.Log(OutputConfiguration, "Received assembly path: {0}", File.FullName);
                     Console.Title += String.Format(": {0}", File.Name);
 
-                    if(File.Exists && TryLoadAssembly(File, out Assembly assembly, out AssemblyName assemblyName, out (FrameworkIdentifiers platform, Version version) assemblyTargetRuntime)) {
+                    if(File.Exists && TryLoadAssembly(File, out Assembly assembly, out AssemblyName assemblyName, out RuntimeInfo assemblyTargetRuntime)) {
                         TestAssembly = assembly;
                         TestAssemblyName = assemblyName;
                         TestAssemblyTargetRuntime = assemblyTargetRuntime;
@@ -173,30 +176,15 @@ namespace Nuclear.Test.TestExecution {
         /// <param name="assemblyName">The <see cref="AssemblyName"/> of <paramref name="assembly"/>.</param>
         /// <param name="assemblyTargetRuntime">The targeted runtime of <paramref name="assembly"/>.</param>
         /// <returns>True if loading was successful or false if not.</returns>
-        protected Boolean TryLoadAssembly(FileInfo file, out Assembly assembly, out AssemblyName assemblyName, out (FrameworkIdentifiers platform, Version version) assemblyTargetRuntime) {
+        protected Boolean TryLoadAssembly(FileInfo file, out Assembly assembly, out AssemblyName assemblyName, out RuntimeInfo assemblyTargetRuntime) {
             assembly = null;
-            assemblyName = null;
-            assemblyTargetRuntime = (FrameworkIdentifiers.Unknown, new Version());
+            assemblyTargetRuntime = new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version());
 
-            try {
-                assembly = Assembly.LoadFrom(file.FullName);
-                assemblyName = assembly.GetName();
-                assemblyTargetRuntime = NetVersionTree.GetTargetRuntimeFromAssembly(assembly);
-
-            } catch(FileNotFoundException) {
-                DiagnosticOutput.LogError("File not found: '{0}'", file.FullName);
-
-            } catch(FileLoadException) {
-                DiagnosticOutput.LogError("File not loaded: '{0}'", file.FullName);
-
-            } catch(BadImageFormatException) {
-                DiagnosticOutput.LogError("File is invalid: '{0}'", file.FullName);
-
-            } catch(PathTooLongException) {
-                DiagnosticOutput.LogError("File path is too long: '{0}'", file.FullName);
+            if(AssemblyHelper.TryGetAssemblyName(file, out assemblyName) && AssemblyHelper.TryLoadFrom(file, out assembly)) {
+                assemblyTargetRuntime = GetRuntimeInfoFromAssembly(assembly);
             }
 
-            return assembly != null && assemblyName != null && assemblyTargetRuntime.platform != FrameworkIdentifiers.Unknown;
+            return assembly != null && assemblyName != null && assemblyTargetRuntime.Framework != FrameworkIdentifiers.Unsupported;
         }
 
         #endregion

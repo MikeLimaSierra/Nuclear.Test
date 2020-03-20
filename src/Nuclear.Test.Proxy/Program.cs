@@ -1,6 +1,7 @@
 ﻿using System;
-using Nuclear.Test.ConsolePrinter.Tree;
+
 using Nuclear.Test.Output;
+using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
 using Nuclear.Test.TestExecution;
 
@@ -14,7 +15,7 @@ namespace Nuclear.Test.Proxy {
             ITestResultSource results = process.Execute();
 
             DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
-            new ResultTree(process.OutputConfiguration.Verbosity, results).PrintResults();
+            new ResultTree(process.OutputConfiguration.Verbosity, TestResultKey.Empty, results).Print();
             DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
 
             if(process.OutputConfiguration.ClientsAwaitInput && process.OutputConfiguration.ShowClients) {

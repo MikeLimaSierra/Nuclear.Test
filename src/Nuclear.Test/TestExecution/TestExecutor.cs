@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.Versioning;
 using System.Text;
 
+using Nuclear.Assemblies;
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Results;
 
@@ -48,7 +51,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Gets the runtime of the current process.
         /// </summary>
-        protected (FrameworkIdentifiers platform, Version version) Runtime { get; private set; }
+        protected RuntimeInfo Runtime { get; private set; }
 
         /// <summary>
         /// Gets the runtime architecture.
@@ -65,7 +68,11 @@ namespace Nuclear.Test.TestExecution {
         public TestExecutor() {
             EntryAssembly = Assembly.GetEntryAssembly();
             EntryAssemblyName = EntryAssembly.GetName();
-            Runtime = NetVersionTree.GetTargetRuntimeFromAssembly(EntryAssembly);
+
+            if(RuntimesHelper.TryGetCurrentRuntime(out RuntimeInfo current)) {
+                Runtime = current;
+            }
+
             RuntimeArchitecure = Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86;
         }
 
@@ -86,7 +93,13 @@ namespace Nuclear.Test.TestExecution {
 
         #endregion
 
-        #region print methods
+        #region protected methods
+
+        public static RuntimeInfo GetRuntimeInfoFromAssembly(Assembly assembly) {
+            TargetFrameworkAttribute attr = assembly.GetCustomAttribute<TargetFrameworkAttribute>();
+
+            return attr != null && RuntimesHelper.TryParseFullName(attr.FrameworkName, out RuntimeInfo runtime) ? runtime : new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version());
+        }
 
         /// <summary>
         /// Prints an information panel to console that details the currently running executor instance.
@@ -101,8 +114,8 @@ namespace Nuclear.Test.TestExecution {
             }
 
             sb.AppendLine(@"╠══════════════════════════════════════════════════════════════════════╣");
-            sb.AppendFormat(@"║        Platform: {1}    ║{0}", Environment.NewLine, Runtime.platform.ToString().PadRight(48, ' '));
-            sb.AppendFormat(@"║         Version: {1}    ║{0}", Environment.NewLine, Runtime.version.ToString().PadRight(48, ' '));
+            sb.AppendFormat(@"║        Platform: {1}    ║{0}", Environment.NewLine, Runtime.Framework.ToString().PadRight(48, ' '));
+            sb.AppendFormat(@"║         Version: {1}    ║{0}", Environment.NewLine, Runtime.Version.ToString().PadRight(48, ' '));
             sb.AppendFormat(@"║    Architecture: {1}    ║{0}", Environment.NewLine, RuntimeArchitecure.ToString().PadRight(48, ' '));
             sb.AppendLine(@"╚══════════════════════════════════════════════════════════════════════╝");
             Console.Write(sb);
@@ -113,15 +126,15 @@ namespace Nuclear.Test.TestExecution {
         /// </summary>
         /// <param name="asmName"></param>
         /// <param name="targetRuntime"></param>
-        protected void PrintAssemblyInfo(AssemblyName asmName, (FrameworkIdentifiers platform, Version version) targetRuntime) {
+        protected void PrintAssemblyInfo(AssemblyName asmName, RuntimeInfo targetRuntime) {
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
             sb.AppendLine(@"║                             Test Assembly                            ║");
             sb.AppendLine(@"╠══════════════════════════════════════════════════════════════════════╣");
             sb.AppendFormat(@"║            Name: {1}    ║{0}", Environment.NewLine, asmName.Name.PadRight(48, ' '));
-            sb.AppendFormat(@"║        Platform: {1}    ║{0}", Environment.NewLine, targetRuntime.platform.ToString().PadRight(48, ' '));
-            sb.AppendFormat(@"║         Version: {1}    ║{0}", Environment.NewLine, targetRuntime.version.ToString().PadRight(48, ' '));
+            sb.AppendFormat(@"║        Platform: {1}    ║{0}", Environment.NewLine, targetRuntime.Framework.ToString().PadRight(48, ' '));
+            sb.AppendFormat(@"║         Version: {1}    ║{0}", Environment.NewLine, targetRuntime.Version.ToString().PadRight(48, ' '));
             sb.AppendFormat(@"║    Architecture: {1}    ║{0}", Environment.NewLine, asmName.ProcessorArchitecture.ToString().PadRight(48, ' '));
             sb.AppendLine(@"╚══════════════════════════════════════════════════════════════════════╝");
             Console.Write(sb);
