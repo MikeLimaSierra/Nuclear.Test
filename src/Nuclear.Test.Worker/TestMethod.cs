@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+
 using Nuclear.Exceptions;
 using Nuclear.Test.Results;
 
@@ -47,6 +48,7 @@ namespace Nuclear.Test.Worker {
 
             try {
                 _method.Invoke(CallingObject, new Object[0]);
+
             } catch(Exception ex) {
                 _results.FailTestMethod(_method, ex);
             }
