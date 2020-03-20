@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Runtime.Versioning;
 using System.Text;
 
 using Nuclear.Assemblies;
@@ -94,12 +93,6 @@ namespace Nuclear.Test.TestExecution {
         #endregion
 
         #region protected methods
-
-        public static RuntimeInfo GetRuntimeInfoFromAssembly(Assembly assembly) {
-            TargetFrameworkAttribute attr = assembly.GetCustomAttribute<TargetFrameworkAttribute>();
-
-            return attr != null && RuntimesHelper.TryParseFullName(attr.FrameworkName, out RuntimeInfo runtime) ? runtime : new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version());
-        }
 
         /// <summary>
         /// Prints an information panel to console that details the currently running executor instance.

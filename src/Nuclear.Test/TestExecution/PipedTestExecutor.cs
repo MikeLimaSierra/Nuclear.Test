@@ -98,6 +98,7 @@ namespace Nuclear.Test.TestExecution {
 
             } catch(Exception ex) {
                 HandleException(ex);
+
             } finally {
                 CloseClientPipe(PipeStream);
             }
@@ -180,11 +181,10 @@ namespace Nuclear.Test.TestExecution {
             assembly = null;
             assemblyTargetRuntime = new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version());
 
-            if(AssemblyHelper.TryGetAssemblyName(file, out assemblyName) && AssemblyHelper.TryLoadFrom(file, out assembly)) {
-                assemblyTargetRuntime = GetRuntimeInfoFromAssembly(assembly);
-            }
-
-            return assembly != null && assemblyName != null && assemblyTargetRuntime.Framework != FrameworkIdentifiers.Unsupported;
+            return AssemblyHelper.TryGetAssemblyName(file, out assemblyName)
+                && AssemblyHelper.TryLoadFrom(file, out assembly)
+                && AssemblyHelper.TryGetRuntime(assembly, out assemblyTargetRuntime)
+                && assemblyTargetRuntime.Framework != FrameworkIdentifiers.Unsupported;
         }
 
         #endregion
