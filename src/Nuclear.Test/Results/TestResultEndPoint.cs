@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using Nuclear.Extensions;
 
 namespace Nuclear.Test.Results {
@@ -11,7 +12,7 @@ namespace Nuclear.Test.Results {
         #region fields
 
         private readonly ConcurrentDictionary<ITestResultKey, ITestMethodResult> _results =
-            new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(DynamicEqualityComparer.FromIEquatable<ITestResultKey>());
+            new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(_comparer);
 
         private static readonly IEqualityComparer<ITestResultKey> _comparer = DynamicEqualityComparer.FromIEquatable<ITestResultKey>();
 
@@ -78,7 +79,7 @@ namespace Nuclear.Test.Results {
 
         public IEnumerable<ITestMethodResult> GetResults() => _results.Values;
 
-        public IEnumerable<ITestMethodResult> GetResults(ITestResultKey match) => _results.Where(value => value.Key.Matches(match)).Select(value => value.Value);
+        public IEnumerable<ITestMethodResult> GetResults(ITestResultKey match) => _results.Where(kvp => kvp.Key.Matches(match)).Select(value => value.Value);
 
         public IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> GetKeyedResults() => _results;
 
