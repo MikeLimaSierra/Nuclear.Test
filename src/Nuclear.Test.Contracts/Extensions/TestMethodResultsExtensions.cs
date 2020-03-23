@@ -10,7 +10,7 @@ namespace Nuclear.Test.Extensions {
     public static class TestMethodResultsExtensions {
 
         public static Int32 CountResults(this IEnumerable<ITestMethodResult> _this)
-            => _this.Sum(results => results.CountResults);
+            => _this.Sum(results => results.CountEntries);
 
         public static Int32 CountResultsOk(this IEnumerable<ITestMethodResult> _this)
             => _this.Sum(results => results.CountResultsOk);
