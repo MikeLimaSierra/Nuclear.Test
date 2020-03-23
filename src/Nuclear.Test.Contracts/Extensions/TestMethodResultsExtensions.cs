@@ -18,9 +18,6 @@ namespace Nuclear.Test.Extensions {
         public static Int32 CountResultsFailed(this IEnumerable<ITestMethodResult> _this)
             => _this.Sum(results => results.CountResultsFailed);
 
-        public static Boolean HasFailedResults(this IEnumerable<ITestMethodResult> _this)
-            => _this.Any(results => results.HasFailedResults);
-
         public static Boolean HasFails(this IEnumerable<ITestMethodResult> _this)
             => _this.Any(results => results.IsFailed);
 

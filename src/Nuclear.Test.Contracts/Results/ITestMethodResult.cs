@@ -31,25 +31,11 @@ namespace Nuclear.Test.Results {
         Int32 CountResultsFailed { get; }
 
         /// <summary>
-        /// Gets the message of the <see cref="Exception"/> that was thrown during execution.
-        /// </summary>
-        String FailMessage { get; }
-
-        /// <summary>
         /// Gets the reason why the test method is being ignored.
         /// </summary>
         String IgnoreReason { get; }
 
 
-        /// <summary>
-        /// Gets if the collection contains failed results.
-        /// </summary>
-        Boolean HasFailedResults { get; }
-
-        /// <summary>
-        /// Gets if an exceptional fail message has been recorded.
-        /// </summary>
-        Boolean HasFailedExceptional { get; }
 
         /// <summary>
         /// Gets if the method is considered failed due to exceptions or negative test results.
@@ -69,12 +55,6 @@ namespace Nuclear.Test.Results {
         #endregion
 
         #region methods
-
-        /// <summary>
-        /// Sets the results to failed by setting an exception message.
-        /// </summary>
-        /// <param name="message">The message of the caught exception.</param>
-        void Fail(String message);
 
         /// <summary>
         /// Sets the results to ignored.

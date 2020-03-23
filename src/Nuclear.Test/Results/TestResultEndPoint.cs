@@ -44,9 +44,7 @@ namespace Nuclear.Test.Results {
             => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
                 new TestMethodResult());
 
-        public void FailTestMethod(MethodInfo _method, Exception ex)
-            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
-                new TestMethodResult()).Fail(ex.ToString());
+        public void LogException(MethodInfo _method, Exception ex) => AddResult(false, ex.FormatType(), ex.Message, _method.DeclaringType.Name, _method.Name);
 
         public void IgnoreTestMethod(MethodInfo _method, String ignoreReason) {
             _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),

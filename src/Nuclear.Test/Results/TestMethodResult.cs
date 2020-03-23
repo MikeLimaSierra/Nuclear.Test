@@ -15,16 +15,10 @@ namespace Nuclear.Test.Results {
 
         public Int32 CountResultsFailed => InstructionResults.Where(result => result.Result.HasValue && !result.Result.Value).Count();
 
-        public String FailMessage { get; private set; }
-
         public String IgnoreReason { get; private set; }
 
 
-        public Boolean HasFailedResults => CountResultsFailed > 0;
-
-        public Boolean HasFailedExceptional => !String.IsNullOrWhiteSpace(FailMessage);
-
-        public Boolean IsFailed => HasFailedResults || HasFailedExceptional;
+        public Boolean IsFailed => CountResultsFailed > 0;
 
         public Boolean IsIgnored => !String.IsNullOrWhiteSpace(IgnoreReason);
 
@@ -33,8 +27,6 @@ namespace Nuclear.Test.Results {
         #endregion
 
         #region methods
-
-        public void Fail(String message) => FailMessage = message;
 
         public void Ignore(String reason) => IgnoreReason = reason;
 
