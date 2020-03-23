@@ -3,17 +3,16 @@
 namespace Nuclear.Test.Results {
 
     /// <summary>
-    /// Represents the result of one exectued test instruction.
+    /// Represents a test entry.
     /// </summary>
-    public interface ITestInstructionResult {
+    public interface ITestEntry {
 
         #region properties
 
         /// <summary>
-        /// Gets if the corresponding test instruction was successful or not.
-        ///    Null if the result entry is a note.
+        /// Gets the type of the test entry.
         /// </summary>
-        Boolean? Result { get; }
+        EntryTypes EntryType { get; }
 
         /// <summary>
         /// Gets the name of the corresponding test instruction.
