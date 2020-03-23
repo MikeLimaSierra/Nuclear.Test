@@ -7,13 +7,16 @@ namespace Nuclear.Test.Results {
 
         #region properties
 
-        public IList<ITestInstructionResult> InstructionResults { get; } = new List<ITestInstructionResult>();
+        public IList<ITestEntry> TestEntries { get; } = new List<ITestEntry>();
 
-        public Int32 CountResults => InstructionResults.Where(result => result.Result.HasValue).Count();
+        public Int32 CountEntries
+            => TestEntries.Where(result => result.EntryType == EntryTypes.ResultOk || result.EntryType == EntryTypes.ResultFail).Count();
 
-        public Int32 CountResultsOk => InstructionResults.Where(result => result.Result.HasValue && result.Result.Value).Count();
+        public Int32 CountResultsOk
+            => TestEntries.Where(result => result.EntryType == EntryTypes.ResultOk).Count();
 
-        public Int32 CountResultsFailed => InstructionResults.Where(result => result.Result.HasValue && !result.Result.Value).Count();
+        public Int32 CountResultsFailed
+            => TestEntries.Where(result => result.EntryType == EntryTypes.ResultFail).Count();
 
         public String IgnoreReason { get; private set; }
 
@@ -22,7 +25,7 @@ namespace Nuclear.Test.Results {
 
         public Boolean IsIgnored => !String.IsNullOrWhiteSpace(IgnoreReason);
 
-        public Boolean IsEmpty => CountResults == 0;
+        public Boolean IsEmpty => CountEntries == 0;
 
         #endregion
 

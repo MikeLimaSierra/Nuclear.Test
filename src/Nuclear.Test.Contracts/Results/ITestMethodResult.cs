@@ -11,22 +11,22 @@ namespace Nuclear.Test.Results {
         #region properties
 
         /// <summary>
-        /// Gets the list of <see cref="ITestInstructionResult"/> for the corresponding test method.
+        /// Gets the list of <see cref="ITestEntry"/> for the corresponding test method.
         /// </summary>
-        IList<ITestInstructionResult> InstructionResults { get; }
+        IList<ITestEntry> TestEntries { get; }
 
         /// <summary>
-        /// Gets the total number of results.
+        /// Gets the total number of entries.
         /// </summary>
-        Int32 CountResults { get; }
+        Int32 CountEntries { get; }
 
         /// <summary>
-        /// Gets the number of successful results.
+        /// Gets the number of positive results.
         /// </summary>
         Int32 CountResultsOk { get; }
 
         /// <summary>
-        /// Gets the number of failed results.
+        /// Gets the number of negative results.
         /// </summary>
         Int32 CountResultsFailed { get; }
 
@@ -34,11 +34,10 @@ namespace Nuclear.Test.Results {
         /// Gets the reason why the test method is being ignored.
         /// </summary>
         String IgnoreReason { get; }
-
-
+        
 
         /// <summary>
-        /// Gets if the method is considered failed due to exceptions or negative test results.
+        /// Gets if the method is considered failed due to errors or negative test results.
         /// </summary>
         Boolean IsFailed { get; }
 
@@ -48,7 +47,7 @@ namespace Nuclear.Test.Results {
         Boolean IsIgnored { get; }
 
         /// <summary>
-        /// Gets if the test method has no results.
+        /// Gets if the test method has no test results or errors.
         /// </summary>
         Boolean IsEmpty { get; }
 
@@ -57,9 +56,9 @@ namespace Nuclear.Test.Results {
         #region methods
 
         /// <summary>
-        /// Sets the results to ignored.
+        /// Sets the method to ignored.
         /// </summary>
-        /// <param name="message">The reason why the testmethod is being ignored.</param>
+        /// <param name="message">The reason why the test method is being ignored.</param>
         void Ignore(String message);
 
         #endregion
