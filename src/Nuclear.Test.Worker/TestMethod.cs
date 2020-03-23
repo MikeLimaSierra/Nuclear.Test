@@ -50,7 +50,7 @@ namespace Nuclear.Test.Worker {
                 _method.Invoke(CallingObject, new Object[0]);
 
             } catch(Exception ex) {
-                _results.FailTestMethod(_method, ex);
+                _results.LogError(_method, ex.Message);
             }
         }
 
