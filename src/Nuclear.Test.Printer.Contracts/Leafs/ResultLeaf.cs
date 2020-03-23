@@ -9,7 +9,7 @@ namespace Nuclear.Test.Printer.Leafs {
 
         internal override String Title => $"#{Index}: {Result.Instruction}";
 
-        internal ITestInstructionResult Result { get; private set; }
+        internal ITestEntry Result { get; private set; }
 
         internal Int32 Index { get; private set; }
 
@@ -17,7 +17,7 @@ namespace Nuclear.Test.Printer.Leafs {
 
         #region ctors
 
-        internal ResultLeaf(Verbosity verbosity, ITestInstructionResult result, Int32 index)
+        internal ResultLeaf(Verbosity verbosity, ITestEntry result, Int32 index)
             : base(verbosity) {
 
             Result = result;
@@ -28,10 +28,12 @@ namespace Nuclear.Test.Printer.Leafs {
 
         #region methods
 
-        protected override void PrintResult() => Write(Result.Result.Value ? ResultTree.ColorScheme.StateOk : ResultTree.ColorScheme.StateFailed, Result.Result.Value ? "Ok" : "Failed");
+        protected override void PrintResult()
+            => Write(Result.EntryType == EntryTypes.ResultOk ? ResultTree.ColorScheme.StateOk : ResultTree.ColorScheme.StateFailed,
+                Result.EntryType == EntryTypes.ResultOk ? "Ok" : "Failed");
 
         protected override void PrintDetails() {
-            if(!Result.Result.Value) {
+            if(Result.EntryType == EntryTypes.ResultOk) {
                 Write(": ");
                 Write(ResultTree.ColorScheme.ResultFailMessage, Result.Message);
             }

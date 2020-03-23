@@ -23,16 +23,16 @@ namespace Nuclear.Test.Printer.Nodes {
             Int32 index = 1;
 
             if(Verbosity > Verbosity.MethodName || Results.IsFailed) {
-                foreach(ITestInstructionResult result in Results.InstructionResults) {
-                    if(result.Result.HasValue) {
-                        Children.Add(new ResultLeaf(Verbosity, result, index++));
-                    } else {
+                foreach(ITestEntry result in Results.TestEntries) {
+                    if(result.EntryType == EntryTypes.Error) {
+                        Children.Add(new ErrorLeaf(Verbosity, result.Message));
+                    
+                    } else if(result.EntryType == EntryTypes.Note) {
                         Children.Add(new NoteLeaf(Verbosity, result.Message));
+                    
+                    } else {
+                        Children.Add(new ResultLeaf(Verbosity, result, index++));
                     }
-                }
-
-                if(Results.HasFailedExceptional) {
-                    Children.Add(new ExceptionLeaf(Verbosity, Results.FailMessage));
                 }
             }
         }
