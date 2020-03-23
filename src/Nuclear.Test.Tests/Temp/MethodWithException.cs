@@ -1,17 +1,18 @@
-﻿using TestClassX = Nuclear.TestSite.TestClassAttribute;
+﻿using System;
+
 using TestMethodX = Nuclear.TestSite.TestMethodAttribute;
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test {
-
-    [TestClassX("For another reason.")]
-    class IgnoredTestClass {
+    class MethodWithException {
 
         [TestMethodX]
-        void ClassIsIgnored() {
+        void FailsWithException() {
 
             TestX.Note("Note 1");
+            TestX.If.Value.IsTrue(true);
 
+            throw new NotImplementedException();
         }
 
     }

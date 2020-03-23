@@ -2,10 +2,10 @@
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test {
-    class IgnoredTestMethods {
+    class EmptyMethodWithNote {
 
-        [TestMethodX("For Some Reason")]
-        void MethodIsIgnored() {
+        [TestMethodX]
+        void HasNoTests() {
 
             TestX.Note("Note 1");
 
