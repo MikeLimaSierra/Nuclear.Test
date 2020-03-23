@@ -27,7 +27,7 @@ namespace Nuclear.Test.Results {
         #region methods
 
         public void Add(ITestResultKey key, ITestMethodResult results)
-            => _results.AddOrUpdate(key, results, (_key, value) => results);
+            => _results.AddOrUpdate(key, results, (_, __) => results);
 
         public void Add(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
             foreach(KeyValuePair<ITestResultKey, ITestMethodResult> result in results) {
@@ -44,12 +44,12 @@ namespace Nuclear.Test.Results {
             => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
                 new TestMethodResult());
 
-        public void LogException(MethodInfo _method, Exception ex) => AddResult(false, ex.FormatType(), ex.Message, _method.DeclaringType.Name, _method.Name);
+        public void LogError(MethodInfo _method, String message)
+            => AddEntry(new TestEntry(EntryTypes.Error, null, message), _method.DeclaringType.Name, _method.Name);
 
-        public void IgnoreTestMethod(MethodInfo _method, String ignoreReason) {
-            _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
+        public void IgnoreTestMethod(MethodInfo _method, String ignoreReason)
+            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
                 new TestMethodResult()).Ignore(ignoreReason);
-        }
 
         #endregion
 
@@ -86,12 +86,18 @@ namespace Nuclear.Test.Results {
         #region ITestResultSink
 
         public void AddResult(Boolean result, String testInstruction, String message, String _file, String _method)
-            => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
-                new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(result, testInstruction, message));
+            => AddEntry(new TestEntry(result ? EntryTypes.ResultOk : EntryTypes.ResultFail, testInstruction, message), _file, _method);
 
         public void AddNote(String message, String _file, String _method)
-            => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method),
-                new TestMethodResult()).InstructionResults.Add(new TestInstructionResult(message));
+            => AddEntry(new TestEntry(EntryTypes.Note, null, message), _file, _method);
+
+        #endregion
+
+        #region private methods
+
+        private void AddEntry(ITestEntry entry, String _file, String _method)
+            => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method), new TestMethodResult()).TestEntries.Add(entry);
+
 
         #endregion
 
