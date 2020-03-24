@@ -20,7 +20,6 @@ namespace Nuclear.Test.Temp {
         [TestDataX(nameof(ProviderProperty))]
         [TestDataX(nameof(EmptyProviderMethod))]
         [TestDataX(nameof(ProviderMethod))]
-        [TestDataX(nameof(GetEnumerator))]
         [TestDataX(typeof(MethodHasCorrectData))]
         [TestDataX(nameof(_EmptyProviderField))]
         [TestDataX(nameof(_ProviderField))]

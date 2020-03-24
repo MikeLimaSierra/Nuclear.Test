@@ -85,16 +85,21 @@ namespace Nuclear.Test.Worker {
             }
 
             Type providerType = attr.Provider ?? _methodInfo.DeclaringType;
-            String providerMember = attr.ProviderMember ?? "GetEnumerator";
+            String providerMember = attr.ProviderMember;
 
-            MemberInfo[] candidates = providerType.GetMember(providerMember,
-                MemberTypes.Field | MemberTypes.Property | MemberTypes.Method,
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+            if(providerMember != null) {
+                MemberInfo[] candidates = providerType.GetMember(providerMember,
+                    MemberTypes.Field | MemberTypes.Property | MemberTypes.Method,
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-            foreach(MemberInfo candidate in candidates) {
-                if(TryGetData(candidate, out IEnumerable<Object[]> data)) {
-                    return data;
+                foreach(MemberInfo candidate in candidates) {
+                    if(TryGetData(candidate, out IEnumerable<Object[]> data)) {
+                        return data;
+                    }
                 }
+
+            } else if(TryGetInstance(providerType, out Object instance) && instance is IEnumerable<Object[]> enumerable) {
+                return enumerable;
             }
 
             return Enumerable.Empty<Object[]>();
