@@ -45,7 +45,7 @@ namespace Nuclear.Test.Results {
                 new TestMethodResult());
 
         public void LogError(MethodInfo _method, String message)
-            => AddEntry(new TestEntry(EntryTypes.Error, null, message), _method.DeclaringType.Name, _method.Name);
+            => AddEntry(TestEntry.FromError(message), _method.DeclaringType.Name, _method.Name);
 
         public void IgnoreTestMethod(MethodInfo _method, String ignoreReason)
             => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
@@ -86,10 +86,10 @@ namespace Nuclear.Test.Results {
         #region ITestResultSink
 
         public void AddResult(Boolean result, String testInstruction, String message, String _file, String _method)
-            => AddEntry(new TestEntry(result ? EntryTypes.ResultOk : EntryTypes.ResultFail, testInstruction, message), _file, _method);
+            => AddEntry(TestEntry.FromResult(result, testInstruction, message), _file, _method);
 
         public void AddNote(String message, String _file, String _method)
-            => AddEntry(new TestEntry(EntryTypes.Note, null, message), _file, _method);
+            => AddEntry(TestEntry.FromNote(message), _file, _method);
 
         #endregion
 
