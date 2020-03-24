@@ -23,7 +23,7 @@ namespace Nuclear.Test.Printer.Leafs {
 
         protected override void PrintResult() { }
 
-        protected override void PrintDetails() => Write(ResultTree.ColorScheme.ExceptionDetails, $"'{Message}'");
+        protected override void PrintDetails() => Write(ResultTree.ColorScheme.ErrorDetails, $"'{Message}'");
 
         #endregion
 

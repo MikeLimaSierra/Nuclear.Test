@@ -33,7 +33,7 @@ namespace Nuclear.Test.Printer.Leafs {
                 Result.EntryType == EntryTypes.ResultOk ? "Ok" : "Failed");
 
         protected override void PrintDetails() {
-            if(Result.EntryType == EntryTypes.ResultOk) {
+            if(Result.EntryType == EntryTypes.ResultFail) {
                 Write(": ");
                 Write(ResultTree.ColorScheme.ResultFailMessage, Result.Message);
             }
