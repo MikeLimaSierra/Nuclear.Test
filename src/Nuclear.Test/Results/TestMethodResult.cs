@@ -10,6 +10,9 @@ namespace Nuclear.Test.Results {
         public IList<ITestEntry> TestEntries { get; } = new List<ITestEntry>();
 
         public Int32 CountEntries
+            => TestEntries.Count;
+
+        public Int32 CountResults
             => TestEntries.Where(result => result.EntryType == EntryTypes.ResultOk || result.EntryType == EntryTypes.ResultFail).Count();
 
         public Int32 CountResultsOk
@@ -18,14 +21,17 @@ namespace Nuclear.Test.Results {
         public Int32 CountResultsFailed
             => TestEntries.Where(result => result.EntryType == EntryTypes.ResultFail).Count();
 
+        public Boolean HasErrors
+            => TestEntries.Where(result => result.EntryType == EntryTypes.Error).Count() > 0;
+
         public String IgnoreReason { get; private set; }
 
 
-        public Boolean IsFailed => CountResultsFailed > 0;
+        public Boolean IsFailed => CountResultsFailed > 0 || HasErrors;
 
         public Boolean IsIgnored => !String.IsNullOrWhiteSpace(IgnoreReason);
 
-        public Boolean IsEmpty => CountEntries == 0;
+        public Boolean IsEmpty => CountResults == 0;
 
         #endregion
 
