@@ -19,7 +19,7 @@ namespace Nuclear.Test.Worker {
 
         private readonly ITestResultEndPoint _results;
 
-        private readonly IEnumerable<TestDataAttribute> _testDataAttributes;
+        private readonly IEnumerable<Attribute> _attributes;
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace Nuclear.Test.Worker {
             _results = results;
             _methodInfo = method;
             _methodParameters = _methodInfo.GetParameters();
-            _testDataAttributes = _methodInfo.GetCustomAttributes<TestDataAttribute>();
+            _attributes = _methodInfo.GetCustomAttributes().Where(attr => attr is TestDataAttribute || attr is TestParametersAttribute);
         }
 
         #endregion
@@ -53,7 +53,7 @@ namespace Nuclear.Test.Worker {
             _results.PrepareResults(_methodInfo);
 
             if(HasParameters) {
-                foreach(TestDataAttribute attr in _testDataAttributes) {
+                foreach(Attribute attr in _attributes) {
                     _results.AddNote($"Processing {attr}", File, Method);
 
                     foreach(Object[] @params in GetData(attr)) {
@@ -79,27 +79,29 @@ namespace Nuclear.Test.Worker {
             return instance != null;
         }
 
-        internal IEnumerable<Object[]> GetData(TestDataAttribute attr) {
-            if(attr.Parameters != null) {
-                return new Object[][] { attr.Parameters };
+        internal IEnumerable<Object[]> GetData(Attribute attr) {
+            if(attr is TestParametersAttribute tpa && tpa.Parameters != null) {
+                return new Object[][] { tpa.Parameters };
             }
 
-            Type providerType = attr.Provider ?? _methodInfo.DeclaringType;
-            String providerMember = attr.ProviderMember;
+            if(attr is TestDataAttribute tda) {
+                Type providerType = tda.Provider ?? _methodInfo.DeclaringType;
+                String providerMember = tda.ProviderMember;
 
-            if(providerMember != null) {
-                MemberInfo[] candidates = providerType.GetMember(providerMember,
-                    MemberTypes.Field | MemberTypes.Property | MemberTypes.Method,
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                if(providerMember != null) {
+                    MemberInfo[] candidates = providerType.GetMember(providerMember,
+                        MemberTypes.Field | MemberTypes.Property | MemberTypes.Method,
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
 
-                foreach(MemberInfo candidate in candidates) {
-                    if(TryGetData(candidate, out IEnumerable<Object[]> data)) {
-                        return data;
+                    foreach(MemberInfo candidate in candidates) {
+                        if(TryGetData(candidate, out IEnumerable<Object[]> data)) {
+                            return data;
+                        }
                     }
-                }
 
-            } else if(TryGetInstance(providerType, out Object instance) && instance is IEnumerable<Object[]> enumerable) {
-                return enumerable;
+                } else if(TryGetInstance(providerType, out Object instance) && instance is IEnumerable<Object[]> enumerable) {
+                    return enumerable;
+                }
             }
 
             return Enumerable.Empty<Object[]>();
