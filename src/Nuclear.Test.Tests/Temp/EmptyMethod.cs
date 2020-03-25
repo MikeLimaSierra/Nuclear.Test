@@ -1,9 +1,9 @@
-﻿using TestMethodX = Nuclear.TestSite.TestMethodAttribute;
+﻿using Nuclear.TestSite;
 
 namespace Nuclear.Test {
     class EmptyMethod {
 
-        [TestMethodX]
+        [TestMethod]
         void HasNoTests() {
 
         }

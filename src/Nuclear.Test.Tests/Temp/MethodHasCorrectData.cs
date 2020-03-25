@@ -2,31 +2,31 @@
 using System.Collections;
 using System.Collections.Generic;
 
-using TestDataX = Nuclear.TestSite.TestDataAttribute;
-using TestMethodX = Nuclear.TestSite.TestMethodAttribute;
+using Nuclear.TestSite;
+
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test.Temp {
     class MethodHasCorrectData : IEnumerable<Object[]> {
 
-        [TestMethodX]
-        [TestDataX(1, "1")]
-        [TestDataX(2, "2")]
-        [TestDataX(42, "42")]
-        [TestDataX(42, "43")]
-        [TestDataX(nameof(EmptyProviderField))]
-        [TestDataX(nameof(ProviderField))]
-        [TestDataX(nameof(EmptyProviderProperty))]
-        [TestDataX(nameof(ProviderProperty))]
-        [TestDataX(nameof(EmptyProviderMethod))]
-        [TestDataX(nameof(ProviderMethod))]
-        [TestDataX(typeof(MethodHasCorrectData))]
-        [TestDataX(nameof(_EmptyProviderField))]
-        [TestDataX(nameof(_ProviderField))]
-        [TestDataX(nameof(_EmptyProviderProperty))]
-        [TestDataX(nameof(_ProviderProperty))]
-        [TestDataX(nameof(_EmptyProviderMethod))]
-        [TestDataX(nameof(_ProviderMethod))]
+        [TestMethod]
+        [TestParameters(1, "1")]
+        [TestParameters(2, "2")]
+        [TestParameters(42, "42")]
+        [TestParameters(42, "43")]
+        [TestData(nameof(EmptyProviderField))]
+        [TestData(nameof(ProviderField))]
+        [TestData(nameof(EmptyProviderProperty))]
+        [TestData(nameof(ProviderProperty))]
+        [TestData(nameof(EmptyProviderMethod))]
+        [TestData(nameof(ProviderMethod))]
+        [TestData(typeof(MethodHasCorrectData))]
+        [TestData(nameof(_EmptyProviderField))]
+        [TestData(nameof(_ProviderField))]
+        [TestData(nameof(_EmptyProviderProperty))]
+        [TestData(nameof(_ProviderProperty))]
+        [TestData(nameof(_EmptyProviderMethod))]
+        [TestData(nameof(_ProviderMethod))]
         void HasCorrectData(Int32 param1, String param2) {
 
             String @string = param1.ToString();

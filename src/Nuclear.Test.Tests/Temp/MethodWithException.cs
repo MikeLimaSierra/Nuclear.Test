@@ -1,12 +1,13 @@
 ﻿using System;
 
-using TestMethodX = Nuclear.TestSite.TestMethodAttribute;
+using Nuclear.TestSite;
+
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test {
     class MethodWithException {
 
-        [TestMethodX]
+        [TestMethod]
         void FailsWithException() {
 
             TestX.Note("Note 1");

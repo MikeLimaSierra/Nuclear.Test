@@ -17,18 +17,18 @@ namespace Nuclear.Test.Results {
         #region ctor
 
         [TestMethod]
-        [TestData(EntryTypes.ResultOk, null, null, "instruction")]
-        [TestData(EntryTypes.ResultFail, null, null, "instruction")]
-        [TestData(EntryTypes.ResultOk, "", null, "instruction")]
-        [TestData(EntryTypes.ResultFail, "", null, "instruction")]
-        [TestData(EntryTypes.ResultOk, "SomeInstruction", null, "message")]
-        [TestData(EntryTypes.ResultFail, "SomeInstruction", null, "message")]
-        [TestData(EntryTypes.ResultOk, "SomeInstruction", "", "message")]
-        [TestData(EntryTypes.ResultFail, "SomeInstruction", "", "message")]
-        [TestData(EntryTypes.Note, null, null, "message")]
-        [TestData(EntryTypes.Error, null, null, "message")]
-        [TestData(EntryTypes.Note, null, "", "message")]
-        [TestData(EntryTypes.Error, null, "", "message")]
+        [TestParameters(EntryTypes.ResultOk, null, null, "instruction")]
+        [TestParameters(EntryTypes.ResultFail, null, null, "instruction")]
+        [TestParameters(EntryTypes.ResultOk, "", null, "instruction")]
+        [TestParameters(EntryTypes.ResultFail, "", null, "instruction")]
+        [TestParameters(EntryTypes.ResultOk, "SomeInstruction", null, "message")]
+        [TestParameters(EntryTypes.ResultFail, "SomeInstruction", null, "message")]
+        [TestParameters(EntryTypes.ResultOk, "SomeInstruction", "", "message")]
+        [TestParameters(EntryTypes.ResultFail, "SomeInstruction", "", "message")]
+        [TestParameters(EntryTypes.Note, null, null, "message")]
+        [TestParameters(EntryTypes.Error, null, null, "message")]
+        [TestParameters(EntryTypes.Note, null, "", "message")]
+        [TestParameters(EntryTypes.Error, null, "", "message")]
         void ConstructorThrows(EntryTypes type, String instruction, String message, String paramName) {
 
             ITestEntry entry = default;
@@ -40,12 +40,12 @@ namespace Nuclear.Test.Results {
         }
 
         [TestMethod]
-        [TestData(EntryTypes.ResultOk, "SomeInstruction", "message", EntryTypes.ResultOk, "SomeInstruction", "message")]
-        [TestData(EntryTypes.ResultFail, "AnotherInstruction", "another message", EntryTypes.ResultFail, "AnotherInstruction", "another message")]
-        [TestData(EntryTypes.Note, null, "message", EntryTypes.Note, null, "message")]
-        [TestData(EntryTypes.Error, null, "message", EntryTypes.Error, null, "message")]
-        [TestData(EntryTypes.Note, "SomeInstruction", "message", EntryTypes.Note, null, "message")]
-        [TestData(EntryTypes.Error, "SomeInstruction", "message", EntryTypes.Error, null, "message")]
+        [TestParameters(EntryTypes.ResultOk, "SomeInstruction", "message", EntryTypes.ResultOk, "SomeInstruction", "message")]
+        [TestParameters(EntryTypes.ResultFail, "AnotherInstruction", "another message", EntryTypes.ResultFail, "AnotherInstruction", "another message")]
+        [TestParameters(EntryTypes.Note, null, "message", EntryTypes.Note, null, "message")]
+        [TestParameters(EntryTypes.Error, null, "message", EntryTypes.Error, null, "message")]
+        [TestParameters(EntryTypes.Note, "SomeInstruction", "message", EntryTypes.Note, null, "message")]
+        [TestParameters(EntryTypes.Error, "SomeInstruction", "message", EntryTypes.Error, null, "message")]
         void Constructor(EntryTypes type, String instruction, String message, EntryTypes expected_type, String expected_instruction, String expected_message) {
 
             ITestEntry entry = default;
@@ -64,14 +64,14 @@ namespace Nuclear.Test.Results {
         #region FromResult
 
         [TestMethod]
-        [TestData(true, null, null, "instruction")]
-        [TestData(false, null, null, "instruction")]
-        [TestData(true, "", null, "instruction")]
-        [TestData(false, "", null, "instruction")]
-        [TestData(true, "SomeInstruction", null, "message")]
-        [TestData(false, "SomeInstruction", null, "message")]
-        [TestData(true, "SomeInstruction", "", "message")]
-        [TestData(false, "SomeInstruction", "", "message")]
+        [TestParameters(true, null, null, "instruction")]
+        [TestParameters(false, null, null, "instruction")]
+        [TestParameters(true, "", null, "instruction")]
+        [TestParameters(false, "", null, "instruction")]
+        [TestParameters(true, "SomeInstruction", null, "message")]
+        [TestParameters(false, "SomeInstruction", null, "message")]
+        [TestParameters(true, "SomeInstruction", "", "message")]
+        [TestParameters(false, "SomeInstruction", "", "message")]
         void FromResultThrows(Boolean result, String instruction, String message, String paramName) {
 
             ITestEntry entry = default;
@@ -83,8 +83,8 @@ namespace Nuclear.Test.Results {
         }
 
         [TestMethod]
-        [TestData(true, "SomeInstruction", "message", EntryTypes.ResultOk, "SomeInstruction", "message")]
-        [TestData(false, "AnotherInstruction", "another message", EntryTypes.ResultFail, "AnotherInstruction", "another message")]
+        [TestParameters(true, "SomeInstruction", "message", EntryTypes.ResultOk, "SomeInstruction", "message")]
+        [TestParameters(false, "AnotherInstruction", "another message", EntryTypes.ResultFail, "AnotherInstruction", "another message")]
         void FromResult(Boolean result, String instruction, String message, EntryTypes expected_type, String expected_instruction, String expected_message) {
 
             ITestEntry entry = default;
@@ -103,8 +103,8 @@ namespace Nuclear.Test.Results {
         #region FromNote
 
         [TestMethod]
-        [TestData(null, "message")]
-        [TestData("", "message")]
+        [TestParameters(null, "message")]
+        [TestParameters("", "message")]
         void FromNoteThrows(String message, String paramName) {
 
             ITestEntry entry = default;
@@ -116,7 +116,7 @@ namespace Nuclear.Test.Results {
         }
 
         [TestMethod]
-        [TestData("message", EntryTypes.Note, null, "message")]
+        [TestParameters("message", EntryTypes.Note, null, "message")]
         void FromNote(String message, EntryTypes expected_type, String expected_instruction, String expected_message) {
 
             ITestEntry entry = default;
@@ -135,8 +135,8 @@ namespace Nuclear.Test.Results {
         #region FromError
 
         [TestMethod]
-        [TestData(null, "message")]
-        [TestData("", "message")]
+        [TestParameters(null, "message")]
+        [TestParameters("", "message")]
         void FromErrorThrows(String message, String paramName) {
 
             ITestEntry entry = default;
@@ -148,7 +148,7 @@ namespace Nuclear.Test.Results {
         }
 
         [TestMethod]
-        [TestData("message", EntryTypes.Error, null, "message")]
+        [TestParameters("message", EntryTypes.Error, null, "message")]
         void FromError(String message, EntryTypes expected_type, String expected_instruction, String expected_message) {
 
             ITestEntry entry = default;

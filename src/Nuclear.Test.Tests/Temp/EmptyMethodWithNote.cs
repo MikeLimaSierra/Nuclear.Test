@@ -1,10 +1,11 @@
-﻿using TestMethodX = Nuclear.TestSite.TestMethodAttribute;
+﻿using Nuclear.TestSite;
+
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test {
     class EmptyMethodWithNote {
 
-        [TestMethodX]
+        [TestMethod]
         void HasNoTests() {
 
             TestX.Note("Note 1");

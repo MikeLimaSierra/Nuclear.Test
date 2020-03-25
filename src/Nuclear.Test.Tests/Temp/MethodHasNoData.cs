@@ -1,12 +1,13 @@
 ﻿using System;
 
-using TestMethodX = Nuclear.TestSite.TestMethodAttribute;
+using Nuclear.TestSite;
+
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test.Temp {
     class MethodHasNoData {
 
-        [TestMethodX]
+        [TestMethod]
         void HasNoData(Int32 param1, String param2) {
 
             String @string = param1.ToString();

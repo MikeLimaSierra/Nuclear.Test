@@ -1,11 +1,12 @@
 ﻿
-using TestMethodX = Nuclear.TestSite.TestMethodAttribute;
+using Nuclear.TestSite;
+
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test {
     class MethodWithFailingTests {
 
-        [TestMethodX]
+        [TestMethod]
         void HasFailingTest() {
 
             TestX.Note("Note 1");
