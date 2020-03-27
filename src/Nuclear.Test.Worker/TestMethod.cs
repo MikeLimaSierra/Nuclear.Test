@@ -15,7 +15,9 @@ namespace Nuclear.Test.Worker {
 
         private readonly MethodInfo _methodInfo;
 
-        private readonly ParameterInfo[] _methodParameters;
+        private readonly ParameterInfo[] _parameters;
+
+        private readonly Type[] _genericArguments;
 
         private readonly ITestResultEndPoint _results;
 
@@ -25,7 +27,9 @@ namespace Nuclear.Test.Worker {
 
         #region properties
 
-        internal Boolean HasParameters => _methodParameters.Length > 0;
+        internal Boolean HasParameters => _parameters.Length > 0;
+
+        internal Boolean IsGeneric => _genericArguments.Length > 0;
 
         internal String File => _methodInfo.DeclaringType.Name;
 
@@ -41,7 +45,8 @@ namespace Nuclear.Test.Worker {
 
             _results = results;
             _methodInfo = method;
-            _methodParameters = _methodInfo.GetParameters();
+            _parameters = _methodInfo.GetParameters();
+            _genericArguments = _methodInfo.GetGenericArguments();
             _attributes = _methodInfo.GetCustomAttributes().Where(attr => attr is TestDataAttribute || attr is TestParametersAttribute);
         }
 
@@ -153,24 +158,55 @@ namespace Nuclear.Test.Worker {
             return data != null && data.Count() > 0;
         }
 
-        private void InvokeInternal(Object[] @params) {
-            if(TryGetInstance(_methodInfo.DeclaringType, out Object instance)) {
+        internal Boolean TryPrepareForInvoke(Object[] @params, out MethodInfo method, out Object[] parameters) {
+            method = _methodInfo;
+            parameters = @params;
 
-                if(@params.Length > 0) {
-                    _results.AddNote($"Injecting data set {@params.Format()}", File, Method);
+            if(IsGeneric) {
+                if(parameters.Length < _genericArguments.Length) {
+                    _results.LogError(method, $"Expecting at least {_genericArguments.Length.Format()} parameters that are of type {typeof(Type).Format()}; Given is {parameters.Format()}");
+                    return false;
+                }
+
+                Object[] typeParams = @params.Take(_genericArguments.Length).ToArray();
+                parameters = @params.Skip(_genericArguments.Length).ToArray();
+
+                if(!typeParams.All(tp => tp is Type)) {
+                    _results.LogError(method, $"Expecting the first {typeParams.Length.Format()} parameters to be of type {typeof(Type).Format()}; Given is {typeParams.Format()}");
+                    return false;
                 }
 
                 try {
-                    _methodInfo.Invoke(instance, @params);
-
-                } catch(TargetInvocationException ex) {
-                    _results.LogError(_methodInfo, ex.InnerException.ToString());
-
-                } catch(TargetParameterCountException) {
-                    _results.LogError(_methodInfo, $"Parameters mismatch: Expected is {_methodParameters.Select(p => p.ParameterType).Format()}; Given is {@params.Select(p => p.GetType()).Format()}");
+                    method = _methodInfo.MakeGenericMethod(typeParams.Cast<Type>().ToArray());
 
                 } catch(Exception ex) {
-                    _results.LogError(_methodInfo, ex.ToString());
+                    _results.LogError(method, $"Making method {_methodInfo.Name.Format()} generic using {typeParams.Format()} didn't work: {ex}");
+                    return false;
+                }
+
+                _results.AddNote($"Invoking generic method {method.Name}<{String.Join(", ", typeParams.Select(t => t.Format()))}>({String.Join(", ", _parameters.Select(p => p.ParameterType.Format()))})", File, Method);
+            }
+
+            return true;
+        }
+
+        private void InvokeInternal(Object[] @params) {
+            if(TryGetInstance(_methodInfo.DeclaringType, out Object instance) && TryPrepareForInvoke(@params, out MethodInfo method, out Object[] parameters)) {
+                if(parameters.Length > 0) {
+                    _results.AddNote($"Injecting data set {parameters.Format()}", File, Method);
+                }
+
+                try {
+                    method.Invoke(instance, parameters);
+
+                } catch(TargetInvocationException ex) {
+                    _results.LogError(method, ex.InnerException.ToString());
+
+                } catch(TargetParameterCountException) {
+                    _results.LogError(method, $"Parameters mismatch: Expected is {_parameters.Select(p => p.ParameterType).Format()}; Given is {parameters.Select(p => p.FormatType())}");
+
+                } catch(Exception ex) {
+                    _results.LogError(method, ex.ToString());
                 }
             }
         }
