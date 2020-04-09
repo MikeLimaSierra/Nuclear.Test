@@ -21,6 +21,11 @@ namespace Nuclear.Test.Results {
         Int32 CountEntries { get; }
 
         /// <summary>
+        /// Gets the total number of entries with results and errors.
+        /// </summary>
+        Int32 CountRelevantEntries { get; }
+
+        /// <summary>
         /// Gets the total number of results.
         /// </summary>
         Int32 CountResults { get; }
@@ -36,9 +41,9 @@ namespace Nuclear.Test.Results {
         Int32 CountResultsFailed { get; }
 
         /// <summary>
-        /// Gets if there are any errors logged.
+        /// Gets the number of errors.
         /// </summary>
-        Boolean HasErrors { get; }
+        Int32 CountErrors { get; }
 
         /// <summary>
         /// Gets the reason why the test method is being ignored.
