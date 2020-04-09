@@ -17,6 +17,8 @@ namespace Nuclear.Test.Printer.Nodes {
 
         internal Int32 ResultsFailed { get; private set; }
 
+        internal Int32 Errors { get; private set; }
+
         internal Boolean HasFails { get; private set; }
 
         internal Boolean HasIgnores { get; private set; }
@@ -35,9 +37,10 @@ namespace Nuclear.Test.Printer.Nodes {
             Key = key;
 
             IEnumerable<ITestMethodResult> _results = results.GetResults(Key);
-            ResultsTotal = _results.CountResults();
+            ResultsTotal = _results.CountRelevantEntries();
             ResultsSuccessful = _results.CountResultsOk();
             ResultsFailed = _results.CountResultsFailed();
+            Errors = _results.CountErrors();
             HasFails = _results.HasFails();
             HasIgnores = _results.HasIgnores();
             HasBlanks = _results.HasBlanks();
@@ -60,10 +63,10 @@ namespace Nuclear.Test.Printer.Nodes {
             Write(ResultTree.ColorScheme.ResultsOk, $"{ResultsSuccessful}");
             Write("; Failed: ");
 
-            if(ResultsFailed > 0) {
-                Write(ResultTree.ColorScheme.ResultsFailed, $"{ResultsFailed}");
+            if(HasFails) {
+                Write(ResultTree.ColorScheme.ResultsFailed, $"{ResultsFailed + Errors}");
             } else {
-                Write($"{ResultsFailed}");
+                Write("0");
             }
 
             Write("]");

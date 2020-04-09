@@ -1,13 +1,14 @@
 ﻿using System;
 
-using TestMethodX = Nuclear.TestSite.TestMethodAttribute;
+using Nuclear.TestSite;
+
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test {
-    class FailingTestMethods {
+    class MethodWithException {
 
-        [TestMethodX]
-        void MethodFailsExceptional() {
+        [TestMethod]
+        void FailsWithException() {
 
             TestX.Note("Note 1");
             TestX.If.Value.IsTrue(true);

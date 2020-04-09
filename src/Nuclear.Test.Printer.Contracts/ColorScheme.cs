@@ -21,7 +21,7 @@ namespace Nuclear.Test.Printer {
             ResultFailMessage = ConsoleColor.Red,
             NoteMessage = ConsoleColor.Yellow,
             IgnoreMessage = ConsoleColor.Cyan,
-            ExceptionDetails = ConsoleColor.Red,
+            ErrorDetails = ConsoleColor.Red,
         };
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace Nuclear.Test.Printer {
         public ConsoleColor IgnoreMessage { get; set; }
 
         /// <summary>
-        /// Gets or sets the color used to display the exceptional fail message of test methods.
+        /// Gets or sets the color used to display the error message of test methods.
         /// </summary>
-        public ConsoleColor ExceptionDetails { get; set; }
+        public ConsoleColor ErrorDetails { get; set; }
 
         #endregion
 

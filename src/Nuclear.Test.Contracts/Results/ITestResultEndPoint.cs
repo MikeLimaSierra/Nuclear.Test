@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+
 using Nuclear.TestSite;
 
 namespace Nuclear.Test.Results {
@@ -39,11 +40,11 @@ namespace Nuclear.Test.Results {
         void PrepareResults(MethodInfo _method);
 
         /// <summary>
-        /// Sets an entire test method to failed with an <see cref="Exception"/>.
+        /// Logs an error that occured while invoking a test method.
         /// </summary>
-        /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
-        /// <param name="ex">The <see cref="Exception"/> that was thrown.</param>
-        void FailTestMethod(MethodInfo _method, Exception ex);
+        /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the error occurred.</param>
+        /// <param name="message">The error message.</param>
+        void LogError(MethodInfo _method, String message);
 
         /// <summary>
         /// Set an entire test method to ignored.

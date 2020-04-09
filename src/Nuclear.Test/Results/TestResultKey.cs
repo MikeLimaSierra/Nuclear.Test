@@ -35,7 +35,7 @@ namespace Nuclear.Test.Results {
 
         public Boolean HasAssemblyName => !String.IsNullOrWhiteSpace(AssemblyName);
 
-        public Boolean HasTargetRuntime => HasTargetFrameworkIdentifier && HasTargetFrameworkVersion && HasTargetArchitecture;
+        public Boolean HasTargetRuntime => TargetRuntime != null;
 
         public Boolean HasTargetFrameworkIdentifier => HasTargetRuntime && TargetRuntime.Framework != FrameworkIdentifiers.Unsupported;
 
@@ -45,7 +45,7 @@ namespace Nuclear.Test.Results {
 
         public Boolean HasTargetArchitecture => TargetArchitecture != ProcessorArchitecture.None;
 
-        public Boolean HasExecutionRuntime => HasExecutionFrameworkIdentifier && HasExecutionFrameworkVersion && HasExecutionArchitecture;
+        public Boolean HasExecutionRuntime => ExecutionRuntime != null;
 
         public Boolean HasExecutionFrameworkIdentifier => HasExecutionRuntime && ExecutionRuntime.Framework != FrameworkIdentifiers.Unsupported;
 
@@ -60,7 +60,7 @@ namespace Nuclear.Test.Results {
         public Boolean HasMethodName => !String.IsNullOrWhiteSpace(MethodName);
 
 
-        public Boolean IsFullyQualified => HasAssemblyName && HasFullyQualifiedTargetRuntime && HasFullyQualifiedExecutionRuntime && HasFileName && HasMethodName;
+        public Boolean IsFullyQualified => HasAssemblyName && HasFullyQualifiedTargetRuntime && HasTargetArchitecture && HasFullyQualifiedExecutionRuntime && HasExecutionArchitecture && HasFileName && HasMethodName;
 
         public TestResultKeyPrecisions Precision {
             get {
@@ -120,9 +120,15 @@ namespace Nuclear.Test.Results {
             if(match == null) { return false; }
 
             if(match.HasAssemblyName && match.AssemblyName != AssemblyName) { return false; }
-            if(match.HasTargetRuntime && match.TargetRuntime != TargetRuntime) { return false; }
+
+            if(match.HasTargetFrameworkIdentifier && match.TargetRuntime.Framework != TargetRuntime.Framework) { return false; }
+            if(match.HasTargetFrameworkVersion && match.TargetRuntime.Version != TargetRuntime.Version) { return false; }
+
             if(match.HasTargetArchitecture && match.TargetArchitecture != TargetArchitecture) { return false; }
-            if(match.HasExecutionRuntime && match.ExecutionRuntime != ExecutionRuntime) { return false; }
+
+            if(match.HasExecutionFrameworkIdentifier && match.ExecutionRuntime.Framework != ExecutionRuntime.Framework) { return false; }
+            if(match.HasExecutionFrameworkVersion && match.ExecutionRuntime.Version != ExecutionRuntime.Version) { return false; }
+
             if(match.HasExecutionArchitecture && match.ExecutionArchitecture != ExecutionArchitecture) { return false; }
             if(match.HasFileName && match.FileName != FileName) { return false; }
             if(match.HasMethodName && match.MethodName != MethodName) { return false; }

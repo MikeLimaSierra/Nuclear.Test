@@ -301,18 +301,12 @@ namespace Nuclear.Test.Extensions {
                 _this.ReadString(), _this.ReadString());
 
         /// <summary>
-        /// Reads a <see cref="ITestInstructionResult"/> from a <see cref="Stream"/>.
+        /// Reads a <see cref="ITestEntry"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="ITestInstructionResult"/> that was read from <paramref name="_this"/>.</returns>
-        public static ITestInstructionResult ReadTestResult(this Stream _this) {
-            Boolean isResult = _this.ReadBoolean();
-            if(isResult) {
-                return new TestInstructionResult(_this.ReadBoolean(), _this.ReadString(), _this.ReadString());
-            } else {
-                return new TestInstructionResult(_this.ReadString());
-            }
-        }
+        /// <returns>The <see cref="ITestEntry"/> that was read from <paramref name="_this"/>.</returns>
+        public static ITestEntry ReadTestResult(this Stream _this)
+            => new TestEntry((EntryTypes) _this.ReadInt32(), _this.ReadBoolean() ? _this.ReadString() : (String) null, _this.ReadString());
 
         /// <summary>
         /// Reads a <see cref="ITestMethodResult"/> from a <see cref="Stream"/>.
@@ -321,12 +315,11 @@ namespace Nuclear.Test.Extensions {
         /// <returns>The <see cref="ITestMethodResult"/> that was read from <paramref name="_this"/>.</returns>
         public static ITestMethodResult ReadTestResults(this Stream _this) {
             ITestMethodResult results = new TestMethodResult();
-            results.Fail(_this.ReadString());
             results.Ignore(_this.ReadString());
             Int32 count = _this.ReadInt32();
 
             for(Int32 i = 0; i < count; i++) {
-                results.InstructionResults.Add(_this.ReadTestResult());
+                results.TestEntries.Add(_this.ReadTestResult());
             }
 
             return results;
@@ -370,15 +363,18 @@ namespace Nuclear.Test.Extensions {
         }
 
         /// <summary>
-        /// Writes a <see cref="ITestInstructionResult"/> to a <see cref="Stream"/>.
+        /// Writes a <see cref="ITestEntry"/> to a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="ITestInstructionResult"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, ITestInstructionResult value) {
-            _this.Write(value.Result.HasValue);
+        /// <param name="value">The <see cref="ITestEntry"/> that is written to <paramref name="_this"/>.</param>
+        public static void Write(this Stream _this, ITestEntry value) {
+            _this.Write((Int32) value.EntryType);
 
-            if(value.Result.HasValue) {
-                _this.Write(value.Result.Value);
+            if(value.Instruction == null) {
+                _this.Write(false);
+
+            } else {
+                _this.Write(true);
                 _this.Write(value.Instruction);
             }
 
@@ -391,10 +387,9 @@ namespace Nuclear.Test.Extensions {
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
         /// <param name="values">The <see cref="ITestMethodResult"/> that is written to <paramref name="_this"/>.</param>
         public static void Write(this Stream _this, ITestMethodResult values) {
-            _this.Write(values.FailMessage);
             _this.Write(values.IgnoreReason);
-            _this.Write(values.InstructionResults.Count);
-            values.InstructionResults.Foreach(value => _this.Write(value));
+            _this.Write(values.TestEntries.Count);
+            values.TestEntries.Foreach(value => _this.Write(value));
         }
 
         #endregion

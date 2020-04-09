@@ -22,17 +22,17 @@ namespace Nuclear.Test.Printer.Nodes {
             Results = results.GetResult(Key);
             Int32 index = 1;
 
-            if(Verbosity > Verbosity.MethodName || Results.IsFailed) {
-                foreach(ITestInstructionResult result in Results.InstructionResults) {
-                    if(result.Result.HasValue) {
-                        Children.Add(new ResultLeaf(Verbosity, result, index++));
-                    } else {
-                        Children.Add(new NoteLeaf(Verbosity, result.Message));
-                    }
-                }
+            if(Verbosity > Verbosity.MethodName || HasFails) {
+                foreach(ITestEntry result in Results.TestEntries) {
+                    if(result.EntryType == EntryTypes.Error) {
+                        Children.Add(new ErrorLeaf(Verbosity, result.Message));
 
-                if(Results.HasFailedExceptional) {
-                    Children.Add(new ExceptionLeaf(Verbosity, Results.FailMessage));
+                    } else if(result.EntryType == EntryTypes.Note) {
+                        Children.Add(new NoteLeaf(Verbosity, result.Message));
+
+                    } else {
+                        Children.Add(new ResultLeaf(Verbosity, result, index++));
+                    }
                 }
             }
         }
@@ -45,7 +45,7 @@ namespace Nuclear.Test.Printer.Nodes {
             if(Results.IsIgnored) {
                 Write(ResultTree.ColorScheme.IgnoreMessage, Results.IgnoreReason);
 
-            } else if(Results.IsEmpty) {
+            } else if(Results.IsEmpty && !Results.IsFailed) {
                 Write(ResultTree.ColorScheme.StateEmpty, "Method has no test instructions!");
 
             } else if(Results.IsFailed) {
