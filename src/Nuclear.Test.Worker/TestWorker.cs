@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
 using Nuclear.Assemblies;
+using Nuclear.Assemblies.Resolvers;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Extensions;
 using Nuclear.Test.Output;
@@ -21,6 +23,8 @@ namespace Nuclear.Test.Worker {
         internal TestWorker(String pipeName)
             : base(pipeName) {
 
+            AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
+
             HeaderContent.Add(@" _   _               _                    _____           _   ");
             HeaderContent.Add(@"| \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_ ");
             HeaderContent.Add(@"|  \| || | | | / __|| | / _ \ / _` || '__| | | / _ \/ __|| __|");
@@ -32,6 +36,41 @@ namespace Nuclear.Test.Worker {
             HeaderContent.Add(@"  \ V  V /| (_) || |   |   <|  __/| |                         ");
             HeaderContent.Add(@"   \_/\_/  \___/ |_|   |_|\_\\___||_|                         ");
             HeaderContent.Add(@"                                                              ");
+        }
+
+        #endregion
+
+        #region eventhandlers
+
+        private Assembly OnAssemblyResolve(Object sender, ResolveEventArgs args) {
+            Console.WriteLine(sender.Format());
+            Console.WriteLine(args.Format());
+            Console.WriteLine(args.Name.Format());
+            Console.WriteLine(args.RequestingAssembly.Format());
+
+            IEnumerable<FileInfo> files;
+
+            IDefaultResolver defaultResolver = AssemblyResolver.Default;
+
+            if(defaultResolver.TryResolve(args, out files)) {
+                foreach(FileInfo file in files) {
+                    if(AssemblyHelper.TryLoadFrom(file, out Assembly assembly)) {
+                        return assembly;
+                    }
+                }
+            }
+
+            INugetResolver nugetResolver = AssemblyResolver.Nuget;
+
+            if(nugetResolver.TryResolve(args, out files)) {
+                foreach(FileInfo file in files) {
+                    if(AssemblyHelper.TryLoadFrom(file, out Assembly assembly)) {
+                        return assembly;
+                    }
+                }
+            }
+
+            return null;
         }
 
         #endregion
