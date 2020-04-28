@@ -43,11 +43,6 @@ namespace Nuclear.Test.Worker {
         #region eventhandlers
 
         private Assembly OnAssemblyResolve(Object sender, ResolveEventArgs args) {
-            Console.WriteLine(sender.Format());
-            Console.WriteLine(args.Format());
-            Console.WriteLine(args.Name.Format());
-            Console.WriteLine(args.RequestingAssembly.Format());
-
             IEnumerable<FileInfo> files;
 
             IDefaultResolver defaultResolver = AssemblyResolver.Default;
