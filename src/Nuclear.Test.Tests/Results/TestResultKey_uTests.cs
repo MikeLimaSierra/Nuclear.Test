@@ -286,58 +286,31 @@ namespace Nuclear.Test.Results {
         }
 
         [TestMethod]
-        void IsFullyQualified() {
+        [TestData(nameof(IsFullyQualifiedData))]
+        void IsFullyQualified(ITestResultKey key, Boolean expected) {
 
             Boolean result = false;
 
-            TestX.Note("IsFullyQualified");
-            TestX.IfNot.Action.ThrowsException(() => result = _isFullyQualified.IsFullyQualified, out Exception ex);
-            TestX.If.Value.IsTrue(result);
+            TestX.IfNot.Action.ThrowsException(() => result = key.IsFullyQualified, out Exception ex);
+            TestX.If.Value.IsEqual(result, expected);
 
-            TestX.Note("HasAssemblyName");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasAssemblyName.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
+        }
 
-            TestX.Note("HasTargetFramework");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasTargetFramework.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasTargetFrameworkIdentifier");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasTargetFrameworkIdentifier.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasTargetFrameworkVersion");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasTargetFrameworkVersion.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasTargetArchitecture");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasTargetArchitecture.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasExecutionFramework");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasExecutionFramework.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasExecutionFrameworkIdentifier");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasExecutionFrameworkIdentifier.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasExecutionFrameworkVersion");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasExecutionFrameworkVersion.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasExecutionArchitecture");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasExecutionArchitecture.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasFileName");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasFileName.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
-            TestX.Note("HasMethodName");
-            TestX.IfNot.Action.ThrowsException(() => result = _hasMethodName.IsFullyQualified, out ex);
-            TestX.If.Value.IsFalse(result);
-
+        IEnumerable<Object[]> IsFullyQualifiedData() {
+            return new List<Object[]>() {
+                new Object[] { _isFullyQualified, true },
+                new Object[] { _hasAssemblyName, false },
+                new Object[] { _hasTargetFramework, false },
+                new Object[] { _hasTargetFrameworkIdentifier, false },
+                new Object[] { _hasTargetFrameworkVersion, false },
+                new Object[] { _hasTargetArchitecture, false },
+                new Object[] { _hasExecutionFramework, false },
+                new Object[] { _hasExecutionFrameworkIdentifier, false },
+                new Object[] { _hasExecutionFrameworkVersion, false },
+                new Object[] { _hasExecutionArchitecture, false },
+                new Object[] { _hasFileName, false },
+                new Object[] { _hasMethodName, false },
+            };
         }
 
         [TestMethod]
