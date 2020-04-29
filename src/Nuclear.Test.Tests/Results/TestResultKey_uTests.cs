@@ -314,44 +314,41 @@ namespace Nuclear.Test.Results {
         }
 
         [TestMethod]
-        void Precision() {
-
-            DDTPrecision(TestResultKey.Empty, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasAssemblyName, TestResultKeyPrecisions.AssemblyName);
-            DDTPrecision(_hasTargetFramework, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasTargetFrameworkIdentifier, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasTargetFrameworkVersion, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasTargetArchitecture, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasExecutionFramework, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasExecutionFrameworkIdentifier, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasExecutionFrameworkVersion, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasExecutionArchitecture, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasFileName, TestResultKeyPrecisions.None);
-            DDTPrecision(_hasMethodName, TestResultKeyPrecisions.None);
-            DDTPrecision(_isFullyQualified, TestResultKeyPrecisions.MethodName);
-
-            DDTPrecision(_matchTargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkIdentifier);
-            DDTPrecision(_matchTargetFrameworkVersion, TestResultKeyPrecisions.TargetFrameworkVersion);
-            DDTPrecision(_matchTargetArchitecture, TestResultKeyPrecisions.TargetArchitecture);
-            DDTPrecision(_matchExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkIdentifier);
-            DDTPrecision(_matchExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionFrameworkVersion);
-            DDTPrecision(_matchExecutionArchitecture, TestResultKeyPrecisions.ExecutionArchitecture);
-            DDTPrecision(_matchFileName, TestResultKeyPrecisions.FileName);
-            DDTPrecision(_matchMethodName, TestResultKeyPrecisions.MethodName);
-
-        }
-
-        void DDTPrecision(ITestResultKey input, TestResultKeyPrecisions expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            TestX.Note($"{input} => {expected.Format()}",
-                _file, _method);
+        [TestData(nameof(PrecisionData))]
+        void Precision(ITestResultKey input, TestResultKeyPrecisions expected) {
 
             TestResultKeyPrecisions precision = TestResultKeyPrecisions.None;
 
-            TestX.IfNot.Action.ThrowsException(() => precision = input.Precision, out Exception ex, _file, _method);
-            TestX.If.Value.IsEqual(precision, expected, _file, _method);
+            TestX.IfNot.Action.ThrowsException(() => precision = input.Precision, out Exception ex);
+            TestX.If.Value.IsEqual(precision, expected);
 
+        }
+
+        IEnumerable<Object[]> PrecisionData() {
+            return new List<Object[]>() {
+                new Object[] { TestResultKey.Empty, TestResultKeyPrecisions.None },
+                new Object[] { _hasAssemblyName, TestResultKeyPrecisions.AssemblyName },
+                new Object[] { _hasTargetFramework, TestResultKeyPrecisions.None },
+                new Object[] { _hasTargetFrameworkIdentifier, TestResultKeyPrecisions.None },
+                new Object[] { _hasTargetFrameworkVersion, TestResultKeyPrecisions.None },
+                new Object[] { _hasTargetArchitecture, TestResultKeyPrecisions.None },
+                new Object[] { _hasExecutionFramework, TestResultKeyPrecisions.None },
+                new Object[] { _hasExecutionFrameworkIdentifier, TestResultKeyPrecisions.None },
+                new Object[] { _hasExecutionFrameworkVersion, TestResultKeyPrecisions.None },
+                new Object[] { _hasExecutionArchitecture, TestResultKeyPrecisions.None },
+                new Object[] { _hasFileName, TestResultKeyPrecisions.None },
+                new Object[] { _hasMethodName, TestResultKeyPrecisions.None },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.MethodName },
+
+                new Object[] { _matchTargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkIdentifier },
+                new Object[] { _matchTargetFrameworkVersion, TestResultKeyPrecisions.TargetFrameworkVersion },
+                new Object[] { _matchTargetArchitecture, TestResultKeyPrecisions.TargetArchitecture },
+                new Object[] { _matchExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkIdentifier },
+                new Object[] { _matchExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionFrameworkVersion },
+                new Object[] { _matchExecutionArchitecture, TestResultKeyPrecisions.ExecutionArchitecture },
+                new Object[] { _matchFileName, TestResultKeyPrecisions.FileName },
+                new Object[] { _matchMethodName, TestResultKeyPrecisions.MethodName },
+            };
         }
 
         #endregion
@@ -359,73 +356,70 @@ namespace Nuclear.Test.Results {
         #region Matches
 
         [TestMethod]
-        void Matches() {
-
-            DDTMatches(TestResultKey.Empty, null, false);
-            DDTMatches(_isFullyQualified, null, false);
-
-            DDTMatches(TestResultKey.Empty, TestResultKey.Empty, true);
-            DDTMatches(TestResultKey.Empty, _matchAssemblyName, false);
-            DDTMatches(TestResultKey.Empty, _matchTargetFrameworkIdentifier, false);
-            DDTMatches(TestResultKey.Empty, _matchTargetFrameworkVersion, false);
-            DDTMatches(TestResultKey.Empty, _matchTargetArchitecture, false);
-            DDTMatches(TestResultKey.Empty, _matchExecutionFrameworkIdentifier, false);
-            DDTMatches(TestResultKey.Empty, _matchExecutionFrameworkVersion, false);
-            DDTMatches(TestResultKey.Empty, _matchExecutionArchitecture, false);
-            DDTMatches(TestResultKey.Empty, _matchFileName, false);
-            DDTMatches(TestResultKey.Empty, _matchMethodName, false);
-
-            DDTMatches(_matchAssemblyName, TestResultKey.Empty, true);
-            DDTMatches(_matchTargetFrameworkIdentifier, TestResultKey.Empty, true);
-            DDTMatches(_matchTargetFrameworkVersion, TestResultKey.Empty, true);
-            DDTMatches(_matchTargetArchitecture, TestResultKey.Empty, true);
-            DDTMatches(_matchExecutionFrameworkIdentifier, TestResultKey.Empty, true);
-            DDTMatches(_matchExecutionFrameworkVersion, TestResultKey.Empty, true);
-            DDTMatches(_matchExecutionArchitecture, TestResultKey.Empty, true);
-            DDTMatches(_matchFileName, TestResultKey.Empty, true);
-            DDTMatches(_matchMethodName, TestResultKey.Empty, true);
-
-            DDTMatches(_matchAssemblyName, _matchAssemblyName, true);
-            DDTMatches(_matchTargetFrameworkIdentifier, _matchTargetFrameworkIdentifier, true);
-            DDTMatches(_matchTargetFrameworkVersion, _matchTargetFrameworkVersion, true);
-            DDTMatches(_matchTargetArchitecture, _matchTargetArchitecture, true);
-            DDTMatches(_matchExecutionFrameworkIdentifier, _matchExecutionFrameworkIdentifier, true);
-            DDTMatches(_matchExecutionFrameworkVersion, _matchExecutionFrameworkVersion, true);
-            DDTMatches(_matchExecutionArchitecture, _matchExecutionArchitecture, true);
-            DDTMatches(_matchFileName, _matchFileName, true);
-            DDTMatches(_matchMethodName, _matchMethodName, true);
-
-            DDTMatches(_matchTargetFrameworkIdentifier, _matchAssemblyName, true);
-            DDTMatches(_matchTargetFrameworkVersion, _matchTargetFrameworkIdentifier, true);
-            DDTMatches(_matchTargetArchitecture, _matchTargetFrameworkVersion, true);
-            DDTMatches(_matchExecutionFrameworkIdentifier, _matchTargetArchitecture, true);
-            DDTMatches(_matchExecutionFrameworkVersion, _matchExecutionFrameworkIdentifier, true);
-            DDTMatches(_matchExecutionArchitecture, _matchExecutionFrameworkVersion, true);
-            DDTMatches(_matchFileName, _matchExecutionArchitecture, true);
-            DDTMatches(_matchMethodName, _matchFileName, true);
-
-            DDTMatches(_matchAssemblyName, _matchTargetFrameworkIdentifier, false);
-            DDTMatches(_matchTargetFrameworkIdentifier, _matchTargetFrameworkVersion, false);
-            DDTMatches(_matchTargetFrameworkVersion, _matchTargetArchitecture, false);
-            DDTMatches(_matchTargetArchitecture, _matchExecutionFrameworkIdentifier, false);
-            DDTMatches(_matchExecutionFrameworkIdentifier, _matchExecutionFrameworkVersion, false);
-            DDTMatches(_matchExecutionFrameworkVersion, _matchExecutionArchitecture, false);
-            DDTMatches(_matchExecutionArchitecture, _matchFileName, false);
-            DDTMatches(_matchFileName, _matchMethodName, false);
-
-        }
-
-        void DDTMatches(ITestResultKey key, ITestResultKey match, Boolean expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            TestX.Note($"{key}.Matches({match}) => {expected.Format()}",
-                _file, _method);
+        [TestData(nameof(MatchesData))]
+        void Matches(ITestResultKey key, ITestResultKey match, Boolean expected) {
 
             Boolean result = false;
 
-            TestX.IfNot.Action.ThrowsException(() => result = key.Matches(match), out Exception ex, _file, _method);
-            TestX.If.Value.IsEqual(result, expected, _file, _method);
+            TestX.IfNot.Action.ThrowsException(() => result = key.Matches(match), out Exception ex);
+            TestX.If.Value.IsEqual(result, expected);
 
+        }
+
+        IEnumerable<Object[]> MatchesData() {
+            return new List<Object[]>() {
+                new Object[] { TestResultKey.Empty, null, false },
+                new Object[] { _isFullyQualified, null, false },
+
+                new Object[] { TestResultKey.Empty, TestResultKey.Empty, true },
+                new Object[] { TestResultKey.Empty, _matchAssemblyName, false },
+                new Object[] { TestResultKey.Empty, _matchTargetFrameworkIdentifier, false },
+                new Object[] { TestResultKey.Empty, _matchTargetFrameworkVersion, false },
+                new Object[] { TestResultKey.Empty, _matchTargetArchitecture, false },
+                new Object[] { TestResultKey.Empty, _matchExecutionFrameworkIdentifier, false },
+                new Object[] { TestResultKey.Empty, _matchExecutionFrameworkVersion, false },
+                new Object[] { TestResultKey.Empty, _matchExecutionArchitecture, false },
+                new Object[] { TestResultKey.Empty, _matchFileName, false },
+                new Object[] { TestResultKey.Empty, _matchMethodName, false },
+
+                new Object[] { _matchAssemblyName, TestResultKey.Empty, true },
+                new Object[] { _matchTargetFrameworkIdentifier, TestResultKey.Empty, true },
+                new Object[] { _matchTargetFrameworkVersion, TestResultKey.Empty, true },
+                new Object[] { _matchTargetArchitecture, TestResultKey.Empty, true },
+                new Object[] { _matchExecutionFrameworkIdentifier, TestResultKey.Empty, true },
+                new Object[] { _matchExecutionFrameworkVersion, TestResultKey.Empty, true },
+                new Object[] { _matchExecutionArchitecture, TestResultKey.Empty, true },
+                new Object[] { _matchFileName, TestResultKey.Empty, true },
+                new Object[] { _matchMethodName, TestResultKey.Empty, true },
+
+                new Object[] { _matchAssemblyName, _matchAssemblyName, true },
+                new Object[] { _matchTargetFrameworkIdentifier, _matchTargetFrameworkIdentifier, true },
+                new Object[] { _matchTargetFrameworkVersion, _matchTargetFrameworkVersion, true },
+                new Object[] { _matchTargetArchitecture, _matchTargetArchitecture, true },
+                new Object[] { _matchExecutionFrameworkIdentifier, _matchExecutionFrameworkIdentifier, true },
+                new Object[] { _matchExecutionFrameworkVersion, _matchExecutionFrameworkVersion, true },
+                new Object[] { _matchExecutionArchitecture, _matchExecutionArchitecture, true },
+                new Object[] { _matchFileName, _matchFileName, true },
+                new Object[] { _matchMethodName, _matchMethodName, true },
+
+                new Object[] { _matchTargetFrameworkIdentifier, _matchAssemblyName, true },
+                new Object[] { _matchTargetFrameworkVersion, _matchTargetFrameworkIdentifier, true },
+                new Object[] { _matchTargetArchitecture, _matchTargetFrameworkVersion, true },
+                new Object[] { _matchExecutionFrameworkIdentifier, _matchTargetArchitecture, true },
+                new Object[] { _matchExecutionFrameworkVersion, _matchExecutionFrameworkIdentifier, true },
+                new Object[] { _matchExecutionArchitecture, _matchExecutionFrameworkVersion, true },
+                new Object[] { _matchFileName, _matchExecutionArchitecture, true },
+                new Object[] { _matchMethodName, _matchFileName, true },
+
+                new Object[] { _matchAssemblyName, _matchTargetFrameworkIdentifier, false },
+                new Object[] { _matchTargetFrameworkIdentifier, _matchTargetFrameworkVersion, false },
+                new Object[] { _matchTargetFrameworkVersion, _matchTargetArchitecture, false },
+                new Object[] { _matchTargetArchitecture, _matchExecutionFrameworkIdentifier, false },
+                new Object[] { _matchExecutionFrameworkIdentifier, _matchExecutionFrameworkVersion, false },
+                new Object[] { _matchExecutionFrameworkVersion, _matchExecutionArchitecture, false },
+                new Object[] { _matchExecutionArchitecture, _matchFileName, false },
+                new Object[] { _matchFileName, _matchMethodName, false },
+            };
         }
 
         #endregion
@@ -433,32 +427,29 @@ namespace Nuclear.Test.Results {
         #region Clip
 
         [TestMethod]
-        void Clip() {
-
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.None, TestResultKey.Empty);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.AssemblyName, _matchAssemblyName);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.TargetFrameworkIdentifier, _matchTargetFrameworkIdentifier);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.TargetFrameworkVersion, _matchTargetFrameworkVersion);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.TargetArchitecture, _matchTargetArchitecture);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.ExecutionFrameworkIdentifier, _matchExecutionFrameworkIdentifier);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.ExecutionFrameworkVersion, _matchExecutionFrameworkVersion);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.ExecutionArchitecture, _matchExecutionArchitecture);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.FileName, _matchFileName);
-            DDTClip(_isFullyQualified, TestResultKeyPrecisions.MethodName, _matchMethodName);
-
-        }
-
-        void DDTClip(ITestResultKey key, TestResultKeyPrecisions precision, ITestResultKey expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            TestX.Note($"{key}.Clip({precision.Format()}) => {expected}",
-                _file, _method);
+        [TestData(nameof(ClipData))]
+        void Clip(ITestResultKey key, TestResultKeyPrecisions precision, ITestResultKey expected) {
 
             ITestResultKey result = null;
 
-            TestX.IfNot.Action.ThrowsException(() => result = key.Clip(precision), out Exception ex, _file, _method);
-            TestX.If.Value.IsEqual(result, expected, _file, _method);
+            TestX.IfNot.Action.ThrowsException(() => result = key.Clip(precision), out Exception ex);
+            TestX.If.Value.IsEqual(result, expected);
 
+        }
+
+        IEnumerable<Object[]> ClipData() {
+            return new List<Object[]>() {
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.None, TestResultKey.Empty },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.AssemblyName, _matchAssemblyName },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.TargetFrameworkIdentifier, _matchTargetFrameworkIdentifier },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.TargetFrameworkVersion, _matchTargetFrameworkVersion },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.TargetArchitecture, _matchTargetArchitecture },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.ExecutionFrameworkIdentifier, _matchExecutionFrameworkIdentifier },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.ExecutionFrameworkVersion, _matchExecutionFrameworkVersion },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.ExecutionArchitecture, _matchExecutionArchitecture },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.FileName, _matchFileName },
+                new Object[] { _isFullyQualified, TestResultKeyPrecisions.MethodName, _matchMethodName },
+            };
         }
 
         #endregion
@@ -466,72 +457,69 @@ namespace Nuclear.Test.Results {
         #region Equals
 
         [TestMethod]
-        void Equals() {
-
-            DDTEquals(TestResultKey.Empty, null, false);
-
-            DDTEquals(TestResultKey.Empty, TestResultKey.Empty, true);
-            DDTEquals(_matchAssemblyName, _matchAssemblyName, true);
-            DDTEquals(_matchTargetFrameworkIdentifier, _matchTargetFrameworkIdentifier, true);
-            DDTEquals(_matchTargetFrameworkVersion, _matchTargetFrameworkVersion, true);
-            DDTEquals(_matchTargetArchitecture, _matchTargetArchitecture, true);
-            DDTEquals(_matchExecutionFrameworkIdentifier, _matchExecutionFrameworkIdentifier, true);
-            DDTEquals(_matchExecutionFrameworkVersion, _matchExecutionFrameworkVersion, true);
-            DDTEquals(_matchExecutionArchitecture, _matchExecutionArchitecture, true);
-            DDTEquals(_matchFileName, _matchFileName, true);
-            DDTEquals(_matchMethodName, _matchMethodName, true);
-
-            DDTEquals(_matchAssemblyName, _matchTargetFrameworkIdentifier, false);
-            DDTEquals(_matchTargetFrameworkIdentifier, _matchTargetFrameworkVersion, false);
-            DDTEquals(_matchTargetFrameworkVersion, _matchTargetArchitecture, false);
-            DDTEquals(_matchTargetArchitecture, _matchExecutionFrameworkIdentifier, false);
-            DDTEquals(_matchExecutionFrameworkIdentifier, _matchExecutionFrameworkVersion, false);
-            DDTEquals(_matchExecutionFrameworkVersion, _matchExecutionArchitecture, false);
-            DDTEquals(_matchExecutionArchitecture, _matchFileName, false);
-            DDTEquals(_matchFileName, _matchMethodName, false);
-
-            DDTEquals(_matchTargetFrameworkIdentifier, _matchAssemblyName, false);
-            DDTEquals(_matchTargetFrameworkVersion, _matchTargetFrameworkIdentifier, false);
-            DDTEquals(_matchTargetArchitecture, _matchTargetFrameworkVersion, false);
-            DDTEquals(_matchExecutionFrameworkIdentifier, _matchTargetArchitecture, false);
-            DDTEquals(_matchExecutionFrameworkVersion, _matchExecutionFrameworkIdentifier, false);
-            DDTEquals(_matchExecutionArchitecture, _matchExecutionFrameworkVersion, false);
-            DDTEquals(_matchFileName, _matchExecutionArchitecture, false);
-            DDTEquals(_matchMethodName, _matchFileName, false);
-
-            DDTEquals(TestResultKey.Empty, _matchAssemblyName, false);
-            DDTEquals(TestResultKey.Empty, _matchTargetFrameworkIdentifier, false);
-            DDTEquals(TestResultKey.Empty, _matchTargetFrameworkVersion, false);
-            DDTEquals(TestResultKey.Empty, _matchTargetArchitecture, false);
-            DDTEquals(TestResultKey.Empty, _matchExecutionFrameworkIdentifier, false);
-            DDTEquals(TestResultKey.Empty, _matchExecutionFrameworkVersion, false);
-            DDTEquals(TestResultKey.Empty, _matchExecutionArchitecture, false);
-            DDTEquals(TestResultKey.Empty, _matchFileName, false);
-            DDTEquals(TestResultKey.Empty, _matchMethodName, false);
-
-            DDTEquals(_matchAssemblyName, TestResultKey.Empty, false);
-            DDTEquals(_matchTargetFrameworkIdentifier, TestResultKey.Empty, false);
-            DDTEquals(_matchTargetFrameworkVersion, TestResultKey.Empty, false);
-            DDTEquals(_matchTargetArchitecture, TestResultKey.Empty, false);
-            DDTEquals(_matchExecutionFrameworkIdentifier, TestResultKey.Empty, false);
-            DDTEquals(_matchExecutionFrameworkVersion, TestResultKey.Empty, false);
-            DDTEquals(_matchExecutionArchitecture, TestResultKey.Empty, false);
-            DDTEquals(_matchFileName, TestResultKey.Empty, false);
-            DDTEquals(_matchMethodName, TestResultKey.Empty, false);
-
-        }
-
-        void DDTEquals(ITestResultKey key, ITestResultKey other, Boolean expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            TestX.Note($"{key}.Equals({other}) => {expected.Format()}",
-                _file, _method);
+        [TestData(nameof(EqualsData))]
+        void Equals(ITestResultKey key, ITestResultKey other, Boolean expected) {
 
             Boolean result = false;
 
-            TestX.IfNot.Action.ThrowsException(() => result = key.Equals(other), out Exception ex, _file, _method);
-            TestX.If.Value.IsEqual(result, expected, _file, _method);
+            TestX.IfNot.Action.ThrowsException(() => result = key.Equals(other), out Exception ex);
+            TestX.If.Value.IsEqual(result, expected);
 
+        }
+
+        IEnumerable<Object[]> EqualsData() {
+            return new List<Object[]>() {
+                new Object[] { TestResultKey.Empty, null, false },
+
+                new Object[] { TestResultKey.Empty, TestResultKey.Empty, true },
+                new Object[] { _matchAssemblyName, _matchAssemblyName, true },
+                new Object[] { _matchTargetFrameworkIdentifier, _matchTargetFrameworkIdentifier, true },
+                new Object[] { _matchTargetFrameworkVersion, _matchTargetFrameworkVersion, true },
+                new Object[] { _matchTargetArchitecture, _matchTargetArchitecture, true },
+                new Object[] { _matchExecutionFrameworkIdentifier, _matchExecutionFrameworkIdentifier, true },
+                new Object[] { _matchExecutionFrameworkVersion, _matchExecutionFrameworkVersion, true },
+                new Object[] { _matchExecutionArchitecture, _matchExecutionArchitecture, true },
+                new Object[] { _matchFileName, _matchFileName, true },
+                new Object[] { _matchMethodName, _matchMethodName, true },
+
+                new Object[] { _matchAssemblyName, _matchTargetFrameworkIdentifier, false },
+                new Object[] { _matchTargetFrameworkIdentifier, _matchTargetFrameworkVersion, false },
+                new Object[] { _matchTargetFrameworkVersion, _matchTargetArchitecture, false },
+                new Object[] { _matchTargetArchitecture, _matchExecutionFrameworkIdentifier, false },
+                new Object[] { _matchExecutionFrameworkIdentifier, _matchExecutionFrameworkVersion, false },
+                new Object[] { _matchExecutionFrameworkVersion, _matchExecutionArchitecture, false },
+                new Object[] { _matchExecutionArchitecture, _matchFileName, false },
+                new Object[] { _matchFileName, _matchMethodName, false },
+
+                new Object[] { _matchTargetFrameworkIdentifier, _matchAssemblyName, false },
+                new Object[] { _matchTargetFrameworkVersion, _matchTargetFrameworkIdentifier, false },
+                new Object[] { _matchTargetArchitecture, _matchTargetFrameworkVersion, false },
+                new Object[] { _matchExecutionFrameworkIdentifier, _matchTargetArchitecture, false },
+                new Object[] { _matchExecutionFrameworkVersion, _matchExecutionFrameworkIdentifier, false },
+                new Object[] { _matchExecutionArchitecture, _matchExecutionFrameworkVersion, false },
+                new Object[] { _matchFileName, _matchExecutionArchitecture, false },
+                new Object[] { _matchMethodName, _matchFileName, false },
+
+                new Object[] { TestResultKey.Empty, _matchAssemblyName, false },
+                new Object[] { TestResultKey.Empty, _matchTargetFrameworkIdentifier, false },
+                new Object[] { TestResultKey.Empty, _matchTargetFrameworkVersion, false },
+                new Object[] { TestResultKey.Empty, _matchTargetArchitecture, false },
+                new Object[] { TestResultKey.Empty, _matchExecutionFrameworkIdentifier, false },
+                new Object[] { TestResultKey.Empty, _matchExecutionFrameworkVersion, false },
+                new Object[] { TestResultKey.Empty, _matchExecutionArchitecture, false },
+                new Object[] { TestResultKey.Empty, _matchFileName, false },
+                new Object[] { TestResultKey.Empty, _matchMethodName, false },
+
+                new Object[] { _matchAssemblyName, TestResultKey.Empty, false },
+                new Object[] { _matchTargetFrameworkIdentifier, TestResultKey.Empty, false },
+                new Object[] { _matchTargetFrameworkVersion, TestResultKey.Empty, false },
+                new Object[] { _matchTargetArchitecture, TestResultKey.Empty, false },
+                new Object[] { _matchExecutionFrameworkIdentifier, TestResultKey.Empty, false },
+                new Object[] { _matchExecutionFrameworkVersion, TestResultKey.Empty, false },
+                new Object[] { _matchExecutionArchitecture, TestResultKey.Empty, false },
+                new Object[] { _matchFileName, TestResultKey.Empty, false },
+                new Object[] { _matchMethodName, TestResultKey.Empty, false },
+            };
         }
 
         [TestMethod]
@@ -542,72 +530,67 @@ namespace Nuclear.Test.Results {
             DDTEqualsPrecision(TestResultKey.Empty, TestResultKey.Empty, TestResultKeyPrecisions.None, true);
             DDTEqualsPrecision(TestResultKey.Empty, TestResultKey.Empty, TestResultKeyPrecisions.AssemblyName, true);
 
-            DDTEqualsPrecisionProxy((TestResultKey.Empty, _matchAssemblyName),
-                (TestResultKeyPrecisions.None, TestResultKeyPrecisions.AssemblyName, TestResultKeyPrecisions.TargetFrameworkIdentifier));
+        }
 
-            DDTEqualsPrecisionProxy((_matchAssemblyName, _matchTargetFrameworkIdentifier),
-                (TestResultKeyPrecisions.AssemblyName, TestResultKeyPrecisions.TargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkVersion));
 
-            DDTEqualsPrecisionProxy((_matchTargetFrameworkIdentifier, _matchTargetFrameworkVersion),
-                (TestResultKeyPrecisions.TargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkVersion, TestResultKeyPrecisions.TargetArchitecture));
+        [TestMethod]
+        [TestData(nameof(EqualsPrecisionLMHData))]
+        void EqualsPrecisionLMH((ITestResultKey low, ITestResultKey high) keys, (TestResultKeyPrecisions low, TestResultKeyPrecisions med, TestResultKeyPrecisions high) precision) {
 
-            DDTEqualsPrecisionProxy((_matchTargetFrameworkVersion, _matchTargetArchitecture),
-                (TestResultKeyPrecisions.TargetFrameworkVersion, TestResultKeyPrecisions.TargetArchitecture, TestResultKeyPrecisions.ExecutionFrameworkIdentifier));
-
-            DDTEqualsPrecisionProxy((_matchTargetArchitecture, _matchExecutionFrameworkIdentifier),
-                (TestResultKeyPrecisions.TargetArchitecture, TestResultKeyPrecisions.ExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkVersion));
-
-            DDTEqualsPrecisionProxy((_matchExecutionFrameworkIdentifier, _matchExecutionFrameworkVersion),
-                (TestResultKeyPrecisions.ExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionArchitecture));
-
-            DDTEqualsPrecisionProxy((_matchExecutionFrameworkVersion, _matchExecutionArchitecture),
-                (TestResultKeyPrecisions.ExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionArchitecture, TestResultKeyPrecisions.FileName));
-
-            DDTEqualsPrecisionProxy((_matchExecutionArchitecture, _matchFileName),
-                (TestResultKeyPrecisions.ExecutionArchitecture, TestResultKeyPrecisions.FileName, TestResultKeyPrecisions.MethodName));
-
-            DDTEqualsPrecisionProxy((_matchFileName, _matchMethodName),
-                (TestResultKeyPrecisions.FileName, TestResultKeyPrecisions.MethodName));
+            DDTEqualsPrecision(keys.low, keys.high, precision.low, true);
+            DDTEqualsPrecision(keys.low, keys.high, precision.med, false);
+            DDTEqualsPrecision(keys.low, keys.high, precision.high, false);
+            DDTEqualsPrecision(keys.high, keys.high, precision.low, true);
+            DDTEqualsPrecision(keys.high, keys.high, precision.med, true);
+            DDTEqualsPrecision(keys.high, keys.high, precision.high, true);
+            DDTEqualsPrecision(keys.high, keys.low, precision.low, true);
+            DDTEqualsPrecision(keys.high, keys.low, precision.med, false);
+            DDTEqualsPrecision(keys.high, keys.low, precision.high, false);
 
         }
 
-        void DDTEqualsPrecisionProxy((ITestResultKey low, ITestResultKey high) keys, (TestResultKeyPrecisions low, TestResultKeyPrecisions med, TestResultKeyPrecisions high) precision,
-        [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+        IEnumerable<Object[]> EqualsPrecisionLMHData() {
+            return new List<Object[]>() {
+                new Object[] { (TestResultKey.Empty, _matchAssemblyName), (TestResultKeyPrecisions.None, TestResultKeyPrecisions.AssemblyName, TestResultKeyPrecisions.TargetFrameworkIdentifier) },
+                new Object[] { (_matchAssemblyName, _matchTargetFrameworkIdentifier), (TestResultKeyPrecisions.AssemblyName, TestResultKeyPrecisions.TargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkVersion) },
+                new Object[] { (_matchTargetFrameworkIdentifier, _matchTargetFrameworkVersion), (TestResultKeyPrecisions.TargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkVersion, TestResultKeyPrecisions.TargetArchitecture) },
+                new Object[] { (_matchTargetFrameworkVersion, _matchTargetArchitecture), (TestResultKeyPrecisions.TargetFrameworkVersion, TestResultKeyPrecisions.TargetArchitecture, TestResultKeyPrecisions.ExecutionFrameworkIdentifier) },
+                new Object[] { (_matchTargetArchitecture, _matchExecutionFrameworkIdentifier), (TestResultKeyPrecisions.TargetArchitecture, TestResultKeyPrecisions.ExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkVersion) },
+                new Object[] { (_matchExecutionFrameworkIdentifier, _matchExecutionFrameworkVersion), (TestResultKeyPrecisions.ExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionArchitecture) },
+                new Object[] { (_matchExecutionFrameworkVersion, _matchExecutionArchitecture), (TestResultKeyPrecisions.ExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionArchitecture, TestResultKeyPrecisions.FileName) },
+                new Object[] { (_matchExecutionArchitecture, _matchFileName), (TestResultKeyPrecisions.ExecutionArchitecture, TestResultKeyPrecisions.FileName, TestResultKeyPrecisions.MethodName) },
+            };
+        }
 
-            DDTEqualsPrecision(keys.low, keys.high, precision.low, true, _file, _method);
-            DDTEqualsPrecision(keys.low, keys.high, precision.med, false, _file, _method);
-            DDTEqualsPrecision(keys.low, keys.high, precision.high, false, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.high, precision.low, true, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.high, precision.med, true, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.high, precision.high, true, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.low, precision.low, true, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.low, precision.med, false, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.low, precision.high, false, _file, _method);
+        [TestMethod]
+        [TestData(nameof(EqualsPrecisionLMData))]
+        void EqualsPrecisionLM((ITestResultKey low, ITestResultKey high) keys, (TestResultKeyPrecisions low, TestResultKeyPrecisions med) precision) {
+
+            DDTEqualsPrecision(keys.low, keys.high, precision.low, true);
+            DDTEqualsPrecision(keys.low, keys.high, precision.med, false);
+            DDTEqualsPrecision(keys.high, keys.high, precision.low, true);
+            DDTEqualsPrecision(keys.high, keys.high, precision.med, true);
+            DDTEqualsPrecision(keys.high, keys.low, precision.low, true);
+            DDTEqualsPrecision(keys.high, keys.low, precision.med, false);
 
         }
 
-        void DDTEqualsPrecisionProxy((ITestResultKey low, ITestResultKey high) keys, (TestResultKeyPrecisions low, TestResultKeyPrecisions med) precision,
-        [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
-
-            DDTEqualsPrecision(keys.low, keys.high, precision.low, true, _file, _method);
-            DDTEqualsPrecision(keys.low, keys.high, precision.med, false, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.high, precision.low, true, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.high, precision.med, true, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.low, precision.low, true, _file, _method);
-            DDTEqualsPrecision(keys.high, keys.low, precision.med, false, _file, _method);
-
+        IEnumerable<Object[]> EqualsPrecisionLMData() {
+            return new List<Object[]>() {
+                new Object[] { (_matchFileName, _matchMethodName), (TestResultKeyPrecisions.FileName, TestResultKeyPrecisions.MethodName) },
+            };
         }
 
         void DDTEqualsPrecision(ITestResultKey key, ITestResultKey other, TestResultKeyPrecisions precision, Boolean expected,
-        [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             TestX.Note($"{key}.Equals({other}, {precision.Format()}) => {expected.Format()}",
                 _file, _method);
 
             Boolean result = false;
 
-            TestX.IfNot.Action.ThrowsException(() => result = key.Equals(other, precision), out Exception ex, _file, _method);
-            TestX.If.Value.IsEqual(result, expected, _file, _method);
+            TestX.IfNot.Action.ThrowsException(() => result = key.Equals(other, precision), out Exception ex, null, _file, _method);
+            TestX.If.Value.IsEqual(result, expected, null, _file, _method);
 
         }
 
