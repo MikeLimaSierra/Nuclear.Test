@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
@@ -119,36 +120,9 @@ namespace Nuclear.Test.Results {
         #region ctors
 
         [TestMethod]
-        void Ctors() {
-
-            TestX.If.Action.ThrowsException(() => new TestResultKey(null, null), out NullReferenceException ex);
-            TestX.If.Action.ThrowsException(() => new TestResultKey(null, "", ""), out ex);
-
-            DDTDefaultCtor((null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
-                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null),
-                (null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
-                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, null, null));
-
-            DDTDefaultCtor(("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
-                new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", "MethodA"),
-                ("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
-                new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", "MethodA"));
-
-            DDTScenarioCtor((new TestScenario(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
-                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), null, null),
-                (new TestScenario(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
-                new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), null, null));
-
-            DDTScenarioCtor((new TestScenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
-                new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", "MethodA"),
-                (new TestScenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
-                new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", "MethodA"));
-
-        }
-
-        void DDTDefaultCtor((String assemblyName, RuntimeInfo target, ProcessorArchitecture targetArchitecture, RuntimeInfo execution, ProcessorArchitecture executionArchitecture, String file, String method) input,
-            (String assemblyName, RuntimeInfo target, ProcessorArchitecture targetArchitecture, RuntimeInfo execution, ProcessorArchitecture executionArchitecture, String file, String method) expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+        [TestData(nameof(DefaultCtorData))]
+        void DefaultCtor((String assemblyName, RuntimeInfo target, ProcessorArchitecture targetArchitecture, RuntimeInfo execution, ProcessorArchitecture executionArchitecture, String file, String method) input,
+            (String assemblyName, RuntimeInfo target, ProcessorArchitecture targetArchitecture, RuntimeInfo execution, ProcessorArchitecture executionArchitecture, String file, String method) expected) {
 
             ITestResultKey scenario = null;
             Action action = () => scenario = new TestResultKey(input.assemblyName,
@@ -156,44 +130,50 @@ namespace Nuclear.Test.Results {
                 input.execution, input.executionArchitecture,
                 input.file, input.method);
 
-            TestX.Note(String.Format("new TestResultKey({0}, {1}, {2}, {3}, {4}, {5}, {6})", input.assemblyName.Format(),
-                input.target.Format(), input.targetArchitecture.Format(),
-                input.execution.Format(), input.executionArchitecture.Format(),
-                input.file.Format(), input.method.Format()),
-                _file, _method);
+            TestX.IfNot.Action.ThrowsException(action, out Exception ex);
+            TestX.IfNot.Object.IsNull(scenario);
 
-            TestX.IfNot.Action.ThrowsException(action, out Exception ex, _file, _method);
-            TestX.IfNot.Object.IsNull(scenario, _file, _method);
-
-            TestX.If.Value.IsEqual(scenario.AssemblyName, expected.assemblyName, _file, _method);
-            TestX.If.Value.IsEqual(scenario.TargetRuntime, expected.target, _file, _method);
-            TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.targetArchitecture, _file, _method);
-            TestX.If.Value.IsEqual(scenario.ExecutionRuntime, expected.execution, _file, _method);
-            TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.executionArchitecture, _file, _method);
-            TestX.If.Value.IsEqual(scenario.FileName, expected.file, _file, _method);
-            TestX.If.Value.IsEqual(scenario.MethodName, expected.method, _file, _method);
+            TestX.If.Value.IsEqual(scenario.AssemblyName, expected.assemblyName);
+            TestX.If.Value.IsEqual(scenario.TargetRuntime, expected.target);
+            TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.targetArchitecture);
+            TestX.If.Value.IsEqual(scenario.ExecutionRuntime, expected.execution);
+            TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.executionArchitecture);
+            TestX.If.Value.IsEqual(scenario.FileName, expected.file);
+            TestX.If.Value.IsEqual(scenario.MethodName, expected.method);
 
         }
 
-        void DDTScenarioCtor((ITestScenario scenario, String file, String method) input, (ITestScenario scenario, String file, String method) expected,
-            [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
+        IEnumerable<Object[]> DefaultCtorData() {
+            return new List<Object[]>() {
+                new Object[] { ((String) null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, (String) null, (String) null), ((String) null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, (String) null, (String) null) },
+                new Object[] { ("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86, new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", "MethodA"), ("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86, new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86, "FileA", "MethodA") },
+            };
+        }
+
+        [TestMethod]
+        [TestData(nameof(ScenarioCtorData))]
+        void ScenarioCtor((TestScenario scenario, String file, String method) input, (TestScenario scenario, String file, String method) expected) {
 
             ITestResultKey scenario = null;
 
-            TestX.Note($"new TestResultKey({input.scenario.Format()}, {input.file.Format()}, {input.method.Format()})",
-                _file, _method);
+            TestX.IfNot.Action.ThrowsException(() => scenario = new TestResultKey(input.scenario, input.file, input.method), out Exception ex);
+            TestX.IfNot.Object.IsNull(scenario);
 
-            TestX.IfNot.Action.ThrowsException(() => scenario = new TestResultKey(input.scenario, input.file, input.method), out Exception ex, _file, _method);
-            TestX.IfNot.Object.IsNull(scenario, _file, _method);
+            TestX.If.Value.IsEqual(scenario.AssemblyName, expected.scenario.AssemblyName);
+            TestX.If.Value.IsEqual(scenario.TargetRuntime, expected.scenario.TargetRuntime);
+            TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.scenario.TargetArchitecture);
+            TestX.If.Value.IsEqual(scenario.ExecutionRuntime, expected.scenario.ExecutionRuntime);
+            TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.scenario.ExecutionArchitecture);
+            TestX.If.Value.IsEqual(scenario.FileName, expected.file);
+            TestX.If.Value.IsEqual(scenario.MethodName, expected.method);
 
-            TestX.If.Value.IsEqual(scenario.AssemblyName, expected.scenario.AssemblyName, _file, _method);
-            TestX.If.Value.IsEqual(scenario.TargetRuntime, expected.scenario.TargetRuntime, _file, _method);
-            TestX.If.Value.IsEqual(scenario.TargetArchitecture, expected.scenario.TargetArchitecture, _file, _method);
-            TestX.If.Value.IsEqual(scenario.ExecutionRuntime, expected.scenario.ExecutionRuntime, _file, _method);
-            TestX.If.Value.IsEqual(scenario.ExecutionArchitecture, expected.scenario.ExecutionArchitecture, _file, _method);
-            TestX.If.Value.IsEqual(scenario.FileName, expected.file, _file, _method);
-            TestX.If.Value.IsEqual(scenario.MethodName, expected.method, _file, _method);
+        }
 
+        IEnumerable<Object[]> ScenarioCtorData() {
+            return new List<Object[]>() {
+                new Object[] { (new TestScenario(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), (String) null, (String) null), (new TestScenario(null, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None, new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), (String) null, (String) null) },
+                new Object[] { (new TestScenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86, new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", "MethodA"), (new TestScenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86, new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", "MethodA") },
+            };
         }
 
         #endregion
