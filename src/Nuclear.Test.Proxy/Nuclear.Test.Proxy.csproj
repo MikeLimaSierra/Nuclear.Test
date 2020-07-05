@@ -6,7 +6,7 @@
     <RootNamespace>Nuclear.Test.Proxy</RootNamespace>
     <StartupObject>Nuclear.Test.Proxy.Program</StartupObject>
     <Platforms>x64;x86</Platforms>
-    <Version>1.0.0</Version>
+    <Version>2.0.0</Version>
   </PropertyGroup>
   
   <Import Project="..\Configurations.targets" />
