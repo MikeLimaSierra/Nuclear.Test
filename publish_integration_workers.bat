@@ -10,22 +10,22 @@ dotnet publish --self-contained true -r win-x86 -c Integration -f netcoreapp2.2 
 dotnet publish --self-contained true -r win-x64 -c Integration -f netcoreapp3.0 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETCoreApp3.0\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
 dotnet publish --self-contained true -r win-x86 -c Integration -f netcoreapp3.0 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETCoreApp3.0\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
 
-dotnet publish -r win-x64 -c Integration -f net461 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.6.1\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-dotnet publish -r win-x86 -c Integration -f net461 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.6.1\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-			   
-dotnet publish -r win-x64 -c Integration -f net462 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.6.2\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-dotnet publish -r win-x86 -c Integration -f net462 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.6.2\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-			   
-dotnet publish -r win-x64 -c Integration -f net47 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.7\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-dotnet publish -r win-x86 -c Integration -f net47 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.7\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-			   
-dotnet publish -r win-x64 -c Integration -f net471 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.7.1\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-dotnet publish -r win-x86 -c Integration -f net471 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.7.1\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-			   
-dotnet publish -r win-x64 -c Integration -f net472 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.7.2\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-dotnet publish -r win-x86 -c Integration -f net472 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.7.2\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-			   
-dotnet publish -r win-x64 -c Integration -f net48 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.8\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-dotnet publish -r win-x86 -c Integration -f net48 -o publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.8\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
+xcopy /Y bin\Nuclear.Test.Worker\x64\Integration\net461\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.6.1\
+xcopy /Y bin\Nuclear.Test.Worker\x86\Integration\net461\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.6.1\
+
+xcopy /Y bin\Nuclear.Test.Worker\x64\Integration\net462\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.6.2\
+xcopy /Y bin\Nuclear.Test.Worker\x86\Integration\net462\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.6.2\
+
+xcopy /Y bin\Nuclear.Test.Worker\x64\Integration\net47\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.7\
+xcopy /Y bin\Nuclear.Test.Worker\x86\Integration\net47\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.7\
+
+xcopy /Y bin\Nuclear.Test.Worker\x64\Integration\net471\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.7.1\
+xcopy /Y bin\Nuclear.Test.Worker\x86\Integration\net471\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.7.1\
+
+xcopy /Y bin\Nuclear.Test.Worker\x64\Integration\net472\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.7.2\
+xcopy /Y bin\Nuclear.Test.Worker\x86\Integration\net472\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.7.2\
+
+xcopy /Y bin\Nuclear.Test.Worker\x64\Integration\net48\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\Amd64\NETFramework4.8\
+xcopy /Y bin\Nuclear.Test.Worker\x86\Integration\net48\* publish\Nuclear.Test.Console\Nuclear.Test.Worker\X86\NETFramework4.8\
 
 pause
