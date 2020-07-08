@@ -102,7 +102,11 @@ namespace Nuclear.Test.Worker {
             sequentialTestMethods = new List<TestMethod>();
             parallelTestMethods = new List<TestMethod>();
 
+            DiagnosticOutput.Log(OutputConfiguration, "Collecting test methods.");
+
             foreach(Type type in assembly.GetTypes()) {
+                DiagnosticOutput.Log(OutputConfiguration, "Searching Type {0}.", type.Format());
+
                 TestMode classLevelMode = TestMode.Parallel;
                 Boolean classLevelIgnore = false;
 
@@ -114,6 +118,8 @@ namespace Nuclear.Test.Worker {
                 }
 
                 foreach(MethodInfo testMethod in type.GetRuntimeMethods().Where(m => m.GetCustomAttributes<TestMethodAttribute>().Count() > 0)) {
+                    DiagnosticOutput.Log(OutputConfiguration, "Found test method {0}.", testMethod.Name.Format());
+
                     TestMethodAttribute m_attr = testMethod.GetCustomAttribute<TestMethodAttribute>();
 
                     if(classLevelIgnore) {
