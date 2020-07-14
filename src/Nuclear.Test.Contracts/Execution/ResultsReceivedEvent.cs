@@ -1,5 +1,7 @@
 ﻿using System;
 
+using Nuclear.Exceptions;
+
 namespace Nuclear.Test.Execution {
 
     /// <summary>
@@ -30,6 +32,8 @@ namespace Nuclear.Test.Execution {
         /// </summary>
         /// <param name="data">The raw test data.</param>
         public ResultsReceivedEventArgs(Byte[] data) {
+            Throw.If.Object.IsNull(data, nameof(data));
+
             Data = data;
         }
 

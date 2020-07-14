@@ -6,7 +6,7 @@ using Nuclear.TestSite;
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test {
-    class TestDataAvailableEventArgs_uTests {
+    class ResultsReceivedEventArgs_uTests {
 
         [TestMethod]
         void Implementation() {
@@ -20,10 +20,10 @@ namespace Nuclear.Test {
 
             ResultsReceivedEventArgs e = null;
 
-            TestX.IfNot.Action.ThrowsException(() => e = new ResultsReceivedEventArgs(null), out Exception ex);
-            TestX.If.Object.IsNull(e.Data);
+            TestX.If.Action.ThrowsException(() => e = new ResultsReceivedEventArgs(null), out ArgumentException ex);
+            TestX.If.Value.IsEqual(ex.ParamName, "data");
 
-            TestX.IfNot.Action.ThrowsException(() => e = new ResultsReceivedEventArgs(new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x06 }), out ex);
+            TestX.IfNot.Action.ThrowsException(() => e = new ResultsReceivedEventArgs(new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x06 }), out Exception ex1);
             TestX.If.Enumerable.MatchesExactly(e.Data, new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x06 });
 
         }

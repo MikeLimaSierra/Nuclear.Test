@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Nuclear.Exceptions;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Execution {
@@ -33,6 +34,8 @@ namespace Nuclear.Test.Execution {
         /// </summary>
         /// <param name="results">The collection of test results.</param>
         public ResultsAvailableEventArgs(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
+            Throw.If.Object.IsNull(results, nameof(results));
+
             Results = results;
         }
 
