@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
+
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Execution;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Output;
 using Nuclear.Test.Results;
@@ -15,26 +17,7 @@ namespace Nuclear.Test.TestExecution {
     /// <summary>
     /// Implements the base functionality of any remote control for test clients using named pipes for ipc.
     /// </summary>
-    public class PipedTestExecutorRemote {
-
-        #region events
-
-        /// <summary>
-        /// Is raised when raw test data is received from the attached test client.
-        /// </summary>
-        public event RawTestDataReceivedEventHandler ResultsReceived;
-
-        /// <summary>
-        /// Is raised when test results are deserialized and added to the results.
-        /// </summary>
-        public event TestResultsAvailableEventHandler ResultsAvailable;
-
-        /// <summary>
-        /// Is raised when all test results have been sent.
-        /// </summary>
-        public event EventHandler Finished;
-
-        #endregion
+    public class PipedTestExecutorRemote : Remote {
 
         #region fields
 
@@ -100,7 +83,7 @@ namespace Nuclear.Test.TestExecution {
         /// <summary>
         /// Creates the process, thread and pipe required to remote control the test client.
         /// </summary>
-        public void Execute() {
+        public override void Execute() {
             if(Executable != null && Executable.Exists) {
                 Thread pipeThread = new Thread(StartThread);
                 pipeThread.Start();
@@ -113,7 +96,7 @@ namespace Nuclear.Test.TestExecution {
 
             } else {
                 DiagnosticOutput.LogError("Unable to find file at '{0}'", Executable != null ? Executable.FullName : "null");
-                InvokeResultsAvailable();
+                RaiseRemotingFinished();
             }
         }
 
@@ -149,16 +132,16 @@ namespace Nuclear.Test.TestExecution {
 
                 while(pipeStream.ReadString() == TestConfiguration.TEST_RESULTS) {
                     if(TryReceiveResultData(pipeStream, out Byte[] data)) {
-                        ResultsReceived?.Invoke(this, new RawTestDataReceivedEventArgs(data));
+                        RaiseResultsReceived(data);
 
                         if(ResultSerializer.TryDeserialize(data, out ITestResultEndPoint results)) {
                             IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection = results.GetKeyedResults();
-                            InvokeResultsAvailable(resultCollection);
+                            RaiseResultsAvailable(resultCollection);
                         }
                     }
                 }
 
-                Finished?.Invoke(this, new EventArgs());
+                RaiseRemotingFinished();
 
             } catch(Exception ex) {
                 DiagnosticOutput.LogError("An exception was thrown while running tests in '{0}': {1}", File.FullName, ex);
@@ -170,7 +153,7 @@ namespace Nuclear.Test.TestExecution {
                 } catch(Exception ex) {
                     DiagnosticOutput.LogError("An exception was thrown while closing the pipe for '{0}': {1}", File.FullName, ex);
                 } finally {
-                    InvokeResultsAvailable();
+                    RaiseRemotingFinished();
                 }
             }
         }
@@ -188,9 +171,6 @@ namespace Nuclear.Test.TestExecution {
 
             return data != null && data.Length > 0;
         }
-
-        private void InvokeResultsAvailable(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection = null)
-            => ResultsAvailable?.Invoke(this, new TestResultsAvailableEventArgs(resultCollection ?? new Dictionary<ITestResultKey, ITestMethodResult>()));
 
         #endregion
 
