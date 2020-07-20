@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Execution {
@@ -36,6 +37,29 @@ namespace Nuclear.Test.Execution {
         /// Is raised when the client has finished processing and all results have been transfered.
         /// </summary>
         public event EventHandler RemotingFinished;
+
+        #endregion
+
+        #region fields
+
+        private readonly IServerLink _link;
+
+        #endregion
+
+        #region ctors
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Remote"/>.
+        /// </summary>
+        /// <param name="link">The link object used to communicate with clients.</param>
+        public Remote(IServerLink link) {
+            _link = link;
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Remote"/>.
+        /// </summary>
+        public Remote() { }
 
         #endregion
 
