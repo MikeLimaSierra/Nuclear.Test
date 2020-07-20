@@ -5,14 +5,18 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Defines a message that can be transmitted between <see cref="ILink"/> instances.
     /// </summary>
-    public interface IMessage : IEquatable<IMessage>, IComparable<IMessage> {
+    public interface IMessage : IEquatable<IMessage>, IComparable<IMessage>, IComparable {
 
         #region properties
 
-        Int32 Index { get; set; }
-
+        /// <summary>
+        /// Gets the command.
+        /// </summary>
         String Command { get; }
 
+        /// <summary>
+        /// Gets the payload.
+        /// </summary>
         Byte[] Payload { get; }
 
         #endregion
