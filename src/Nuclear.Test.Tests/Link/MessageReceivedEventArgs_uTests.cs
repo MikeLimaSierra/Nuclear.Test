@@ -18,7 +18,7 @@ namespace Nuclear.Test.Link {
         void Ctor() {
 
             MessageReceivedEventArgs e = null;
-            IMessage msg = new Message("command", new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x06 });
+            IMessage msg = Message.FromData("command", new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x06 });
 
             TestX.If.Action.ThrowsException(() => e = new MessageReceivedEventArgs(null), out ArgumentException ex);
             TestX.If.Value.IsEqual(ex.ParamName, "message");
