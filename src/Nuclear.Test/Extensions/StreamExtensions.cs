@@ -32,28 +32,6 @@ namespace Nuclear.Test.Extensions {
         }
 
         /// <summary>
-        /// Reads an <see cref="Int16"/> from a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="Int16"/> that was read from <paramref name="_this"/>.</returns>
-        public static Int16 ReadInt16(this Stream _this) {
-            Byte[] buffer = new Byte[sizeof(Int16)];
-            _this.Read(buffer, 0, buffer.Length);
-            return BitConverter.ToInt16(buffer, 0);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="UInt16"/> from a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="UInt16"/> that was read from <paramref name="_this"/>.</returns>
-        public static UInt16 ReadUInt16(this Stream _this) {
-            Byte[] buffer = new Byte[sizeof(UInt16)];
-            _this.Read(buffer, 0, buffer.Length);
-            return BitConverter.ToUInt16(buffer, 0);
-        }
-
-        /// <summary>
         /// Reads an <see cref="Int32"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to read from.</param>
@@ -62,72 +40,6 @@ namespace Nuclear.Test.Extensions {
             Byte[] buffer = new Byte[sizeof(Int32)];
             _this.Read(buffer, 0, buffer.Length);
             return BitConverter.ToInt32(buffer, 0);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="UInt32"/> from a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="UInt32"/> that was read from <paramref name="_this"/>.</returns>
-        public static UInt32 ReadUInt32(this Stream _this) {
-            Byte[] buffer = new Byte[sizeof(UInt32)];
-            _this.Read(buffer, 0, buffer.Length);
-            return BitConverter.ToUInt32(buffer, 0);
-        }
-
-        /// <summary>
-        /// Reads an <see cref="Int64"/> from a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="Int64"/> that was read from <paramref name="_this"/>.</returns>
-        public static Int64 ReadInt64(this Stream _this) {
-            Byte[] buffer = new Byte[sizeof(Int64)];
-            _this.Read(buffer, 0, buffer.Length);
-            return BitConverter.ToInt64(buffer, 0);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="UInt64"/> from a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="UInt64"/> that was read from <paramref name="_this"/>.</returns>
-        public static UInt64 ReadUInt64(this Stream _this) {
-            Byte[] buffer = new Byte[sizeof(UInt64)];
-            _this.Read(buffer, 0, buffer.Length);
-            return BitConverter.ToUInt64(buffer, 0);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="Single"/> from a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="Single"/> that was read from <paramref name="_this"/>.</returns>
-        public static Single ReadSingle(this Stream _this) {
-            Byte[] buffer = new Byte[sizeof(Single)];
-            _this.Read(buffer, 0, buffer.Length);
-            return BitConverter.ToSingle(buffer, 0);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="Double"/> from a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="Double"/> that was read from <paramref name="_this"/>.</returns>
-        public static Double ReadDouble(this Stream _this) {
-            Byte[] buffer = new Byte[sizeof(Double)];
-            _this.Read(buffer, 0, buffer.Length);
-            return BitConverter.ToDouble(buffer, 0);
-        }
-
-        /// <summary>
-        /// Reads a <see cref="Char"/> from a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to read from.</param>
-        /// <returns>The <see cref="Char"/> that was read from <paramref name="_this"/>.</returns>
-        public static Char ReadChar(this Stream _this) {
-            Byte[] buffer = new Byte[sizeof(Char)];
-            _this.Read(buffer, 0, buffer.Length);
-            return BitConverter.ToChar(buffer, 0);
         }
 
         /// <summary>
@@ -151,33 +63,11 @@ namespace Nuclear.Test.Extensions {
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
         /// <param name="value">The <see cref="String"/> that is written to <paramref name="_this"/>.</param>
         public static void Write(this Stream _this, String value) {
-            value = value ?? String.Empty;
+            value ??= String.Empty;
             Byte[] buffer = new UnicodeEncoding().GetBytes(value);
             UInt16 length = buffer.Length > UInt16.MaxValue ? UInt16.MaxValue : (UInt16) buffer.Length;
             _this.Write(BitConverter.GetBytes(length), 0, sizeof(UInt16));
             _this.Write(buffer, 0, length);
-            _this.Flush();
-        }
-
-        /// <summary>
-        /// Writes an <see cref="Int16"/> to a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="Int16"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, Int16 value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
-            _this.Write(BitConverter.GetBytes(value), 0, sizeof(Int16));
-            _this.Flush();
-        }
-
-        /// <summary>
-        /// Writes a <see cref="UInt16"/> to a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="UInt16"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, UInt16 value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
-            _this.Write(BitConverter.GetBytes(value), 0, sizeof(UInt16));
             _this.Flush();
         }
 
@@ -187,74 +77,7 @@ namespace Nuclear.Test.Extensions {
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
         /// <param name="value">The <see cref="Int32"/> that is written to <paramref name="_this"/>.</param>
         public static void Write(this Stream _this, Int32 value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
             _this.Write(BitConverter.GetBytes(value), 0, sizeof(Int32));
-            _this.Flush();
-        }
-
-        /// <summary>
-        /// Writes a <see cref="UInt32"/> to a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="UInt32"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, UInt32 value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
-            _this.Write(BitConverter.GetBytes(value), 0, sizeof(UInt32));
-            _this.Flush();
-        }
-
-        /// <summary>
-        /// Writes an <see cref="Int64"/> to a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="Int64"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, Int64 value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
-            _this.Write(BitConverter.GetBytes(value), 0, sizeof(Int64));
-            _this.Flush();
-        }
-
-        /// <summary>
-        /// Writes a <see cref="UInt64"/> to a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="UInt64"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, UInt64 value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
-            _this.Write(BitConverter.GetBytes(value), 0, sizeof(UInt64));
-            _this.Flush();
-        }
-
-        /// <summary>
-        /// Writes a <see cref="Single"/> to a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="Single"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, Single value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
-            _this.Write(BitConverter.GetBytes(value), 0, sizeof(Single));
-            _this.Flush();
-        }
-
-        /// <summary>
-        /// Writes a <see cref="Double"/> to a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="Double"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, Double value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
-            _this.Write(BitConverter.GetBytes(value), 0, sizeof(Double));
-            _this.Flush();
-        }
-
-        /// <summary>
-        /// Writes a <see cref="Char"/> to a <see cref="Stream"/>.
-        /// </summary>
-        /// <param name="_this">The <see cref="Stream"/> to write to.</param>
-        /// <param name="value">The <see cref="Char"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, Char value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
-            _this.Write(BitConverter.GetBytes(value), 0, sizeof(Char));
             _this.Flush();
         }
 
@@ -264,7 +87,6 @@ namespace Nuclear.Test.Extensions {
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
         /// <param name="value">The <see cref="Boolean"/> that is written to <paramref name="_this"/>.</param>
         public static void Write(this Stream _this, Boolean value) {
-            Byte[] buffer = BitConverter.GetBytes(value);
             _this.Write(BitConverter.GetBytes(value), 0, sizeof(Boolean));
             _this.Flush();
         }
@@ -278,16 +100,14 @@ namespace Nuclear.Test.Extensions {
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
         /// <returns>The read value.</returns>
-        public static FrameworkIdentifiers ReadMonikers(this Stream _this)
-            => (FrameworkIdentifiers) _this.ReadInt32();
+        public static FrameworkIdentifiers ReadMonikers(this Stream _this) => (FrameworkIdentifiers) _this.ReadInt32();
 
         /// <summary>
         /// Reads a <see cref="ProcessorArchitecture"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
         /// <returns>The read value.</returns>
-        public static ProcessorArchitecture ReadArchitecture(this Stream _this)
-            => (ProcessorArchitecture) _this.ReadInt32();
+        public static ProcessorArchitecture ReadArchitecture(this Stream _this) => (ProcessorArchitecture) _this.ReadInt32();
 
         /// <summary>
         /// Reads a <see cref="ITestResultKey"/> from a <see cref="Stream"/>.
@@ -306,7 +126,7 @@ namespace Nuclear.Test.Extensions {
         /// <param name="_this">The <see cref="Stream"/> to read from.</param>
         /// <returns>The <see cref="ITestEntry"/> that was read from <paramref name="_this"/>.</returns>
         public static ITestEntry ReadTestResult(this Stream _this)
-            => new TestEntry((EntryTypes) _this.ReadInt32(), _this.ReadBoolean() ? _this.ReadString() : (String) null, _this.ReadString());
+            => new TestEntry((EntryTypes) _this.ReadInt32(), _this.ReadBoolean() ? _this.ReadString() : null, _this.ReadString());
 
         /// <summary>
         /// Reads a <see cref="ITestMethodResult"/> from a <see cref="Stream"/>.
@@ -334,16 +154,14 @@ namespace Nuclear.Test.Extensions {
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
         /// <param name="value">The <see cref="FrameworkIdentifiers"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, FrameworkIdentifiers value)
-            => _this.Write((Int32) value);
+        public static void Write(this Stream _this, FrameworkIdentifiers value) => _this.Write((Int32) value);
 
         /// <summary>
         /// Writes an <see cref="ProcessorArchitecture"/> to a <see cref="Stream"/>.
         /// </summary>
         /// <param name="_this">The <see cref="Stream"/> to write to.</param>
         /// <param name="value">The <see cref="ProcessorArchitecture"/> that is written to <paramref name="_this"/>.</param>
-        public static void Write(this Stream _this, ProcessorArchitecture value)
-            => _this.Write((Int32) value);
+        public static void Write(this Stream _this, ProcessorArchitecture value) => _this.Write((Int32) value);
 
         /// <summary>
         /// Writes a <see cref="ITestResultKey"/> to a <see cref="Stream"/>.
