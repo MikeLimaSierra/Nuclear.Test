@@ -4,6 +4,12 @@ namespace Nuclear.Test.Link {
 
     public interface ILink {
 
+        #region events
+
+        event MessageReceivedEventHandler MessageReceived;
+
+        #endregion
+
         #region methods
 
         Boolean Start();
@@ -11,12 +17,6 @@ namespace Nuclear.Test.Link {
         void Stop();
 
         Boolean Send(IMessage message);
-
-        Boolean Send(String command, Boolean data);
-
-        Boolean Send(String command, Int32 data);
-
-        Boolean Send(String command, String data);
 
         #endregion
 
