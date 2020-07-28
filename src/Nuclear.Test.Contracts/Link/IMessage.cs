@@ -1,11 +1,12 @@
 ﻿using System;
+using System.IO;
 
 namespace Nuclear.Test.Link {
 
     /// <summary>
     /// Defines a message that can be transmitted between <see cref="ILink"/> instances.
     /// </summary>
-    public interface IMessage : IEquatable<IMessage>, IComparable<IMessage>, IComparable {
+    public interface IMessage : IDisposable {
 
         #region properties
 
@@ -17,7 +18,7 @@ namespace Nuclear.Test.Link {
         /// <summary>
         /// Gets the payload.
         /// </summary>
-        Byte[] Payload { get; }
+        MemoryStream Payload { get; }
 
         #endregion
 
