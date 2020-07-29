@@ -54,6 +54,8 @@ namespace Nuclear.Test.Execution {
         /// <param name="link">The link object used to communicate with clients.</param>
         public Remote(IServerLink link) {
             _link = link;
+            _link.ClientConnected += OnClientConnected;
+            _link.Start();
         }
 
         /// <summary>
@@ -63,12 +65,41 @@ namespace Nuclear.Test.Execution {
 
         #endregion
 
-        #region public methods
+        #region event handlers
+
+        private void OnClientConnected(Object sender, EventArgs e) {
+            _link.ClientConnected -= OnClientConnected;
+            _link.Connected += OnLinkConnected;
+            _link.Connect();
+        }
+
+        private void OnLinkConnected(Object sender, EventArgs e) {
+            _link.Connected -= OnLinkConnected;
+            SetupClient();
+            _link.MessageReceived += OnResultsReceived;
+            ExecuteClient();
+        }
+
+        private void OnResultsReceived(Object sender, MessageReceivedEventArgs e) => throw new NotImplementedException();
+
+        #endregion
+
+        #region abstract methods
 
         /// <summary>
         /// Commands the client to execute its task.
         /// </summary>
         public abstract void Execute();
+
+        /// <summary>
+        /// Sends configuration and test information to the client.
+        /// </summary>
+        protected abstract void SetupClient();
+
+        /// <summary>
+        /// Commands the client to execute.
+        /// </summary>
+        protected abstract void ExecuteClient();
 
         #endregion
 
