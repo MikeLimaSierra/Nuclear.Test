@@ -26,7 +26,7 @@ namespace Nuclear.Test.Link {
             TestX.IfNot.Action.ThrowsException(() => e = new MessageReceivedEventArgs(msg), out Exception ex1);
             TestX.If.Reference.IsEqual(e.Message, msg);
             TestX.If.Value.IsEqual(e.Message.Command, "command");
-            TestX.If.Enumerable.MatchesExactly(e.Message.Payload, new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x06 });
+            TestX.If.Enumerable.MatchesExactly(e.Message.Payload.ToArray(), new Byte[] { 0x01, 0x02, 0x03, 0x04, 0x06 });
 
         }
 
