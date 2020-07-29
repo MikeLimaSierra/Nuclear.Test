@@ -8,6 +8,8 @@ namespace Nuclear.Test.Link {
 
         event MessageReceivedEventHandler MessageReceived;
 
+        event EventHandler Connected;
+
         #endregion
 
         #region methods

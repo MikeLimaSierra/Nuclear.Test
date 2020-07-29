@@ -1,8 +1,11 @@
-﻿namespace Nuclear.Test.Link {
+﻿using System;
 
+namespace Nuclear.Test.Link {
     public interface IServerLink : ILink {
 
-        #region methods
+        #region events
+
+        event EventHandler ClientConnected;
 
         #endregion
 
