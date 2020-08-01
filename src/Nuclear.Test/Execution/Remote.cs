@@ -61,11 +61,6 @@ namespace Nuclear.Test.Execution {
             _link.Start();
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="Remote"/>.
-        /// </summary>
-        public Remote() { }
-
         #endregion
 
         #region event handlers
