@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Nuclear.Exceptions;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
@@ -53,6 +54,8 @@ namespace Nuclear.Test.Execution {
         /// </summary>
         /// <param name="link">The link object used to communicate with clients.</param>
         public Remote(IServerLink link) {
+            Throw.If.Object.IsNull(link, nameof(link));
+
             _link = link;
             _link.ClientConnected += OnClientConnected;
             _link.Start();
