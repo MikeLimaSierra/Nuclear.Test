@@ -35,6 +35,8 @@ namespace Nuclear.Test.Link {
             Payload = payload;
         }
 
+        private Message(String command) : this(command, new MemoryStream()) { }
+
         #endregion
 
         #region methods
@@ -67,6 +69,13 @@ namespace Nuclear.Test.Link {
         #endregion
 
         #region static methods
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Message"/>.
+        /// </summary>
+        /// <param name="command">The message command.</param>
+        /// <returns>The new message object.</returns>
+        public static IMessage FromData(String command) => new Message(command);
 
         /// <summary>
         /// Creates a new instance of <see cref="Message"/>.
