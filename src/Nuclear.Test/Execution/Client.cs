@@ -47,7 +47,23 @@ namespace Nuclear.Test.Execution {
             _link = link;
             _link.ServerConnected += OnServerConnected;
             _link.Start();
+            _link.MessageReceived += OnSetupReceived;
+            _link.MessageReceived += OnExecuteReceived;
             _link.Connect();
+        }
+
+        private void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
+            if(e.Message.Command == Commands.Setup) {
+                _link.MessageReceived -= OnSetupReceived;
+                // TODO: load setup data
+            }
+        }
+
+        private void OnExecuteReceived(Object sender, MessageReceivedEventArgs e) {
+            if(e.Message.Command == Commands.Execute) {
+                _link.MessageReceived -= OnExecuteReceived;
+                Execute();
+            }
         }
 
         #endregion
