@@ -67,6 +67,7 @@ namespace Nuclear.Test.Execution {
 
         private void OnClientConnected(Object sender, EventArgs e) {
             _link.ClientConnected -= OnClientConnected;
+            RaiseClientConnected();
             _link.Connected += OnLinkConnected;
             _link.Connect();
         }
@@ -75,10 +76,29 @@ namespace Nuclear.Test.Execution {
             _link.Connected -= OnLinkConnected;
             SetupClient();
             _link.MessageReceived += OnResultsReceived;
+            _link.MessageReceived += OnExecutionFinished;
             ExecuteClient();
         }
 
-        private void OnResultsReceived(Object sender, MessageReceivedEventArgs e) => throw new NotImplementedException();
+        private void OnResultsReceived(Object sender, MessageReceivedEventArgs e) {
+            if(e.Message.Command == Commands.Results) {
+                RaiseResultsReceived(e.Message.Payload.ToArray());
+
+                IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results = null;
+
+                // TODO: deserialize results from stream
+
+                RaiseResultsAvailable(results);
+            }
+        }
+
+        private void OnExecutionFinished(Object sender, MessageReceivedEventArgs e) {
+            if(e.Message.Command == Commands.Finished) {
+                _link.MessageReceived -= OnResultsReceived;
+                _link.MessageReceived -= OnExecutionFinished;
+                RaiseRemotingFinished();
+            }
+        }
 
         #endregion
 
