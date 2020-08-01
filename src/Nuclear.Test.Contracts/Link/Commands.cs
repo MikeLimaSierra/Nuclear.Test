@@ -8,6 +8,16 @@ namespace Nuclear.Test.Link {
     public static class Commands {
 
         /// <summary>
+        /// The message payload contains client setup information.
+        /// </summary>
+        public const String Setup = "Test.Setup";
+
+        /// <summary>
+        /// The client is commanded to execute.
+        /// </summary>
+        public const String Execute = "Test.Execute";
+
+        /// <summary>
         /// The message payload contains serialized test results.
         /// </summary>
         public const String Results = "Test.Results";
