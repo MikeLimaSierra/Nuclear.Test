@@ -49,6 +49,7 @@ namespace Nuclear.Test.Link {
 
         private Boolean _disposedValue;
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected virtual void Dispose(Boolean disposing) {
             if(!_disposedValue) {
                 if(disposing) {
@@ -65,6 +66,7 @@ namespace Nuclear.Test.Link {
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
