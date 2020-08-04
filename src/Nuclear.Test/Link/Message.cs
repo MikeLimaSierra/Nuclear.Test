@@ -70,14 +70,14 @@ namespace Nuclear.Test.Link {
 
         #endregion
 
-        #region static methods
+        #region static creation methods
 
         /// <summary>
         /// Creates a new instance of <see cref="Message"/>.
         /// </summary>
         /// <param name="command">The message command.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command) => new Message(command);
+        public static IMessage From(String command) => new Message(command);
 
         /// <summary>
         /// Creates a new instance of <see cref="Message"/>.
@@ -85,7 +85,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Boolean payload) {
+        public static IMessage From(String command, Boolean payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -101,7 +101,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Byte payload) {
+        public static IMessage From(String command, Byte payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -117,7 +117,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, SByte payload) {
+        public static IMessage From(String command, SByte payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -133,7 +133,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Char payload) {
+        public static IMessage From(String command, Char payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -149,7 +149,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Int16 payload) {
+        public static IMessage From(String command, Int16 payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -165,7 +165,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, UInt16 payload) {
+        public static IMessage From(String command, UInt16 payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -181,7 +181,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Int32 payload) {
+        public static IMessage From(String command, Int32 payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -197,7 +197,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, UInt32 payload) {
+        public static IMessage From(String command, UInt32 payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -213,7 +213,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Int64 payload) {
+        public static IMessage From(String command, Int64 payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -229,7 +229,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, UInt64 payload) {
+        public static IMessage From(String command, UInt64 payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -245,7 +245,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Single payload) {
+        public static IMessage From(String command, Single payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -261,7 +261,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Double payload) {
+        public static IMessage From(String command, Double payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -277,7 +277,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Decimal payload) {
+        public static IMessage From(String command, Decimal payload) {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
@@ -293,7 +293,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, String payload) {
+        public static IMessage From(String command, String payload) {
             Throw.If.Object.IsNull(payload, nameof(payload));
 
             MemoryStream ms = new MemoryStream();
@@ -311,7 +311,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Byte[] payload) {
+        public static IMessage From(String command, Byte[] payload) {
             Throw.If.Object.IsNull(payload, nameof(payload));
 
             MemoryStream ms = new MemoryStream();
@@ -329,7 +329,7 @@ namespace Nuclear.Test.Link {
         /// <param name="command">The message command.</param>
         /// <param name="payload">The message payload.</param>
         /// <returns>The new message object.</returns>
-        public static IMessage FromData(String command, Char[] payload) {
+        public static IMessage From(String command, Char[] payload) {
             Throw.If.Object.IsNull(payload, nameof(payload));
 
             MemoryStream ms = new MemoryStream();
