@@ -22,7 +22,7 @@ namespace Nuclear.Test.Link {
 
         #endregion
 
-        #region methods
+        #region get methods
 
         /// <summary>
         /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
@@ -135,6 +135,122 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
         Boolean TryGetData(out Char[] data);
+
+        #endregion
+
+        #region append methods
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Boolean data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Byte data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(SByte data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Char data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Int16 data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(UInt16 data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Int32 data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(UInt32 data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Int64 data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(UInt64 data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Single data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Double data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Decimal data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(String data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Byte[] data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(Char[] data);
 
         #endregion
 
