@@ -41,6 +41,312 @@ namespace Nuclear.Test.Link {
 
         #region methods
 
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Boolean data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadBoolean();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Byte data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadByte();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out SByte data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadSByte();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Char data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadChar();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Int16 data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadInt16();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out UInt16 data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadUInt16();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Int32 data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadInt32();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out UInt32 data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadUInt32();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Int64 data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadInt64();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out UInt64 data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadUInt64();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Single data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadSingle();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Double data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadDouble();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Decimal data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadDecimal();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out String data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = br.ReadString();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Byte[] data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    Int32 count = br.ReadInt32();
+                    data = br.ReadBytes(count);
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out Char[] data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    Int32 count = br.ReadInt32();
+                    data = br.ReadChars(count);
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public override String ToString() => $"{typeof(Message).Format()} ({Command.Format()} => {Payload.Length.Format()} Bytes)";
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
@@ -319,6 +625,7 @@ namespace Nuclear.Test.Link {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
+                bw.Write(data.Length);
                 bw.Write(data);
             }
 
@@ -337,6 +644,7 @@ namespace Nuclear.Test.Link {
             MemoryStream ms = new MemoryStream();
 
             using(BinaryWriter bw = new BinaryWriter(ms)) {
+                bw.Write(data.Length);
                 bw.Write(data);
             }
 
