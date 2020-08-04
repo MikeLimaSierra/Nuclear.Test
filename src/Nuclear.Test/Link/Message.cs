@@ -41,7 +41,9 @@ namespace Nuclear.Test.Link {
 
         #region methods
 
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         public override String ToString() => $"{typeof(Message).Format()} ({Command.Format()} => {Payload.Length.Format()} Bytes)";
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
