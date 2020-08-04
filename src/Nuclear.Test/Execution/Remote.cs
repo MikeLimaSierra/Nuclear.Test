@@ -68,12 +68,12 @@ namespace Nuclear.Test.Execution {
         private void OnClientConnected(Object sender, EventArgs e) {
             _link.ClientConnected -= OnClientConnected;
             RaiseClientConnected();
-            _link.Connected += OnLinkConnected;
+            _link.ConnectedToClient += OnConnectedToClient;
             _link.Connect();
         }
 
-        private void OnLinkConnected(Object sender, EventArgs e) {
-            _link.Connected -= OnLinkConnected;
+        private void OnConnectedToClient(Object sender, EventArgs e) {
+            _link.ConnectedToClient -= OnConnectedToClient;
             SetupClient();
             _link.MessageReceived += OnResultsReceived;
             _link.MessageReceived += OnExecutionFinished;

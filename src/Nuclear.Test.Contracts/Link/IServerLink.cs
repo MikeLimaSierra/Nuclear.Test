@@ -14,6 +14,11 @@ namespace Nuclear.Test.Link {
         /// </summary>
         event EventHandler ClientConnected;
 
+        /// <summary>
+        /// Is raised when connected to the output channel of an <see cref="IClientLink"/>.
+        /// </summary>
+        event EventHandler ConnectedToClient;
+
         #endregion
 
     }

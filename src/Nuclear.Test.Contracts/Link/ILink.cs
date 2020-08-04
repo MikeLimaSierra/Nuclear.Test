@@ -14,11 +14,6 @@ namespace Nuclear.Test.Link {
         /// </summary>
         event MessageReceivedEventHandler MessageReceived;
 
-        /// <summary>
-        /// Is raised when connected to the output channel of another <see cref="ILink"/>.
-        /// </summary>
-        event EventHandler Connected;
-
         #endregion
 
         #region methods
