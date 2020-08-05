@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
@@ -489,12 +491,40 @@ namespace Nuclear.Test.Link {
             for(Int32 i = 0; i < count; i++) {
                 if(TryGetData(out ITestEntry entry)) {
                     data.TestEntries.Add(entry);
+
                 } else {
                     return false;
                 }
             }
 
             return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data) {
+            data = default;
+
+            if(!TryGetData(out Int32 count)) {
+                return false;
+            }
+
+            IList<KeyValuePair<ITestResultKey, ITestMethodResult>> _data = new List<KeyValuePair<ITestResultKey, ITestMethodResult>>();
+
+            for(Int32 i = 0; i < count; i++) {
+                if(TryGetData(out ITestResultKey key) && TryGetData(out ITestMethodResult result)) {
+                    _data.Add(new KeyValuePair<ITestResultKey, ITestMethodResult>(key, result));
+
+                } else {
+                    return false;
+                }
+            }
+
+            data = _data;
+            return true;
         }
 
         #endregion
@@ -806,6 +836,22 @@ namespace Nuclear.Test.Link {
             Append(data.IgnoreReason ?? String.Empty);
             Append(data.TestEntries.Count);
             data.TestEntries.Foreach(entry => Append(entry));
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data) {
+            Append(data.Count());
+
+            foreach(KeyValuePair<ITestResultKey, ITestMethodResult> entry in data) {
+                Append(entry.Key);
+                Append(entry.Value);
+            }
 
             return this;
         }
