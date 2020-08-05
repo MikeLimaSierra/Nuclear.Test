@@ -1,8 +1,11 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
+using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Link {
 
@@ -27,6 +30,11 @@ namespace Nuclear.Test.Link {
 
         #region ctors
 
+        /// <summary>
+        /// Creates a new empty instance of <see cref="Message"/>.
+        /// </summary>
+        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="command"/> is null or empty.</exception>
+        /// <param name="command">The message command.</param>
         public Message(String command) {
             Throw.If.String.IsNullOrWhiteSpace(command, nameof(command));
 
@@ -36,7 +44,7 @@ namespace Nuclear.Test.Link {
 
         #endregion
 
-        #region get methods
+        #region get bcl type methods
 
         /// <summary>
         /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
@@ -346,7 +354,152 @@ namespace Nuclear.Test.Link {
 
         #endregion
 
-        #region append methods
+        #region get custom type methods
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out EntryTypes data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = (EntryTypes) br.ReadInt32();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out FrameworkIdentifiers data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = (FrameworkIdentifiers) br.ReadInt32();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out ProcessorArchitecture data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = (ProcessorArchitecture) br.ReadInt32();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out ITestResultKey data) {
+            data = default;
+
+            if(TryGetData(out String asssembly)
+                && TryGetData(out FrameworkIdentifiers tMoniker)
+                && TryGetData(out String _tVersion)
+                && Version.TryParse(_tVersion, out Version tVersion)
+                && TryGetData(out ProcessorArchitecture tArch)
+                && TryGetData(out FrameworkIdentifiers eMoniker)
+                && TryGetData(out String _eVersion)
+                && Version.TryParse(_eVersion, out Version eVersion)
+                && TryGetData(out ProcessorArchitecture eArch)
+                && TryGetData(out String fileName)
+                && TryGetData(out String methodName)) {
+
+                data = new TestResultKey(asssembly,
+                    new RuntimeInfo(tMoniker, tVersion), tArch,
+                    new RuntimeInfo(eMoniker, eVersion), eArch,
+                    fileName, methodName);
+            }
+
+            return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out ITestEntry data) {
+            data = default;
+
+            if(!TryGetData(out EntryTypes type)) {
+                return false;
+            }
+
+            String instruction = null;
+            if((type == EntryTypes.ResultOk || type == EntryTypes.ResultFail) && !TryGetData(out instruction)) {
+                return false;
+            }
+
+            if(!TryGetData(out String message)) {
+                return false;
+            }
+
+            try {
+                data = new TestEntry(type, instruction, message);
+
+            } catch { }
+
+            return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out ITestMethodResult data) {
+            data = default;
+
+            if(!TryGetData(out String ignore) || !TryGetData(out Int32 count)) {
+                return false;
+            }
+
+            data = new TestMethodResult();
+            data.Ignore(ignore);
+
+            for(Int32 i = 0; i < count; i++) {
+                if(TryGetData(out ITestEntry entry)) {
+                    data.TestEntries.Add(entry);
+                } else {
+                    return false;
+                }
+            }
+
+            return data != null;
+        }
+
+        #endregion
+
+        #region append bcl type methods
 
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
@@ -561,6 +714,98 @@ namespace Nuclear.Test.Link {
             using(BinaryWriter bw = new BinaryWriter(Payload)) {
                 bw.Write(data);
             }
+
+            return this;
+        }
+
+        #endregion
+
+        #region append custom type methods
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(EntryTypes data) {
+            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+                bw.Write((Int32) data);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(FrameworkIdentifiers data) {
+            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+                bw.Write((Int32) data);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(ProcessorArchitecture data) {
+            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+                bw.Write((Int32) data);
+            }
+
+            return this;
+        }
+       
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(ITestResultKey data) {
+            Append(data.AssemblyName);
+            Append(data.TargetRuntime.Framework);
+            Append(data.TargetRuntime.Version.ToString());
+            Append(data.TargetArchitecture);
+            Append(data.ExecutionRuntime.Framework);
+            Append(data.ExecutionRuntime.Version.ToString());
+            Append(data.ExecutionArchitecture);
+            Append(data.FileName);
+            Append(data.MethodName);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(ITestEntry data) {
+            Append(data.EntryType);
+
+            if(data.EntryType == EntryTypes.ResultOk || data.EntryType == EntryTypes.ResultFail) {
+                Append(data.Instruction);
+            }
+
+            Append(data.EntryType);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(ITestMethodResult data) {
+            Append(data.IgnoreReason ?? String.Empty);
+            Append(data.TestEntries.Count);
+            data.TestEntries.Foreach(entry => Append(entry));
 
             return this;
         }
