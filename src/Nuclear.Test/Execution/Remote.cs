@@ -84,11 +84,9 @@ namespace Nuclear.Test.Execution {
             if(e.Message.Command == Commands.Results) {
                 RaiseResultsReceived(e.Message.Payload.ToArray());
 
-                IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results = null;
-
-                // TODO: deserialize results from stream
-
-                RaiseResultsAvailable(results);
+                if(e.Message.TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results)) {
+                    RaiseResultsAvailable(results);
+                }
             }
         }
 
