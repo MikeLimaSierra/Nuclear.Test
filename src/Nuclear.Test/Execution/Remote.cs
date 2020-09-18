@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 
 using Nuclear.Exceptions;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
@@ -43,6 +46,8 @@ namespace Nuclear.Test.Execution {
 
         #region fields
 
+        private readonly IRemoteConfiguration _config;
+
         private readonly IServerLink _link;
 
         #endregion
@@ -52,10 +57,13 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Creates a new instance of <see cref="Remote"/>.
         /// </summary>
+        /// <param name="config">The configuration for the remote object.</param>
         /// <param name="link">The link object used to communicate with clients.</param>
-        public Remote(IServerLink link) {
+        public Remote(IRemoteConfiguration config, IServerLink link) {
+            Throw.If.Object.IsNull(config, nameof(config));
             Throw.If.Object.IsNull(link, nameof(link));
 
+            _config = config;
             _link = link;
             _link.ClientConnected += OnClientConnected;
             _link.Start();
@@ -120,6 +128,22 @@ namespace Nuclear.Test.Execution {
         #endregion
 
         #region protected methods
+
+        /// <summary>
+        /// Initializes the process that will be remote controlled.
+        /// </summary>
+        /// <param name="executable">The path to the executable file.</param>
+        /// <param name="pipeName">The pipe name used to communicate.</param>
+        protected void StartProcess(FileInfo executable, String pipeName) {
+            using(Process process = new Process()) {
+                process.StartInfo.FileName = executable.FullName;
+                process.StartInfo.Arguments = pipeName;
+                process.StartInfo.UseShellExecute = _config.ShowClient;
+                process.StartInfo.CreateNoWindow = !_config.ShowClient;
+                //DiagnosticOutput.Log(OutputConfiguration, "Starting process '{0} {1}' ...", executable.FullName, pipeName);
+                process.Start();
+            }
+        }
 
         /// <summary>
         /// Raises the event <see cref="ClientConnected"/>.
