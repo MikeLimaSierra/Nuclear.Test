@@ -16,6 +16,30 @@ namespace Nuclear.Test.Link {
 
         #endregion
 
+        #region properties
+
+        /// <summary>
+        /// Gets or sets the number of milliseconds to wait for the server to respond before the connection to another <see cref="ILink"/> times out.
+        /// </summary>
+        Int32 ConnectionTimeout { get; set; }
+
+        /// <summary>
+        /// Gets the ID that both inbound and outbound pipe IDs are based on.
+        /// </summary>
+        String PipeID { get; }
+
+        /// <summary>
+        /// Gets the ID of the outbound pipe.
+        /// </summary>
+        String PipeIDOut { get; }
+
+        /// <summary>
+        /// Gets the ID of the inbound pipe.
+        /// </summary>
+        String PipeIDIn { get; }
+
+        #endregion
+
         #region methods
 
         /// <summary>
@@ -29,11 +53,6 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <returns>True if successful.</returns>
         Boolean Connect();
-
-        /// <summary>
-        /// Disconnects from the input channel and stops the output channel.
-        /// </summary>
-        void Stop();
 
         /// <summary>
         /// Sends an <see cref="IMessage"/> through the output channel.
