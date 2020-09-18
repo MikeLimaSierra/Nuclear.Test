@@ -10,9 +10,15 @@ namespace Nuclear.Test.Configurations {
     public interface IRemoteConfiguration {
 
         /// <summary>
-        /// Gets or sets if client processes should be started in visible windows.
+        /// Gets or sets if client process should be started in a visible window.
         /// </summary>
-        Boolean ShowClients { get; set; }
+        Boolean ClientIsVisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets if client window will remain open after test execution.
+        ///     If set to true, visible worker will wait for input before exit.
+        /// </summary>
+        public Boolean ClientStaysOpen { get; set; }
 
     }
 }
