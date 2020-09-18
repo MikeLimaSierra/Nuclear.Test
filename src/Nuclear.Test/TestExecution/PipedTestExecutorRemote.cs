@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading;
@@ -36,11 +35,6 @@ namespace Nuclear.Test.TestExecution {
         /// Configuration values for output and logging.
         /// </summary>
         public OutputConfiguration OutputConfiguration { get; } = new OutputConfiguration();
-
-        /// <summary>
-        /// Gets the <see cref="NamedPipeServerStream"/> that is used for communication.
-        /// </summary>
-        protected NamedPipeServerStream PipeStream { get; private set; }
 
         /// <summary>
         /// Gets the <see cref="FileInfo"/> of the executable on disk.
@@ -103,17 +97,6 @@ namespace Nuclear.Test.TestExecution {
         #endregion
 
         #region private methods
-
-        private void StartProcess(FileInfo executable, String pipeName) {
-            using(Process process = new Process()) {
-                process.StartInfo.FileName = executable.FullName;
-                process.StartInfo.Arguments = pipeName;
-                process.StartInfo.UseShellExecute = OutputConfiguration.ShowClients;
-                process.StartInfo.CreateNoWindow = !OutputConfiguration.ShowClients;
-                DiagnosticOutput.Log(OutputConfiguration, "Starting process '{0} {1}' ...", executable.FullName, pipeName);
-                process.Start();
-            }
-        }
 
         private void StartThread() {
             NamedPipeServerStream pipeStream = null;
