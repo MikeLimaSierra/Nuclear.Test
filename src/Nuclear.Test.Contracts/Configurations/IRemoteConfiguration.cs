@@ -12,13 +12,7 @@ namespace Nuclear.Test.Configurations {
         /// <summary>
         /// Gets or sets if client process should be started in a visible window.
         /// </summary>
-        Boolean ClientIsVisible { get; set; }
-
-        /// <summary>
-        /// Gets or sets if client window will remain open after test execution.
-        ///     If set to true, visible worker will wait for input before exit.
-        /// </summary>
-        public Boolean ClientStaysOpen { get; set; }
+        Boolean StartClientVisible { get; set; }
 
     }
 }
