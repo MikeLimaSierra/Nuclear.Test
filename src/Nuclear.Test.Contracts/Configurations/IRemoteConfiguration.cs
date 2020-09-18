@@ -9,6 +9,19 @@ namespace Nuclear.Test.Configurations {
     /// </summary>
     public interface IRemoteConfiguration {
 
+        #region constants
+
+        /// <summary>
+        /// Configuration values for <see cref="StartClientVisible"/>.
+        /// </summary>
+        public String START_CLIENT_VISIBLE { get; }
+
+        #endregion
+
+        #region properties
+
+        #endregion
+
         /// <summary>
         /// Gets or sets if client process should be started in a visible window.
         /// </summary>
