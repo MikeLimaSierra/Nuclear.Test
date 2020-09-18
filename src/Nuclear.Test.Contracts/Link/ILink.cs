@@ -5,7 +5,7 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Defines the basic communication link.
     /// </summary>
-    public interface ILink {
+    public interface ILink : IDisposable {
 
         #region events
 
@@ -29,11 +29,6 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <returns>True if successful.</returns>
         Boolean Connect();
-
-        /// <summary>
-        /// Disconnects from the input channel.
-        /// </summary>
-        void Disconnect();
 
         /// <summary>
         /// Disconnects from the input channel and stops the output channel.
