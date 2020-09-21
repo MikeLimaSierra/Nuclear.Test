@@ -34,6 +34,8 @@ namespace Nuclear.Test.Link {
 
         private Thread _messageWriteT;
 
+        private NamedPipeServerStream _outStream;
+
         #endregion
 
         #region inbound
@@ -43,6 +45,8 @@ namespace Nuclear.Test.Link {
         private readonly AutoResetEvent _messageInEvent = new AutoResetEvent(false);
 
         private Thread _messageReadT;
+
+        private NamedPipeClientStream _inStream;
 
         #endregion
 
@@ -70,16 +74,6 @@ namespace Nuclear.Test.Link {
         /// </summary>
         public String PipeIDIn => $"{PipeID}-In";
 
-        /// <summary>
-        /// Gets the outbound pipe stream.
-        /// </summary>
-        protected NamedPipeServerStream Out { get; private set; }
-
-        /// <summary>
-        /// Gets the inbound pipe stream.
-        /// </summary>
-        protected NamedPipeClientStream In { get; private set; }
-
         #endregion
 
         #region ctors
@@ -93,8 +87,8 @@ namespace Nuclear.Test.Link {
 
             PipeID = pipeID;
 
-            Out = new NamedPipeServerStream(PipeIDOut, PipeDirection.Out, 1);
-            In = new NamedPipeClientStream(".", PipeIDIn, PipeDirection.In, PipeOptions.None, TokenImpersonationLevel.None);
+            _outStream = new NamedPipeServerStream(PipeIDOut, PipeDirection.Out, 1);
+            _inStream = new NamedPipeClientStream(".", PipeIDIn, PipeDirection.In, PipeOptions.None, TokenImpersonationLevel.None);
         }
 
         #endregion
@@ -107,7 +101,7 @@ namespace Nuclear.Test.Link {
         /// <returns>True if successful.</returns>
         public virtual Boolean Start() {
             try {
-                Out.WaitForConnection();
+                _outStream.WaitForConnection();
                 _messageWriteT = new Thread(MessageWriteTS);
                 _messageWriteT.Start();
 
@@ -124,7 +118,7 @@ namespace Nuclear.Test.Link {
         /// <returns>True if successful.</returns>
         public virtual Boolean Connect() {
             try {
-                In.Connect(ConnectionTimeout);
+                _inStream.Connect(ConnectionTimeout);
                 _messageReadT = new Thread(MessageReadTS);
                 _messageReadT.Start();
 
@@ -157,11 +151,11 @@ namespace Nuclear.Test.Link {
         protected virtual void Dispose(Boolean disposing) {
             if(!_disposedValue) {
                 if(disposing) {
-                    Out?.Dispose();
-                    Out = null;
+                    _outStream?.Dispose();
+                    _outStream = null;
 
-                    In?.Dispose();
-                    In = null;
+                    _inStream?.Dispose();
+                    _inStream = null;
                 }
 
                 _disposedValue = true;
@@ -204,6 +198,7 @@ namespace Nuclear.Test.Link {
         private void Write(IMessage message) {
             // write message length
             // write payload
+            // write command
         }
 
         private void MessageReadTS() {
@@ -215,8 +210,8 @@ namespace Nuclear.Test.Link {
 
         private IMessage Read() {
             // read message length
-            // read command
             // read payload
+            // read command
 
             return null;
         }
