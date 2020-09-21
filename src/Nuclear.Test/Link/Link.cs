@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO.Pipes;
 using System.Security.Principal;
+using System.Threading;
 
 using Nuclear.Exceptions;
 
@@ -17,6 +19,18 @@ namespace Nuclear.Test.Link {
         /// Is raised when an <see cref="IMessage"/> is received through the input channel.
         /// </summary>
         public event MessageReceivedEventHandler MessageReceived;
+
+        #endregion
+
+        #region fields
+
+        private readonly ConcurrentQueue<IMessage> _messagesOut = new ConcurrentQueue<IMessage>();
+
+        private readonly AutoResetEvent _messageOutEvent = new AutoResetEvent(false);
+
+        private readonly ConcurrentQueue<IMessage> _messagesIn = new ConcurrentQueue<IMessage>();
+
+        private readonly AutoResetEvent _messageInEvent = new AutoResetEvent(false);
 
         #endregion
 
@@ -106,8 +120,11 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public virtual Boolean Send(IMessage message) {
-            throw new NotImplementedException();
+        public virtual void Send(IMessage message) {
+            if(message != null) {
+                _messagesOut.Enqueue(message);
+                _messageOutEvent.Set();
+            }
         }
 
         #endregion
