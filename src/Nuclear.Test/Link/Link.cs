@@ -24,13 +24,27 @@ namespace Nuclear.Test.Link {
 
         #region fields
 
+        private readonly CancellationTokenSource _cancel = new CancellationTokenSource();
+
+        #region outbound
+
         private readonly ConcurrentQueue<IMessage> _messagesOut = new ConcurrentQueue<IMessage>();
 
         private readonly AutoResetEvent _messageOutEvent = new AutoResetEvent(false);
 
+        private Thread _messageWriteT;
+
+        #endregion
+
+        #region inbound
+
         private readonly ConcurrentQueue<IMessage> _messagesIn = new ConcurrentQueue<IMessage>();
 
         private readonly AutoResetEvent _messageInEvent = new AutoResetEvent(false);
+
+        private Thread _messageReadT;
+
+        #endregion
 
         #endregion
 
@@ -94,6 +108,9 @@ namespace Nuclear.Test.Link {
         public virtual Boolean Start() {
             try {
                 Out.WaitForConnection();
+                _messageWriteT = new Thread(MessageWriteTS);
+                _messageWriteT.Start();
+
                 return true;
 
             } catch {
@@ -108,6 +125,9 @@ namespace Nuclear.Test.Link {
         public virtual Boolean Connect() {
             try {
                 In.Connect(ConnectionTimeout);
+                _messageReadT = new Thread(MessageReadTS);
+                _messageReadT.Start();
+
                 return true;
 
             } catch {
@@ -164,6 +184,42 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="message">The message that was received.</param>
         protected internal void RaiseMessageReceived(IMessage message) => MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
+
+        #endregion
+
+        #region private methods
+
+        private void MessageWriteTS() {
+            while(!_cancel.IsCancellationRequested) {
+                _messageOutEvent.WaitOne();
+
+                if(!_cancel.IsCancellationRequested) {
+                    while(_messagesOut.TryDequeue(out IMessage message)) {
+                        Write(message);
+                    }
+                }
+            }
+        }
+
+        private void Write(IMessage message) {
+            // write message length
+            // write payload
+        }
+
+        private void MessageReadTS() {
+            while(!_cancel.IsCancellationRequested) {
+                _messagesIn.Enqueue(Read());
+                _messageInEvent.Set();
+            }
+        }
+
+        private IMessage Read() {
+            // read message length
+            // read command
+            // read payload
+
+            return null;
+        }
 
         #endregion
 
