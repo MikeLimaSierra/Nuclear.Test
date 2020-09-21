@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.IO;
 using System.IO.Pipes;
 using System.Security.Principal;
 using System.Threading;
@@ -26,9 +27,11 @@ namespace Nuclear.Test.Link {
 
         private readonly CancellationTokenSource _cancel = new CancellationTokenSource();
 
+        private readonly IMessageSerializer _serializer = null;
+
         #region outbound
 
-        private readonly ConcurrentQueue<IMessage> _messagesOut = new ConcurrentQueue<IMessage>();
+        private readonly ConcurrentQueue<Byte[]> _messagesOut = new ConcurrentQueue<Byte[]>();
 
         private readonly AutoResetEvent _messageOutEvent = new AutoResetEvent(false);
 
@@ -36,17 +39,21 @@ namespace Nuclear.Test.Link {
 
         private NamedPipeServerStream _outStream;
 
+        private BinaryWriter _outWriter;
+
         #endregion
 
         #region inbound
 
-        private readonly ConcurrentQueue<IMessage> _messagesIn = new ConcurrentQueue<IMessage>();
+        private readonly ConcurrentQueue<Byte[]> _messagesIn = new ConcurrentQueue<Byte[]>();
 
         private readonly AutoResetEvent _messageInEvent = new AutoResetEvent(false);
 
         private Thread _messageReadT;
 
         private NamedPipeClientStream _inStream;
+
+        private BinaryReader _inReader;
 
         #endregion
 
@@ -88,7 +95,9 @@ namespace Nuclear.Test.Link {
             PipeID = pipeID;
 
             _outStream = new NamedPipeServerStream(PipeIDOut, PipeDirection.Out, 1);
+            _outWriter = new BinaryWriter(_outStream);
             _inStream = new NamedPipeClientStream(".", PipeIDIn, PipeDirection.In, PipeOptions.None, TokenImpersonationLevel.None);
+            _inReader = new BinaryReader(_inStream);
         }
 
         #endregion
@@ -136,7 +145,7 @@ namespace Nuclear.Test.Link {
         /// <returns></returns>
         public virtual void Send(IMessage message) {
             if(message != null) {
-                _messagesOut.Enqueue(message);
+                _messagesOut.Enqueue(_serializer.Serialize(message));
                 _messageOutEvent.Set();
             }
         }
@@ -179,6 +188,38 @@ namespace Nuclear.Test.Link {
         /// <param name="message">The message that was received.</param>
         protected internal void RaiseMessageReceived(IMessage message) => MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
 
+        /// <summary>
+        /// Writes a byte array to the outbound pipe using one or more packages.
+        /// </summary>
+        /// <param name="data">The byte array that is written.</param>
+        protected void Write(Byte[] data) {
+            _outWriter.Write(data.Length);
+
+            for(Int32 i = 0; i < data.Length; i += UInt16.MaxValue) {
+                _outWriter.Write(data, i, Math.Min(data.Length - i, UInt16.MaxValue));
+            }
+
+            _outWriter.Flush();
+        }
+
+        /// <summary>
+        /// Reades a byte array from the inbound pipe using one or more packages.
+        /// </summary>
+        /// <returns>The byte array that is read.</returns>
+        protected void Read(out Byte[] data) {
+            Int32 length = _inReader.ReadInt32();
+
+            using(MemoryStream ms = new MemoryStream()) {
+                for(Int32 i = 0; i < length; i += UInt16.MaxValue) {
+                    Byte[] buffer = new Byte[Math.Min(length - i, UInt16.MaxValue)];
+                    _inReader.Read(buffer, 0, buffer.Length);
+                    ms.Write(buffer, 0, buffer.Length);
+                }
+
+                data = ms.ToArray();
+            }
+        }
+
         #endregion
 
         #region private methods
@@ -188,32 +229,19 @@ namespace Nuclear.Test.Link {
                 _messageOutEvent.WaitOne();
 
                 if(!_cancel.IsCancellationRequested) {
-                    while(_messagesOut.TryDequeue(out IMessage message)) {
-                        Write(message);
+                    while(_messagesOut.TryDequeue(out Byte[] data)) {
+                        Write(data);
                     }
                 }
             }
         }
 
-        private void Write(IMessage message) {
-            // write message length
-            // write payload
-            // write command
-        }
-
         private void MessageReadTS() {
             while(!_cancel.IsCancellationRequested) {
-                _messagesIn.Enqueue(Read());
+                Read(out Byte[] data);
+                _messagesIn.Enqueue(data);
                 _messageInEvent.Set();
             }
-        }
-
-        private IMessage Read() {
-            // read message length
-            // read payload
-            // read command
-
-            return null;
         }
 
         #endregion
