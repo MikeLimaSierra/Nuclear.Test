@@ -27,7 +27,7 @@ namespace Nuclear.Test.Link {
 
         private readonly CancellationTokenSource _cancel = new CancellationTokenSource();
 
-        private readonly IMessageSerializer _serializer = null;
+        private readonly IMessageSerializer _serializer = new MessageSerializer();
 
         #region outbound
 
