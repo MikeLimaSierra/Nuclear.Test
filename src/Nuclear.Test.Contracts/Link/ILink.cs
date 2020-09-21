@@ -59,7 +59,7 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        Boolean Send(IMessage message);
+        void Send(IMessage message);
 
         #endregion
 
