@@ -51,6 +51,8 @@ namespace Nuclear.Test.Link {
 
         private Thread _messageReadT;
 
+        private Thread _messageForwardT;
+
         private NamedPipeClientStream _inStream;
 
         private BinaryReader _inReader;
@@ -129,6 +131,8 @@ namespace Nuclear.Test.Link {
             try {
                 _messageReadT = new Thread(MessageReadTS);
                 _messageReadT.Start();
+                _messageForwardT = new Thread(MessageForwardTS);
+                _messageForwardT.Start();
                 _inStream.Connect(ConnectionTimeout);
 
                 return true;
@@ -162,9 +166,10 @@ namespace Nuclear.Test.Link {
 
             if(!_disposedValue) {
                 _messageOutEvent.Set();
-                _messageInEvent.Set();
-
                 _messageWriteT.Join();
+
+                _messageInEvent.Set();
+                _messageForwardT.Join();
                 _messageReadT.Abort();
 
                 if(disposing) {
@@ -252,6 +257,18 @@ namespace Nuclear.Test.Link {
                 Read(out Byte[] data);
                 _messagesIn.Enqueue(data);
                 _messageInEvent.Set();
+            }
+        }
+
+        private void MessageForwardTS() {
+            while(!_cancel.IsCancellationRequested) {
+                _messageInEvent.WaitOne();
+
+                if(!_cancel.IsCancellationRequested) {
+                    while(_messagesIn.TryDequeue(out Byte[] data)) {
+                        RaiseMessageReceived(_serializer.Deserialize(data));
+                    }
+                }
             }
         }
 
