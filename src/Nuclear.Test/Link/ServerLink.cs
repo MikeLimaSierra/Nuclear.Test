@@ -21,6 +21,20 @@ namespace Nuclear.Test.Link {
 
         #endregion
 
+        #region properties
+
+        /// <summary>
+        /// Gets the ID of the outbound pipe.
+        /// </summary>
+        public override String PipeIDOut => $"{PipeID}-Server";
+
+        /// <summary>
+        /// Gets the ID of the inbound pipe.
+        /// </summary>
+        public override String PipeIDIn => $"{PipeID}-Client";
+
+        #endregion
+
         #region ctors
 
         /// <summary>
