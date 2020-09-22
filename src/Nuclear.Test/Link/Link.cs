@@ -161,6 +161,12 @@ namespace Nuclear.Test.Link {
             _cancel.Cancel();
 
             if(!_disposedValue) {
+                _messageOutEvent.Set();
+                _messageInEvent.Set();
+
+                _messageWriteT.Join();
+                _messageReadT.Abort();
+
                 if(disposing) {
                     _outStream?.Dispose();
                     _outStream = null;
@@ -168,12 +174,6 @@ namespace Nuclear.Test.Link {
                     _inStream?.Dispose();
                     _inStream = null;
                 }
-
-                _messageOutEvent.Set();
-                _messageInEvent.Set();
-
-                _messageWriteT.Join();
-                _messageReadT.Join();
 
                 _disposedValue = true;
             }
@@ -216,7 +216,7 @@ namespace Nuclear.Test.Link {
         /// <returns>The byte array that is read.</returns>
         protected void Read(out Byte[] data) {
             Byte[] lengthBuffer = new Byte[sizeof(Int32)];
-            _inStream.ReadAsync(lengthBuffer, 0, lengthBuffer.Length, _cancel.Token);
+            _inStream.Read(lengthBuffer, 0, lengthBuffer.Length);
 
             Int32 length = BitConverter.ToInt32(lengthBuffer, 0);
 
