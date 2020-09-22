@@ -158,6 +158,8 @@ namespace Nuclear.Test.Link {
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected virtual void Dispose(Boolean disposing) {
+            _cancel.Cancel();
+
             if(!_disposedValue) {
                 if(disposing) {
                     _outStream?.Dispose();
@@ -166,6 +168,12 @@ namespace Nuclear.Test.Link {
                     _inStream?.Dispose();
                     _inStream = null;
                 }
+
+                _messageOutEvent.Set();
+                _messageInEvent.Set();
+
+                _messageWriteT.Join();
+                _messageReadT.Join();
 
                 _disposedValue = true;
             }
