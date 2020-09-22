@@ -138,8 +138,8 @@ namespace Nuclear.Test.Execution {
             using(Process process = new Process()) {
                 process.StartInfo.FileName = executable.FullName;
                 process.StartInfo.Arguments = pipeName;
-                process.StartInfo.UseShellExecute = _config.ShowClient;
-                process.StartInfo.CreateNoWindow = !_config.ShowClient;
+                process.StartInfo.UseShellExecute = _config.StartClientVisible;
+                process.StartInfo.CreateNoWindow = !_config.StartClientVisible;
                 //DiagnosticOutput.Log(OutputConfiguration, "Starting process '{0} {1}' ...", executable.FullName, pipeName);
                 process.Start();
             }
