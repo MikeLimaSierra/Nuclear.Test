@@ -76,12 +76,12 @@ namespace Nuclear.Test.Link {
         /// <summary>
         /// Gets the ID of the outbound pipe.
         /// </summary>
-        public String PipeIDOut => $"{PipeID}-Out";
+        public abstract String PipeIDOut { get; }
 
         /// <summary>
         /// Gets the ID of the inbound pipe.
         /// </summary>
-        public String PipeIDIn => $"{PipeID}-In";
+        public abstract String PipeIDIn { get; }
 
         #endregion
 
@@ -178,6 +178,12 @@ namespace Nuclear.Test.Link {
 
                     _inStream?.Dispose();
                     _inStream = null;
+
+                    _outWriter?.Dispose();
+                    _outWriter = null;
+
+                    _inReader?.Dispose();
+                    _inReader = null;
                 }
 
                 _disposedValue = true;
