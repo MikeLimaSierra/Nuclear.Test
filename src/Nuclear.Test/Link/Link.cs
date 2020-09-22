@@ -110,9 +110,9 @@ namespace Nuclear.Test.Link {
         /// <returns>True if successful.</returns>
         public virtual Boolean Start() {
             try {
-                _outStream.WaitForConnection();
                 _messageWriteT = new Thread(MessageWriteTS);
                 _messageWriteT.Start();
+                _outStream.WaitForConnection();
 
                 return true;
 
@@ -127,9 +127,9 @@ namespace Nuclear.Test.Link {
         /// <returns>True if successful.</returns>
         public virtual Boolean Connect() {
             try {
-                _inStream.Connect(ConnectionTimeout);
                 _messageReadT = new Thread(MessageReadTS);
                 _messageReadT.Start();
+                _inStream.Connect(ConnectionTimeout);
 
                 return true;
 
@@ -215,13 +215,16 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <returns>The byte array that is read.</returns>
         protected void Read(out Byte[] data) {
-            Int32 length = _inReader.ReadInt32();
+            Byte[] lengthBuffer = new Byte[sizeof(Int32)];
+            _inStream.ReadAsync(lengthBuffer, 0, lengthBuffer.Length, _cancel.Token);
+
+            Int32 length = BitConverter.ToInt32(lengthBuffer, 0);
 
             using(MemoryStream ms = new MemoryStream()) {
                 for(Int32 i = 0; i < length; i += UInt16.MaxValue) {
-                    Byte[] buffer = new Byte[Math.Min(length - i, UInt16.MaxValue)];
-                    _inReader.Read(buffer, 0, buffer.Length);
-                    ms.Write(buffer, 0, buffer.Length);
+                    Byte[] databuffer = new Byte[Math.Min(length - i, UInt16.MaxValue)];
+                    _inReader.Read(databuffer, 0, databuffer.Length);
+                    ms.Write(databuffer, 0, databuffer.Length);
                 }
 
                 data = ms.ToArray();
