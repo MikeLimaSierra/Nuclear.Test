@@ -5,9 +5,18 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Defines configuration values for an <see cref="IClient"/>.
+    /// Implements configuration values for an <see cref="IClient"/>.
     /// </summary>
-    public interface IClientConfiguration {
+    public class ClientConfiguration : IClientConfiguration {
+
+        #region constants
+
+        /// <summary>
+        /// Configuration values for <see cref="AutoShutdown"/>.
+        /// </summary>
+        public const String AUTO_SHUTDOWN = "Client.AutoShutdown";
+
+        #endregion
 
         #region properties
 
@@ -16,7 +25,7 @@ namespace Nuclear.Test.Configurations {
         ///     If set to true, the client will automatically shut down.
         ///     If set to false, the client will will wait for console input.
         /// </summary>
-        Boolean AutoShutdown { get; set; }
+        public Boolean AutoShutdown { get; set; }
 
         #endregion
 
