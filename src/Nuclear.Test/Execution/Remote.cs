@@ -46,7 +46,9 @@ namespace Nuclear.Test.Execution {
 
         #region fields
 
-        private readonly IRemoteConfiguration _config;
+        private readonly IRemoteConfiguration _remoteConfig;
+
+        private readonly IClientConfiguration _clientConfig;
 
         private readonly IServerLink _link;
 
@@ -57,13 +59,16 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Creates a new instance of <see cref="Remote"/>.
         /// </summary>
-        /// <param name="config">The configuration for the remote object.</param>
+        /// <param name="remoteConfig">The configuration for the remote object.</param>
+        /// <param name="clientConfig">The configuration for the client object.</param>
         /// <param name="link">The link object used to communicate with clients.</param>
-        public Remote(IRemoteConfiguration config, IServerLink link) {
-            Throw.If.Object.IsNull(config, nameof(config));
+        public Remote(IRemoteConfiguration remoteConfig, IClientConfiguration clientConfig, IServerLink link) {
+            Throw.If.Object.IsNull(remoteConfig, nameof(remoteConfig));
+            Throw.If.Object.IsNull(clientConfig, nameof(clientConfig));
             Throw.If.Object.IsNull(link, nameof(link));
 
-            _config = config;
+            _remoteConfig = remoteConfig;
+            _clientConfig = clientConfig;
             _link = link;
             _link.ClientConnected += OnClientConnected;
             _link.Start();
@@ -138,8 +143,8 @@ namespace Nuclear.Test.Execution {
             using(Process process = new Process()) {
                 process.StartInfo.FileName = executable.FullName;
                 process.StartInfo.Arguments = pipeName;
-                process.StartInfo.UseShellExecute = _config.StartClientVisible;
-                process.StartInfo.CreateNoWindow = !_config.StartClientVisible;
+                process.StartInfo.UseShellExecute = _remoteConfig.StartClientVisible;
+                process.StartInfo.CreateNoWindow = !_remoteConfig.StartClientVisible;
                 //DiagnosticOutput.Log(OutputConfiguration, "Starting process '{0} {1}' ...", executable.FullName, pipeName);
                 process.Start();
             }
