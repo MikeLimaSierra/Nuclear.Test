@@ -20,12 +20,12 @@ namespace Nuclear.Test.Configurations {
 
         #region properties
 
-        #endregion
-
         /// <summary>
         /// Gets or sets if client process should be started in a visible window.
         /// </summary>
         Boolean StartClientVisible { get; set; }
+
+        #endregion
 
     }
 }
