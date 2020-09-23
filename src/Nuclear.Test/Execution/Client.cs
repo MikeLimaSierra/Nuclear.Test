@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Nuclear.Exceptions;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Link;
 
 namespace Nuclear.Test.Execution {
@@ -33,6 +34,11 @@ namespace Nuclear.Test.Execution {
 
         private readonly IClientLink _link;
 
+        /// <summary>
+        /// The client configuration object.
+        /// </summary>
+        protected readonly IClientConfiguration _clientConfig;
+
         #endregion
 
         #region ctors
@@ -41,10 +47,12 @@ namespace Nuclear.Test.Execution {
         /// Creates a new instance of <see cref="Client"/>.
         /// </summary>
         /// <param name="link">The link object used to communicate with the remote.</param>
+        /// <param name="clientConfig">The client configuration object.</param>
         public Client(IClientLink link) {
             Throw.If.Object.IsNull(link, nameof(link));
 
             _link = link;
+            _clientConfig = new ClientConfiguration();
             _link.ServerConnected += OnServerConnected;
             _link.Start();
             _link.MessageReceived += OnSetupReceived;
@@ -82,7 +90,7 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Commands the client to execute its task.
         /// </summary>
-        public void Execute() => throw new NotImplementedException();
+        public abstract void Execute();
 
         #endregion
 
