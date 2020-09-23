@@ -7,6 +7,7 @@ using System.Reflection;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Link {
@@ -357,6 +358,51 @@ namespace Nuclear.Test.Link {
         #endregion
 
         #region get custom type methods
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out IClientConfiguration data) {
+            data = default;
+
+            if(TryGetData(out String identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)) {
+                data = new ClientConfiguration { AutoShutdown = autoShutdown };
+            }
+
+            return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out IWorkerConfiguration data) {
+            data = default;
+
+            if(TryGetData(out String identifier) && identifier == WorkerConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
+                data = new WorkerConfiguration { TestsInSequence = testsInSequence };
+            }
+
+            return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out IRemoteConfiguration data) {
+            data = default;
+
+            if(TryGetData(out String identifier) && identifier == RemoteConfiguration.START_CLIENT_VISIBLE && TryGetData(out Boolean startClientVisible)) {
+                data = new RemoteConfiguration { StartClientVisible = startClientVisible };
+            }
+
+            return data != null;
+        }
 
         /// <summary>
         /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
@@ -757,6 +803,42 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(IClientConfiguration data) {
+            Append(ClientConfiguration.AUTO_SHUTDOWN);
+            Append(data.AutoShutdown);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(IWorkerConfiguration data) {
+            Append(WorkerConfiguration.TESTS_IN_SEQUENCE);
+            Append(data.TestsInSequence);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(IRemoteConfiguration data) {
+            Append(RemoteConfiguration.START_CLIENT_VISIBLE);
+            Append(data.StartClientVisible);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(EntryTypes data) {
             using(BinaryWriter bw = new BinaryWriter(Payload)) {
                 bw.Write((Int32) data);
@@ -790,7 +872,7 @@ namespace Nuclear.Test.Link {
 
             return this;
         }
-       
+
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
         /// </summary>

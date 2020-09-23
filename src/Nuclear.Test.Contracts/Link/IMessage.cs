@@ -4,6 +4,7 @@ using System.IO;
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Link {
@@ -150,6 +151,27 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
+        Boolean TryGetData(out IClientConfiguration data);
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        Boolean TryGetData(out IWorkerConfiguration data);
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        Boolean TryGetData(out IRemoteConfiguration data);
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
         Boolean TryGetData(out EntryTypes data);
 
         /// <summary>
@@ -192,7 +214,7 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
-        public Boolean TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data);
+        Boolean TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data);
 
         #endregion
 
@@ -319,6 +341,27 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(IClientConfiguration data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(IWorkerConfiguration data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(IRemoteConfiguration data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
         IMessage Append(EntryTypes data);
 
         /// <summary>
@@ -361,7 +404,7 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
-        public IMessage Append(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data);
+        IMessage Append(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data);
         #endregion
 
     }
