@@ -320,6 +320,44 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out FileInfo data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = new FileInfo(br.ReadString());
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out DirectoryInfo data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = new DirectoryInfo(br.ReadString());
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
         public Boolean TryGetData(out Byte[] data) {
             data = default;
 
@@ -382,8 +420,31 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IWorkerConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == WorkerConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
-                data = new WorkerConfiguration { TestsInSequence = testsInSequence };
+            if(TryGetData(out String identifier) && identifier == WorkerConfiguration.FILE && TryGetData(out FileInfo file)
+                && TryGetData(out identifier) && identifier == WorkerConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
+                data = new WorkerConfiguration {
+                    File = file,
+                    TestsInSequence = testsInSequence
+                };
+            }
+
+            return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out IProxyConfiguration data) {
+            data = default;
+
+            if(TryGetData(out String identifier) && identifier == ProxyConfiguration.FILE && TryGetData(out FileInfo file)
+                && TryGetData(out identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)) {
+                data = new ProxyConfiguration {
+                    File = file,
+                    AssembliesInSequence = assembliesInSequence
+                };
             }
 
             return data != null;
@@ -768,6 +829,38 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <exception cref="ArgumentNullException">Is thrown when <paramref name="data"/> is null.</exception>
         /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(FileInfo data) {
+            Throw.If.Object.IsNull(data, nameof(data));
+
+            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+                bw.Write(data.FullName);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="data"/> is null.</exception>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(DirectoryInfo data) {
+            Throw.If.Object.IsNull(data, nameof(data));
+
+            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+                bw.Write(data.FullName);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="data"/> is null.</exception>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Byte[] data) {
             Throw.If.Object.IsNull(data, nameof(data));
 
@@ -816,8 +909,24 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IWorkerConfiguration data) {
+            Append(WorkerConfiguration.FILE);
+            Append(data.File);
             Append(WorkerConfiguration.TESTS_IN_SEQUENCE);
             Append(data.TestsInSequence);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(IProxyConfiguration data) {
+            Append(ProxyConfiguration.FILE);
+            Append(data.File);
+            Append(ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE);
+            Append(data.AssembliesInSequence);
 
             return this;
         }
