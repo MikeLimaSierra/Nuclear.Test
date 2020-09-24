@@ -1,8 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
 
+using Nuclear.Assemblies;
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Link;
+using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Execution {
 
@@ -34,10 +40,31 @@ namespace Nuclear.Test.Execution {
 
         private readonly IClientLink _link;
 
+        private readonly RuntimeInfo _currentRuntime;
+
+        #endregion
+
+        #region properties
+
         /// <summary>
-        /// The client configuration object.
+        /// Gets the client configuration object.
         /// </summary>
-        protected readonly IClientConfiguration _clientConfig;
+        protected IClientConfiguration Configuration { get; set; }
+
+        /// <summary>
+        /// Gets the test results sink that is in use.
+        /// </summary>
+        protected ITestResultEndPoint Results { get; } = new TestResultEndPoint();
+
+        /// <summary>
+        /// Gets or sets the header content as a <see cref="List{String}"/>.
+        /// </summary>
+        protected List<String> HeaderContent { get; } = new List<String>();
+
+        /// <summary>
+        /// Gets the runtime architecture.
+        /// </summary>
+        protected ProcessorArchitecture RuntimeArchitecure => Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86;
 
         #endregion
 
@@ -52,7 +79,9 @@ namespace Nuclear.Test.Execution {
             Throw.If.Object.IsNull(link, nameof(link));
 
             _link = link;
-            _clientConfig = new ClientConfiguration();
+
+            RuntimesHelper.TryGetCurrentRuntime(out _currentRuntime);
+
             _link.ServerConnected += OnServerConnected;
             _link.Start();
             _link.MessageReceived += OnSetupReceived;
@@ -60,23 +89,36 @@ namespace Nuclear.Test.Execution {
             _link.Connect();
         }
 
-        private void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
+        #endregion
+
+        #region event handlers
+
+        /// <summary>
+        /// Called when a message with <see cref="Commands.Setup"/> is received.
+        ///     Loads the <see cref="IClientConfiguration"/> first.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="MessageReceivedEventArgs"/>.</param>
+        protected virtual void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
             if(e.Message.Command == Commands.Setup) {
                 _link.MessageReceived -= OnSetupReceived;
-                // TODO: load setup data
+
+                if(e.Message.TryGetData(out IClientConfiguration config)) {
+                    Configuration = config;
+                }
             }
         }
 
         private void OnExecuteReceived(Object sender, MessageReceivedEventArgs e) {
             if(e.Message.Command == Commands.Execute) {
                 _link.MessageReceived -= OnExecuteReceived;
+
+                SetConsoleTitle();
+                PrintProcessInfo();
+
                 Execute();
             }
         }
-
-        #endregion
-
-        #region event handlers
 
         private void OnServerConnected(Object sender, EventArgs e) {
             _link.ServerConnected -= OnServerConnected;
@@ -85,7 +127,7 @@ namespace Nuclear.Test.Execution {
 
         #endregion
 
-        #region methods
+        #region public methods
 
         /// <summary>
         /// Commands the client to execute its task.
@@ -95,6 +137,45 @@ namespace Nuclear.Test.Execution {
         #endregion
 
         #region protected methods
+
+        /// <summary>
+        /// Prints an information panel to console that details the currently running executor instance.
+        /// </summary>
+        protected void PrintProcessInfo() {
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
+
+            foreach(String line in HeaderContent) {
+                sb.AppendFormat("║    {1}    ║{0}", Environment.NewLine, line.PadRight(60, ' '));
+            }
+
+            sb.AppendLine("╠══════════════════════════════════════════════════════════════════════╣");
+            sb.AppendFormat("║        Platform: {1}    ║{0}", Environment.NewLine, _currentRuntime.Framework.ToString().PadRight(48, ' '));
+            sb.AppendFormat("║         Version: {1}    ║{0}", Environment.NewLine, _currentRuntime.Version.ToString().PadRight(48, ' '));
+            sb.AppendFormat("║    Architecture: {1}    ║{0}", Environment.NewLine, RuntimeArchitecure.ToString().PadRight(48, ' '));
+            sb.AppendLine("╚══════════════════════════════════════════════════════════════════════╝");
+            Console.Write(sb);
+        }
+
+        /// <summary>
+        /// Prints an information panel to console that details the currently loaded test assembly.
+        /// </summary>
+        /// <param name="asmName"></param>
+        /// <param name="targetRuntime"></param>
+        protected void PrintAssemblyInfo(AssemblyName asmName, RuntimeInfo targetRuntime) {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("╔══════════════════════════════════════════════════════════════════════╗");
+            sb.AppendLine("║                             Test Assembly                            ║");
+            sb.AppendLine("╠══════════════════════════════════════════════════════════════════════╣");
+            sb.AppendFormat("║            Name: {1}    ║{0}", Environment.NewLine, asmName.Name.PadRight(48, ' '));
+            sb.AppendFormat("║        Platform: {1}    ║{0}", Environment.NewLine, targetRuntime.Framework.ToString().PadRight(48, ' '));
+            sb.AppendFormat("║         Version: {1}    ║{0}", Environment.NewLine, targetRuntime.Version.ToString().PadRight(48, ' '));
+            sb.AppendFormat("║    Architecture: {1}    ║{0}", Environment.NewLine, asmName.ProcessorArchitecture.ToString().PadRight(48, ' '));
+            sb.AppendLine("╚══════════════════════════════════════════════════════════════════════╝");
+            Console.Write(sb);
+        }
 
         /// <summary>
         /// Raises the event <see cref="RemoteConnected"/>.
@@ -110,6 +191,12 @@ namespace Nuclear.Test.Execution {
         /// Raises the event <see cref="ExecutionFinished"/>.
         /// </summary>
         protected internal void RaiseExecutionFinished() => ExecutionFinished?.Invoke(this, new EventArgs());
+
+        #endregion
+
+        #region private methods
+
+        private void SetConsoleTitle() => Console.Title = $"{_currentRuntime} - {RuntimeArchitecure} - {Assembly.GetEntryAssembly().GetName().Name}";
 
         #endregion
 
