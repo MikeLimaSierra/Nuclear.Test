@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 using Nuclear.Test.Execution;
 
@@ -13,11 +12,6 @@ namespace Nuclear.Test.Configurations {
         #region constants
 
         /// <summary>
-        /// Configuration values for <see cref="File"/>.
-        /// </summary>
-        public const String FILE = "Worker.File";
-
-        /// <summary>
         /// Configuration values for <see cref="AssembliesInSequence"/>.
         /// </summary>
         public const String ASSEMBLIES_IN_SEQUENCE = "Worker.AssembliesInSequence";
@@ -25,11 +19,6 @@ namespace Nuclear.Test.Configurations {
         #endregion
 
         #region properties
-
-        /// <summary>
-        /// Gets or sets the file path of the test assembly.
-        /// </summary>
-        public FileInfo File { get; set; }
 
         /// <summary>
         /// Gets or sets if assemblies should all be executed in a sequence.
