@@ -405,7 +405,8 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)) {
+            if(TryGetData(out String identifier) && identifier == ClientConfiguration.FILE && TryGetData(out FileInfo file)
+                && TryGetData(out identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)) {
                 data = new ClientConfiguration { AutoShutdown = autoShutdown };
             }
 
@@ -420,10 +421,8 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IWorkerConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == WorkerConfiguration.FILE && TryGetData(out FileInfo file)
-                && TryGetData(out identifier) && identifier == WorkerConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
+            if(TryGetData(out String identifier) && identifier == WorkerConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
                 data = new WorkerConfiguration {
-                    File = file,
                     TestsInSequence = testsInSequence
                 };
             }
@@ -439,10 +438,8 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IProxyConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ProxyConfiguration.FILE && TryGetData(out FileInfo file)
-                && TryGetData(out identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)) {
+            if(TryGetData(out String identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)) {
                 data = new ProxyConfiguration {
-                    File = file,
                     AssembliesInSequence = assembliesInSequence
                 };
             }
@@ -897,6 +894,8 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IClientConfiguration data) {
+            Append(ClientConfiguration.FILE);
+            Append(data.File);
             Append(ClientConfiguration.AUTO_SHUTDOWN);
             Append(data.AutoShutdown);
 
@@ -909,8 +908,6 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IWorkerConfiguration data) {
-            Append(WorkerConfiguration.FILE);
-            Append(data.File);
             Append(WorkerConfiguration.TESTS_IN_SEQUENCE);
             Append(data.TestsInSequence);
 
@@ -923,8 +920,6 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IProxyConfiguration data) {
-            Append(ProxyConfiguration.FILE);
-            Append(data.File);
             Append(ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE);
             Append(data.AssembliesInSequence);
 
