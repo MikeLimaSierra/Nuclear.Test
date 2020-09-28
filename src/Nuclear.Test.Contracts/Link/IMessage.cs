@@ -435,6 +435,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         IMessage Append(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data);
+
         #endregion
 
     }
