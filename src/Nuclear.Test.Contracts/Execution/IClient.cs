@@ -1,5 +1,8 @@
 ﻿using System;
 
+using Nuclear.Test.Configurations;
+using Nuclear.Test.Results;
+
 namespace Nuclear.Test.Execution {
 
     /// <summary>
@@ -23,6 +26,20 @@ namespace Nuclear.Test.Execution {
         /// Is raised when the client has finished processing and all results have been transfered.
         /// </summary>
         event EventHandler ExecutionFinished;
+
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// Gets the client configuration object.
+        /// </summary>
+        IClientConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Gets the test results sink that is in use.
+        /// </summary>
+        ITestResultEndPoint Results { get; }
 
         #endregion
 
