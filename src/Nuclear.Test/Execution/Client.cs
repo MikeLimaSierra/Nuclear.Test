@@ -175,6 +175,11 @@ namespace Nuclear.Test.Execution {
         }
 
         /// <summary>
+        /// Sends the <see cref="Commands.Finished"/> message to the attached <see cref="IRemote"/>.
+        /// </summary>
+        protected void SendFinished() => Link.Send(new Message(Commands.Finished));
+
+        /// <summary>
         /// Raises the event <see cref="RemoteConnected"/>.
         /// </summary>
         protected internal void RaiseRemoteConnected() => RemoteConnected?.Invoke(this, new EventArgs());

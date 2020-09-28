@@ -102,8 +102,7 @@ namespace Nuclear.Test.Worker {
 
             SendResults(Results.GetKeyedResults());
             RaiseExecutionFinished();
-
-            Link.Send(new Message(Commands.Finished));
+            SendFinished();
         }
 
         #endregion
