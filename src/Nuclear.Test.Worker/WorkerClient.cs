@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,8 +22,6 @@ namespace Nuclear.Test.Worker {
         private IWorkerConfiguration _workerConfig;
 
         private readonly Assembly _entryAssembly = Assembly.GetEntryAssembly();
-
-        private Assembly _testAssembly;
 
         #endregion
 
@@ -78,34 +75,32 @@ namespace Nuclear.Test.Worker {
             return null;
         }
 
-        protected override void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
-            if(e.Message.Command == Commands.Setup) {
-                base.OnSetupReceived(sender, e);
-
-                e.Message.TryGetData(out _workerConfig);
-
-                AssemblyHelper.TryLoadFrom(_workerConfig.File, out _testAssembly);
-            }
-        }
-
         #endregion
 
         #region methods
 
-        public override void Execute() {
-            AssemblyHelper.TryGetAssemblyName(_workerConfig.File, out AssemblyName testAssemblyName);
-            AssemblyHelper.TryGetRuntime(_testAssembly, out RuntimeInfo testAssemblyInfo);
-            AssemblyHelper.TryGetRuntime(Assembly.GetEntryAssembly(), out RuntimeInfo executionAssemblyInfo);
+        protected override void Setup(IMessage message) {
+            base.Setup(message);
 
-            TestScenario scenario = new TestScenario(testAssemblyName.Name,
-                testAssemblyInfo, testAssemblyName.ProcessorArchitecture,
-                executionAssemblyInfo, RuntimeArchitecure);
+            message.TryGetData(out _workerConfig);
+        }
+
+        protected override void Execute() {
+            base.Execute();
+
+            AssemblyHelper.TryGetRuntime(_entryAssembly, out RuntimeInfo entryAssemblyInfo);
+
+            TestScenario scenario = new TestScenario(TestAssemblyName.Name,
+                TestAssemblyRuntime, TestAssemblyName.ProcessorArchitecture,
+                entryAssemblyInfo, RuntimeArchitecure);
 
             Results.Initialize(scenario);
             ResultProxy.Results = Results;
 
-            CollectTestMethods(_testAssembly, Results, out List<TestMethod> sequential, out List<TestMethod> parallel);
+            CollectTestMethods(TestAssembly, Results, out List<TestMethod> sequential, out List<TestMethod> parallel);
             InvokeTestMethods(sequential, parallel);
+
+            RaiseExecutionFinished();
         }
 
         #endregion
@@ -160,7 +155,7 @@ namespace Nuclear.Test.Worker {
             sequentialTestMethods.ForEach(m => m.Invoke());
 
             //DiagnosticOutput.Log(OutputConfiguration, "Executing {0} parallel test methods.", parallelTestMethods.Count);
-            Parallel.ForEach(parallelTestMethods, (m) => m.Invoke());
+            Parallel.ForEach(parallelTestMethods, m => m.Invoke());
         }
 
         #endregion
