@@ -52,7 +52,7 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the client configuration object.
         /// </summary>
-        protected IClientConfiguration Configuration { get; private set; }
+        public IClientConfiguration Configuration { get; private set; }
 
         /// <summary>
         /// Gets the test results sink that is in use.
