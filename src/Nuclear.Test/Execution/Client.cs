@@ -38,13 +38,16 @@ namespace Nuclear.Test.Execution {
 
         #region fields
 
-        private readonly IClientLink _link;
-
         private readonly RuntimeInfo _currentRuntime;
 
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// Gets the communication link object.
+        /// </summary>
+        protected IClientLink Link { get; }
 
         /// <summary>
         /// Gets the client configuration object.
@@ -92,15 +95,15 @@ namespace Nuclear.Test.Execution {
         public Client(IClientLink link) {
             Throw.If.Object.IsNull(link, nameof(link));
 
-            _link = link;
+            Link = link;
 
             RuntimesHelper.TryGetCurrentRuntime(out _currentRuntime);
 
-            _link.ServerConnected += OnServerConnected;
-            _link.Start();
-            _link.MessageReceived += OnSetupReceived;
-            _link.MessageReceived += OnExecuteReceived;
-            _link.Connect();
+            Link.ServerConnected += OnServerConnected;
+            Link.Start();
+            Link.MessageReceived += OnSetupReceived;
+            Link.MessageReceived += OnExecuteReceived;
+            Link.Connect();
         }
 
         #endregion
@@ -109,20 +112,20 @@ namespace Nuclear.Test.Execution {
 
         private void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
             if(e.Message.Command == Commands.Setup) {
-                _link.MessageReceived -= OnSetupReceived;
+                Link.MessageReceived -= OnSetupReceived;
                 Setup(e.Message);
             }
         }
 
         private void OnExecuteReceived(Object sender, MessageReceivedEventArgs e) {
             if(e.Message.Command == Commands.Execute) {
-                _link.MessageReceived -= OnExecuteReceived;
+                Link.MessageReceived -= OnExecuteReceived;
                 Execute();
             }
         }
 
         private void OnServerConnected(Object sender, EventArgs e) {
-            _link.ServerConnected -= OnServerConnected;
+            Link.ServerConnected -= OnServerConnected;
             RaiseRemoteConnected();
         }
 
@@ -168,7 +171,7 @@ namespace Nuclear.Test.Execution {
         protected void SendResults(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
             IMessage message = new Message(Commands.Results);
             message.Append(results);
-            _link.Send(message);
+            Link.Send(message);
         }
 
         /// <summary>
