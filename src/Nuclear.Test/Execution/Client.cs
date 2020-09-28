@@ -162,6 +162,16 @@ namespace Nuclear.Test.Execution {
         }
 
         /// <summary>
+        /// Sends test results back to the attached <see cref="IRemote"/>.
+        /// </summary>
+        /// <param name="results">The test result collection that will be sent.</param>
+        protected void SendResults(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
+            IMessage message = new Message(Commands.Results);
+            message.Append(results);
+            _link.Send(message);
+        }
+
+        /// <summary>
         /// Raises the event <see cref="RemoteConnected"/>.
         /// </summary>
         protected internal void RaiseRemoteConnected() => RemoteConnected?.Invoke(this, new EventArgs());
