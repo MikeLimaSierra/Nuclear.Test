@@ -100,7 +100,10 @@ namespace Nuclear.Test.Worker {
             CollectTestMethods(TestAssembly, Results, out List<TestMethod> sequential, out List<TestMethod> parallel);
             InvokeTestMethods(sequential, parallel);
 
+            SendResults(Results.GetKeyedResults());
             RaiseExecutionFinished();
+
+            Link.Send(new Message(Commands.Finished));
         }
 
         #endregion
