@@ -26,14 +26,5 @@ namespace Nuclear.Test.Execution {
 
         #endregion
 
-        #region methods
-
-        /// <summary>
-        /// Commands the client to execute its task.
-        /// </summary>
-        void Execute();
-
-        #endregion
-
     }
 }
