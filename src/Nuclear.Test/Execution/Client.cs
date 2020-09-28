@@ -49,7 +49,7 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the client configuration object.
         /// </summary>
-        protected IClientConfiguration Configuration { get; set; }
+        protected IClientConfiguration Configuration { get; private set; }
 
         /// <summary>
         /// Gets the test results sink that is in use.
@@ -66,6 +66,21 @@ namespace Nuclear.Test.Execution {
         /// </summary>
         protected ProcessorArchitecture RuntimeArchitecure => Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86;
 
+        /// <summary>
+        /// Gets the loaded test <see cref="Assembly"/> object.
+        /// </summary>
+        protected Assembly TestAssembly { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="AssemblyName"/> of the <see cref="TestAssembly"/>.
+        /// </summary>
+        protected AssemblyName TestAssemblyName { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="RuntimeInfo"/> of the <see cref="TestAssembly"/>.
+        /// </summary>
+        protected RuntimeInfo TestAssemblyRuntime { get; private set; }
+
         #endregion
 
         #region ctors
@@ -74,7 +89,6 @@ namespace Nuclear.Test.Execution {
         /// Creates a new instance of <see cref="Client"/>.
         /// </summary>
         /// <param name="link">The link object used to communicate with the remote.</param>
-        /// <param name="clientConfig">The client configuration object.</param>
         public Client(IClientLink link) {
             Throw.If.Object.IsNull(link, nameof(link));
 
@@ -93,29 +107,16 @@ namespace Nuclear.Test.Execution {
 
         #region event handlers
 
-        /// <summary>
-        /// Called when a message with <see cref="Commands.Setup"/> is received.
-        ///     Loads the <see cref="IClientConfiguration"/> first.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="MessageReceivedEventArgs"/>.</param>
-        protected virtual void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
+        private void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
             if(e.Message.Command == Commands.Setup) {
                 _link.MessageReceived -= OnSetupReceived;
-
-                if(e.Message.TryGetData(out IClientConfiguration config)) {
-                    Configuration = config;
-                }
+                Setup(e.Message);
             }
         }
 
         private void OnExecuteReceived(Object sender, MessageReceivedEventArgs e) {
             if(e.Message.Command == Commands.Execute) {
                 _link.MessageReceived -= OnExecuteReceived;
-
-                SetConsoleTitle();
-                PrintProcessInfo();
-
                 Execute();
             }
         }
@@ -127,54 +128,37 @@ namespace Nuclear.Test.Execution {
 
         #endregion
 
-        #region public methods
+        #region protected methods
+
+        /// <summary>
+        /// Loads setup data from <paramref name="message"/>.
+        /// </summary>
+        /// <param name="message">The message containing the setup.</param>
+        protected virtual void Setup(IMessage message) {
+            if(message.Command == Commands.Setup && message.TryGetData(out IClientConfiguration config)) {
+                Configuration = config;
+
+                if(AssemblyHelper.TryLoadFrom(Configuration.File, out Assembly testAssembly)) {
+                    TestAssembly = testAssembly;
+
+                    if(AssemblyHelper.TryGetAssemblyName(Configuration.File, out AssemblyName testAssemblyName)) {
+                        TestAssemblyName = testAssemblyName;
+                    }
+
+                    if(AssemblyHelper.TryGetRuntime(TestAssembly, out RuntimeInfo testAssemblyRuntime)) {
+                        TestAssemblyRuntime = testAssemblyRuntime;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Commands the client to execute its task.
         /// </summary>
-        public abstract void Execute();
-
-        #endregion
-
-        #region protected methods
-
-        /// <summary>
-        /// Prints an information panel to console that details the currently running executor instance.
-        /// </summary>
-        protected void PrintProcessInfo() {
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
-
-            foreach(String line in HeaderContent) {
-                sb.AppendFormat("║    {1}    ║{0}", Environment.NewLine, line.PadRight(60, ' '));
-            }
-
-            sb.AppendLine("╠══════════════════════════════════════════════════════════════════════╣");
-            sb.AppendFormat("║        Platform: {1}    ║{0}", Environment.NewLine, _currentRuntime.Framework.ToString().PadRight(48, ' '));
-            sb.AppendFormat("║         Version: {1}    ║{0}", Environment.NewLine, _currentRuntime.Version.ToString().PadRight(48, ' '));
-            sb.AppendFormat("║    Architecture: {1}    ║{0}", Environment.NewLine, RuntimeArchitecure.ToString().PadRight(48, ' '));
-            sb.AppendLine("╚══════════════════════════════════════════════════════════════════════╝");
-            Console.Write(sb);
-        }
-
-        /// <summary>
-        /// Prints an information panel to console that details the currently loaded test assembly.
-        /// </summary>
-        /// <param name="asmName"></param>
-        /// <param name="targetRuntime"></param>
-        protected void PrintAssemblyInfo(AssemblyName asmName, RuntimeInfo targetRuntime) {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine("╔══════════════════════════════════════════════════════════════════════╗");
-            sb.AppendLine("║                             Test Assembly                            ║");
-            sb.AppendLine("╠══════════════════════════════════════════════════════════════════════╣");
-            sb.AppendFormat("║            Name: {1}    ║{0}", Environment.NewLine, asmName.Name.PadRight(48, ' '));
-            sb.AppendFormat("║        Platform: {1}    ║{0}", Environment.NewLine, targetRuntime.Framework.ToString().PadRight(48, ' '));
-            sb.AppendFormat("║         Version: {1}    ║{0}", Environment.NewLine, targetRuntime.Version.ToString().PadRight(48, ' '));
-            sb.AppendFormat("║    Architecture: {1}    ║{0}", Environment.NewLine, asmName.ProcessorArchitecture.ToString().PadRight(48, ' '));
-            sb.AppendLine("╚══════════════════════════════════════════════════════════════════════╝");
-            Console.Write(sb);
+        protected virtual void Execute() {
+            SetConsoleTitle();
+            PrintProcessInfo();
+            PrintAssemblyInfo();
         }
 
         /// <summary>
@@ -197,6 +181,37 @@ namespace Nuclear.Test.Execution {
         #region private methods
 
         private void SetConsoleTitle() => Console.Title = $"{_currentRuntime} - {RuntimeArchitecure} - {Assembly.GetEntryAssembly().GetName().Name}";
+
+        private void PrintProcessInfo() {
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
+
+            foreach(String line in HeaderContent) {
+                sb.AppendFormat("║    {1}    ║{0}", Environment.NewLine, line.PadRight(60, ' '));
+            }
+
+            sb.AppendLine("╠══════════════════════════════════════════════════════════════════════╣");
+            sb.AppendFormat("║        Platform: {1}    ║{0}", Environment.NewLine, _currentRuntime.Framework.ToString().PadRight(48, ' '));
+            sb.AppendFormat("║         Version: {1}    ║{0}", Environment.NewLine, _currentRuntime.Version.ToString().PadRight(48, ' '));
+            sb.AppendFormat("║    Architecture: {1}    ║{0}", Environment.NewLine, RuntimeArchitecure.ToString().PadRight(48, ' '));
+            sb.AppendLine("╚══════════════════════════════════════════════════════════════════════╝");
+            Console.Write(sb);
+        }
+
+        private void PrintAssemblyInfo() {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("╔══════════════════════════════════════════════════════════════════════╗");
+            sb.AppendLine("║                             Test Assembly                            ║");
+            sb.AppendLine("╠══════════════════════════════════════════════════════════════════════╣");
+            sb.AppendFormat("║            Name: {1}    ║{0}", Environment.NewLine, TestAssemblyName.Name.PadRight(48, ' '));
+            sb.AppendFormat("║        Platform: {1}    ║{0}", Environment.NewLine, TestAssemblyRuntime.Framework.ToString().PadRight(48, ' '));
+            sb.AppendFormat("║         Version: {1}    ║{0}", Environment.NewLine, TestAssemblyRuntime.Version.ToString().PadRight(48, ' '));
+            sb.AppendFormat("║    Architecture: {1}    ║{0}", Environment.NewLine, TestAssemblyName.ProcessorArchitecture.ToString().PadRight(48, ' '));
+            sb.AppendLine("╚══════════════════════════════════════════════════════════════════════╝");
+            Console.Write(sb);
+        }
 
         #endregion
 
