@@ -101,8 +101,8 @@ namespace Nuclear.Test.Worker {
             InvokeTestMethods(sequential, parallel);
 
             SendResults(Results.GetKeyedResults());
-            RaiseExecutionFinished();
             SendFinished();
+            RaiseExecutionFinished();
         }
 
         #endregion
