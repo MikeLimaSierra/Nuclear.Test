@@ -114,6 +114,20 @@ namespace Nuclear.Test.Link {
             try {
                 _messageWriteT = new Thread(MessageWriteTS);
                 _messageWriteT.Start();
+
+                return true;
+
+            } catch {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Waits for a connecting <see cref="ILink"/> on the output channel.
+        /// </summary>
+        /// <returns>True if a connection was established.</returns>
+        public virtual Boolean WaitForConnection() {
+            try {
                 _outStream.WaitForConnection();
 
                 return true;

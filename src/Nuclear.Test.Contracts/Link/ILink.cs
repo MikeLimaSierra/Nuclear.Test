@@ -49,6 +49,12 @@ namespace Nuclear.Test.Link {
         Boolean Start();
 
         /// <summary>
+        /// Waits for a connecting <see cref="ILink"/> on the output channel.
+        /// </summary>
+        /// <returns>True if a connection was established.</returns>
+        Boolean WaitForConnection();
+
+        /// <summary>
         /// Connects to another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
