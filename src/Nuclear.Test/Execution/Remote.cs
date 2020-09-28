@@ -46,11 +46,21 @@ namespace Nuclear.Test.Execution {
 
         #region fields
 
-        private readonly IRemoteConfiguration _remoteConfig;
-
         private readonly IClientConfiguration _clientConfig;
 
-        private readonly IServerLink _link;
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// Gets the communication link object.
+        /// </summary>
+        protected IServerLink Link { get; }
+
+        /// <summary>
+        /// Gets the remote configuration object.
+        /// </summary>
+        public IRemoteConfiguration Configuration { get; }
 
         #endregion
 
@@ -67,11 +77,11 @@ namespace Nuclear.Test.Execution {
             Throw.If.Object.IsNull(clientConfig, nameof(clientConfig));
             Throw.If.Object.IsNull(link, nameof(link));
 
-            _remoteConfig = remoteConfig;
+            Configuration = remoteConfig;
             _clientConfig = clientConfig;
-            _link = link;
-            _link.ClientConnected += OnClientConnected;
-            _link.Start();
+            Link = link;
+            Link.ClientConnected += OnClientConnected;
+            Link.Start();
         }
 
         #endregion
@@ -79,18 +89,18 @@ namespace Nuclear.Test.Execution {
         #region event handlers
 
         private void OnClientConnected(Object sender, EventArgs e) {
-            _link.ClientConnected -= OnClientConnected;
+            Link.ClientConnected -= OnClientConnected;
             RaiseClientConnected();
-            _link.ConnectedToClient += OnConnectedToClient;
-            _link.Connect();
+            Link.ConnectedToClient += OnConnectedToClient;
+            Link.Connect();
         }
 
         private void OnConnectedToClient(Object sender, EventArgs e) {
-            _link.ConnectedToClient -= OnConnectedToClient;
-            SetupClient();
-            _link.MessageReceived += OnResultsReceived;
-            _link.MessageReceived += OnExecutionFinished;
-            ExecuteClient();
+            Link.ConnectedToClient -= OnConnectedToClient;
+            SendSetup();
+            Link.MessageReceived += OnResultsReceived;
+            Link.MessageReceived += OnExecutionFinished;
+            SendExecute();
         }
 
         private void OnResultsReceived(Object sender, MessageReceivedEventArgs e) {
@@ -105,8 +115,8 @@ namespace Nuclear.Test.Execution {
 
         private void OnExecutionFinished(Object sender, MessageReceivedEventArgs e) {
             if(e.Message.Command == Commands.Finished) {
-                _link.MessageReceived -= OnResultsReceived;
-                _link.MessageReceived -= OnExecutionFinished;
+                Link.MessageReceived -= OnResultsReceived;
+                Link.MessageReceived -= OnExecutionFinished;
                 RaiseRemotingFinished();
             }
         }
@@ -121,14 +131,27 @@ namespace Nuclear.Test.Execution {
         public abstract void Execute();
 
         /// <summary>
-        /// Sends configuration and test information to the client.
+        /// Sends the <see cref="Commands.Setup"/> message to the attached <see cref="IClient"/>.
         /// </summary>
-        protected abstract void SetupClient();
+        private void SendSetup() => Link.Send(GetSetupMessage(new Message(Commands.Setup)));
 
         /// <summary>
-        /// Commands the client to execute.
+        /// Gets the message containing setup data for the connected client.
         /// </summary>
-        protected abstract void ExecuteClient();
+        /// <param name="message">The message for the client.</param>
+        /// <returns></returns>
+        protected virtual IMessage GetSetupMessage(IMessage message) {
+            Throw.If.Object.IsNull(message, nameof(message));
+
+            message.Append(_clientConfig);
+
+            return message;
+        }
+
+        /// <summary>
+        /// Sends the <see cref="Commands.Execute"/> message to the attached <see cref="IClient"/>.
+        /// </summary>
+        protected void SendExecute() => Link.Send(new Message(Commands.Execute));
 
         #endregion
 
@@ -143,8 +166,8 @@ namespace Nuclear.Test.Execution {
             using(Process process = new Process()) {
                 process.StartInfo.FileName = executable.FullName;
                 process.StartInfo.Arguments = pipeName;
-                process.StartInfo.UseShellExecute = _remoteConfig.StartClientVisible;
-                process.StartInfo.CreateNoWindow = !_remoteConfig.StartClientVisible;
+                process.StartInfo.UseShellExecute = Configuration.StartClientVisible;
+                process.StartInfo.CreateNoWindow = !Configuration.StartClientVisible;
                 //DiagnosticOutput.Log(OutputConfiguration, "Starting process '{0} {1}' ...", executable.FullName, pipeName);
                 process.Start();
             }
