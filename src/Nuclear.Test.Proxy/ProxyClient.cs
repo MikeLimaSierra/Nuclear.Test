@@ -13,6 +13,8 @@ namespace Nuclear.Test.Proxy {
 
         private IProxyConfiguration _proxyConfig;
 
+        private IWorkerConfiguration _workerConfig;
+
         #endregion
 
         #region ctors
@@ -42,6 +44,7 @@ namespace Nuclear.Test.Proxy {
             base.Setup(message);
 
             message.TryGetData(out _proxyConfig);
+            message.TryGetData(out _workerConfig);
         }
 
         protected override void Execute() {
