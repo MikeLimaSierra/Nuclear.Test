@@ -442,10 +442,14 @@ namespace Nuclear.Test.Link {
             data = default;
 
             if(TryGetData(out String identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)
-                && TryGetData(out identifier) && identifier == ProxyConfiguration.SELECTED_RUNTIMES && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)) {
+                && TryGetData(out identifier) && identifier == ProxyConfiguration.SELECTED_RUNTIMES && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
+                && TryGetData(out identifier) && identifier == ProxyConfiguration.WORKER_DIRECTORY && TryGetData(out DirectoryInfo workerDirectory)
+                && TryGetData(out identifier) && identifier == ProxyConfiguration.WORKER_EXECUTABLE_NAME && TryGetData(out String workerExecutableName)) {
                 data = new ProxyConfiguration {
                     AssembliesInSequence = assembliesInSequence,
-                    SelectedRuntimes = selectedRuntimes
+                    SelectedRuntimes = selectedRuntimes,
+                    WorkerDirectory = workerDirectory,
+                    WorkerExecutableName = workerExecutableName
                 };
             }
 
@@ -952,6 +956,10 @@ namespace Nuclear.Test.Link {
             Append(data.AssembliesInSequence);
             Append(ProxyConfiguration.SELECTED_RUNTIMES);
             Append(data.SelectedRuntimes);
+            Append(ProxyConfiguration.WORKER_DIRECTORY);
+            Append(data.WorkerDirectory);
+            Append(ProxyConfiguration.WORKER_EXECUTABLE_NAME);
+            Append(data.WorkerExecutableName);
 
             return this;
         }
