@@ -407,7 +407,10 @@ namespace Nuclear.Test.Link {
 
             if(TryGetData(out String identifier) && identifier == ClientConfiguration.FILE && TryGetData(out FileInfo file)
                 && TryGetData(out identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)) {
-                data = new ClientConfiguration { AutoShutdown = autoShutdown };
+                data = new ClientConfiguration {
+                    File = file,
+                    AutoShutdown = autoShutdown
+                };
             }
 
             return data != null;
@@ -438,26 +441,11 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IProxyConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)) {
+            if(TryGetData(out String identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)
+                && TryGetData(out identifier) && identifier == ProxyConfiguration.SELECTED_RUNTIMES && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)) {
                 data = new ProxyConfiguration {
-                    AssembliesInSequence = assembliesInSequence
-                };
-            }
-
-            return data != null;
-        }
-
-        /// <summary>
-        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
-        /// </summary>
-        /// <param name="data">The data object.</param>
-        /// <returns>True if data was found.</returns>
-        public Boolean TryGetData(out IProxyConfiguration data) {
-            data = default;
-
-            if(TryGetData(out String identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)) {
-                data = new ProxyConfiguration {
-                    AssembliesInSequence = assembliesInSequence
+                    AssembliesInSequence = assembliesInSequence,
+                    SelectedRuntimes = selectedRuntimes
                 };
             }
 
@@ -473,11 +461,14 @@ namespace Nuclear.Test.Link {
             data = default;
 
             if(TryGetData(out String identifier) && identifier == RemoteConfiguration.START_CLIENT_VISIBLE && TryGetData(out Boolean startClientVisible)) {
-                data = new RemoteConfiguration { StartClientVisible = startClientVisible };
+                data = new RemoteConfiguration {
+                    StartClientVisible = startClientVisible
+                };
             }
 
             return data != null;
         }
+
 
         /// <summary>
         /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
@@ -535,6 +526,26 @@ namespace Nuclear.Test.Link {
                 }
             }
         }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out SelectedExecutionRuntimes data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload)) {
+                try {
+                    data = (SelectedExecutionRuntimes) br.ReadInt32();
+                    return true;
+
+                } catch(Exception) {
+                    return false;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
@@ -939,18 +950,8 @@ namespace Nuclear.Test.Link {
         public IMessage Append(IProxyConfiguration data) {
             Append(ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE);
             Append(data.AssembliesInSequence);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
-        /// </summary>
-        /// <param name="data">The data object.</param>
-        /// <returns>The current <see cref="IMessage"/>.</returns>
-        public IMessage Append(IProxyConfiguration data) {
-            Append(ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE);
-            Append(data.AssembliesInSequence);
+            Append(ProxyConfiguration.SELECTED_RUNTIMES);
+            Append(data.SelectedRuntimes);
 
             return this;
         }
@@ -966,6 +967,7 @@ namespace Nuclear.Test.Link {
 
             return this;
         }
+
 
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
@@ -1005,6 +1007,20 @@ namespace Nuclear.Test.Link {
 
             return this;
         }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(SelectedExecutionRuntimes data) {
+            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+                bw.Write((Int32) data);
+            }
+
+            return this;
+        }
+
 
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
