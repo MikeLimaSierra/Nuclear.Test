@@ -18,6 +18,11 @@ namespace Nuclear.Test.Configurations {
         /// </summary>
         Boolean AssembliesInSequence { get; set; }
 
+        /// <summary>
+        /// Gets or sets the selected runtimes that are used to execute tests.
+        /// </summary>
+        SelectedExecutionRuntimes SelectedRuntimes { get; set; }
+
         #endregion
 
     }
