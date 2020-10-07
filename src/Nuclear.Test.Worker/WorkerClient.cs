@@ -15,7 +15,7 @@ using Nuclear.Test.Results;
 using Nuclear.TestSite;
 
 namespace Nuclear.Test.Worker {
-    class WorkerClient : Client {
+    internal class WorkerClient : Client {
 
         #region fields
 
