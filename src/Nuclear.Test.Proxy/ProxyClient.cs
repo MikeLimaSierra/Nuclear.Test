@@ -1,7 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading;
 
+using Nuclear.Assemblies;
+using Nuclear.Assemblies.Runtimes;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Link;
@@ -10,6 +15,8 @@ namespace Nuclear.Test.Proxy {
     internal class ProxyClient : Client {
 
         #region fields
+
+        private CountdownEvent _remotesFinishedEvent = null;
 
         private IProxyConfiguration _proxyConfig;
 
@@ -50,11 +57,58 @@ namespace Nuclear.Test.Proxy {
         protected override void Execute() {
             base.Execute();
 
+            IEnumerable<RemoteInfo> remoteInfos = CreateRemoteInfos();
+            PrintRemotesInfo(remoteInfos);
+            IEnumerable<WorkerRemote> remotes = CreateRemotes(remoteInfos);
             // todo
 
+            _remotesFinishedEvent.Wait();
             SendFinished();
             Link.WaitForOutputFlush();
             RaiseExecutionFinished();
+        }
+
+        #endregion
+
+        #region private methods
+
+        private IEnumerable<RemoteInfo> CreateRemoteInfos() {
+            List<RemoteInfo> remotes = new List<RemoteInfo>();
+
+            if(RuntimesHelper.TryGetMatchingRuntimes(TestAssemblyRuntime, out IEnumerable<RuntimeInfo> matchingRuntimes)) {
+                // todo
+            }
+
+            return remotes;
+        }
+
+        private void PrintRemotesInfo(IEnumerable<RemoteInfo> remoteInfos) {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
+            sb.AppendLine(@"║                       Matching Target Runtimes                       ║");
+            sb.AppendLine(@"╠══════════════════════════════════════════════════════════════════════╣");
+            Console.Write(sb);
+
+            foreach(RemoteInfo remoteInfo in remoteInfos) {
+                Console.Write("║    ");
+                Console.ForegroundColor = (remoteInfo.HasExecutable) ? (remoteInfo.IsSelected ? ConsoleColor.Green : ConsoleColor.DarkYellow) : ConsoleColor.DarkGray;
+                Console.Write("[{0}]", (remoteInfo.HasExecutable) ? (remoteInfo.IsSelected ? "Y" : "N") : "?");
+                Console.ResetColor();
+                Console.WriteLine(" {0}    ║", remoteInfo.Runtime.ToString().PadRight(58, ' '));
+            }
+
+            sb.Clear();
+            sb.AppendLine(@"╚══════════════════════════════════════════════════════════════════════╝");
+            Console.Write(sb);
+        }
+
+        private IEnumerable<WorkerRemote> CreateRemotes(IEnumerable<RemoteInfo> remoteInfos) {
+            List<WorkerRemote> remotes = new List<WorkerRemote>();
+
+            // todo
+
+            return remotes;
         }
 
         #endregion
