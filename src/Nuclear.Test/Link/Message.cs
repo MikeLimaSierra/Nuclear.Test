@@ -452,6 +452,23 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out IProxyConfiguration data) {
+            data = default;
+
+            if(TryGetData(out String identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)) {
+                data = new ProxyConfiguration {
+                    AssembliesInSequence = assembliesInSequence
+                };
+            }
+
+            return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
         public Boolean TryGetData(out IRemoteConfiguration data) {
             data = default;
 
@@ -910,6 +927,18 @@ namespace Nuclear.Test.Link {
         public IMessage Append(IWorkerConfiguration data) {
             Append(WorkerConfiguration.TESTS_IN_SEQUENCE);
             Append(data.TestsInSequence);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(IProxyConfiguration data) {
+            Append(ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE);
+            Append(data.AssembliesInSequence);
 
             return this;
         }
