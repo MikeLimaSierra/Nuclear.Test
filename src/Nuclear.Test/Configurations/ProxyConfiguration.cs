@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using Nuclear.Test.Execution;
 
@@ -21,6 +22,16 @@ namespace Nuclear.Test.Configurations {
         /// </summary>
         public const String SELECTED_RUNTIMES = "Proxy.SelectedRuntimes";
 
+        /// <summary>
+        /// Configuration values for <see cref="WorkerDirectory"/>.
+        /// </summary>
+        public const String WORKER_DIRECTORY = "Proxy.WorkerDirectory";
+
+        /// <summary>
+        /// Configuration values for <see cref="WorkerExecutableName"/>.
+        /// </summary>
+        public const String WORKER_EXECUTABLE_NAME = "Proxy.WorkerExecutableName";
+
         #endregion
 
         #region properties
@@ -36,6 +47,16 @@ namespace Nuclear.Test.Configurations {
         /// Gets or sets the selected runtimes that are used to execute tests.
         /// </summary>
         public SelectedExecutionRuntimes SelectedRuntimes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the directory that contains all workers.
+        /// </summary>
+        public DirectoryInfo WorkerDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of any worker executable.
+        /// </summary>
+        public String WorkerExecutableName { get; set; }
 
         #endregion
 
