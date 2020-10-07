@@ -168,6 +168,15 @@ namespace Nuclear.Test.Link {
             }
         }
 
+        /// <summary>
+        /// Waits until the output buffer has been emptied.
+        /// </summary>
+        public void WaitForOutputFlush() {
+            SpinWait.SpinUntil(() => _messagesOut.IsEmpty);
+
+            return;
+        }
+
         #endregion
 
         #region IDisposable
