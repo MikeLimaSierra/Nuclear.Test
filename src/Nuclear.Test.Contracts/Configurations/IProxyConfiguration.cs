@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using Nuclear.Test.Execution;
 
@@ -22,6 +23,16 @@ namespace Nuclear.Test.Configurations {
         /// Gets or sets the selected runtimes that are used to execute tests.
         /// </summary>
         SelectedExecutionRuntimes SelectedRuntimes { get; set; }
+
+        /// <summary>
+        /// Gets or sets the directory that contains all workers.
+        /// </summary>
+        DirectoryInfo WorkerDirectory { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of any worker executable.
+        /// </summary>
+        String WorkerExecutableName { get; set; }
 
         #endregion
 
