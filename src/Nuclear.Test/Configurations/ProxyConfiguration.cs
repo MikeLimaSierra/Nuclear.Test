@@ -14,7 +14,12 @@ namespace Nuclear.Test.Configurations {
         /// <summary>
         /// Configuration values for <see cref="AssembliesInSequence"/>.
         /// </summary>
-        public const String ASSEMBLIES_IN_SEQUENCE = "Worker.AssembliesInSequence";
+        public const String ASSEMBLIES_IN_SEQUENCE = "Proxy.AssembliesInSequence";
+
+        /// <summary>
+        /// Configuration values for <see cref="SelectedRuntimes"/>.
+        /// </summary>
+        public const String SELECTED_RUNTIMES = "Proxy.SelectedRuntimes";
 
         #endregion
 
@@ -26,6 +31,11 @@ namespace Nuclear.Test.Configurations {
         ///     If set to false, all proxies and workers will start immediately.
         /// </summary>
         public Boolean AssembliesInSequence { get; set; }
+
+        /// <summary>
+        /// Gets or sets the selected runtimes that are used to execute tests.
+        /// </summary>
+        public SelectedExecutionRuntimes SelectedRuntimes { get; set; }
 
         #endregion
 
