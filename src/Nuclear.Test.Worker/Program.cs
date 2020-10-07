@@ -2,6 +2,7 @@
 using System.Threading;
 
 using Nuclear.Test.Link;
+using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Worker {
     static class Program {
@@ -22,6 +23,8 @@ namespace Nuclear.Test.Worker {
 
             _executionFinishedEvent.Wait();
 
+            ITestResultEndPoint results = _client.Results;
+
             //TestExecutor process = new TestWorker(args[0]);
             //ITestResultSource results = process.Execute();
 
@@ -34,6 +37,10 @@ namespace Nuclear.Test.Worker {
                 Console.ReadKey(true);
             }
         }
+
+        #endregion
+
+        #region private methods
 
         private static void OnClientExecutionFinished(Object sender, EventArgs e) {
             _client.ExecutionFinished -= OnClientExecutionFinished;
