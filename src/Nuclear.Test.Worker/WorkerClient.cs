@@ -102,6 +102,7 @@ namespace Nuclear.Test.Worker {
 
             SendResults(Results.GetKeyedResults());
             SendFinished();
+            Link.WaitForOutputFlush();
             RaiseExecutionFinished();
         }
 
