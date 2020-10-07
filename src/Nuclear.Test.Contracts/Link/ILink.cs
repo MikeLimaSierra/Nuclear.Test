@@ -67,6 +67,11 @@ namespace Nuclear.Test.Link {
         /// <returns></returns>
         void Send(IMessage message);
 
+        /// <summary>
+        /// Waits until the output buffer has been emptied.
+        /// </summary>
+        void WaitForOutputFlush();
+
         #endregion
 
     }
