@@ -438,14 +438,14 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
-        public Boolean TryGetData(out IProxyConfiguration data) {
+        public Boolean TryGetData(out IProxyClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)
-                && TryGetData(out identifier) && identifier == ProxyConfiguration.SELECTED_RUNTIMES && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
-                && TryGetData(out identifier) && identifier == ProxyConfiguration.WORKER_DIRECTORY && TryGetData(out DirectoryInfo workerDirectory)
-                && TryGetData(out identifier) && identifier == ProxyConfiguration.WORKER_EXECUTABLE_NAME && TryGetData(out String workerExecutableName)) {
-                data = new ProxyConfiguration {
+            if(TryGetData(out String identifier) && identifier == ProxyClientConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)
+                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.SELECTED_RUNTIMES && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
+                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.WORKER_DIRECTORY && TryGetData(out DirectoryInfo workerDirectory)
+                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.WORKER_EXECUTABLE_NAME && TryGetData(out String workerExecutableName)) {
+                data = new ProxyClientConfiguration {
                     AssembliesInSequence = assembliesInSequence,
                     SelectedRuntimes = selectedRuntimes,
                     WorkerDirectory = workerDirectory,
@@ -951,14 +951,14 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
-        public IMessage Append(IProxyConfiguration data) {
-            Append(ProxyConfiguration.ASSEMBLIES_IN_SEQUENCE);
+        public IMessage Append(IProxyClientConfiguration data) {
+            Append(ProxyClientConfiguration.ASSEMBLIES_IN_SEQUENCE);
             Append(data.AssembliesInSequence);
-            Append(ProxyConfiguration.SELECTED_RUNTIMES);
+            Append(ProxyClientConfiguration.SELECTED_RUNTIMES);
             Append(data.SelectedRuntimes);
-            Append(ProxyConfiguration.WORKER_DIRECTORY);
+            Append(ProxyClientConfiguration.WORKER_DIRECTORY);
             Append(data.WorkerDirectory);
-            Append(ProxyConfiguration.WORKER_EXECUTABLE_NAME);
+            Append(ProxyClientConfiguration.WORKER_EXECUTABLE_NAME);
             Append(data.WorkerExecutableName);
 
             return this;

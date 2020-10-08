@@ -23,7 +23,7 @@ namespace Nuclear.Test.Proxy {
 
         #region ctors
 
-        public RemoteInfo(IProxyConfiguration proxyConfig, RuntimeInfo runtime) {
+        public RemoteInfo(IProxyClientConfiguration proxyConfig, RuntimeInfo runtime) {
             Throw.If.Object.IsNull(proxyConfig, nameof(proxyConfig));
             Throw.If.Object.IsNull(runtime, nameof(runtime));
 

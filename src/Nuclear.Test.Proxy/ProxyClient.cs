@@ -16,7 +16,7 @@ namespace Nuclear.Test.Proxy {
 
         private CountdownEvent _remotesFinishedEvent = null;
 
-        private IProxyConfiguration _proxyConfig;
+        private IProxyClientConfiguration _proxyConfig;
 
         private IWorkerClientConfiguration _workerConfig;
 

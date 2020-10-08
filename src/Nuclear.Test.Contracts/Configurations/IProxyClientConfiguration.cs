@@ -8,7 +8,7 @@ namespace Nuclear.Test.Configurations {
     /// <summary>
     /// Defines configuration values for a proxy <see cref="IClient"/>.
     /// </summary>
-    public interface IProxyConfiguration {
+    public interface IProxyClientConfiguration {
 
         #region properties
 
