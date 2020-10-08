@@ -15,7 +15,8 @@ namespace Nuclear.Test.Execution {
     /// <summary>
     /// Implements the base functionality of a remote controlled test client.
     /// </summary>
-    public abstract class Client : IClient {
+    public abstract class Client<TConfiguration> : IClient<TConfiguration>
+        where TConfiguration : IClientConfiguration {
 
         #region events
 
@@ -52,7 +53,7 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the client configuration object.
         /// </summary>
-        public IClientConfiguration Configuration { get; private set; }
+        public TConfiguration Configuration { get; protected set; }
 
         /// <summary>
         /// Gets the test results sink that is in use.
