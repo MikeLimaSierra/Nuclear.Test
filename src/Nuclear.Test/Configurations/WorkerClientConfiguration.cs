@@ -5,9 +5,9 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for a worker <see cref="IClient"/>.
+    /// Implements configuration values for a worker <see cref="IClient{TConfiguration}"/>.
     /// </summary>
-    public class WorkerClientConfiguration : IWorkerClientConfiguration {
+    public class WorkerClientConfiguration : ClientConfiguration, IWorkerClientConfiguration {
 
         #region constants
 

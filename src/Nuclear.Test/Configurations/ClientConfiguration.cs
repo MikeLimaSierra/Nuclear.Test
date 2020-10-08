@@ -6,9 +6,9 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for an <see cref="IClient"/>.
+    /// Implements configuration values for an <see cref="IClient{TConfiguration}"/>.
     /// </summary>
-    public class ClientConfiguration : IClientConfiguration {
+    public abstract class ClientConfiguration : IClientConfiguration {
 
         #region constants
 

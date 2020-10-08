@@ -6,9 +6,9 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for a proxy <see cref="IClient"/>.
+    /// Implements configuration values for a proxy <see cref="IClient{TConfiguration}"/>.
     /// </summary>
-    public class ProxyClientConfiguration : IProxyClientConfiguration {
+    public class ProxyClientConfiguration : ClientConfiguration, IProxyClientConfiguration {
 
         #region constants
 
