@@ -1,27 +1,48 @@
 ﻿using System;
+using System.Threading;
 
-using Nuclear.Test.Output;
+using Nuclear.Test.Link;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
-using Nuclear.Test.TestExecution;
 
 namespace Nuclear.Test.Proxy {
     static class Program {
 
+        #region fields
+
+        private static readonly ManualResetEventSlim _executionFinishedEvent = new ManualResetEventSlim(false);
+
+        private static ProxyClient _client;
+
+        #endregion
+
         #region methods
 
         static void Main(String[] args) {
-            TestExecutor process = new TestProxy(args[0]);
-            ITestResultSource results = process.Execute();
+            _client = new ProxyClient(new ClientLink(args[0]));
+            _client.ExecutionFinished += OnClientExecutionFinished;
 
-            DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
-            new ResultTree(process.OutputConfiguration.Verbosity, TestResultKey.Empty, results).Print();
-            DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
+            _executionFinishedEvent.Wait();
 
-            if(process.OutputConfiguration.ClientsAwaitInput && process.OutputConfiguration.ShowClients) {
+            ITestResultEndPoint results = _client.Results;
+
+            //DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
+            new ResultTree(Verbosity.ExecutionArchitecture, TestResultKey.Empty, results).Print();
+            //DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
+
+            if(!_client.Configuration.AutoShutdown) {
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey(true);
             }
+        }
+
+        #endregion
+
+        #region private methods
+
+        private static void OnClientExecutionFinished(Object sender, EventArgs e) {
+            _client.ExecutionFinished -= OnClientExecutionFinished;
+            _executionFinishedEvent.Set();
         }
 
         #endregion
