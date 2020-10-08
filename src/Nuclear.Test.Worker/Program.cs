@@ -2,6 +2,7 @@
 using System.Threading;
 
 using Nuclear.Test.Link;
+using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Worker {
@@ -25,11 +26,8 @@ namespace Nuclear.Test.Worker {
 
             ITestResultEndPoint results = _client.Results;
 
-            //TestExecutor process = new TestWorker(args[0]);
-            //ITestResultSource results = process.Execute();
-
             //DiagnosticOutput.Log(process.OutputConfiguration, " =========================");
-            //new ResultTree(process.OutputConfiguration.Verbosity, TestResultKey.Empty, results).Print();
+            new ResultTree(Verbosity.ExecutionArchitecture, TestResultKey.Empty, results).Print();
             //DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
 
             if(!_client.Configuration.AutoShutdown) {
