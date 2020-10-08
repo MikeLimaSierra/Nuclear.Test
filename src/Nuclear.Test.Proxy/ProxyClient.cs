@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
-using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
+using Nuclear.Test.Helpers;
 using Nuclear.Test.Link;
 
 namespace Nuclear.Test.Proxy {
@@ -58,7 +56,7 @@ namespace Nuclear.Test.Proxy {
             base.Execute();
 
             IEnumerable<RemoteInfo> remoteInfos = CreateRemoteInfos();
-            PrintRemotesInfo(remoteInfos);
+            ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.HasExecutable, r.IsSelected)));
             IEnumerable<WorkerRemote> remotes = CreateRemotes(remoteInfos);
             // todo
 
@@ -80,27 +78,6 @@ namespace Nuclear.Test.Proxy {
             }
 
             return remotes;
-        }
-
-        private void PrintRemotesInfo(IEnumerable<RemoteInfo> remoteInfos) {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
-            sb.AppendLine(@"║                       Matching Target Runtimes                       ║");
-            sb.AppendLine(@"╠══════════════════════════════════════════════════════════════════════╣");
-            Console.Write(sb);
-
-            foreach(RemoteInfo remoteInfo in remoteInfos) {
-                Console.Write("║    ");
-                Console.ForegroundColor = (remoteInfo.HasExecutable) ? (remoteInfo.IsSelected ? ConsoleColor.Green : ConsoleColor.DarkYellow) : ConsoleColor.DarkGray;
-                Console.Write("[{0}]", (remoteInfo.HasExecutable) ? (remoteInfo.IsSelected ? "Y" : "N") : "?");
-                Console.ResetColor();
-                Console.WriteLine(" {0}    ║", remoteInfo.Runtime.ToString().PadRight(58, ' '));
-            }
-
-            sb.Clear();
-            sb.AppendLine(@"╚══════════════════════════════════════════════════════════════════════╝");
-            Console.Write(sb);
         }
 
         private IEnumerable<WorkerRemote> CreateRemotes(IEnumerable<RemoteInfo> remoteInfos) {
