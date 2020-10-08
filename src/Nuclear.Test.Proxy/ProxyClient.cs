@@ -10,13 +10,11 @@ using Nuclear.Test.Helpers;
 using Nuclear.Test.Link;
 
 namespace Nuclear.Test.Proxy {
-    internal class ProxyClient : Client {
+    internal class ProxyClient : Client<IProxyClientConfiguration> {
 
         #region fields
 
         private CountdownEvent _remotesFinishedEvent = null;
-
-        private IProxyClientConfiguration _proxyConfig;
 
         private IWorkerClientConfiguration _workerConfig;
 
@@ -48,7 +46,9 @@ namespace Nuclear.Test.Proxy {
         protected override void Setup(IMessage message) {
             base.Setup(message);
 
-            message.TryGetData(out _proxyConfig);
+            if(message.TryGetData(out IProxyClientConfiguration config)) {
+                Configuration = config;
+            }
             message.TryGetData(out _workerConfig);
         }
 

@@ -15,11 +15,9 @@ using Nuclear.Test.Results;
 using Nuclear.TestSite;
 
 namespace Nuclear.Test.Worker {
-    internal class WorkerClient : Client {
+    internal class WorkerClient : Client<IWorkerClientConfiguration> {
 
         #region fields
-
-        private IWorkerClientConfiguration _workerConfig;
 
         private readonly Assembly _entryAssembly = Assembly.GetEntryAssembly();
 
@@ -82,7 +80,9 @@ namespace Nuclear.Test.Worker {
         protected override void Setup(IMessage message) {
             base.Setup(message);
 
-            message.TryGetData(out _workerConfig);
+            if(message.TryGetData(out IWorkerClientConfiguration config)) {
+                Configuration = config;
+            }
         }
 
         protected override void Execute() {
@@ -143,7 +143,7 @@ namespace Nuclear.Test.Worker {
                     } else {
                         TestMode methodLevelMode = m_attr.TestMode;
 
-                        if(classLevelMode == TestMode.Sequential || methodLevelMode == TestMode.Sequential || _workerConfig.TestsInSequence) {
+                        if(classLevelMode == TestMode.Sequential || methodLevelMode == TestMode.Sequential || Configuration.TestsInSequence) {
                             sequentialTestMethods.Add(new TestMethod(results, testMethod));
                         } else {
                             parallelTestMethods.Add(new TestMethod(results, testMethod));
