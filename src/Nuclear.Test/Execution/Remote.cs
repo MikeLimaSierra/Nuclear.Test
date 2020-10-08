@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
@@ -160,12 +159,10 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Initializes the process that will be remote controlled.
         /// </summary>
-        /// <param name="executable">The path to the executable file.</param>
-        /// <param name="pipeName">The pipe name used to communicate.</param>
-        protected void StartProcess(FileInfo executable, String pipeName) {
+        protected void StartProcess() {
             using(Process process = new Process()) {
-                process.StartInfo.FileName = executable.FullName;
-                process.StartInfo.Arguments = pipeName;
+                process.StartInfo.FileName = Configuration.Executable.FullName;
+                process.StartInfo.Arguments = Link.PipeID;
                 process.StartInfo.UseShellExecute = Configuration.StartClientVisible;
                 process.StartInfo.CreateNoWindow = !Configuration.StartClientVisible;
                 //DiagnosticOutput.Log(OutputConfiguration, "Starting process '{0} {1}' ...", executable.FullName, pipeName);
