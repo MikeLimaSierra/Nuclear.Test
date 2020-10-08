@@ -6,7 +6,7 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Defines configuration values for an <see cref="IClient"/>.
+    /// Defines configuration values for an <see cref="IClient{TConfiguration}"/>.
     /// </summary>
     public interface IClientConfiguration {
 
