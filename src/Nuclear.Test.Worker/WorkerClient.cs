@@ -19,7 +19,7 @@ namespace Nuclear.Test.Worker {
 
         #region fields
 
-        private IWorkerConfiguration _workerConfig;
+        private IWorkerClientConfiguration _workerConfig;
 
         private readonly Assembly _entryAssembly = Assembly.GetEntryAssembly();
 

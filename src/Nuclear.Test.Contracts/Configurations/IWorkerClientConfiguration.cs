@@ -7,7 +7,7 @@ namespace Nuclear.Test.Configurations {
     /// <summary>
     /// Defines configuration values for a worker <see cref="IClient"/>.
     /// </summary>
-    public interface IWorkerConfiguration {
+    public interface IWorkerClientConfiguration {
 
         #region properties
 

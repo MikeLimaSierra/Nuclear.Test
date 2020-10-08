@@ -421,11 +421,11 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
-        public Boolean TryGetData(out IWorkerConfiguration data) {
+        public Boolean TryGetData(out IWorkerClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == WorkerConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
-                data = new WorkerConfiguration {
+            if(TryGetData(out String identifier) && identifier == WorkerClientConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
+                data = new WorkerClientConfiguration {
                     TestsInSequence = testsInSequence
                 };
             }
@@ -939,8 +939,8 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
-        public IMessage Append(IWorkerConfiguration data) {
-            Append(WorkerConfiguration.TESTS_IN_SEQUENCE);
+        public IMessage Append(IWorkerClientConfiguration data) {
+            Append(WorkerClientConfiguration.TESTS_IN_SEQUENCE);
             Append(data.TestsInSequence);
 
             return this;

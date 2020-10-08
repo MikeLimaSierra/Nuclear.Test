@@ -18,7 +18,7 @@ namespace Nuclear.Test.Proxy {
 
         private IProxyConfiguration _proxyConfig;
 
-        private IWorkerConfiguration _workerConfig;
+        private IWorkerClientConfiguration _workerConfig;
 
         #endregion
 
