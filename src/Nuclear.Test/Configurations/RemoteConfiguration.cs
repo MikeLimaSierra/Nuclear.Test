@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 using Nuclear.Test.Execution;
 
@@ -19,6 +20,11 @@ namespace Nuclear.Test.Configurations {
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// Gets or sets the executable that the remote will start as a client.
+        /// </summary>
+        public FileInfo Executable { get; set; }
 
         /// <summary>
         /// Gets or sets if client process should be started in a visible window.
