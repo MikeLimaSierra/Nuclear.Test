@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Helpers;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
@@ -159,9 +159,9 @@ namespace Nuclear.Test.Execution {
         /// Commands the client to execute its task.
         /// </summary>
         protected virtual void Execute() {
-            SetConsoleTitle();
-            PrintProcessInfo();
-            PrintAssemblyInfo();
+            ConsoleHelper.SetConsoleTitle(_currentRuntime);
+            ConsoleHelper.PrintProcessInfo(_currentRuntime, HeaderContent);
+            ConsoleHelper.PrintTestAssemblyInfo(TestAssemblyName, TestAssemblyRuntime);
         }
 
         /// <summary>
@@ -193,43 +193,6 @@ namespace Nuclear.Test.Execution {
         /// Raises the event <see cref="ExecutionFinished"/>.
         /// </summary>
         protected internal void RaiseExecutionFinished() => ExecutionFinished?.Invoke(this, new EventArgs());
-
-        #endregion
-
-        #region private methods
-
-        private void SetConsoleTitle() => Console.Title = $"{_currentRuntime} - {RuntimeArchitecure} - {Assembly.GetEntryAssembly().GetName().Name}";
-
-        private void PrintProcessInfo() {
-
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(@"╔══════════════════════════════════════════════════════════════════════╗");
-
-            foreach(String line in HeaderContent) {
-                sb.AppendFormat("║    {1}    ║{0}", Environment.NewLine, line.PadRight(60, ' '));
-            }
-
-            sb.AppendLine("╠══════════════════════════════════════════════════════════════════════╣");
-            sb.AppendFormat("║        Platform: {1}    ║{0}", Environment.NewLine, _currentRuntime.Framework.ToString().PadRight(48, ' '));
-            sb.AppendFormat("║         Version: {1}    ║{0}", Environment.NewLine, _currentRuntime.Version.ToString().PadRight(48, ' '));
-            sb.AppendFormat("║    Architecture: {1}    ║{0}", Environment.NewLine, RuntimeArchitecure.ToString().PadRight(48, ' '));
-            sb.AppendLine("╚══════════════════════════════════════════════════════════════════════╝");
-            Console.Write(sb);
-        }
-
-        private void PrintAssemblyInfo() {
-            StringBuilder sb = new StringBuilder();
-
-            sb.AppendLine("╔══════════════════════════════════════════════════════════════════════╗");
-            sb.AppendLine("║                             Test Assembly                            ║");
-            sb.AppendLine("╠══════════════════════════════════════════════════════════════════════╣");
-            sb.AppendFormat("║            Name: {1}    ║{0}", Environment.NewLine, TestAssemblyName.Name.PadRight(48, ' '));
-            sb.AppendFormat("║        Platform: {1}    ║{0}", Environment.NewLine, TestAssemblyRuntime.Framework.ToString().PadRight(48, ' '));
-            sb.AppendFormat("║         Version: {1}    ║{0}", Environment.NewLine, TestAssemblyRuntime.Version.ToString().PadRight(48, ' '));
-            sb.AppendFormat("║    Architecture: {1}    ║{0}", Environment.NewLine, TestAssemblyName.ProcessorArchitecture.ToString().PadRight(48, ' '));
-            sb.AppendLine("╚══════════════════════════════════════════════════════════════════════╝");
-            Console.Write(sb);
-        }
 
         #endregion
 
