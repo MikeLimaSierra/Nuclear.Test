@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Execution {
 
@@ -45,6 +46,11 @@ namespace Nuclear.Test.Execution {
         /// Gets the remote configuration object.
         /// </summary>
         TConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Gets the test results sink that is in use.
+        /// </summary>
+        ITestResultEndPoint Results { get; }
 
         #endregion
 
