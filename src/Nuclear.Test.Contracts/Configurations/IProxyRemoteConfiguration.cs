@@ -1,5 +1,4 @@
-﻿
-using Nuclear.Test.Execution;
+﻿using Nuclear.Test.Execution;
 
 namespace Nuclear.Test.Configurations {
 
