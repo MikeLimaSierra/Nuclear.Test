@@ -1,11 +1,14 @@
 ﻿using System;
 
+using Nuclear.Test.Configurations;
+
 namespace Nuclear.Test.Execution {
 
     /// <summary>
     /// Defines the base functionality of a remote control for test clients.
     /// </summary>
-    public interface IRemote {
+    public interface IRemote<TConfiguration>
+        where TConfiguration : IRemoteConfiguration {
 
         #region events
 
@@ -33,6 +36,15 @@ namespace Nuclear.Test.Execution {
         /// Is raised when the client has finished processing and all results have been transfered.
         /// </summary>
         event EventHandler RemotingFinished;
+
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// Gets the remote configuration object.
+        /// </summary>
+        TConfiguration Configuration { get; }
 
         #endregion
 
