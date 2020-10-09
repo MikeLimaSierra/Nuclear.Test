@@ -12,115 +12,8 @@ namespace Nuclear.Test.Execution {
     /// <summary>
     /// Implements the base functionality of a remote control for test clients.
     /// </summary>
-    public abstract class Remote : IRemote {
-
-        #region events
-
-        /// <summary>
-        /// Is raised when the client connects.
-        /// </summary>
-        public event EventHandler ClientConnected;
-
-        /// <summary>
-        /// Is raised when the connection to the client was lost.
-        /// </summary>
-        public event EventHandler ConnectionLost;
-
-        /// <summary>
-        /// Is raised when raw test data is received from the attached test client.
-        /// </summary>
-        public event ResultsReceivedEventHandler ResultsReceived;
-
-        /// <summary>
-        /// Is raised when test results are deserialized and added to the results.
-        /// </summary>
-        public event ResultsAvailableEventHandler ResultsAvailable;
-
-        /// <summary>
-        /// Is raised when the client has finished processing and all results have been transfered.
-        /// </summary>
-        public event EventHandler RemotingFinished;
-
-        #endregion
-
-        #region fields
-
-        private readonly IClientConfiguration _clientConfig;
-
-        #endregion
-
-        #region properties
-
-        /// <summary>
-        /// Gets the communication link object.
-        /// </summary>
-        protected IServerLink Link { get; }
-
-        /// <summary>
-        /// Gets the remote configuration object.
-        /// </summary>
-        public IRemoteConfiguration Configuration { get; }
-
-        #endregion
-
-        #region ctors
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Remote"/>.
-        /// </summary>
-        /// <param name="remoteConfig">The configuration for the remote object.</param>
-        /// <param name="clientConfig">The configuration for the client object.</param>
-        /// <param name="link">The link object used to communicate with clients.</param>
-        public Remote(IRemoteConfiguration remoteConfig, IClientConfiguration clientConfig, IServerLink link) {
-            Throw.If.Object.IsNull(remoteConfig, nameof(remoteConfig));
-            Throw.If.Object.IsNull(clientConfig, nameof(clientConfig));
-            Throw.If.Object.IsNull(link, nameof(link));
-
-            Configuration = remoteConfig;
-            _clientConfig = clientConfig;
-            Link = link;
-            Link.ClientConnected += OnClientConnected;
-            Link.Start();
-        }
-
-        #endregion
-
-        #region event handlers
-
-        private void OnClientConnected(Object sender, EventArgs e) {
-            Link.ClientConnected -= OnClientConnected;
-            RaiseClientConnected();
-            Link.ConnectedToClient += OnConnectedToClient;
-            Link.Connect();
-        }
-
-        private void OnConnectedToClient(Object sender, EventArgs e) {
-            Link.ConnectedToClient -= OnConnectedToClient;
-            SendSetup();
-            Link.MessageReceived += OnResultsReceived;
-            Link.MessageReceived += OnExecutionFinished;
-            SendExecute();
-        }
-
-        private void OnResultsReceived(Object sender, MessageReceivedEventArgs e) {
-            if(e.Message.Command == Commands.Results) {
-                RaiseResultsReceived(e.Message.Payload.ToArray());
-
-                if(e.Message.TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results)) {
-                    RaiseResultsAvailable(results);
-                }
-            }
-        }
-
-        private void OnExecutionFinished(Object sender, MessageReceivedEventArgs e) {
-            if(e.Message.Command == Commands.Finished) {
-                Link.MessageReceived -= OnResultsReceived;
-                Link.MessageReceived -= OnExecutionFinished;
-                RaiseRemotingFinished();
-            }
-        }
-
-        #endregion
+    public abstract class Remote<TConfiguration> : IRemote<TConfiguration>
+        where TConfiguration : IRemoteConfiguration {
 
         #region abstract methods
 
@@ -151,6 +44,20 @@ namespace Nuclear.Test.Execution {
         /// Sends the <see cref="Commands.Execute"/> message to the attached <see cref="IClient"/>.
         /// </summary>
         protected void SendExecute() => Link.Send(new Message(Commands.Execute));
+
+        #endregion
+
+        #region properties
+
+        /// <summary>
+        /// Gets the client configuration object.
+        /// </summary>
+        public TConfiguration Configuration { get; protected set; }
+
+        /// <summary>
+        /// Gets the test results sink that is in use.
+        /// </summary>
+        public ITestResultEndPoint Results { get; } = new TestResultEndPoint();
 
         #endregion
 
