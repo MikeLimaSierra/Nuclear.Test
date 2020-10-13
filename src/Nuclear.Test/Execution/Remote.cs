@@ -15,6 +15,35 @@ namespace Nuclear.Test.Execution {
     public abstract class Remote<TConfiguration> : IRemote<TConfiguration>
         where TConfiguration : IRemoteConfiguration {
 
+        #region events
+
+        /// <summary>
+        /// Is raised when the client connects.
+        /// </summary>
+        public event EventHandler ClientConnected;
+
+        /// <summary>
+        /// Is raised when the connection to the client was lost.
+        /// </summary>
+        public event EventHandler ConnectionLost;
+
+        /// <summary>
+        /// Is raised when raw test data is received from the attached test client.
+        /// </summary>
+        public event ResultsReceivedEventHandler ResultsReceived;
+
+        /// <summary>
+        /// Is raised when test results are deserialized and added to the results.
+        /// </summary>
+        public event ResultsAvailableEventHandler ResultsAvailable;
+
+        /// <summary>
+        /// Is raised when the client has finished processing and all results have been transfered.
+        /// </summary>
+        public event EventHandler RemotingFinished;
+
+        #endregion
+
         #region abstract methods
 
         /// <summary>
@@ -48,6 +77,11 @@ namespace Nuclear.Test.Execution {
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// Gets the communication link object.
+        /// </summary>
+        protected IServerLink Link { get; }
 
         /// <summary>
         /// Gets the client configuration object.
