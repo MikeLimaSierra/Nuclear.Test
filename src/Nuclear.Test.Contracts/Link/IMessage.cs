@@ -394,12 +394,14 @@ namespace Nuclear.Test.Link {
         /// <returns>The current <see cref="IMessage"/>.</returns>
         IMessage Append(IProxyClientConfiguration data);
 
+
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         IMessage Append(IRemoteConfiguration data);
+
 
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
@@ -421,6 +423,14 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         IMessage Append(ProcessorArchitecture data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(SelectedExecutionRuntimes data);
+
 
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
