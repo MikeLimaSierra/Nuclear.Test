@@ -44,6 +44,42 @@ namespace Nuclear.Test.Execution {
 
         #endregion
 
+        #region properties
+
+        /// <summary>
+        /// Gets the communication link object.
+        /// </summary>
+        protected IServerLink Link { get; }
+
+        /// <summary>
+        /// Gets the client configuration object.
+        /// </summary>
+        public TConfiguration Configuration { get; protected set; }
+
+        /// <summary>
+        /// Gets the test results sink that is in use.
+        /// </summary>
+        public ITestResultEndPoint Results { get; } = new TestResultEndPoint();
+
+        #endregion
+
+        #region ctors
+
+        /// <summary>
+        /// Creates a new instance of <see cref="Remote{TConfiguration}"/>.
+        /// </summary>
+        /// <param name="configuration">The remote configuration object.</param>
+        /// <param name="link">The link object used to communicate with the client.</param>
+        public Remote(TConfiguration configuration, IServerLink link) {
+            Throw.If.Object.IsNull(configuration, nameof(configuration));
+            Throw.If.Object.IsNull(link, nameof(link));
+
+            Configuration = configuration;
+            Link = link;
+        }
+
+        #endregion
+
         #region abstract methods
 
         /// <summary>
@@ -73,25 +109,6 @@ namespace Nuclear.Test.Execution {
         /// Sends the <see cref="Commands.Execute"/> message to the attached <see cref="IClient"/>.
         /// </summary>
         protected void SendExecute() => Link.Send(new Message(Commands.Execute));
-
-        #endregion
-
-        #region properties
-
-        /// <summary>
-        /// Gets the communication link object.
-        /// </summary>
-        protected IServerLink Link { get; }
-
-        /// <summary>
-        /// Gets the client configuration object.
-        /// </summary>
-        public TConfiguration Configuration { get; protected set; }
-
-        /// <summary>
-        /// Gets the test results sink that is in use.
-        /// </summary>
-        public ITestResultEndPoint Results { get; } = new TestResultEndPoint();
 
         #endregion
 
