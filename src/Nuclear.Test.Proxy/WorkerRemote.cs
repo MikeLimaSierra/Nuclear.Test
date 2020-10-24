@@ -1,16 +1,25 @@
-﻿
+﻿using Nuclear.Exceptions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Link;
 
 namespace Nuclear.Test.Proxy {
-    class WorkerRemote : Remote {
+    class WorkerRemote : Remote<IWorkerRemoteConfiguration> {
+
+        #region fields
+
+        IWorkerClientConfiguration _clientConfig;
+
+        #endregion
 
         #region ctors
 
-        public WorkerRemote(IRemoteConfiguration remoteConfig, IClientConfiguration clientConfig, IServerLink link)
-            : base(remoteConfig, clientConfig, link) {
+        public WorkerRemote(IWorkerRemoteConfiguration remoteConfig, IWorkerClientConfiguration clientConfig, IServerLink link)
+            : base(remoteConfig, link) {
 
+            Throw.If.Object.IsNull(clientConfig, nameof(clientConfig));
+
+            _clientConfig = clientConfig;
         }
 
         #endregion
@@ -18,7 +27,11 @@ namespace Nuclear.Test.Proxy {
         #region methods
 
         public override void Execute() {
-            throw new System.NotImplementedException();
+            if(Configuration.Executable != null && Configuration.Executable.Exists) {
+
+                StartProcess();
+
+            }
         }
 
         protected override IMessage GetSetupMessage(IMessage message) {
