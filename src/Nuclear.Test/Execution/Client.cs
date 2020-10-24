@@ -90,7 +90,7 @@ namespace Nuclear.Test.Execution {
         #region ctors
 
         /// <summary>
-        /// Creates a new instance of <see cref="Client"/>.
+        /// Creates a new instance of <see cref="Client{TConfiguration}"/>.
         /// </summary>
         /// <param name="link">The link object used to communicate with the remote.</param>
         public Client(IClientLink link) {
