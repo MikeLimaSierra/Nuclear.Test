@@ -273,21 +273,9 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
-        public IMessage Append(IClientConfiguration data) {
-            Append(ClientConfiguration.FILE).Append(data.File);
-
-            Append(ClientConfiguration.AUTO_SHUTDOWN).Append(data.AutoShutdown);
-
-            return this;
-        }
-
-        /// <summary>
-        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
-        /// </summary>
-        /// <param name="data">The data object.</param>
-        /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IWorkerClientConfiguration data) {
-            Append(data as IClientConfiguration);
+            Append(ClientConfiguration.FILE).Append(data.File);
+            Append(ClientConfiguration.AUTO_SHUTDOWN).Append(data.AutoShutdown);
 
             Append(WorkerClientConfiguration.TESTS_IN_SEQUENCE).Append(data.TestsInSequence);
 
@@ -300,14 +288,12 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IProxyClientConfiguration data) {
-            Append(data as IClientConfiguration);
+            Append(ClientConfiguration.FILE).Append(data.File);
+            Append(ClientConfiguration.AUTO_SHUTDOWN).Append(data.AutoShutdown);
 
             Append(ProxyClientConfiguration.ASSEMBLIES_IN_SEQUENCE).Append(data.AssembliesInSequence);
-
             Append(ProxyClientConfiguration.SELECTED_RUNTIMES).Append(data.SelectedRuntimes);
-
             Append(ProxyClientConfiguration.WORKER_DIRECTORY).Append(data.WorkerDirectory);
-
             Append(ProxyClientConfiguration.WORKER_EXECUTABLE_NAME).Append(data.WorkerExecutableName);
 
             return this;
