@@ -77,13 +77,7 @@ namespace Nuclear.Test.Worker {
 
         #region methods
 
-        protected override void Setup(IMessage message) {
-            base.Setup(message);
-
-            if(message.TryGetData(out IWorkerClientConfiguration config)) {
-                Configuration = config;
-            }
-        }
+        protected override IWorkerClientConfiguration LoadConfiguration(IMessage message) => message.TryGetData(out IWorkerClientConfiguration config) ? config : null;
 
         protected override void Execute() {
             base.Execute();

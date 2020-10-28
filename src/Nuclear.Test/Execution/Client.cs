@@ -114,7 +114,8 @@ namespace Nuclear.Test.Execution {
         private void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
             if(e.Message.Command == Commands.Setup) {
                 Link.MessageReceived -= OnSetupReceived;
-                Setup(e.Message);
+                Configuration = LoadConfiguration(e.Message);
+                LoadAssembly();
             }
         }
 
@@ -135,26 +136,10 @@ namespace Nuclear.Test.Execution {
         #region protected methods
 
         /// <summary>
-        /// Loads setup data from <paramref name="message"/>.
+        /// Loads configuration data from <paramref name="message"/>.
         /// </summary>
-        /// <param name="message">The message containing the setup.</param>
-        protected virtual void Setup(IMessage message) {
-            if(message.Command == Commands.Setup && message.TryGetData(out IClientConfiguration config)) {
-                Configuration = config;
-
-                if(AssemblyHelper.TryLoadFrom(Configuration.File, out Assembly testAssembly)) {
-                    TestAssembly = testAssembly;
-
-                    if(AssemblyHelper.TryGetAssemblyName(Configuration.File, out AssemblyName testAssemblyName)) {
-                        TestAssemblyName = testAssemblyName;
-                    }
-
-                    if(AssemblyHelper.TryGetRuntime(TestAssembly, out RuntimeInfo testAssemblyRuntime)) {
-                        TestAssemblyRuntime = testAssemblyRuntime;
-                    }
-                }
-            }
-        }
+        /// <param name="message">The message containing the configuration.</param>
+        protected abstract TConfiguration LoadConfiguration(IMessage message);
 
         /// <summary>
         /// Commands the client to execute its task.
@@ -194,6 +179,24 @@ namespace Nuclear.Test.Execution {
         /// Raises the event <see cref="ExecutionFinished"/>.
         /// </summary>
         protected internal void RaiseExecutionFinished() => ExecutionFinished?.Invoke(this, new EventArgs());
+
+        #endregion
+
+        #region private methods
+
+        private void LoadAssembly() {
+            if(AssemblyHelper.TryLoadFrom(Configuration.File, out Assembly testAssembly)) {
+                TestAssembly = testAssembly;
+
+                if(AssemblyHelper.TryGetAssemblyName(Configuration.File, out AssemblyName testAssemblyName)) {
+                    TestAssemblyName = testAssemblyName;
+                }
+
+                if(AssemblyHelper.TryGetRuntime(TestAssembly, out RuntimeInfo testAssemblyRuntime)) {
+                    TestAssemblyRuntime = testAssemblyRuntime;
+                }
+            }
+        }
 
         #endregion
 

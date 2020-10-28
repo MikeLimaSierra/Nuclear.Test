@@ -43,14 +43,7 @@ namespace Nuclear.Test.Proxy {
 
         #region methods
 
-        protected override void Setup(IMessage message) {
-            base.Setup(message);
-
-            if(message.TryGetData(out IProxyClientConfiguration config)) {
-                Configuration = config;
-            }
-            message.TryGetData(out _workerConfig);
-        }
+        protected override IProxyClientConfiguration LoadConfiguration(IMessage message) => message.TryGetData(out IProxyClientConfiguration config) ? config : null;
 
         protected override void Execute() {
             base.Execute();
