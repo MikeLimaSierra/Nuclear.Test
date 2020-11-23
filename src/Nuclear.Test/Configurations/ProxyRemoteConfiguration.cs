@@ -13,4 +13,3 @@ namespace Nuclear.Test.Configurations {
 
     }
 }
-}
