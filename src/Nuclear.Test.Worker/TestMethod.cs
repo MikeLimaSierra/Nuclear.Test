@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using log4net;
+
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Results;
@@ -12,6 +14,8 @@ namespace Nuclear.Test.Worker {
     internal class TestMethod {
 
         #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TestMethod));
 
         private readonly MethodInfo _methodInfo;
 
@@ -55,6 +59,8 @@ namespace Nuclear.Test.Worker {
         #region methods
 
         internal void Invoke() {
+            _log.Debug(nameof(Invoke));
+
             _results.PrepareResults(_methodInfo);
 
             if(HasParameters) {
@@ -72,19 +78,26 @@ namespace Nuclear.Test.Worker {
         }
 
         internal Boolean TryGetInstance(Type type, out Object instance) {
+            _log.Debug(nameof(TryGetInstance));
+
             instance = null;
 
             try {
                 instance = Activator.CreateInstance(type, true);
 
-            } catch {
-                _results.LogError(_methodInfo, $"Failed to create instance of {type.Format()}");
+            } catch (Exception ex) {
+                String message = $"Failed to create instance of {type.Format()}";
+
+                _log.Error(message, ex);
+                _results.LogError(_methodInfo, message);
             }
 
             return instance != null;
         }
 
         internal IEnumerable<Object[]> GetData(Attribute attr) {
+            _log.Debug(nameof(GetData));
+
             if(attr is TestParametersAttribute tpa && tpa.Parameters != null) {
                 return new Object[][] { tpa.Parameters };
             }
@@ -113,6 +126,8 @@ namespace Nuclear.Test.Worker {
         }
 
         internal Boolean TryGetData(MemberInfo member, out IEnumerable<Object[]> data) {
+            _log.Debug($"{nameof(TryGetData)}({nameof(MemberInfo)})");
+
             data = null;
 
             if(member is FieldInfo fi) {
@@ -129,6 +144,8 @@ namespace Nuclear.Test.Worker {
         }
 
         internal Boolean TryGetData(FieldInfo field, out IEnumerable<Object[]> data) {
+            _log.Debug($"{nameof(TryGetData)}({nameof(FieldInfo)})");
+
             data = null;
 
             if(field.FieldType == typeof(IEnumerable<Object[]>)) {
@@ -144,6 +161,8 @@ namespace Nuclear.Test.Worker {
         }
 
         internal Boolean TryGetData(MethodInfo method, out IEnumerable<Object[]> data) {
+            _log.Debug($"{nameof(TryGetData)}({nameof(MethodInfo)})");
+
             data = null;
 
             if(method.ReturnType == typeof(IEnumerable<Object[]>)) {
@@ -159,12 +178,18 @@ namespace Nuclear.Test.Worker {
         }
 
         internal Boolean TryPrepareForInvoke(Object[] @params, out MethodInfo method, out Object[] parameters) {
+            _log.Debug(nameof(TryPrepareForInvoke));
+
             method = _methodInfo;
             parameters = @params;
 
             if(IsGeneric) {
                 if(parameters.Length < _genericArguments.Length) {
-                    _results.LogError(method, $"Expecting at least {_genericArguments.Length.Format()} parameters that are of type {typeof(Type).Format()}; Given is {parameters.Format()}");
+                    String message = $"Expecting at least {_genericArguments.Length.Format()} parameters that are of type {typeof(Type).Format()}; Given is {parameters.Format()}";
+
+                    _log.Error(message);
+                    _results.LogError(method, message);
+
                     return false;
                 }
 
@@ -172,7 +197,11 @@ namespace Nuclear.Test.Worker {
                 parameters = @params.Skip(_genericArguments.Length).ToArray();
 
                 if(!typeParams.All(tp => tp is Type)) {
-                    _results.LogError(method, $"Expecting the first {typeParams.Length.Format()} parameters to be of type {typeof(Type).Format()}; Given is {typeParams.Format()}");
+                    String message = $"Expecting the first {typeParams.Length.Format()} parameters to be of type {typeof(Type).Format()}; Given is {typeParams.Format()}";
+
+                    _log.Error(message);
+                    _results.LogError(method, message);
+
                     return false;
                 }
 
@@ -180,32 +209,47 @@ namespace Nuclear.Test.Worker {
                     method = _methodInfo.MakeGenericMethod(typeParams.Cast<Type>().ToArray());
 
                 } catch(Exception ex) {
-                    _results.LogError(method, $"Making method {_methodInfo.Name.Format()} generic using {typeParams.Format()} didn't work: {ex}");
+                    _log.Error($"Failed making method {_methodInfo.Name.Format()} generic using {typeParams.Format()}.", ex);
+                    _results.LogError(method, $"Failed making method {_methodInfo.Name.Format()} generic using {typeParams.Format()}: {ex}");
+
                     return false;
                 }
 
-                _results.AddNote($"Invoking generic method {method.Name}<{String.Join(", ", typeParams.Select(t => t.Format()))}>({String.Join(", ", _parameters.Select(p => p.ParameterType.Format()))})", File, Method);
+                String note = $"Invoking generic method {method.Name}<{String.Join(", ", typeParams.Select(t => t.Format()))}>({String.Join(", ", _parameters.Select(p => p.ParameterType.Format()))})";
+
+                _log.Debug(note);
+                _results.AddNote(note, File, Method);
             }
 
             return true;
         }
 
         private void InvokeInternal(Object[] @params) {
+            _log.Debug(nameof(InvokeInternal));
+
             if(TryGetInstance(_methodInfo.DeclaringType, out Object instance) && TryPrepareForInvoke(@params, out MethodInfo method, out Object[] parameters)) {
                 if(parameters.Length > 0) {
-                    _results.AddNote($"Injecting data set {parameters.Format()}", File, Method);
+                    String message = $"Injecting data set {parameters.Format()}.";
+
+                    _log.Debug(message);
+                    _results.AddNote(message, File, Method);
                 }
 
                 try {
                     method.Invoke(instance, parameters);
 
                 } catch(TargetInvocationException ex) {
+                    _log.Error("Failed to invoke test method.", ex);
                     _results.LogError(method, ex.InnerException.ToString());
 
-                } catch(TargetParameterCountException) {
-                    _results.LogError(method, $"Parameters mismatch: Expected is {_parameters.Select(p => p.ParameterType).Format()}; Given is {parameters.Select(p => p.FormatType())}");
+                } catch(TargetParameterCountException ex) {
+                    String message = $"Parameters mismatch: Expected is {_parameters.Select(p => p.ParameterType).Format()}; Given is {parameters.Select(p => p.FormatType())}";
+
+                    _log.Error(message, ex);
+                    _results.LogError(method, message);
 
                 } catch(Exception ex) {
+                    _log.Error("Failed to invoke test method.", ex);
                     _results.LogError(method, ex.ToString());
                 }
             }

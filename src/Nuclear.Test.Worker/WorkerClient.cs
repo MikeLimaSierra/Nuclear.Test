@@ -49,6 +49,8 @@ namespace Nuclear.Test.Worker {
         #region eventhandlers
 
         private Assembly OnAssemblyResolve(Object sender, ResolveEventArgs args) {
+            Log.Debug(nameof(OnAssemblyResolve));
+
             IEnumerable<FileInfo> files;
 
             IDefaultResolver defaultResolver = AssemblyResolver.Default;
@@ -78,9 +80,15 @@ namespace Nuclear.Test.Worker {
 
         #region methods
 
-        protected override IWorkerClientConfiguration LoadConfiguration(IMessage message) => message.TryGetData(out IWorkerClientConfiguration config) ? config : null;
+        protected override IWorkerClientConfiguration LoadConfiguration(IMessage message) {
+            Log.Debug(nameof(LoadConfiguration));
+
+            return message.TryGetData(out IWorkerClientConfiguration config) ? config : null;
+        }
 
         protected override void Execute() {
+            Log.Debug(nameof(Execute));
+
             base.Execute();
 
             AssemblyHelper.TryGetRuntime(_entryAssembly, out RuntimeInfo entryAssemblyInfo);
@@ -106,6 +114,8 @@ namespace Nuclear.Test.Worker {
         #region private methods
 
         private void CollectTestMethods(Assembly assembly, ITestResultEndPoint results, out IList<TestMethod> sequentialTestMethods, out IList<TestMethod> parallelTestMethods) {
+            Log.Debug(nameof(CollectTestMethods));
+
             sequentialTestMethods = new List<TestMethod>();
             parallelTestMethods = new List<TestMethod>();
 
@@ -146,6 +156,8 @@ namespace Nuclear.Test.Worker {
         }
 
         private void InvokeTestMethods(IEnumerable<TestMethod> sequentialTestMethods, IEnumerable<TestMethod> parallelTestMethods) {
+            Log.Debug(nameof(InvokeTestMethods));
+
             Log.Info($"Invoking {sequentialTestMethods.Count()} sequential test methods.");
             sequentialTestMethods.Foreach(m => m.Invoke());
 
