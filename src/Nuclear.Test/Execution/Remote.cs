@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
+using log4net;
+
 using Nuclear.Exceptions;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
@@ -47,6 +50,11 @@ namespace Nuclear.Test.Execution {
         #region properties
 
         /// <summary>
+        /// Gets the logger instance.
+        /// </summary>
+        protected static ILog Log { get; } = LogManager.GetLogger(typeof(Remote<TConfiguration>));
+
+        /// <summary>
         /// Gets the communication link object.
         /// </summary>
         protected IServerLink Link { get; }
@@ -88,9 +96,13 @@ namespace Nuclear.Test.Execution {
         public abstract void Execute();
 
         /// <summary>
-        /// Sends the <see cref="Commands.Setup"/> message to the attached <see cref="IClient"/>.
+        /// Sends the <see cref="Commands.Setup"/> message to the attached <see cref="IClient{TConfiguration}"/>.
         /// </summary>
-        private void SendSetup() => Link.Send(GetSetupMessage(new Message(Commands.Setup)));
+        private void SendSetup() {
+            Log.Debug(nameof(SendSetup));
+
+            Link.Send(GetSetupMessage(new Message(Commands.Setup)));
+        }
 
         /// <summary>
         /// Gets the message containing setup data for the connected client.
@@ -98,17 +110,23 @@ namespace Nuclear.Test.Execution {
         /// <param name="message">The message for the client.</param>
         /// <returns></returns>
         protected virtual IMessage GetSetupMessage(IMessage message) {
+            Log.Debug(nameof(GetSetupMessage));
+
             Throw.If.Object.IsNull(message, nameof(message));
 
-            message.Append(_clientConfig);
+            message.Append(Configuration);
 
             return message;
         }
 
         /// <summary>
-        /// Sends the <see cref="Commands.Execute"/> message to the attached <see cref="IClient"/>.
+        /// Sends the <see cref="Commands.Execute"/> message to the attached <see cref="IClient{TConfiguration}"/>.
         /// </summary>
-        protected void SendExecute() => Link.Send(new Message(Commands.Execute));
+        protected void SendExecute() {
+            Log.Debug(nameof(SendExecute));
+
+            Link.Send(new Message(Commands.Execute));
+        }
 
         #endregion
 
@@ -118,12 +136,16 @@ namespace Nuclear.Test.Execution {
         /// Initializes the process that will be remote controlled.
         /// </summary>
         protected void StartProcess() {
+            Log.Debug(nameof(StartProcess));
+
             using(Process process = new Process()) {
                 process.StartInfo.FileName = Configuration.Executable.FullName;
                 process.StartInfo.Arguments = Link.PipeID;
                 process.StartInfo.UseShellExecute = Configuration.StartClientVisible;
                 process.StartInfo.CreateNoWindow = !Configuration.StartClientVisible;
-                //DiagnosticOutput.Log(OutputConfiguration, "Starting process '{0} {1}' ...", executable.FullName, pipeName);
+
+                Log.Info($"Starting process {Configuration.Executable.FullName.Format()} {Link.PipeID.Format()} ...");
+
                 process.Start();
             }
         }
@@ -131,30 +153,49 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Raises the event <see cref="ClientConnected"/>.
         /// </summary>
-        protected internal void RaiseClientConnected() => ClientConnected?.Invoke(this, new EventArgs());
+        protected internal void RaiseClientConnected() {
+            Log.Debug(nameof(RaiseClientConnected));
+
+            ClientConnected?.Invoke(this, new EventArgs());
+        }
 
         /// <summary>
         /// Raises the event <see cref="ConnectionLost"/>.
         /// </summary>
-        protected internal void RaiseConnectionLost() => ConnectionLost?.Invoke(this, new EventArgs());
+        protected internal void RaiseConnectionLost() {
+            Log.Debug(nameof(RaiseConnectionLost));
+
+            ConnectionLost?.Invoke(this, new EventArgs());
+        }
 
         /// <summary>
         /// Raises the event <see cref="ResultsReceived"/> with the given <paramref name="data"/>.
         /// </summary>
         /// <param name="data">The raw bytes that were received.</param>
-        protected internal void RaiseResultsReceived(Byte[] data) => ResultsReceived?.Invoke(this, new ResultsReceivedEventArgs(data));
+        protected internal void RaiseResultsReceived(Byte[] data) {
+            Log.Debug(nameof(RaiseResultsReceived));
+
+            ResultsReceived?.Invoke(this, new ResultsReceivedEventArgs(data));
+        }
 
         /// <summary>
         /// Raises the event <see cref="ResultsAvailable"/> with the given <paramref name="resultCollection"/>.
         /// </summary>
         /// <param name="resultCollection">The results that were received and deserialized.</param>
-        protected internal void RaiseResultsAvailable(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection)
-            => ResultsAvailable?.Invoke(this, new ResultsAvailableEventArgs(resultCollection));
+        protected internal void RaiseResultsAvailable(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection) {
+            Log.Debug(nameof(RaiseResultsAvailable));
+
+            ResultsAvailable?.Invoke(this, new ResultsAvailableEventArgs(resultCollection));
+        }
 
         /// <summary>
         /// Raises the event <see cref="RemotingFinished"/>.
         /// </summary>
-        protected internal void RaiseRemotingFinished() => RemotingFinished?.Invoke(this, new EventArgs());
+        protected internal void RaiseRemotingFinished() {
+            Log.Debug(nameof(RaiseRemotingFinished));
+
+            RemotingFinished?.Invoke(this, new EventArgs());
+        }
 
         #endregion
 
