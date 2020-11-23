@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Resolvers;
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Link;
@@ -91,7 +92,7 @@ namespace Nuclear.Test.Worker {
             Results.Initialize(scenario);
             ResultProxy.Results = Results;
 
-            CollectTestMethods(TestAssembly, Results, out List<TestMethod> sequential, out List<TestMethod> parallel);
+            CollectTestMethods(TestAssembly, Results, out IList<TestMethod> sequential, out IList<TestMethod> parallel);
             InvokeTestMethods(sequential, parallel);
 
             SendResults(Results.GetKeyedResults());
@@ -104,42 +105,39 @@ namespace Nuclear.Test.Worker {
 
         #region private methods
 
-        private void CollectTestMethods(Assembly assembly, ITestResultEndPoint results, out List<TestMethod> sequentialTestMethods, out List<TestMethod> parallelTestMethods) {
+        private void CollectTestMethods(Assembly assembly, ITestResultEndPoint results, out IList<TestMethod> sequentialTestMethods, out IList<TestMethod> parallelTestMethods) {
             sequentialTestMethods = new List<TestMethod>();
             parallelTestMethods = new List<TestMethod>();
 
-            //DiagnosticOutput.Log(OutputConfiguration, "Collecting test methods.");
-
+            Log.Debug("Collecting test methods.");
+            
             foreach(Type type in assembly.GetTypes()) {
-                //DiagnosticOutput.Log(OutputConfiguration, "Searching Type {0}.", type.Format());
-
-                TestMode classLevelMode = TestMode.Parallel;
-                Boolean classLevelIgnore = false;
+                Log.Debug($"Searching type {type.Format()}.");
 
                 TestClassAttribute c_attr = type.GetCustomAttribute<TestClassAttribute>();
-
-                if(c_attr != null) {
-                    classLevelMode = c_attr.TestMode;
-                    classLevelIgnore = c_attr.IsIgnored;
-                }
+                TestMode classLevelMode = c_attr != null ? c_attr.TestMode : TestMode.Parallel;
+                Boolean classLevelIgnore = c_attr != null && c_attr.IsIgnored;
 
                 foreach(MethodInfo testMethod in type.GetRuntimeMethods().Where(m => m.GetCustomAttributes<TestMethodAttribute>().Count() > 0)) {
-                    //DiagnosticOutput.Log(OutputConfiguration, "Found test method {0}.", testMethod.Name.Format());
-
+                    Log.Info($"Found test method {type.Format()}.{testMethod.Name.Format()}.");
                     TestMethodAttribute m_attr = testMethod.GetCustomAttribute<TestMethodAttribute>();
 
                     if(classLevelIgnore) {
-                        results.IgnoreTestMethod(testMethod, $"Class ignored: '{c_attr.IgnoreReason}'");
+                        Log.Debug($"Class ignored: {c_attr.IgnoreReason.Format()}");
+                        results.IgnoreTestMethod(testMethod, $"Class ignored: {c_attr.IgnoreReason.Format()}");
 
                     } else if(m_attr.IsIgnored) {
-                        results.IgnoreTestMethod(testMethod, $"Method ignored: '{m_attr.IgnoreReason}'");
+                        Log.Debug($"Method ignored: {m_attr.IgnoreReason.Format()}");
+                        results.IgnoreTestMethod(testMethod, $"Method ignored: {m_attr.IgnoreReason.Format()}");
 
                     } else {
-                        TestMode methodLevelMode = m_attr.TestMode;
 
-                        if(classLevelMode == TestMode.Sequential || methodLevelMode == TestMode.Sequential || Configuration.TestsInSequence) {
+                        if(classLevelMode == TestMode.Sequential || m_attr.TestMode == TestMode.Sequential || Configuration.TestsInSequence) {
+                            Log.Info($"Adding sequential test method {type.Format()}.{testMethod.Name.Format()}.");
                             sequentialTestMethods.Add(new TestMethod(results, testMethod));
+
                         } else {
+                            Log.Info($"Adding parallel test method {type.Format()}.{testMethod.Name.Format()}.");
                             parallelTestMethods.Add(new TestMethod(results, testMethod));
                         }
                     }
@@ -147,11 +145,11 @@ namespace Nuclear.Test.Worker {
             }
         }
 
-        private void InvokeTestMethods(List<TestMethod> sequentialTestMethods, List<TestMethod> parallelTestMethods) {
-            //DiagnosticOutput.Log(OutputConfiguration, "Executing {0} sequential test methods.", sequentialTestMethods.Count);
-            sequentialTestMethods.ForEach(m => m.Invoke());
+        private void InvokeTestMethods(IEnumerable<TestMethod> sequentialTestMethods, IEnumerable<TestMethod> parallelTestMethods) {
+            Log.Info($"Invoking {sequentialTestMethods.Count()} sequential test methods.");
+            sequentialTestMethods.Foreach(m => m.Invoke());
 
-            //DiagnosticOutput.Log(OutputConfiguration, "Executing {0} parallel test methods.", parallelTestMethods.Count);
+            Log.Info($"Invoking {parallelTestMethods.Count()} parallel test methods.");
             Parallel.ForEach(parallelTestMethods, m => m.Invoke());
         }
 
