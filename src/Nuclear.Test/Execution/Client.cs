@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 
+using log4net;
+
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
@@ -44,6 +46,11 @@ namespace Nuclear.Test.Execution {
         #endregion
 
         #region properties
+
+        /// <summary>
+        /// Gets the logger instance.
+        /// </summary>
+        protected static ILog Log { get; } = LogManager.GetLogger(typeof(Client<TConfiguration>));
 
         /// <summary>
         /// Gets the communication link object.
