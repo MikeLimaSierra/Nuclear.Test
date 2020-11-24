@@ -7,6 +7,7 @@ using log4net;
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Helpers;
 using Nuclear.Test.Link;
@@ -41,16 +42,13 @@ namespace Nuclear.Test.Execution {
 
         #region fields
 
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Client<TConfiguration>));
+
         private readonly RuntimeInfo _currentRuntime;
 
         #endregion
 
         #region properties
-
-        /// <summary>
-        /// Gets the logger instance.
-        /// </summary>
-        protected static ILog Log { get; } = LogManager.GetLogger(typeof(Client<TConfiguration>));
 
         /// <summary>
         /// Gets the communication link object.
@@ -119,7 +117,11 @@ namespace Nuclear.Test.Execution {
         #region event handlers
 
         private void OnSetupReceived(Object sender, MessageReceivedEventArgs e) {
+            _log.Debug(nameof(OnSetupReceived));
+
             if(e.Message.Command == Commands.Setup) {
+                _log.Info("Setup message received.");
+
                 Link.MessageReceived -= OnSetupReceived;
                 Configuration = LoadConfiguration(e.Message);
                 LoadAssembly();
@@ -127,13 +129,19 @@ namespace Nuclear.Test.Execution {
         }
 
         private void OnExecuteReceived(Object sender, MessageReceivedEventArgs e) {
+            _log.Debug(nameof(OnExecuteReceived));
+
             if(e.Message.Command == Commands.Execute) {
+                _log.Info("Execute message received.");
+
                 Link.MessageReceived -= OnExecuteReceived;
                 Execute();
             }
         }
 
         private void OnServerConnected(Object sender, EventArgs e) {
+            _log.Debug(nameof(OnServerConnected));
+
             Link.ServerConnected -= OnServerConnected;
             RaiseRemoteConnected();
         }
@@ -152,6 +160,8 @@ namespace Nuclear.Test.Execution {
         /// Commands the client to execute its task.
         /// </summary>
         protected virtual void Execute() {
+            _log.Debug(nameof(Execute));
+
             ConsoleHelper.SetConsoleTitle(_currentRuntime);
             ConsoleHelper.PrintProcessInfo(_currentRuntime, HeaderContent);
             ConsoleHelper.PrintTestAssemblyInfo(TestAssemblyName, TestAssemblyRuntime);
@@ -162,6 +172,8 @@ namespace Nuclear.Test.Execution {
         /// </summary>
         /// <param name="results">The test result collection that will be sent.</param>
         protected void SendResults(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
+            _log.Debug(nameof(SendResults));
+
             IMessage message = new Message(Commands.Results);
             message.Append(results);
             Link.Send(message);
@@ -170,36 +182,60 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Sends the <see cref="Commands.Finished"/> message to the attached <see cref="IRemote"/>.
         /// </summary>
-        protected void SendFinished() => Link.Send(new Message(Commands.Finished));
+        protected void SendFinished() {
+            _log.Debug(nameof(SendFinished));
+
+            Link.Send(new Message(Commands.Finished));
+        }
 
         /// <summary>
         /// Raises the event <see cref="RemoteConnected"/>.
         /// </summary>
-        protected internal void RaiseRemoteConnected() => RemoteConnected?.Invoke(this, new EventArgs());
+        protected internal void RaiseRemoteConnected() {
+            _log.Debug(nameof(RaiseRemoteConnected));
+
+            RemoteConnected?.Invoke(this, new EventArgs());
+        }
 
         /// <summary>
         /// Raises the event <see cref="ConnectionLost"/>.
         /// </summary>
-        protected internal void RaiseConnectionLost() => ConnectionLost?.Invoke(this, new EventArgs());
+        protected internal void RaiseConnectionLost() {
+            _log.Debug(nameof(RaiseConnectionLost));
+
+            ConnectionLost?.Invoke(this, new EventArgs());
+        }
 
         /// <summary>
         /// Raises the event <see cref="ExecutionFinished"/>.
         /// </summary>
-        protected internal void RaiseExecutionFinished() => ExecutionFinished?.Invoke(this, new EventArgs());
+        protected internal void RaiseExecutionFinished() {
+            _log.Debug(nameof(RaiseExecutionFinished));
+
+            ExecutionFinished?.Invoke(this, new EventArgs());
+        }
 
         #endregion
 
         #region private methods
 
         private void LoadAssembly() {
+            _log.Debug(nameof(LoadAssembly));
+
             if(AssemblyHelper.TryLoadFrom(Configuration.File, out Assembly testAssembly)) {
+                _log.Debug($"Assembly loaded from {Configuration.File.FullName.Format()}");
+
                 TestAssembly = testAssembly;
 
                 if(AssemblyHelper.TryGetAssemblyName(Configuration.File, out AssemblyName testAssemblyName)) {
+                    _log.Debug($"TestAssemblyName = {testAssemblyName.FullName.Format()}");
+
                     TestAssemblyName = testAssemblyName;
                 }
 
                 if(AssemblyHelper.TryGetRuntime(TestAssembly, out RuntimeInfo testAssemblyRuntime)) {
+                    _log.Debug($"TestAssemblyRuntime = {testAssemblyRuntime.Format()}");
+
                     TestAssemblyRuntime = testAssemblyRuntime;
                 }
             }

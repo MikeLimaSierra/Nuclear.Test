@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
+using log4net;
+
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Resolvers;
 using Nuclear.Assemblies.Runtimes;
@@ -19,6 +21,8 @@ namespace Nuclear.Test.Worker {
     internal class WorkerClient : Client<IWorkerClientConfiguration> {
 
         #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(WorkerClient));
 
         private readonly Assembly _entryAssembly = Assembly.GetEntryAssembly();
 
@@ -49,29 +53,29 @@ namespace Nuclear.Test.Worker {
         #region eventhandlers
 
         private Assembly OnAssemblyResolve(Object sender, ResolveEventArgs args) {
-            Log.Debug(nameof(OnAssemblyResolve));
+            _log.Debug(nameof(OnAssemblyResolve));
 
-            IEnumerable<FileInfo> files;
-
-            IDefaultResolver defaultResolver = AssemblyResolver.Default;
-
-            if(defaultResolver.TryResolve(args, out files)) {
+            if(AssemblyResolver.Default.TryResolve(args, out IEnumerable<FileInfo> files)) {
                 foreach(FileInfo file in files) {
                     if(AssemblyHelper.TryLoadFrom(file, out Assembly assembly)) {
+                        _log.Debug($"Resolved assembly at {file.FullName.Format()}");
+
                         return assembly;
                     }
                 }
             }
 
-            INugetResolver nugetResolver = AssemblyResolver.Nuget;
-
-            if(nugetResolver.TryResolve(args, out files)) {
+            if(AssemblyResolver.Nuget.TryResolve(args, out files)) {
                 foreach(FileInfo file in files) {
                     if(AssemblyHelper.TryLoadFrom(file, out Assembly assembly)) {
+                        _log.Debug($"Resolved assembly at {file.FullName.Format()}");
+
                         return assembly;
                     }
                 }
             }
+
+            _log.Debug("No matching assembly found.");
 
             return null;
         }
@@ -81,13 +85,13 @@ namespace Nuclear.Test.Worker {
         #region methods
 
         protected override IWorkerClientConfiguration LoadConfiguration(IMessage message) {
-            Log.Debug(nameof(LoadConfiguration));
+            _log.Debug(nameof(LoadConfiguration));
 
             return message.TryGetData(out IWorkerClientConfiguration config) ? config : null;
         }
 
         protected override void Execute() {
-            Log.Debug(nameof(Execute));
+            _log.Debug(nameof(Execute));
 
             base.Execute();
 
@@ -114,40 +118,38 @@ namespace Nuclear.Test.Worker {
         #region private methods
 
         private void CollectTestMethods(Assembly assembly, ITestResultEndPoint results, out IList<TestMethod> sequentialTestMethods, out IList<TestMethod> parallelTestMethods) {
-            Log.Debug(nameof(CollectTestMethods));
+            _log.Debug(nameof(CollectTestMethods));
 
             sequentialTestMethods = new List<TestMethod>();
             parallelTestMethods = new List<TestMethod>();
-
-            Log.Debug("Collecting test methods.");
             
             foreach(Type type in assembly.GetTypes()) {
-                Log.Debug($"Searching type {type.Format()}.");
+                _log.Debug($"Searching type {type.Format()}.");
 
                 TestClassAttribute c_attr = type.GetCustomAttribute<TestClassAttribute>();
                 TestMode classLevelMode = c_attr != null ? c_attr.TestMode : TestMode.Parallel;
                 Boolean classLevelIgnore = c_attr != null && c_attr.IsIgnored;
 
                 foreach(MethodInfo testMethod in type.GetRuntimeMethods().Where(m => m.GetCustomAttributes<TestMethodAttribute>().Count() > 0)) {
-                    Log.Info($"Found test method {type.Format()}.{testMethod.Name.Format()}.");
+                    _log.Info($"Found test method {type.Format()}.{testMethod.Name.Format()}.");
                     TestMethodAttribute m_attr = testMethod.GetCustomAttribute<TestMethodAttribute>();
 
                     if(classLevelIgnore) {
-                        Log.Debug($"Class ignored: {c_attr.IgnoreReason.Format()}");
+                        _log.Debug($"Class ignored: {c_attr.IgnoreReason.Format()}");
                         results.IgnoreTestMethod(testMethod, $"Class ignored: {c_attr.IgnoreReason.Format()}");
 
                     } else if(m_attr.IsIgnored) {
-                        Log.Debug($"Method ignored: {m_attr.IgnoreReason.Format()}");
+                        _log.Debug($"Method ignored: {m_attr.IgnoreReason.Format()}");
                         results.IgnoreTestMethod(testMethod, $"Method ignored: {m_attr.IgnoreReason.Format()}");
 
                     } else {
 
                         if(classLevelMode == TestMode.Sequential || m_attr.TestMode == TestMode.Sequential || Configuration.TestsInSequence) {
-                            Log.Info($"Adding sequential test method {type.Format()}.{testMethod.Name.Format()}.");
+                            _log.Info($"Adding sequential test method {type.Format()}.{testMethod.Name.Format()}.");
                             sequentialTestMethods.Add(new TestMethod(results, testMethod));
 
                         } else {
-                            Log.Info($"Adding parallel test method {type.Format()}.{testMethod.Name.Format()}.");
+                            _log.Info($"Adding parallel test method {type.Format()}.{testMethod.Name.Format()}.");
                             parallelTestMethods.Add(new TestMethod(results, testMethod));
                         }
                     }
@@ -156,12 +158,12 @@ namespace Nuclear.Test.Worker {
         }
 
         private void InvokeTestMethods(IEnumerable<TestMethod> sequentialTestMethods, IEnumerable<TestMethod> parallelTestMethods) {
-            Log.Debug(nameof(InvokeTestMethods));
+            _log.Debug(nameof(InvokeTestMethods));
 
-            Log.Info($"Invoking {sequentialTestMethods.Count()} sequential test methods.");
+            _log.Info($"Invoking {sequentialTestMethods.Count()} sequential test methods.");
             sequentialTestMethods.Foreach(m => m.Invoke());
 
-            Log.Info($"Invoking {parallelTestMethods.Count()} parallel test methods.");
+            _log.Info($"Invoking {parallelTestMethods.Count()} parallel test methods.");
             Parallel.ForEach(parallelTestMethods, m => m.Invoke());
         }
 
