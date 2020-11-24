@@ -10,20 +10,6 @@ namespace Nuclear.Test.Configurations {
     /// </summary>
     public abstract class ClientConfiguration : IClientConfiguration {
 
-        #region constants
-
-        /// <summary>
-        /// Configuration values for <see cref="TestAssembly"/>.
-        /// </summary>
-        public const String TEST_ASSEMBLY = "Client.TestAssembly";
-
-        /// <summary>
-        /// Configuration values for <see cref="AutoShutdown"/>.
-        /// </summary>
-        public const String AUTO_SHUTDOWN = "Client.AutoShutdown";
-
-        #endregion
-
         #region properties
 
         /// <summary>

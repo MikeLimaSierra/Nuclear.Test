@@ -10,15 +10,6 @@ namespace Nuclear.Test.Configurations {
     /// </summary>
     public class RemoteConfiguration : IRemoteConfiguration {
 
-        #region constants
-
-        /// <summary>
-        /// Configuration values for <see cref="StartClientVisible"/>.
-        /// </summary>
-        public const String START_CLIENT_VISIBLE = "Remote.StartClientVisible";
-
-        #endregion
-
         #region properties
 
         /// <summary>

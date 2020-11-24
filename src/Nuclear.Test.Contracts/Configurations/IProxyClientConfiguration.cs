@@ -34,6 +34,16 @@ namespace Nuclear.Test.Configurations {
         /// </summary>
         String WorkerExecutableName { get; set; }
 
+        /// <summary>
+        /// Gets or sets the worker remote configuration object.
+        /// </summary>
+        IWorkerRemoteConfiguration WorkerRemoteConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the worker client configuration object.
+        /// </summary>
+        IWorkerClientConfiguration WorkerClientConfiguration { get; set; }
+
         #endregion
 
     }

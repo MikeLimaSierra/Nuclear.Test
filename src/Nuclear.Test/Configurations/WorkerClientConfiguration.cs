@@ -9,15 +9,6 @@ namespace Nuclear.Test.Configurations {
     /// </summary>
     public class WorkerClientConfiguration : ClientConfiguration, IWorkerClientConfiguration {
 
-        #region constants
-
-        /// <summary>
-        /// Configuration values for <see cref="TestsInSequence"/>.
-        /// </summary>
-        public const String TESTS_IN_SEQUENCE = "Worker.TestsInSequence";
-
-        #endregion
-
         #region properties
 
         /// <summary>

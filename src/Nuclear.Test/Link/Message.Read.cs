@@ -368,9 +368,9 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IWorkerClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ClientConfiguration.TEST_ASSEMBLY && TryGetData(out FileInfo testAssembly)
-                && TryGetData(out identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)
-                && TryGetData(out identifier) && identifier == WorkerClientConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
+            if(TryGetData(out FileInfo testAssembly)
+                && TryGetData(out Boolean autoShutdown)
+                && TryGetData(out Boolean testsInSequence)) {
 
                 data = new WorkerClientConfiguration {
                     TestAssembly = testAssembly,
@@ -390,12 +390,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IProxyClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ClientConfiguration.TEST_ASSEMBLY && TryGetData(out FileInfo testAssembly)
-                && TryGetData(out identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)
-                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)
-                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.SELECTED_RUNTIMES && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
-                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.WORKER_DIRECTORY && TryGetData(out DirectoryInfo workerDirectory)
-                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.WORKER_EXECUTABLE_NAME && TryGetData(out String workerExecutableName)) {
+            if(TryGetData(out FileInfo testAssembly)
+                && TryGetData(out Boolean autoShutdown)
+                && TryGetData(out Boolean assembliesInSequence)
+                && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
+                && TryGetData(out DirectoryInfo workerDirectory)
+                && TryGetData(out String workerExecutableName)
+                && TryGetData(out IWorkerRemoteConfiguration remoteConfig)
+                && TryGetData(out IWorkerClientConfiguration clientConfig)) {
 
                 data = new ProxyClientConfiguration {
                     TestAssembly = testAssembly,
@@ -403,7 +405,9 @@ namespace Nuclear.Test.Link {
                     AssembliesInSequence = assembliesInSequence,
                     SelectedRuntimes = selectedRuntimes,
                     WorkerDirectory = workerDirectory,
-                    WorkerExecutableName = workerExecutableName
+                    WorkerExecutableName = workerExecutableName,
+                    WorkerRemoteConfiguration = remoteConfig,
+                    WorkerClientConfiguration = clientConfig
                 };
             }
 
@@ -416,11 +420,28 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
-        public Boolean TryGetData(out IRemoteConfiguration data) {
+        public Boolean TryGetData(out IWorkerRemoteConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == RemoteConfiguration.START_CLIENT_VISIBLE && TryGetData(out Boolean startClientVisible)) {
-                data = new RemoteConfiguration {
+            if(TryGetData(out Boolean startClientVisible)) {
+                data = new WorkerRemoteConfiguration {
+                    StartClientVisible = startClientVisible
+                };
+            }
+
+            return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out IProxyRemoteConfiguration data) {
+            data = default;
+
+            if(TryGetData(out Boolean startClientVisible)) {
+                data = new ProxyRemoteConfiguration {
                     StartClientVisible = startClientVisible
                 };
             }

@@ -10,30 +10,6 @@ namespace Nuclear.Test.Configurations {
     /// </summary>
     public class ProxyClientConfiguration : ClientConfiguration, IProxyClientConfiguration {
 
-        #region constants
-
-        /// <summary>
-        /// Configuration values for <see cref="AssembliesInSequence"/>.
-        /// </summary>
-        public const String ASSEMBLIES_IN_SEQUENCE = "Proxy.AssembliesInSequence";
-
-        /// <summary>
-        /// Configuration values for <see cref="SelectedRuntimes"/>.
-        /// </summary>
-        public const String SELECTED_RUNTIMES = "Proxy.SelectedRuntimes";
-
-        /// <summary>
-        /// Configuration values for <see cref="WorkerDirectory"/>.
-        /// </summary>
-        public const String WORKER_DIRECTORY = "Proxy.WorkerDirectory";
-
-        /// <summary>
-        /// Configuration values for <see cref="WorkerExecutableName"/>.
-        /// </summary>
-        public const String WORKER_EXECUTABLE_NAME = "Proxy.WorkerExecutableName";
-
-        #endregion
-
         #region properties
 
         /// <summary>
@@ -57,6 +33,16 @@ namespace Nuclear.Test.Configurations {
         /// Gets or sets the name of any worker executable.
         /// </summary>
         public String WorkerExecutableName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the worker remote configuration object.
+        /// </summary>
+        public IWorkerRemoteConfiguration WorkerRemoteConfiguration { get; set; }
+
+        /// <summary>
+        /// Gets or sets the worker client configuration object.
+        /// </summary>
+        public IWorkerClientConfiguration WorkerClientConfiguration { get; set; }
 
         #endregion
 
