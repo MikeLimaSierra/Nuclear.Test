@@ -15,8 +15,11 @@ namespace Nuclear.Test.Execution {
     /// <summary>
     /// Implements the base functionality of a remote control for test clients.
     /// </summary>
-    public abstract class Remote<TConfiguration> : IRemote<TConfiguration>
-        where TConfiguration : IRemoteConfiguration {
+    /// <typeparam name="TRemoteConfiguration">The remote configuration type.</typeparam>
+    /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
+    public abstract class Remote<TRemoteConfiguration, TClientConfiguration> : IRemote<TRemoteConfiguration, TClientConfiguration>
+        where TRemoteConfiguration : IRemoteConfiguration
+        where TClientConfiguration : IClientConfiguration {
 
         #region events
 
@@ -49,7 +52,7 @@ namespace Nuclear.Test.Execution {
 
         #region fields
 
-        private static readonly ILog _log = LogManager.GetLogger(typeof(Remote<TConfiguration>));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Remote<TRemoteConfiguration, TClientConfiguration>));
 
         #endregion
 
@@ -63,7 +66,12 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the client configuration object.
         /// </summary>
-        public TConfiguration Configuration { get; protected set; }
+        public TRemoteConfiguration Configuration { get; protected set; }
+
+        /// <summary>
+        /// Gets the client configuration object.
+        /// </summary>
+        public TClientConfiguration ClientConfiguration { get; protected set; }
 
         /// <summary>
         /// Gets the test results sink that is in use.
@@ -75,15 +83,18 @@ namespace Nuclear.Test.Execution {
         #region ctors
 
         /// <summary>
-        /// Creates a new instance of <see cref="Remote{TConfiguration}"/>.
+        /// Creates a new instance of <see cref="Remote{TRemoteConfiguration, TClientConfiguration}"/>.
         /// </summary>
         /// <param name="configuration">The remote configuration object.</param>
+        /// <param name="clientConfiguration">The client configuration object.</param>
         /// <param name="link">The link object used to communicate with the client.</param>
-        public Remote(TConfiguration configuration, IServerLink link) {
+        public Remote(TRemoteConfiguration configuration, TClientConfiguration clientConfiguration, IServerLink link) {
             Throw.If.Object.IsNull(configuration, nameof(configuration));
+            Throw.If.Object.IsNull(clientConfiguration, nameof(clientConfiguration));
             Throw.If.Object.IsNull(link, nameof(link));
 
             Configuration = configuration;
+            ClientConfiguration = clientConfiguration;
             Link = link;
         }
 
@@ -159,14 +170,11 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the message containing setup data for the attached client.
         /// </summary>
-        /// <param name="message">The message for the client.</param>
         /// <returns>A message object containing setup data.</returns>
-        protected virtual IMessage GetSetupMessage(IMessage message) {
+        protected virtual IMessage GetSetupMessage() {
             _log.Debug(nameof(GetSetupMessage));
 
-            Throw.If.Object.IsNull(message, nameof(message));
-
-            return message;
+            return new Message(Commands.Setup);
         }
 
         /// <summary>
@@ -220,9 +228,6 @@ namespace Nuclear.Test.Execution {
 
         #region private methods
 
-        /// <summary>
-        /// Initializes the process that will be remote controlled.
-        /// </summary>
         private void StartProcess() {
             _log.Debug(nameof(StartProcess));
 
@@ -238,18 +243,12 @@ namespace Nuclear.Test.Execution {
             }
         }
 
-        /// <summary>
-        /// Sends the <see cref="Commands.Setup"/> message to the attached client.
-        /// </summary>
         private void SendSetup() {
             _log.Debug(nameof(SendSetup));
 
-            Link.Send(GetSetupMessage(new Message(Commands.Setup)));
+            Link.Send(GetSetupMessage());
         }
 
-        /// <summary>
-        /// Sends the <see cref="Commands.Execute"/> message to the attached client.
-        /// </summary>
         private void SendExecute() {
             _log.Debug(nameof(SendExecute));
 
