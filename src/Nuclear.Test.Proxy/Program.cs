@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Threading;
 
+using log4net;
+
 using Nuclear.Test.Link;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Proxy {
-    static class Program {
+    internal static class Program {
 
         #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Program));
 
         private static readonly ManualResetEventSlim _executionFinishedEvent = new ManualResetEventSlim(false);
 
@@ -18,7 +22,7 @@ namespace Nuclear.Test.Proxy {
 
         #region methods
 
-        static void Main(String[] args) {
+        internal static void Main(String[] args) {
             _client = new ProxyClient(new ClientLink(args[0]));
             _client.ExecutionFinished += OnClientExecutionFinished;
 
@@ -26,9 +30,9 @@ namespace Nuclear.Test.Proxy {
 
             ITestResultEndPoint results = _client.Results;
 
-            //DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
+            _log.Info("=========================");
             new ResultTree(Verbosity.ExecutionArchitecture, TestResultKey.Empty, results).Print();
-            //DiagnosticOutput.Log(process.OutputConfiguration, "=========================");
+            _log.Info("=========================");
 
             if(!_client.Configuration.AutoShutdown) {
                 Console.WriteLine("Press any key to exit.");
@@ -41,6 +45,8 @@ namespace Nuclear.Test.Proxy {
         #region private methods
 
         private static void OnClientExecutionFinished(Object sender, EventArgs e) {
+            _log.Debug(nameof(OnClientExecutionFinished));
+
             _client.ExecutionFinished -= OnClientExecutionFinished;
             _executionFinishedEvent.Set();
         }
