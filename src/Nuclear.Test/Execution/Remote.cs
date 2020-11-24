@@ -89,21 +89,72 @@ namespace Nuclear.Test.Execution {
 
         #endregion
 
-        #region abstract methods
+        #region event handlers
+
+        private void OnClientConnected(Object sender, EventArgs e) {
+            _log.Debug(nameof(OnClientConnected));
+
+            Link.ClientConnected -= OnClientConnected;
+            RaiseClientConnected();
+
+            if(Link.Connect()) {
+                _log.Info("Connecting to client.");
+
+                SendSetup();
+                Link.MessageReceived += OnResultsReceived;
+                Link.MessageReceived += OnFinishedReceived;
+                SendExecute();
+
+            } else {
+                _log.Error("Failed to connect to client.");
+            }
+        }
+
+        private void OnResultsReceived(Object sender, MessageReceivedEventArgs e) {
+            _log.Debug(nameof(OnResultsReceived));
+
+            if(e.Message.Command == Commands.Results) {
+                _log.Info("Results message received.");
+
+                // TODO: handle results
+            }
+        }
+
+        private void OnFinishedReceived(Object sender, MessageReceivedEventArgs e) {
+            _log.Debug(nameof(OnFinishedReceived));
+
+            if(e.Message.Command == Commands.Finished) {
+                _log.Info("Finished message received.");
+
+                Link.MessageReceived -= OnResultsReceived;
+                Link.MessageReceived -= OnFinishedReceived;
+                RaiseRemotingFinished();
+            }
+        }
+
+        #endregion
+
+        #region public methods
 
         /// <summary>
         /// Commands the client to execute its task.
         /// </summary>
-        public abstract void Execute();
+        public void Execute() {
+            _log.Debug(nameof(Execute));
 
-        /// <summary>
-        /// Sends the <see cref="Commands.Setup"/> message to the attached client.
-        /// </summary>
-        private void SendSetup() {
-            _log.Debug(nameof(SendSetup));
+            Link.ClientConnected += OnClientConnected;
 
-            Link.Send(GetSetupMessage(new Message(Commands.Setup)));
+            if(Configuration.Executable != null && Configuration.Executable.Exists) {
+                StartProcess();
+
+            } else {
+                _log.Error("Failed to start the client process.");
+            }
         }
+
+        #endregion
+
+        #region protected methods
 
         /// <summary>
         /// Gets the message containing setup data for the attached client.
@@ -115,40 +166,7 @@ namespace Nuclear.Test.Execution {
 
             Throw.If.Object.IsNull(message, nameof(message));
 
-            message.Append(Configuration);
-
             return message;
-        }
-
-        /// <summary>
-        /// Sends the <see cref="Commands.Execute"/> message to the attached client.
-        /// </summary>
-        protected void SendExecute() {
-            _log.Debug(nameof(SendExecute));
-
-            Link.Send(new Message(Commands.Execute));
-        }
-
-        #endregion
-
-        #region protected methods
-
-        /// <summary>
-        /// Initializes the process that will be remote controlled.
-        /// </summary>
-        protected void StartProcess() {
-            _log.Debug(nameof(StartProcess));
-
-            using(Process process = new Process()) {
-                process.StartInfo.FileName = Configuration.Executable.FullName;
-                process.StartInfo.Arguments = Link.PipeID;
-                process.StartInfo.UseShellExecute = Configuration.StartClientVisible;
-                process.StartInfo.CreateNoWindow = !Configuration.StartClientVisible;
-
-                _log.Info($"Starting process {Configuration.Executable.FullName.Format()} {Link.PipeID.Format()} ...");
-
-                process.Start();
-            }
         }
 
         /// <summary>
@@ -196,6 +214,46 @@ namespace Nuclear.Test.Execution {
             _log.Debug(nameof(RaiseRemotingFinished));
 
             RemotingFinished?.Invoke(this, new EventArgs());
+        }
+
+        #endregion
+
+        #region private methods
+
+        /// <summary>
+        /// Initializes the process that will be remote controlled.
+        /// </summary>
+        private void StartProcess() {
+            _log.Debug(nameof(StartProcess));
+
+            using(Process process = new Process()) {
+                process.StartInfo.FileName = Configuration.Executable.FullName;
+                process.StartInfo.Arguments = Link.PipeID;
+                process.StartInfo.UseShellExecute = Configuration.StartClientVisible;
+                process.StartInfo.CreateNoWindow = !Configuration.StartClientVisible;
+
+                _log.Info($"Starting process {Configuration.Executable.FullName.Format()} {Link.PipeID.Format()} ...");
+
+                process.Start();
+            }
+        }
+
+        /// <summary>
+        /// Sends the <see cref="Commands.Setup"/> message to the attached client.
+        /// </summary>
+        private void SendSetup() {
+            _log.Debug(nameof(SendSetup));
+
+            Link.Send(GetSetupMessage(new Message(Commands.Setup)));
+        }
+
+        /// <summary>
+        /// Sends the <see cref="Commands.Execute"/> message to the attached client.
+        /// </summary>
+        private void SendExecute() {
+            _log.Debug(nameof(SendExecute));
+
+            Link.Send(new Message(Commands.Execute));
         }
 
         #endregion
