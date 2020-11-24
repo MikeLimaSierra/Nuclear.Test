@@ -168,7 +168,7 @@ namespace Nuclear.Test.Execution {
         }
 
         /// <summary>
-        /// Sends test results back to the attached <see cref="IRemote"/>.
+        /// Sends test results back to the attached remote.
         /// </summary>
         /// <param name="results">The test result collection that will be sent.</param>
         protected void SendResults(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
@@ -180,7 +180,7 @@ namespace Nuclear.Test.Execution {
         }
 
         /// <summary>
-        /// Sends the <see cref="Commands.Finished"/> message to the attached <see cref="IRemote"/>.
+        /// Sends the <see cref="Commands.Finished"/> message to the attached remote.
         /// </summary>
         protected void SendFinished() {
             _log.Debug(nameof(SendFinished));
