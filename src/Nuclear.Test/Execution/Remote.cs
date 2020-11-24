@@ -95,6 +95,11 @@ namespace Nuclear.Test.Execution {
 
             Configuration = configuration;
             ClientConfiguration = clientConfiguration;
+
+            if(!Configuration.StartClientVisible) {
+                ClientConfiguration.AutoShutdown = true;
+            }
+
             Link = link;
         }
 
