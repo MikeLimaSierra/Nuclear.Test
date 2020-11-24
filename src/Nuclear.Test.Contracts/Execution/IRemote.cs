@@ -8,8 +8,11 @@ namespace Nuclear.Test.Execution {
     /// <summary>
     /// Defines the base functionality of a remote control for test clients.
     /// </summary>
-    public interface IRemote<TConfiguration>
-        where TConfiguration : IRemoteConfiguration {
+    /// <typeparam name="TRemoteConfiguration">The remote configuration type.</typeparam>
+    /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
+    public interface IRemote<TRemoteConfiguration, TClientConfiguration>
+        where TRemoteConfiguration : IRemoteConfiguration
+        where TClientConfiguration : IClientConfiguration {
 
         #region events
 
@@ -45,7 +48,12 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the remote configuration object.
         /// </summary>
-        TConfiguration Configuration { get; }
+        TRemoteConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Gets the client configuration object.
+        /// </summary>
+        TClientConfiguration ClientConfiguration { get; }
 
         /// <summary>
         /// Gets the test results sink that is in use.
