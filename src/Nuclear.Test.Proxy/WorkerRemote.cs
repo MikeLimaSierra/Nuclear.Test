@@ -1,43 +1,31 @@
-﻿using Nuclear.Exceptions;
+﻿using log4net;
+
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Link;
 
 namespace Nuclear.Test.Proxy {
-    class WorkerRemote : Remote<IWorkerRemoteConfiguration> {
+    internal class WorkerRemote : Remote<IWorkerRemoteConfiguration, IWorkerClientConfiguration> {
 
         #region fields
 
-        IWorkerClientConfiguration _clientConfig;
+        private static readonly ILog _log = LogManager.GetLogger(typeof(WorkerRemote));
 
         #endregion
 
         #region ctors
 
-        public WorkerRemote(IWorkerRemoteConfiguration remoteConfig, IWorkerClientConfiguration clientConfig, IServerLink link)
-            : base(remoteConfig, link) {
-
-            Throw.If.Object.IsNull(clientConfig, nameof(clientConfig));
-
-            _clientConfig = clientConfig;
-        }
+        internal WorkerRemote(IWorkerRemoteConfiguration remoteConfig, IWorkerClientConfiguration clientConfiguration, IServerLink link)
+            : base(remoteConfig, clientConfiguration, link) { }
 
         #endregion
 
         #region methods
 
-        public override void Execute() {
-            if(Configuration.Executable != null && Configuration.Executable.Exists) {
+        protected override IMessage GetSetupMessage() {
+            _log.Debug(nameof(GetSetupMessage));
 
-                StartProcess();
-
-            }
-        }
-
-        protected override IMessage GetSetupMessage(IMessage message) {
-            message = base.GetSetupMessage(message);
-
-            return message;
+            return base.GetSetupMessage().Append(ClientConfiguration);
         }
 
         #endregion
