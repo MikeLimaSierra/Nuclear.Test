@@ -253,6 +253,8 @@ namespace Nuclear.Test.Worker {
                     _results.LogError(method, ex.ToString());
                 }
             }
+
+            if(instance is IDisposable disposable) { disposable.Dispose(); }
         }
 
         #endregion
