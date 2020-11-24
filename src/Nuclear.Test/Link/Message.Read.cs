@@ -368,12 +368,12 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IWorkerClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ClientConfiguration.FILE && TryGetData(out FileInfo file)
+            if(TryGetData(out String identifier) && identifier == ClientConfiguration.TEST_ASSEMBLY && TryGetData(out FileInfo testAssembly)
                 && TryGetData(out identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)
                 && TryGetData(out identifier) && identifier == WorkerClientConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
 
                 data = new WorkerClientConfiguration {
-                    File = file,
+                    TestAssembly = testAssembly,
                     AutoShutdown = autoShutdown,
                     TestsInSequence = testsInSequence
                 };
@@ -390,7 +390,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IProxyClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ClientConfiguration.FILE && TryGetData(out FileInfo file)
+            if(TryGetData(out String identifier) && identifier == ClientConfiguration.TEST_ASSEMBLY && TryGetData(out FileInfo testAssembly)
                 && TryGetData(out identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)
                 && TryGetData(out identifier) && identifier == ProxyClientConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)
                 && TryGetData(out identifier) && identifier == ProxyClientConfiguration.SELECTED_RUNTIMES && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
@@ -398,7 +398,7 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out identifier) && identifier == ProxyClientConfiguration.WORKER_EXECUTABLE_NAME && TryGetData(out String workerExecutableName)) {
 
                 data = new ProxyClientConfiguration {
-                    File = file,
+                    TestAssembly = testAssembly,
                     AutoShutdown = autoShutdown,
                     AssembliesInSequence = assembliesInSequence,
                     SelectedRuntimes = selectedRuntimes,

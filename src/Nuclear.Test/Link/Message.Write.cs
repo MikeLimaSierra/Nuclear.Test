@@ -274,7 +274,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IWorkerClientConfiguration data) {
-            Append(ClientConfiguration.FILE).Append(data.File);
+            Append(ClientConfiguration.TEST_ASSEMBLY).Append(data.TestAssembly);
             Append(ClientConfiguration.AUTO_SHUTDOWN).Append(data.AutoShutdown);
 
             Append(WorkerClientConfiguration.TESTS_IN_SEQUENCE).Append(data.TestsInSequence);
@@ -288,7 +288,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IProxyClientConfiguration data) {
-            Append(ClientConfiguration.FILE).Append(data.File);
+            Append(ClientConfiguration.TEST_ASSEMBLY).Append(data.TestAssembly);
             Append(ClientConfiguration.AUTO_SHUTDOWN).Append(data.AutoShutdown);
 
             Append(ProxyClientConfiguration.ASSEMBLIES_IN_SEQUENCE).Append(data.AssembliesInSequence);

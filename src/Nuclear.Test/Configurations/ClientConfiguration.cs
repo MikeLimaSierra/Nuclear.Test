@@ -13,9 +13,9 @@ namespace Nuclear.Test.Configurations {
         #region constants
 
         /// <summary>
-        /// Configuration values for <see cref="File"/>.
+        /// Configuration values for <see cref="TestAssembly"/>.
         /// </summary>
-        public const String FILE = "Client.File";
+        public const String TEST_ASSEMBLY = "Client.TestAssembly";
 
         /// <summary>
         /// Configuration values for <see cref="AutoShutdown"/>.
@@ -29,7 +29,7 @@ namespace Nuclear.Test.Configurations {
         /// <summary>
         /// Gets or sets the file path of the test assembly.
         /// </summary>
-        public FileInfo File { get; set; }
+        public FileInfo TestAssembly { get; set; }
 
         /// <summary>
         /// Gets or sets if client window will remain open after test execution.
