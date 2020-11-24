@@ -8,7 +8,7 @@ using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Worker {
-    static class Program {
+    internal static class Program {
 
         #region fields
 
@@ -22,7 +22,7 @@ namespace Nuclear.Test.Worker {
 
         #region public methods
 
-        static void Main(String[] args) {
+        internal static void Main(String[] args) {
             _client = new WorkerClient(new ClientLink(args[0]));
             _client.ExecutionFinished += OnClientExecutionFinished;
 
