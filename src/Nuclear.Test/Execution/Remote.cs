@@ -47,12 +47,13 @@ namespace Nuclear.Test.Execution {
 
         #endregion
 
-        #region properties
+        #region fields
 
-        /// <summary>
-        /// Gets the logger instance.
-        /// </summary>
-        protected static ILog Log { get; } = LogManager.GetLogger(typeof(Remote<TConfiguration>));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Remote<TConfiguration>));
+
+        #endregion
+
+        #region properties
 
         /// <summary>
         /// Gets the communication link object.
@@ -96,21 +97,21 @@ namespace Nuclear.Test.Execution {
         public abstract void Execute();
 
         /// <summary>
-        /// Sends the <see cref="Commands.Setup"/> message to the attached <see cref="IClient{TConfiguration}"/>.
+        /// Sends the <see cref="Commands.Setup"/> message to the attached client.
         /// </summary>
         private void SendSetup() {
-            Log.Debug(nameof(SendSetup));
+            _log.Debug(nameof(SendSetup));
 
             Link.Send(GetSetupMessage(new Message(Commands.Setup)));
         }
 
         /// <summary>
-        /// Gets the message containing setup data for the connected client.
+        /// Gets the message containing setup data for the attached client.
         /// </summary>
         /// <param name="message">The message for the client.</param>
-        /// <returns></returns>
+        /// <returns>A message object containing setup data.</returns>
         protected virtual IMessage GetSetupMessage(IMessage message) {
-            Log.Debug(nameof(GetSetupMessage));
+            _log.Debug(nameof(GetSetupMessage));
 
             Throw.If.Object.IsNull(message, nameof(message));
 
@@ -120,10 +121,10 @@ namespace Nuclear.Test.Execution {
         }
 
         /// <summary>
-        /// Sends the <see cref="Commands.Execute"/> message to the attached <see cref="IClient{TConfiguration}"/>.
+        /// Sends the <see cref="Commands.Execute"/> message to the attached client.
         /// </summary>
         protected void SendExecute() {
-            Log.Debug(nameof(SendExecute));
+            _log.Debug(nameof(SendExecute));
 
             Link.Send(new Message(Commands.Execute));
         }
@@ -136,7 +137,7 @@ namespace Nuclear.Test.Execution {
         /// Initializes the process that will be remote controlled.
         /// </summary>
         protected void StartProcess() {
-            Log.Debug(nameof(StartProcess));
+            _log.Debug(nameof(StartProcess));
 
             using(Process process = new Process()) {
                 process.StartInfo.FileName = Configuration.Executable.FullName;
@@ -144,7 +145,7 @@ namespace Nuclear.Test.Execution {
                 process.StartInfo.UseShellExecute = Configuration.StartClientVisible;
                 process.StartInfo.CreateNoWindow = !Configuration.StartClientVisible;
 
-                Log.Info($"Starting process {Configuration.Executable.FullName.Format()} {Link.PipeID.Format()} ...");
+                _log.Info($"Starting process {Configuration.Executable.FullName.Format()} {Link.PipeID.Format()} ...");
 
                 process.Start();
             }
@@ -154,7 +155,7 @@ namespace Nuclear.Test.Execution {
         /// Raises the event <see cref="ClientConnected"/>.
         /// </summary>
         protected internal void RaiseClientConnected() {
-            Log.Debug(nameof(RaiseClientConnected));
+            _log.Debug(nameof(RaiseClientConnected));
 
             ClientConnected?.Invoke(this, new EventArgs());
         }
@@ -163,7 +164,7 @@ namespace Nuclear.Test.Execution {
         /// Raises the event <see cref="ConnectionLost"/>.
         /// </summary>
         protected internal void RaiseConnectionLost() {
-            Log.Debug(nameof(RaiseConnectionLost));
+            _log.Debug(nameof(RaiseConnectionLost));
 
             ConnectionLost?.Invoke(this, new EventArgs());
         }
@@ -173,7 +174,7 @@ namespace Nuclear.Test.Execution {
         /// </summary>
         /// <param name="data">The raw bytes that were received.</param>
         protected internal void RaiseResultsReceived(Byte[] data) {
-            Log.Debug(nameof(RaiseResultsReceived));
+            _log.Debug(nameof(RaiseResultsReceived));
 
             ResultsReceived?.Invoke(this, new ResultsReceivedEventArgs(data));
         }
@@ -183,7 +184,7 @@ namespace Nuclear.Test.Execution {
         /// </summary>
         /// <param name="resultCollection">The results that were received and deserialized.</param>
         protected internal void RaiseResultsAvailable(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection) {
-            Log.Debug(nameof(RaiseResultsAvailable));
+            _log.Debug(nameof(RaiseResultsAvailable));
 
             ResultsAvailable?.Invoke(this, new ResultsAvailableEventArgs(resultCollection));
         }
@@ -192,7 +193,7 @@ namespace Nuclear.Test.Execution {
         /// Raises the event <see cref="RemotingFinished"/>.
         /// </summary>
         protected internal void RaiseRemotingFinished() {
-            Log.Debug(nameof(RaiseRemotingFinished));
+            _log.Debug(nameof(RaiseRemotingFinished));
 
             RemotingFinished?.Invoke(this, new EventArgs());
         }
