@@ -30,7 +30,7 @@ namespace Nuclear.Test.Worker {
 
         #region ctors
 
-        public WorkerClient(IClientLink link)
+        internal WorkerClient(IClientLink link)
             : base(link) {
 
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
