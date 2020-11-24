@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
+using log4net;
+
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Helpers;
@@ -14,9 +18,9 @@ namespace Nuclear.Test.Proxy {
 
         #region fields
 
-        private CountdownEvent _remotesFinishedEvent = null;
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ProxyClient));
 
-        private IWorkerClientConfiguration _workerConfig;
+        private CountdownEvent _remotesFinishedEvent = new CountdownEvent(0);
 
         #endregion
 
@@ -36,24 +40,80 @@ namespace Nuclear.Test.Proxy {
             HeaderContent.Add(@"|  __/ | |  | (_) |>  < | |_| |                               ");
             HeaderContent.Add(@"|_|    |_|   \___//_/\_\ \__, |                               ");
             HeaderContent.Add(@"                         |___/                                ");
-            HeaderContent.Add(@"                                                              ");
+        }
+
+        #endregion
+
+        #region event handlers
+
+        private void OnResultsReceived(Object sender, ResultsReceivedEventArgs e) {
+            _log.Debug(nameof(OnResultsReceived));
+
+            if(sender is WorkerRemote remote) {
+                remote.ResultsReceived -= OnResultsReceived;
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(WorkerRemote)}.");
+            }
+
+            // todo: forward to proxy remote
+        }
+
+        private void OnResultsAvailable(Object sender, ResultsAvailableEventArgs e) {
+            _log.Debug(nameof(OnResultsAvailable));
+
+            if(sender is WorkerRemote remote) {
+                remote.ResultsAvailable -= OnResultsAvailable;
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(WorkerRemote)}.");
+            }
+
+            Results.Add(e.Results);
+        }
+
+        private void OnRemotingFinished(Object sender, EventArgs e) {
+            _log.Debug(nameof(OnRemotingFinished));
+
+            if(sender is WorkerRemote remote) {
+                remote.RemotingFinished -= OnRemotingFinished;
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(WorkerRemote)}.");
+            }
+
+            _remotesFinishedEvent.Signal();
         }
 
         #endregion
 
         #region methods
 
-        protected override IProxyClientConfiguration LoadConfiguration(IMessage message) => message.TryGetData(out IProxyClientConfiguration config) ? config : null;
+        protected override IProxyClientConfiguration LoadConfiguration(IMessage message) {
+            _log.Debug(nameof(LoadConfiguration));
+
+            if(message == null) {
+                _log.Error($"{nameof(message)} is null.");
+                return null;
+            }
+
+            if(message.TryGetData(out IProxyClientConfiguration config)) {
+                return config;
+
+            } else {
+                _log.Error($"{nameof(message)} doesn't contain a configuration object.");
+
+                return null;
+            }
+        }
 
         protected override void Execute() {
+            _log.Debug(nameof(Execute));
+
             base.Execute();
 
             IEnumerable<RemoteInfo> remoteInfos = CreateRemoteInfos();
             ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.HasExecutable, r.IsSelected)));
             IEnumerable<WorkerRemote> remotes = CreateRemotes(remoteInfos);
-            // todo
+
+            // todo: execute remotes
 
             _remotesFinishedEvent.Wait();
+
             SendFinished();
             Link.WaitForOutputFlush();
             RaiseExecutionFinished();
@@ -64,19 +124,44 @@ namespace Nuclear.Test.Proxy {
         #region private methods
 
         private IEnumerable<RemoteInfo> CreateRemoteInfos() {
-            List<RemoteInfo> remotes = new List<RemoteInfo>();
+            _log.Debug(nameof(CreateRemoteInfos));
 
             if(RuntimesHelper.TryGetMatchingRuntimes(TestAssemblyRuntime, out IEnumerable<RuntimeInfo> matchingRuntimes)) {
-                // todo
+                IEnumerable<RemoteInfo> remotes = matchingRuntimes.Select(r => new RemoteInfo(Configuration, r));
+
+                Func<IEnumerable<Version>, Version> filter = Configuration.SelectedRuntimes == SelectedExecutionRuntimes.Highest ? Enumerable.Max : Enumerable.Min;
+
+                IDictionary<FrameworkIdentifiers, Version> versionfilter = matchingRuntimes
+                    .GroupBy(r => r.Framework)
+                    .ToDictionary(g => g.Key, g => filter(g.Select(r => r.Version)));
+
+                remotes.Foreach(r => r.IsSelected = r.HasExecutable && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All || r.Runtime.Version == versionfilter[r.Runtime.Framework]));
+
+                return remotes;
             }
 
-            return remotes;
+            _log.Info($"Could not find matching runtimes for {TestAssemblyRuntime.Format()}.");
+
+            return Enumerable.Empty<RemoteInfo>();
         }
 
         private IEnumerable<WorkerRemote> CreateRemotes(IEnumerable<RemoteInfo> remoteInfos) {
-            List<WorkerRemote> remotes = new List<WorkerRemote>();
+            _log.Debug(nameof(CreateRemotes));
 
-            // todo
+            IList<WorkerRemote> remotes = new List<WorkerRemote>();
+
+            foreach(RemoteInfo remoteInfo in remoteInfos.Where(r => r.IsSelected)) {
+                WorkerRemote remote = new WorkerRemote(Configuration.WorkerRemoteConfiguration, Configuration.WorkerClientConfiguration, new ServerLink(Guid.NewGuid().ToString()));
+                remote.RemotingFinished += OnRemotingFinished;
+                remote.ResultsReceived += OnResultsReceived;
+                remote.ResultsAvailable += OnResultsAvailable;
+
+                remotes.Add(remote);
+            }
+
+            if(remotes.Count == 0) {
+                _log.Info("No runnable workers present.");
+            }
 
             return remotes;
         }
