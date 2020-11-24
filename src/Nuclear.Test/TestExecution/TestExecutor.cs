@@ -5,7 +5,6 @@ using System.Text;
 
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
-using Nuclear.Test.Configurations;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.TestExecution {
