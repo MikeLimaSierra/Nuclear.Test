@@ -4,9 +4,7 @@ using System.IO;
 using System.Reflection;
 
 using Nuclear.Arguments;
-using Nuclear.Test.Configurations;
 using Nuclear.Test.Extensions;
-using Nuclear.Test.Output;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
 
@@ -15,9 +13,9 @@ namespace Nuclear.Test.Console {
 
         #region fields
 
-        private static ArgumentCollector _arguments = new ArgumentCollector();
+        private static readonly ArgumentCollector _arguments = new ArgumentCollector();
 
-        private static AssemblyLocatorConfiguration _assemblyLocatorConfiguration = new AssemblyLocatorConfiguration();
+        private static readonly AssemblyLocator _locator = new AssemblyLocator();
 
         private static TestConfiguration _testConfiguration = new TestConfiguration();
 
@@ -64,25 +62,19 @@ namespace Nuclear.Test.Console {
             _arguments.Collect(args);
 
             if((_arguments.TryGetSwitch("d", out Argument arg) || _arguments.TryGetSwitch("search-dir", out arg)) && arg.HasValue && Directory.Exists(arg.Value)) {
-                _assemblyLocatorConfiguration.SearchDir = new DirectoryInfo(arg.Value);
-            } else {
-                _assemblyLocatorConfiguration.SearchDir = new FileInfo(Assembly.GetEntryAssembly().Location).Directory;
+                _locator.SearchDirectory = new DirectoryInfo(arg.Value);
             }
 
             if((_arguments.TryGetSwitch("r", out arg) || _arguments.TryGetSwitch("search-recursion", out arg)) && arg.HasValue && Int32.TryParse(arg.Value, out Int32 depth)) {
-                _assemblyLocatorConfiguration.SearchDepth = depth;
-            } else {
-                _assemblyLocatorConfiguration.SearchDepth = 0;
+                _locator.SearchDepth = depth;
             }
 
             if((_arguments.TryGetSwitch("p", out arg) || _arguments.TryGetSwitch("search-pattern", out arg)) && arg.HasValue) {
-                _assemblyLocatorConfiguration.SearchPattern = arg.Value;
-            } else {
-                _assemblyLocatorConfiguration.SearchPattern = "*Tests.dll";
+                _locator.SearchPattern = arg.Value;
             }
 
             if((_arguments.TryGetSwitch("i", out arg) || _arguments.TryGetSwitch("ignore-dir", out arg)) && arg.HasValue) {
-                _assemblyLocatorConfiguration.IgnoredDirNames.AddRange(_arguments.GetSeparatedValues(arg));
+                _arguments.GetSeparatedValues(arg).ForEach(item => _locator.IgnoredDirectoryNames.Add(item));
             }
 
             _testConfiguration.ForceSequential = _arguments.TryGetSwitch("force-sequential", out arg);
