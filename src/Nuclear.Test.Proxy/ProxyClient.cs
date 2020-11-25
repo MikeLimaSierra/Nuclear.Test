@@ -20,7 +20,7 @@ namespace Nuclear.Test.Proxy {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(ProxyClient));
 
-        private CountdownEvent _remotesFinishedEvent = new CountdownEvent(0);
+        private readonly CountdownEvent _remotesFinishedEvent = new CountdownEvent(0);
 
         #endregion
 
