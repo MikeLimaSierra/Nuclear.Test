@@ -110,7 +110,15 @@ namespace Nuclear.Test.Proxy {
             ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.HasExecutable, r.IsSelected)));
             IEnumerable<WorkerRemote> remotes = CreateRemotes(remoteInfos);
 
-            // todo: execute remotes
+            foreach(WorkerRemote remote in remotes) {
+                _remotesFinishedEvent.AddCount();
+
+                remote.Execute();
+
+                if(Configuration.AssembliesInSequence) {
+                    _remotesFinishedEvent.Wait();
+                }
+            }
 
             _remotesFinishedEvent.Wait();
 
