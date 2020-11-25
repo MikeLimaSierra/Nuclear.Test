@@ -180,6 +180,18 @@ namespace Nuclear.Test.Execution {
         }
 
         /// <summary>
+        /// Sends test results back to the attached remote.
+        /// </summary>
+        /// <param name="e">The <see cref="ResultsReceivedEventArgs"/> containing forwarded serialized test data.</param>
+        protected void SendResults(ResultsReceivedEventArgs e) {
+            _log.Debug(nameof(SendResults));
+
+            IMessage message = new Message(Commands.Results);
+            message.Append(e.Data);
+            Link.Send(message);
+        }
+
+        /// <summary>
         /// Sends the <see cref="Commands.Finished"/> message to the attached remote.
         /// </summary>
         protected void SendFinished() {

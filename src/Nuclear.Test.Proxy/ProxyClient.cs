@@ -54,7 +54,7 @@ namespace Nuclear.Test.Proxy {
                 _log.Debug($"Failed to cast {nameof(sender)} to {nameof(WorkerRemote)}.");
             }
 
-            // todo: forward to proxy remote
+            SendResults(e);
         }
 
         private void OnResultsAvailable(Object sender, ResultsAvailableEventArgs e) {
@@ -164,12 +164,12 @@ namespace Nuclear.Test.Proxy {
                 remote.ResultsReceived += OnResultsReceived;
                 remote.ResultsAvailable += OnResultsAvailable;
 
+                _log.Debug($"Remote created: {remoteInfo.Format()}");
+
                 remotes.Add(remote);
             }
 
-            if(remotes.Count == 0) {
-                _log.Info("No runnable workers present.");
-            }
+            _log.Info($"Created {remotes.Count} workers.");
 
             return remotes;
         }
