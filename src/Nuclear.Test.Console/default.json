@@ -1,0 +1,24 @@
+{
+    "Locator": {
+        "SearchDirectory": "../../../../",
+        "SearchDepth": -1,
+        "SearchPattern": "*Tests.dll",
+        "IgnoredDirectoryNames": [
+            "obj",
+            ".vs"
+        ]
+    },
+    "Clients": {
+        "ProxyDirectory": "%APPDATA%/Nuclear.Test.Proxy/",
+        "ProxyExecutableName": "Nuclear.Test.Proxy.exe",
+        "WorkerDirectory": "%APPDATA%/Nuclear.Test.Worker/",
+        "WorkerExecutableName": "Nuclear.Test.Worker.exe",
+        "StartClientVisible": false,
+        "AutoShutdown": true
+    },
+    "Execution": {
+        "AssembliesInSequence": false,
+        "TestsInSequence": false,
+        "SelectedRuntimes": "All"
+    }
+}
