@@ -4,6 +4,7 @@ using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 
 namespace Nuclear.Test.Proxy {
@@ -31,6 +32,12 @@ namespace Nuclear.Test.Proxy {
             ProcessorArchitecture architecture = Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86;
             Executable = new FileInfo(Path.Combine(proxyConfig.WorkerDirectory.FullName, architecture.ToString(), $"{Runtime.Framework}{Runtime.Version}", proxyConfig.WorkerExecutableName));
         }
+
+        #endregion
+
+        #region methods
+
+        public override String ToString() => $"Runtime: {Runtime.Format()}; Executable: {Executable.FullName.Format()}; IsSelected: {IsSelected.Format()}";
 
         #endregion
 
