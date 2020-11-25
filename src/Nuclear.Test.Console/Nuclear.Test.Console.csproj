@@ -31,5 +31,9 @@
       <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
     </Reference>
   </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
 
 </Project>
