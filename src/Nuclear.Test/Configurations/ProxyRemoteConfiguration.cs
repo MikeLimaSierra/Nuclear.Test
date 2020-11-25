@@ -3,7 +3,7 @@
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for an <see cref="IRemote{TConfiguration}"/>.
+    /// Implements configuration values for a remote.
     /// </summary>
     public class ProxyRemoteConfiguration : RemoteConfiguration, IProxyRemoteConfiguration {
 
