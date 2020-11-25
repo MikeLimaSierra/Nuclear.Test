@@ -158,9 +158,8 @@ namespace Nuclear.Test.Execution {
         public void Execute() {
             _log.Debug(nameof(Execute));
 
-            Link.ClientConnected += OnClientConnected;
-
             if(Configuration.Executable != null && Configuration.Executable.Exists) {
+                Link.ClientConnected += OnClientConnected;
                 StartProcess();
 
             } else {
