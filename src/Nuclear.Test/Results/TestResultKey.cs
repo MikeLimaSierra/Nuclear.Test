@@ -5,11 +5,11 @@ using Nuclear.Assemblies.Runtimes;
 using Nuclear.Extensions;
 
 namespace Nuclear.Test.Results {
-    public class TestResultKey : ITestResultKey {
+    internal class TestResultKey : ITestResultKey {
 
         #region statics
 
-        public static ITestResultKey Empty => new TestResultKey(null,
+        internal static ITestResultKey Empty => new TestResultKey(null,
             new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
             new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
             null, null);

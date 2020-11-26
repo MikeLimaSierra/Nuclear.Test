@@ -18,6 +18,8 @@ namespace Nuclear.Test.Worker {
 
         private static WorkerClient _client;
 
+        private static readonly IFactory _factory = Factory.Instance;
+
         #endregion
 
         #region public methods
@@ -31,7 +33,8 @@ namespace Nuclear.Test.Worker {
             ITestResultEndPoint results = _client.Results;
 
             _log.Info("=========================");
-            new ResultTree(Verbosity.ExecutionArchitecture, TestResultKey.Empty, results).Print();
+            _factory.CreateEmpty(out ITestResultKey emptyKey);
+            new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, results).Print();
             _log.Info("=========================");
 
             if(!_client.Configuration.AutoShutdown) {
