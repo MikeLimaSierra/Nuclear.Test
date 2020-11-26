@@ -1,11 +1,9 @@
-﻿using Nuclear.Test.Execution;
-
-namespace Nuclear.Test.Configurations {
+﻿namespace Nuclear.Test.Configurations {
 
     /// <summary>
     /// Implements configuration values for a remote.
     /// </summary>
-    public class ProxyRemoteConfiguration : RemoteConfiguration, IProxyRemoteConfiguration {
+    internal class ProxyRemoteConfiguration : RemoteConfiguration, IProxyRemoteConfiguration {
 
         #region properties
 

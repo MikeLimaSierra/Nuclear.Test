@@ -1,11 +1,9 @@
-﻿using Nuclear.Test.Execution;
-
-namespace Nuclear.Test.Configurations {
+﻿namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for an <see cref="IRemote{TConfiguration}"/>.
+    /// Implements configuration values for a remote.
     /// </summary>
-    public class WorkerRemoteConfiguration : RemoteConfiguration, IWorkerRemoteConfiguration {
+    internal class WorkerRemoteConfiguration : RemoteConfiguration, IWorkerRemoteConfiguration {
 
         #region properties
 

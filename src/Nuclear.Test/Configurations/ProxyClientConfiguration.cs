@@ -1,14 +1,12 @@
 ﻿using System;
 using System.IO;
 
-using Nuclear.Test.Execution;
-
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for a proxy <see cref="IClient{TConfiguration}"/>.
+    /// Implements configuration values for a proxy client.
     /// </summary>
-    public class ProxyClientConfiguration : ClientConfiguration, IProxyClientConfiguration {
+    internal class ProxyClientConfiguration : ClientConfiguration, IProxyClientConfiguration {
 
         #region properties
 

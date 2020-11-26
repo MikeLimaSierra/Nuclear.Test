@@ -1,14 +1,12 @@
 ﻿using System;
 using System.IO;
 
-using Nuclear.Test.Execution;
-
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for an <see cref="IClient{TConfiguration}"/>.
+    /// Implements configuration values for an client.
     /// </summary>
-    public abstract class ClientConfiguration : IClientConfiguration {
+    internal abstract class ClientConfiguration : IClientConfiguration {
 
         #region properties
 
