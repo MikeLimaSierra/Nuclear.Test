@@ -3,6 +3,7 @@ using System.Threading;
 
 using log4net;
 
+using Nuclear.Test.Execution;
 using Nuclear.Test.Link;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
@@ -16,7 +17,7 @@ namespace Nuclear.Test.Worker {
 
         private static readonly ManualResetEventSlim _executionFinishedEvent = new ManualResetEventSlim(false);
 
-        private static WorkerClient _client;
+        private static IWorkerClient _client;
 
         private static readonly IFactory _factory = Factory.Instance;
 

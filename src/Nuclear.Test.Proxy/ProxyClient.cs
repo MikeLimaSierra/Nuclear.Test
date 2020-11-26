@@ -15,7 +15,7 @@ using Nuclear.Test.Helpers;
 using Nuclear.Test.Link;
 
 namespace Nuclear.Test.Proxy {
-    internal class ProxyClient : Client<IProxyClientConfiguration> {
+    internal class ProxyClient : Client<IProxyClientConfiguration>, IProxyClient {
 
         #region fields
 
