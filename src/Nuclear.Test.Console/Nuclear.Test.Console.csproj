@@ -12,6 +12,7 @@
   <Import Project="..\Configurations.targets" />
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
+    <PackageReference Include="Nuclear.Assemblies" Version="1.0.0" />
     <PackageReference Include="Nuclear.Arguments" Version="1.0.1" />
     <PackageReference Include="Nuclear.Test" Version="1.0.0" />
   </ItemGroup>
@@ -23,6 +24,9 @@
     </Reference>
     <Reference Include="Nuclear.Extensions">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Extensions\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Nuclear.Assemblies">
+      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Assemblies\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Assemblies.dll</HintPath>
     </Reference>
     <Reference Include="Nuclear.Arguments">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Arguments\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.Arguments.dll</HintPath>
