@@ -2,6 +2,7 @@
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
@@ -24,7 +25,19 @@ namespace Nuclear.Test {
 
         #endregion
 
-        #region links
+        #region Configurations
+
+        public void Create(out IProxyRemoteConfiguration @object) => @object = new ProxyRemoteConfiguration();
+
+        public void Create(out IProxyClientConfiguration @object) => @object = new ProxyClientConfiguration();
+
+        public void Create(out IWorkerRemoteConfiguration @object) => @object = new WorkerRemoteConfiguration();
+
+        public void Create(out IWorkerClientConfiguration @object) => @object = new WorkerClientConfiguration();
+
+        #endregion
+
+        #region Link
 
         public void Create(out IClientLink @object) => Create(out @object, Guid.NewGuid().ToString());
 
@@ -38,7 +51,7 @@ namespace Nuclear.Test {
 
         #endregion
 
-        #region results
+        #region Results
 
         public void Create(out ITestEntry @object, EntryTypes type, String instruction, String message) => @object = new TestEntry(type, instruction, message);
 

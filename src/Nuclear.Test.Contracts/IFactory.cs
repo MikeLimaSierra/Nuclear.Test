@@ -2,13 +2,26 @@
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test {
     public interface IFactory {
 
-        #region links
+        #region Configurations
+
+        void Create(out IProxyRemoteConfiguration @object);
+
+        void Create(out IProxyClientConfiguration @object);
+
+        void Create(out IWorkerRemoteConfiguration @object);
+
+        void Create(out IWorkerClientConfiguration @object);
+
+        #endregion
+
+        #region Link
 
         void Create(out IClientLink @object);
 
@@ -22,7 +35,7 @@ namespace Nuclear.Test {
 
         #endregion
 
-        #region results
+        #region Results
 
         void Create(out ITestEntry @object, EntryTypes type, String instruction, String message);
 
