@@ -8,7 +8,7 @@ using Nuclear.Test.Configurations;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Link {
-    public partial class Message {
+    internal partial class Message {
 
         #region get bcl type methods
 

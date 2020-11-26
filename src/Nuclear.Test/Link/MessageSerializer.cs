@@ -8,7 +8,7 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Implements a message handler that has capabilities of serializing and deserializing.
     /// </summary>
-    public class MessageSerializer : IMessageSerializer {
+    internal class MessageSerializer : IMessageSerializer {
 
         /// <summary>
         /// Serializes an <see cref="IMessage"/> to a byte array.

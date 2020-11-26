@@ -9,7 +9,7 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Implements a message that can be transmitted between <see cref="ILink"/> instances.
     /// </summary>
-    public partial class Message : IMessage {
+    internal partial class Message : IMessage {
 
         #region properties
 
@@ -32,7 +32,7 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <exception cref="ArgumentNullException">Is thrown when <paramref name="command"/> is null or empty.</exception>
         /// <param name="command">The message command.</param>
-        public Message(String command) {
+        internal Message(String command) {
             Throw.If.String.IsNullOrWhiteSpace(command, nameof(command));
 
             Command = command;

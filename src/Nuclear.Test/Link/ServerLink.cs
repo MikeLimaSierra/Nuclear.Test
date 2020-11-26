@@ -5,7 +5,7 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Implements the server side communication link.
     /// </summary>
-    public class ServerLink : Link, IServerLink {
+    internal class ServerLink : Link, IServerLink {
 
         #region events
 
@@ -41,7 +41,7 @@ namespace Nuclear.Test.Link {
         /// Creates a new instance of <see cref="ServerLink"/>.
         /// </summary>
         /// <param name="pipeID">The ID that both inbound and outbound pipe IDs are based on.</param>
-        public ServerLink(String pipeID) : base(pipeID) { }
+        internal ServerLink(String pipeID) : base(pipeID) { }
 
         #endregion
 
