@@ -18,6 +18,8 @@ namespace Nuclear.Test.Results {
 
         public static void Create(out ITestResultEndPoint @object) => @object = new TestResultEndPoint();
 
+        public static void CreateEmpty(out ITestResultKey @object) => @object = TestResultKey.Empty;
+
         public static void Create(out ITestResultKey @object, ITestScenario scenario, MethodInfo methodInfo) => @object = new TestResultKey(scenario, methodInfo);
 
         public static void Create(out ITestResultKey @object, ITestScenario scenario, String fileName, String methodName) => @object = new TestResultKey(scenario, fileName, methodName);
