@@ -7,9 +7,11 @@ using log4net;
 using Nuclear.Arguments;
 using Nuclear.Extensions;
 using Nuclear.Test.Printer;
+using Nuclear.Test.Results;
+using Nuclear.Test.Extensions;
 
 namespace Nuclear.Test.Console {
-    static class Program {
+    internal static class Program {
 
         #region constants
 
@@ -31,11 +33,15 @@ namespace Nuclear.Test.Console {
 
         private static Configuration _configuration;
 
+        private static Executer _executer;
+
+        private static readonly IFactory _factory = Factory.Instance;
+
         #endregion
 
         #region public methods
 
-        static void Main(String[] args) {
+        internal static void Main(String[] args) {
             _arguments.Collect(args);
 
             Argument arg;
@@ -66,16 +72,17 @@ namespace Nuclear.Test.Console {
                 }
             }
 
-            // todo: run tests
-
+            _executer = new Executer(_configuration, _factory);
+            _executer.Execute();
 
             _log.Info("=========================");
-            //new ResultTree(Verbosity.Collapsed, TestResultKey.Empty, results).Print();
+            _factory.CreateEmpty(out ITestResultKey emptyKey);
+            new ResultTree(Verbosity.Collapsed, emptyKey, _executer.Results).Print();
             _log.Info("=========================");
 
             WaitOnDebug();
 
-            //Environment.ExitCode = (Int32) (results.GetResults().HasFails() ? ExitCode.Fail : ExitCode.OK);
+            Environment.ExitCode = (Int32) (_executer.Results.GetResults().HasFails() ? ExitCode.Fail : ExitCode.OK);
 
         }
 
