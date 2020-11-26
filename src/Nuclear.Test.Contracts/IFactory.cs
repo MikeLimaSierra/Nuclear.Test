@@ -2,10 +2,25 @@
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test {
     public interface IFactory {
+
+        #region links
+
+        void Create(out IClientLink @object);
+
+        void Create(out IClientLink @object, String pipeID);
+
+        void Create(out IServerLink @object);
+
+        void Create(out IServerLink @object, String pipeID);
+
+        void Create(out IMessage @object, String command);
+
+        #endregion
 
         #region results
 

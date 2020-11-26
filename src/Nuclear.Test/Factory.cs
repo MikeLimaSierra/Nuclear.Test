@@ -2,6 +2,7 @@
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test {
@@ -20,6 +21,20 @@ namespace Nuclear.Test {
         #region ctors
 
         private Factory() { }
+
+        #endregion
+
+        #region links
+
+        public void Create(out IClientLink @object) => Create(out @object, Guid.NewGuid().ToString());
+
+        public void Create(out IClientLink @object, String pipeID) => @object = new ClientLink(pipeID);
+
+        public void Create(out IServerLink @object) => Create(out @object, Guid.NewGuid().ToString());
+
+        public void Create(out IServerLink @object, String pipeID) => @object = new ServerLink(pipeID);
+
+        public void Create(out IMessage @object, String command) => @object = new Message(command);
 
         #endregion
 
