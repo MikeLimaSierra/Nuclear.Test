@@ -9,22 +9,22 @@ namespace Nuclear.Test.Console {
         #region properties
 
         [JsonProperty]
-        internal String ProxyDirectory { get; set; }
+        internal String ProxyDirectory { get; set; } = "%APPDATA%/Nuclear.Test.Proxy/";
 
         [JsonProperty]
-        internal String ProxyExecutableName { get; set; }
+        internal String ProxyExecutableName { get; set; } = "Nuclear.Test.Proxy.exe";
 
         [JsonProperty]
-        internal String WorkerDirectory { get; set; }
+        internal String WorkerDirectory { get; set; } = "%APPDATA%/Nuclear.Test.Worker/";
 
         [JsonProperty]
-        internal String WorkerExecutableName { get; set; }
+        internal String WorkerExecutableName { get; set; } = "Nuclear.Test.Worker.exe";
 
         [JsonProperty]
-        internal Boolean StartClientVisible { get; set; }
+        internal Boolean StartClientVisible { get; set; } = false;
 
         [JsonProperty]
-        internal Boolean AutoShutdown { get; set; }
+        internal Boolean AutoShutdown { get; set; } = true;
 
         #endregion
 

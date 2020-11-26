@@ -12,14 +12,14 @@ namespace Nuclear.Test.Console {
         #region properties
 
         [JsonProperty]
-        internal Boolean AssembliesInSequence { get; set; }
+        internal Boolean AssembliesInSequence { get; set; } = false;
 
         [JsonProperty]
-        internal Boolean TestsInSequence { get; set; }
+        internal Boolean TestsInSequence { get; set; } = false;
 
         [JsonProperty()]
         [JsonConverter(typeof(StringEnumConverter))]
-        internal SelectedExecutionRuntimes SelectedRuntimes { get; set; }
+        internal SelectedExecutionRuntimes SelectedRuntimes { get; set; } = SelectedExecutionRuntimes.All;
 
         #endregion
 
