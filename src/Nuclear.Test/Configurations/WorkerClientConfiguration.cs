@@ -5,7 +5,7 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for a worker client.
+    /// Implements configuration values for an <see cref="IWorkerClient"/>.
     /// </summary>
     internal class WorkerClientConfiguration : ClientConfiguration, IWorkerClientConfiguration {
 

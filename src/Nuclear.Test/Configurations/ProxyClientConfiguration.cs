@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
 
+using Nuclear.Test.Execution;
+
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for a proxy client.
+    /// Implements configuration values for an <see cref="IProxyClient"/>.
     /// </summary>
     internal class ProxyClientConfiguration : ClientConfiguration, IProxyClientConfiguration {
 
@@ -36,11 +38,6 @@ namespace Nuclear.Test.Configurations {
         /// Gets or sets the worker remote configuration object.
         /// </summary>
         public IWorkerRemoteConfiguration WorkerRemoteConfiguration { get; set; }
-
-        /// <summary>
-        /// Gets or sets the worker client configuration object.
-        /// </summary>
-        public IWorkerClientConfiguration WorkerClientConfiguration { get; set; }
 
         #endregion
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO;
 
+using Nuclear.Test.Execution;
+
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Implements configuration values for a remote.
+    /// Implements configuration values for an <see cref="IRemote{TRemoteConfiguration, TClientConfiguration}"/>.
     /// </summary>
     internal abstract class RemoteConfiguration : IRemoteConfiguration {
 

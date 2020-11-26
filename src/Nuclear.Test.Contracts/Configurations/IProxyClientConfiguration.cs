@@ -6,7 +6,7 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Defines configuration values for a proxy <see cref="IClient{TConfiguration}"/>.
+    /// Defines configuration values for an <see cref="IProxyClient"/>.
     /// </summary>
     public interface IProxyClientConfiguration : IClientConfiguration {
 
@@ -38,11 +38,6 @@ namespace Nuclear.Test.Configurations {
         /// Gets or sets the worker remote configuration object.
         /// </summary>
         IWorkerRemoteConfiguration WorkerRemoteConfiguration { get; set; }
-
-        /// <summary>
-        /// Gets or sets the worker client configuration object.
-        /// </summary>
-        IWorkerClientConfiguration WorkerClientConfiguration { get; set; }
 
         #endregion
 
