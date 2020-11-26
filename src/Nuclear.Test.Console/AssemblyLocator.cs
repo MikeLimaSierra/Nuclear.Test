@@ -31,7 +31,7 @@ namespace Nuclear.Test.Console {
 
         internal String SearchPattern { get; set; } = "*Tests.dll";
 
-        internal IList<String> IgnoredDirectoryNames { get; } = new List<String>();
+        internal IEnumerable<String> IgnoredDirectoryNames { get; set; } = Enumerable.Empty<String>();
 
         #endregion
 
