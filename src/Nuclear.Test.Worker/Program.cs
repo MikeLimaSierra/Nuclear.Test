@@ -25,7 +25,8 @@ namespace Nuclear.Test.Worker {
         #region public methods
 
         internal static void Main(String[] args) {
-            _client = new WorkerClient(new ClientLink(args[0]));
+            _factory.Create(out IClientLink link, args[0]);
+            _client = new WorkerClient(link);
             _client.ExecutionFinished += OnClientExecutionFinished;
 
             _executionFinishedEvent.Wait();

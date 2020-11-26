@@ -25,7 +25,8 @@ namespace Nuclear.Test.Proxy {
         #region methods
 
         internal static void Main(String[] args) {
-            _client = new ProxyClient(new ClientLink(args[0]));
+            _factory.Create(out IClientLink link, args[0]);
+            _client = new ProxyClient(link);
             _client.ExecutionFinished += OnClientExecutionFinished;
 
             _executionFinishedEvent.Wait();

@@ -20,6 +20,8 @@ namespace Nuclear.Test.Proxy {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(ProxyClient));
 
+        private static readonly IFactory _factory = Factory.Instance;
+
         private readonly CountdownEvent _remotesFinishedEvent = new CountdownEvent(0);
 
         #endregion
@@ -159,7 +161,8 @@ namespace Nuclear.Test.Proxy {
             IList<WorkerRemote> remotes = new List<WorkerRemote>();
 
             foreach(RemoteInfo remoteInfo in remoteInfos.Where(r => r.IsSelected)) {
-                WorkerRemote remote = new WorkerRemote(Configuration.WorkerRemoteConfiguration, Configuration.WorkerClientConfiguration, new ServerLink(Guid.NewGuid().ToString()));
+                _factory.Create(out IServerLink link);
+                WorkerRemote remote = new WorkerRemote(Configuration.WorkerRemoteConfiguration, Configuration.WorkerClientConfiguration, link);
                 remote.RemotingFinished += OnRemotingFinished;
                 remote.ResultsReceived += OnResultsReceived;
                 remote.ResultsAvailable += OnResultsAvailable;
