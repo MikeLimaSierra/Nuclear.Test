@@ -8,7 +8,10 @@ using log4net;
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
+using Nuclear.Extensions;
+using Nuclear.Test.Execution;
 using Nuclear.Test.Helpers;
+using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Console {
@@ -70,6 +73,32 @@ namespace Nuclear.Test.Console {
 
         #endregion
 
+        #region event handlers
+
+        private void OnResultsAvailable(Object sender, ResultsAvailableEventArgs e) {
+            _log.Debug(nameof(OnResultsAvailable));
+
+            if(sender is ProxyRemote remote) {
+                remote.ResultsAvailable -= OnResultsAvailable;
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(ProxyRemote)}.");
+            }
+
+            Results.Add(e.Results);
+        }
+
+        private void OnRemotingFinished(Object sender, EventArgs e) {
+            _log.Debug(nameof(OnRemotingFinished));
+
+            if(sender is ProxyRemote remote) {
+                remote.RemotingFinished -= OnRemotingFinished;
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(ProxyRemote)}.");
+            }
+
+            _remotesFinishedEvent.Signal();
+        }
+
+        #endregion
+
         #region methods
 
         internal void Execute() {
@@ -100,7 +129,24 @@ namespace Nuclear.Test.Console {
         }
 
         private IEnumerable<ProxyRemote> CreateRemotes(IEnumerable<RemoteInfo> remoteInfos) {
-            return null;
+            _log.Debug(nameof(CreateRemotes));
+
+            IList<ProxyRemote> remotes = new List<ProxyRemote>();
+
+            foreach(RemoteInfo remoteInfo in remoteInfos) {
+                _factory.Create(out IServerLink link);
+                ProxyRemote remote = new ProxyRemote(remoteInfo.RemoteConfiguration, remoteInfo.ClientConfiguration, link);
+                remote.RemotingFinished += OnRemotingFinished;
+                remote.ResultsAvailable += OnResultsAvailable;
+
+                _log.Debug($"Remote created: {remoteInfo.Format()}");
+
+                remotes.Add(remote);
+            }
+
+            _log.Info($"Created {remotes.Count} workers.");
+
+            return remotes;
         }
 
         #endregion
