@@ -10,6 +10,7 @@ using log4net;
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Resolvers;
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
@@ -24,14 +25,20 @@ namespace Nuclear.Test.Worker {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(WorkerClient));
 
+        private readonly IFactory _factory;
+
         private readonly Assembly _entryAssembly = Assembly.GetEntryAssembly();
 
         #endregion
 
         #region ctors
 
-        internal WorkerClient(IClientLink link)
+        internal WorkerClient(IClientLink link, IFactory factory)
             : base(link) {
+
+            Throw.If.Object.IsNull(factory, nameof(factory));
+
+            _factory = factory;
 
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
 

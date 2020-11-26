@@ -7,6 +7,7 @@ using log4net;
 
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
@@ -20,7 +21,7 @@ namespace Nuclear.Test.Proxy {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(ProxyClient));
 
-        private static readonly IFactory _factory = Factory.Instance;
+        private readonly IFactory _factory;
 
         private readonly CountdownEvent _remotesFinishedEvent = new CountdownEvent(0);
 
@@ -28,8 +29,12 @@ namespace Nuclear.Test.Proxy {
 
         #region ctors
 
-        public ProxyClient(IClientLink link)
+        public ProxyClient(IClientLink link, IFactory factory)
             : base(link) {
+
+            Throw.If.Object.IsNull(factory, nameof(factory));
+
+            _factory = factory;
 
             HeaderContent.Add(@" _   _               _                    _____           _   ");
             HeaderContent.Add(@"| \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_ ");
