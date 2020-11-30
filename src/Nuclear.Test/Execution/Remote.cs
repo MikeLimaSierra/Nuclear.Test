@@ -18,7 +18,7 @@ namespace Nuclear.Test.Execution {
     /// <typeparam name="TRemoteConfiguration">The remote configuration type.</typeparam>
     /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
     public abstract class Remote<TRemoteConfiguration, TClientConfiguration> : IRemote<TRemoteConfiguration, TClientConfiguration>
-        where TRemoteConfiguration : IRemoteConfiguration
+        where TRemoteConfiguration : IRemoteConfiguration<TClientConfiguration>
         where TClientConfiguration : IClientConfiguration {
 
         #region events
@@ -69,11 +69,6 @@ namespace Nuclear.Test.Execution {
         public TRemoteConfiguration Configuration { get; protected set; }
 
         /// <summary>
-        /// Gets the client configuration object.
-        /// </summary>
-        public TClientConfiguration ClientConfiguration { get; protected set; }
-
-        /// <summary>
         /// Gets the test results sink that is in use.
         /// </summary>
         public ITestResultEndPoint Results { get; } = new TestResultEndPoint();
@@ -88,16 +83,14 @@ namespace Nuclear.Test.Execution {
         /// <param name="configuration">The remote configuration object.</param>
         /// <param name="clientConfiguration">The client configuration object.</param>
         /// <param name="link">The link object used to communicate with the client.</param>
-        public Remote(TRemoteConfiguration configuration, TClientConfiguration clientConfiguration, IServerLink link) {
+        public Remote(TRemoteConfiguration configuration, IServerLink link) {
             Throw.If.Object.IsNull(configuration, nameof(configuration));
-            Throw.If.Object.IsNull(clientConfiguration, nameof(clientConfiguration));
             Throw.If.Object.IsNull(link, nameof(link));
 
             Configuration = configuration;
-            ClientConfiguration = clientConfiguration;
 
             if(!Configuration.StartClientVisible) {
-                ClientConfiguration.AutoShutdown = true;
+                Configuration.ClientConfiguration.AutoShutdown = true;
             }
 
             Link = link;
