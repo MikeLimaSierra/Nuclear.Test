@@ -50,9 +50,9 @@ namespace Nuclear.Test.Execution.Proxy {
         private void OnResultsReceived(Object sender, ResultsReceivedEventArgs e) {
             _log.Debug(nameof(OnResultsReceived));
 
-            if(sender is WorkerRemote remote) {
+            if(sender is IWorkerRemote remote) {
                 remote.ResultsReceived -= OnResultsReceived;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(WorkerRemote)}.");
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}.");
             }
 
             SendResults(e);
@@ -61,9 +61,9 @@ namespace Nuclear.Test.Execution.Proxy {
         private void OnResultsAvailable(Object sender, ResultsAvailableEventArgs e) {
             _log.Debug(nameof(OnResultsAvailable));
 
-            if(sender is WorkerRemote remote) {
+            if(sender is IWorkerRemote remote) {
                 remote.ResultsAvailable -= OnResultsAvailable;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(WorkerRemote)}.");
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}.");
             }
 
             Results.Add(e.Results);
@@ -72,9 +72,9 @@ namespace Nuclear.Test.Execution.Proxy {
         private void OnRemotingFinished(Object sender, EventArgs e) {
             _log.Debug(nameof(OnRemotingFinished));
 
-            if(sender is WorkerRemote remote) {
+            if(sender is IWorkerRemote remote) {
                 remote.RemotingFinished -= OnRemotingFinished;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(WorkerRemote)}.");
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}.");
             }
 
             _remotesFinishedEvent.Signal();
@@ -107,11 +107,11 @@ namespace Nuclear.Test.Execution.Proxy {
 
             base.Execute();
 
-            IEnumerable<WorkerRemoteInfo> remoteInfos = CreateRemoteInfos();
-            ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.HasExecutable, r.IsSelected)));
+            IEnumerable<IWorkerRemoteInfo> remoteInfos = CreateRemoteInfos();
+            ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.Configuration.HasExecutable, r.IsSelected)));
             IEnumerable<IWorkerRemote> remotes = CreateRemotes(remoteInfos);
 
-            foreach(WorkerRemote remote in remotes) {
+            foreach(IWorkerRemote remote in remotes) {
                 _remotesFinishedEvent.AddCount();
 
                 remote.Execute();
@@ -132,11 +132,14 @@ namespace Nuclear.Test.Execution.Proxy {
 
         #region private methods
 
-        private IEnumerable<WorkerRemoteInfo> CreateRemoteInfos() {
+        private IEnumerable<IWorkerRemoteInfo> CreateRemoteInfos() {
             _log.Debug(nameof(CreateRemoteInfos));
 
             if(RuntimesHelper.TryGetMatchingRuntimes(TestAssemblyRuntime, out IEnumerable<RuntimeInfo> matchingRuntimes)) {
-                IEnumerable<WorkerRemoteInfo> remotes = matchingRuntimes.Select(r => new WorkerRemoteInfo(Configuration, r));
+                IEnumerable<IWorkerRemoteInfo> remotes = matchingRuntimes.Select(r => {
+                    Factory.Instance.Create(out IWorkerRemoteInfo info, Configuration, r);
+                    return info;
+                });
 
                 Func<IEnumerable<Version>, Version> filter = Configuration.SelectedRuntimes == SelectedExecutionRuntimes.Highest ? Enumerable.Max : Enumerable.Min;
 
@@ -144,24 +147,24 @@ namespace Nuclear.Test.Execution.Proxy {
                     .GroupBy(r => r.Framework)
                     .ToDictionary(g => g.Key, g => filter(g.Select(r => r.Version)));
 
-                remotes.Foreach(r => r.IsSelected = r.HasExecutable && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All || r.Runtime.Version == versionfilter[r.Runtime.Framework]));
+                remotes.Foreach(r => r.IsSelected = r.Configuration.HasExecutable && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All || r.Runtime.Version == versionfilter[r.Runtime.Framework]));
 
                 return remotes;
             }
 
             _log.Info($"Could not find matching runtimes for {TestAssemblyRuntime.Format()}.");
 
-            return Enumerable.Empty<WorkerRemoteInfo>();
+            return Enumerable.Empty<IWorkerRemoteInfo>();
         }
 
-        private IEnumerable<IWorkerRemote> CreateRemotes(IEnumerable<WorkerRemoteInfo> remoteInfos) {
+        private IEnumerable<IWorkerRemote> CreateRemotes(IEnumerable<IWorkerRemoteInfo> remoteInfos) {
             _log.Debug(nameof(CreateRemotes));
 
             IList<IWorkerRemote> remotes = new List<IWorkerRemote>();
 
-            foreach(WorkerRemoteInfo remoteInfo in remoteInfos.Where(r => r.IsSelected)) {
+            foreach(IWorkerRemoteInfo remoteInfo in remoteInfos.Where(r => r.IsSelected)) {
                 Factory.Instance.Create(out IServerLink link);
-                Factory.Instance.Create(out IWorkerRemote remote, Configuration.WorkerRemoteConfiguration, link);
+                Factory.Instance.Create(out IWorkerRemote remote, remoteInfo.Configuration, link);
 
                 remote.RemotingFinished += OnRemotingFinished;
                 remote.ResultsReceived += OnResultsReceived;
@@ -172,7 +175,7 @@ namespace Nuclear.Test.Execution.Proxy {
                 remotes.Add(remote);
             }
 
-            _log.Info($"Created {remotes.Count} workers.");
+            _log.Info($"Created {remotes.Count} remotes.");
 
             return remotes;
         }

@@ -137,66 +137,78 @@ namespace Nuclear.Test.Results {
         }
 
         public ITestResultKey Clip(TestResultKeyPrecisions precision) {
+            ITestResultKey key;
+
             switch(precision) {
                 case TestResultKeyPrecisions.FileName:
-                    return new TestResultKey(AssemblyName,
+                    Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         ExecutionRuntime, ExecutionArchitecture,
                         FileName, null);
+                    break;
 
                 case TestResultKeyPrecisions.ExecutionArchitecture:
-                    return new TestResultKey(AssemblyName,
+                    Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         ExecutionRuntime, ExecutionArchitecture,
                         null, null);
+                    break;
 
                 case TestResultKeyPrecisions.ExecutionFrameworkVersion:
-                    return new TestResultKey(AssemblyName,
+                    Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         ExecutionRuntime, ProcessorArchitecture.None,
                         null, null);
+                    break;
 
                 case TestResultKeyPrecisions.ExecutionFrameworkIdentifier:
-                    return new TestResultKey(AssemblyName,
+                    Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         new RuntimeInfo(ExecutionRuntime.Framework, new Version()), ProcessorArchitecture.None,
                         null, null);
+                    break;
 
                 case TestResultKeyPrecisions.TargetArchitecture:
-                    return new TestResultKey(AssemblyName,
+                    Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
+                    break;
 
                 case TestResultKeyPrecisions.TargetFrameworkVersion:
-                    return new TestResultKey(AssemblyName,
+                    Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, ProcessorArchitecture.None,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
+                    break;
 
                 case TestResultKeyPrecisions.TargetFrameworkIdentifier:
-                    return new TestResultKey(AssemblyName,
+                    Factory.Instance.Create(out key, AssemblyName,
                         new RuntimeInfo(TargetRuntime.Framework, new Version()), ProcessorArchitecture.None,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
+                    break;
 
                 case TestResultKeyPrecisions.AssemblyName:
-                    return new TestResultKey(AssemblyName,
+                    Factory.Instance.Create(out key, AssemblyName,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
+                    break;
 
                 case TestResultKeyPrecisions.None:
-                    return new TestResultKey(null,
+                    Factory.Instance.Create(out key, null,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
+                    break;
 
                 default:
+                    key = this;
                     break;
             }
 
-            return this;
+            return key;
         }
 
         public override Boolean Equals(Object obj) {

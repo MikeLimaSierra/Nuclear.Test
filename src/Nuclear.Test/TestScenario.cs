@@ -8,7 +8,7 @@ namespace Nuclear.Test {
     /// <summary>
     /// Defines a scenario relevant to running tests.
     /// </summary>
-    public class TestScenario : ITestScenario {
+    internal class TestScenario : ITestScenario {
 
         #region properties
 
@@ -49,7 +49,7 @@ namespace Nuclear.Test {
         /// <param name="targetArchitecture">The targeted processor architecture.</param>
         /// <param name="executionRuntime">The executing runtime version.</param>
         /// <param name="executionArchitecture">The executing processor architecture.</param>
-        public TestScenario(
+        internal TestScenario(
             String assemblyName,
             RuntimeInfo targetRuntime,
             ProcessorArchitecture targetArchitecture,
