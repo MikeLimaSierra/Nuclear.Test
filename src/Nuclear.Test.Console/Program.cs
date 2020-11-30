@@ -35,8 +35,6 @@ namespace Nuclear.Test.Console {
 
         private static Executer _executer;
 
-        private static readonly IFactory _factory = Factory.Instance;
-
         #endregion
 
         #region public methods
@@ -72,11 +70,11 @@ namespace Nuclear.Test.Console {
                 }
             }
 
-            _executer = new Executer(_configuration, _factory);
+            _executer = new Executer(_configuration, Factory.Instance);
             _executer.Execute();
 
             _log.Info("=========================");
-            _factory.CreateEmpty(out ITestResultKey emptyKey);
+            Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
             new ResultTree(Verbosity.Collapsed, emptyKey, _executer.Results).Print();
             _log.Info("=========================");
 
