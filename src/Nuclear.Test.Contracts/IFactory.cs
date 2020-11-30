@@ -30,9 +30,13 @@ namespace Nuclear.Test {
 
         #region Execution
 
+        void Create(out IProxyRemoteInfo @object, IProxyRemoteConfiguration configuration);
+
         void Create(out IProxyRemote @object, IProxyRemoteConfiguration configuration, IServerLink link);
 
         void Create(out IProxyClient @object, IClientLink link);
+
+        void Create(out IWorkerRemoteInfo @object, IProxyClientConfiguration proxyConfig, RuntimeInfo runtime);
 
         void Create(out IWorkerRemote @object, IWorkerRemoteConfiguration configuration, IServerLink link);
 
