@@ -6,19 +6,18 @@ using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations.Proxy;
+using Nuclear.Test.Configurations.Worker;
 
 namespace Nuclear.Test.Execution.Worker {
-    internal class WorkerRemoteInfo {
+    internal class WorkerRemoteInfo : IWorkerRemoteInfo {
 
         #region properties
 
-        internal RuntimeInfo Runtime { get; }
+        public IWorkerRemoteConfiguration Configuration { get; }
 
-        internal FileInfo Executable { get; }
+        public RuntimeInfo Runtime { get; }
 
-        internal Boolean HasExecutable => Executable != null && Executable.Exists;
-
-        internal Boolean IsSelected { get; set; }
+        public Boolean IsSelected { get; set; }
 
         #endregion
 
@@ -30,14 +29,16 @@ namespace Nuclear.Test.Execution.Worker {
 
             Runtime = runtime;
             ProcessorArchitecture architecture = Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86;
-            Executable = new FileInfo(Path.Combine(proxyConfig.WorkerDirectory.FullName, architecture.ToString(), $"{Runtime.Framework}{Runtime.Version}", proxyConfig.WorkerExecutableName));
+            Factory.Instance.Create(out IWorkerRemoteConfiguration configuration);
+            Configuration = configuration;
+            Configuration.Executable = new FileInfo(Path.Combine(proxyConfig.WorkerDirectory.FullName, architecture.ToString(), $"{Runtime.Framework}{Runtime.Version}", proxyConfig.WorkerExecutableName));
         }
 
         #endregion
 
         #region methods
 
-        public override String ToString() => $"Runtime: {Runtime.Format()}; Executable: {Executable.FullName.Format()}; IsSelected: {IsSelected.Format()}";
+        public override String ToString() => $"Runtime: {Runtime.Format()}; Executable: {Configuration.Executable.FullName.Format()}; IsSelected: {IsSelected.Format()}";
 
         #endregion
 

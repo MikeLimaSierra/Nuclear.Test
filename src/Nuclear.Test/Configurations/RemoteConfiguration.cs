@@ -20,6 +20,11 @@ namespace Nuclear.Test.Configurations {
         public FileInfo Executable { get; set; }
 
         /// <summary>
+        /// Gets if the executable is set and if it exists.
+        /// </summary>
+        public Boolean HasExecutable => Executable != null && Executable.Exists;
+
+        /// <summary>
         /// Gets or sets if client process should be started in a visible window.
         /// </summary>
         public Boolean StartClientVisible { get; set; }
