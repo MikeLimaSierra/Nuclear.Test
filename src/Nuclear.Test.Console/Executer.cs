@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading;
 
 using log4net;
@@ -9,7 +11,10 @@ using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
+using Nuclear.Test.Configurations.Proxy;
+using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Execution;
+using Nuclear.Test.Execution.Proxy;
 using Nuclear.Test.Helpers;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
@@ -78,9 +83,9 @@ namespace Nuclear.Test.Console {
         private void OnResultsAvailable(Object sender, ResultsAvailableEventArgs e) {
             _log.Debug(nameof(OnResultsAvailable));
 
-            if(sender is ProxyRemote remote) {
+            if(sender is IProxyRemote remote) {
                 remote.ResultsAvailable -= OnResultsAvailable;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(ProxyRemote)}.");
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}.");
             }
 
             Results.Add(e.Results);
@@ -89,9 +94,9 @@ namespace Nuclear.Test.Console {
         private void OnRemotingFinished(Object sender, EventArgs e) {
             _log.Debug(nameof(OnRemotingFinished));
 
-            if(sender is ProxyRemote remote) {
+            if(sender is IProxyRemote remote) {
                 remote.RemotingFinished -= OnRemotingFinished;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(ProxyRemote)}.");
+                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}.");
             }
 
             _remotesFinishedEvent.Signal();
@@ -108,10 +113,10 @@ namespace Nuclear.Test.Console {
             ConsoleHelper.PrintProcessInfo(currentRuntime, _headerContent);
 
             IEnumerable<FileInfo> assemblies = _locator.DiscoverAssemblies();
-            IEnumerable<RemoteInfo> remoteInfos = CreateRemoteInfos(assemblies);
-            IEnumerable<ProxyRemote> remotes = CreateRemotes(remoteInfos);
+            IEnumerable<IProxyRemoteInfo> remoteInfos = CreateRemoteInfos(assemblies);
+            IEnumerable<IProxyRemote> remotes = CreateRemotes(remoteInfos);
 
-            foreach(ProxyRemote remote in remotes) {
+            foreach(IProxyRemote remote in remotes) {
                 _remotesFinishedEvent.AddCount();
 
                 remote.Execute();
@@ -124,18 +129,85 @@ namespace Nuclear.Test.Console {
             _remotesFinishedEvent.Wait();
         }
 
-        private IEnumerable<RemoteInfo> CreateRemoteInfos(IEnumerable<FileInfo> assemblies) {
-            return null;
+        private IEnumerable<IProxyRemoteInfo> CreateRemoteInfos(IEnumerable<FileInfo> assemblies) {
+            _log.Debug(nameof(CreateRemoteInfos));
+
+            IList<IProxyRemoteInfo> remoteInfos = new List<IProxyRemoteInfo>();
+
+            foreach(FileInfo assembly in assemblies.Where(a => a.Exists)) {
+                if(AssemblyHelper.TryGetAssemblyName(assembly, out AssemblyName assemblyName)) {
+
+                    foreach(ProcessorArchitecture architecture in GetArchitectures(assemblyName.ProcessorArchitecture)) {
+                        String executablePath = Path.Combine(Environment.ExpandEnvironmentVariables(_configuration.Clients.ProxyDirectory),
+                            architecture.ToString(),
+                            _configuration.Clients.ProxyExecutableName);
+
+                        _factory.Create(out IWorkerClientConfiguration workerClientConfig);
+                        workerClientConfig.AutoShutdown = _configuration.Clients.AutoShutdown;
+                        workerClientConfig.TestAssembly = assembly;
+                        workerClientConfig.TestsInSequence = _configuration.Execution.TestsInSequence;
+
+                        _factory.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
+                        workerRemoteConfig.ClientConfiguration = workerClientConfig;
+                        workerRemoteConfig.Executable = null;
+                        workerRemoteConfig.StartClientVisible = _configuration.Clients.StartClientVisible;
+
+                        _factory.Create(out IProxyClientConfiguration proxyClientConfiguration);
+                        proxyClientConfiguration.WorkerRemoteConfiguration = workerRemoteConfig;
+                        proxyClientConfiguration.AssembliesInSequence = _configuration.Execution.AssembliesInSequence;
+                        proxyClientConfiguration.AutoShutdown = _configuration.Clients.AutoShutdown;
+                        proxyClientConfiguration.SelectedRuntimes = _configuration.Execution.SelectedRuntimes;
+                        proxyClientConfiguration.TestAssembly = assembly;
+                        proxyClientConfiguration.WorkerDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(_configuration.Clients.WorkerDirectory));
+                        proxyClientConfiguration.WorkerExecutableName = _configuration.Clients.WorkerExecutableName;
+
+                        _factory.Create(out IProxyRemoteConfiguration proxyRemoteConfiguration);
+                        proxyRemoteConfiguration.ClientConfiguration = proxyClientConfiguration;
+                        proxyRemoteConfiguration.Executable = new FileInfo(executablePath);
+                        proxyRemoteConfiguration.StartClientVisible = _configuration.Clients.StartClientVisible;
+
+                        _factory.Create(out IProxyRemoteInfo info, proxyRemoteConfiguration);
+                        remoteInfos.Add(info);
+                    }
+
+                } else { _log.Error($"Could not load assembly name for {assembly.FullName.Format()}."); }
+            }
+
+            _log.Info("Could not find existing assemblies.");
+
+            return remoteInfos;
         }
 
-        private IEnumerable<ProxyRemote> CreateRemotes(IEnumerable<RemoteInfo> remoteInfos) {
+        private IEnumerable<ProcessorArchitecture> GetArchitectures(ProcessorArchitecture architecture) {
+            IList<ProcessorArchitecture> architectures = new List<ProcessorArchitecture>();
+
+            switch(architecture) {
+                case ProcessorArchitecture.X86:
+                case ProcessorArchitecture.Amd64:
+                    architectures.Add(architecture);
+                    break;
+
+                case ProcessorArchitecture.MSIL:
+                    architectures.Add(ProcessorArchitecture.X86);
+                    architectures.Add(ProcessorArchitecture.Amd64);
+                    break;
+
+                default:
+                    break;
+            }
+
+            return architectures;
+        }
+
+        private IEnumerable<IProxyRemote> CreateRemotes(IEnumerable<IProxyRemoteInfo> remoteInfos) {
             _log.Debug(nameof(CreateRemotes));
 
-            IList<ProxyRemote> remotes = new List<ProxyRemote>();
+            IList<IProxyRemote> remotes = new List<IProxyRemote>();
 
-            foreach(RemoteInfo remoteInfo in remoteInfos) {
+            foreach(IProxyRemoteInfo remoteInfo in remoteInfos) {
                 _factory.Create(out IServerLink link);
-                ProxyRemote remote = new ProxyRemote(remoteInfo.RemoteConfiguration, remoteInfo.ClientConfiguration, link);
+                _factory.Create(out IProxyRemote remote, remoteInfo.Configuration, link);
+
                 remote.RemotingFinished += OnRemotingFinished;
                 remote.ResultsAvailable += OnResultsAvailable;
 
@@ -144,7 +216,7 @@ namespace Nuclear.Test.Console {
                 remotes.Add(remote);
             }
 
-            _log.Info($"Created {remotes.Count} workers.");
+            _log.Info($"Created {remotes.Count} remotes.");
 
             return remotes;
         }
