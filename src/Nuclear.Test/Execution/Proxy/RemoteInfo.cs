@@ -5,9 +5,9 @@ using System.Reflection;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
-using Nuclear.Test.Configurations;
+using Nuclear.Test.Configurations.Proxy;
 
-namespace Nuclear.Test.Proxy {
+namespace Nuclear.Test.Execution.Proxy {
     internal class RemoteInfo {
 
         #region properties

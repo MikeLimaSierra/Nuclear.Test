@@ -10,15 +10,13 @@ using log4net;
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Resolvers;
 using Nuclear.Assemblies.Runtimes;
-using Nuclear.Exceptions;
 using Nuclear.Extensions;
-using Nuclear.Test.Configurations;
-using Nuclear.Test.Execution;
+using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 using Nuclear.TestSite;
 
-namespace Nuclear.Test.Worker {
+namespace Nuclear.Test.Execution.Worker {
     internal class WorkerClient : Client<IWorkerClientConfiguration>, IWorkerClient {
 
         #region fields
@@ -33,12 +31,8 @@ namespace Nuclear.Test.Worker {
 
         #region ctors
 
-        internal WorkerClient(IClientLink link, IFactory factory)
+        internal WorkerClient(IClientLink link)
             : base(link) {
-
-            Throw.If.Object.IsNull(factory, nameof(factory));
-
-            _factory = factory;
 
             AppDomain.CurrentDomain.AssemblyResolve += OnAssemblyResolve;
 

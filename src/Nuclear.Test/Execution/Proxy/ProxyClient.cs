@@ -7,14 +7,14 @@ using log4net;
 
 using Nuclear.Assemblies;
 using Nuclear.Assemblies.Runtimes;
-using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
-using Nuclear.Test.Execution;
+using Nuclear.Test.Configurations.Proxy;
+using Nuclear.Test.Execution.Worker;
 using Nuclear.Test.Helpers;
 using Nuclear.Test.Link;
 
-namespace Nuclear.Test.Proxy {
+namespace Nuclear.Test.Execution.Proxy {
     internal class ProxyClient : Client<IProxyClientConfiguration>, IProxyClient {
 
         #region fields
@@ -29,12 +29,8 @@ namespace Nuclear.Test.Proxy {
 
         #region ctors
 
-        public ProxyClient(IClientLink link, IFactory factory)
+        public ProxyClient(IClientLink link)
             : base(link) {
-
-            Throw.If.Object.IsNull(factory, nameof(factory));
-
-            _factory = factory;
 
             HeaderContent.Add(@" _   _               _                    _____           _   ");
             HeaderContent.Add(@"| \ | | _   _   ___ | |  ___   __ _  _ __|_   _|___  ___ | |_ ");
@@ -115,7 +111,7 @@ namespace Nuclear.Test.Proxy {
 
             IEnumerable<RemoteInfo> remoteInfos = CreateRemoteInfos();
             ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.HasExecutable, r.IsSelected)));
-            IEnumerable<WorkerRemote> remotes = CreateRemotes(remoteInfos);
+            IEnumerable<IWorkerRemote> remotes = CreateRemotes(remoteInfos);
 
             foreach(WorkerRemote remote in remotes) {
                 _remotesFinishedEvent.AddCount();
@@ -160,14 +156,14 @@ namespace Nuclear.Test.Proxy {
             return Enumerable.Empty<RemoteInfo>();
         }
 
-        private IEnumerable<WorkerRemote> CreateRemotes(IEnumerable<RemoteInfo> remoteInfos) {
+        private IEnumerable<IWorkerRemote> CreateRemotes(IEnumerable<RemoteInfo> remoteInfos) {
             _log.Debug(nameof(CreateRemotes));
 
-            IList<WorkerRemote> remotes = new List<WorkerRemote>();
+            IList<IWorkerRemote> remotes = new List<IWorkerRemote>();
 
             foreach(RemoteInfo remoteInfo in remoteInfos.Where(r => r.IsSelected)) {
                 _factory.Create(out IServerLink link);
-                WorkerRemote remote = new WorkerRemote(Configuration.WorkerRemoteConfiguration, Configuration.WorkerClientConfiguration, link);
+                IWorkerRemote remote = new WorkerRemote(Configuration.WorkerRemoteConfiguration, link);
                 remote.RemotingFinished += OnRemotingFinished;
                 remote.ResultsReceived += OnResultsReceived;
                 remote.ResultsAvailable += OnResultsAvailable;

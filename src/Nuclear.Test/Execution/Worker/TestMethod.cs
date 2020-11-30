@@ -10,7 +10,7 @@ using Nuclear.Extensions;
 using Nuclear.Test.Results;
 using Nuclear.TestSite;
 
-namespace Nuclear.Test.Worker {
+namespace Nuclear.Test.Execution.Worker {
     internal class TestMethod {
 
         #region fields

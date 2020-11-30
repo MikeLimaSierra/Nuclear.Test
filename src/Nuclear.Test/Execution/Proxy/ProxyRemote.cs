@@ -1,21 +1,20 @@
 ﻿using log4net;
 
-using Nuclear.Test.Configurations;
-using Nuclear.Test.Execution;
+using Nuclear.Test.Configurations.Proxy;
 using Nuclear.Test.Link;
 
-namespace Nuclear.Test.Proxy {
-    internal class WorkerRemote : Remote<IWorkerRemoteConfiguration, IWorkerClientConfiguration>, IWorkerRemote {
+namespace Nuclear.Test.Execution.Proxy {
+    internal class ProxyRemote : Remote<IProxyRemoteConfiguration, IProxyClientConfiguration>, IProxyRemote {
 
         #region fields
 
-        private static readonly ILog _log = LogManager.GetLogger(typeof(WorkerRemote));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ProxyRemote));
 
         #endregion
 
         #region ctors
 
-        internal WorkerRemote(IWorkerRemoteConfiguration remoteConfig, IServerLink link)
+        public ProxyRemote(IProxyRemoteConfiguration remoteConfig, IServerLink link)
             : base(remoteConfig, link) { }
 
         #endregion

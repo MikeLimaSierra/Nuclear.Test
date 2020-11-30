@@ -1,6 +1,6 @@
-﻿using Nuclear.Test.Configurations;
+﻿using Nuclear.Test.Configurations.Proxy;
 
-namespace Nuclear.Test.Execution {
+namespace Nuclear.Test.Execution.Proxy {
 
     /// <summary>
     /// Defines the base functionality of a remote control for proxy clients.
