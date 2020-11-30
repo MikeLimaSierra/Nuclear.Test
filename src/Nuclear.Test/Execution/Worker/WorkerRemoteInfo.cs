@@ -7,7 +7,7 @@ using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations.Proxy;
 
-namespace Nuclear.Test.Execution.Proxy {
+namespace Nuclear.Test.Execution.Worker {
     internal class WorkerRemoteInfo {
 
         #region properties
