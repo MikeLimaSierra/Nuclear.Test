@@ -79,5 +79,12 @@ namespace Nuclear.Test {
 
         #endregion
 
+        void Create(out ITestScenario @object,
+            String assemblyName,
+            RuntimeInfo targetRuntime,
+            ProcessorArchitecture targetArchitecture,
+            RuntimeInfo executionRuntime,
+            ProcessorArchitecture executionArchitecture);
+
     }
 }
