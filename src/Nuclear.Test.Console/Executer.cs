@@ -34,7 +34,7 @@ namespace Nuclear.Test.Console {
 
         private readonly AssemblyLocator _locator;
 
-        private readonly CountdownEvent _remotesFinishedEvent = new CountdownEvent(0);
+        private CountdownEvent _remotesFinishedEvent;
 
         #endregion
 
@@ -116,8 +116,14 @@ namespace Nuclear.Test.Console {
             IEnumerable<IProxyRemoteInfo> remoteInfos = CreateRemoteInfos(assemblies);
             IEnumerable<IProxyRemote> remotes = CreateRemotes(remoteInfos);
 
-            foreach(IProxyRemote remote in remotes) {
-                _remotesFinishedEvent.AddCount();
+            if(!_configuration.Execution.AssembliesInSequence) {
+                _remotesFinishedEvent = new CountdownEvent(remotes.Where(r => r.Configuration.HasExecutable).Count());
+            }
+
+            foreach(IProxyRemote remote in remotes.Where(r => r.Configuration.HasExecutable)) {
+                if(_configuration.Execution.AssembliesInSequence) {
+                    _remotesFinishedEvent = new CountdownEvent(1);
+                }
 
                 remote.Execute();
 
