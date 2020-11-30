@@ -8,6 +8,8 @@ using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Configurations.Proxy;
+using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Link {

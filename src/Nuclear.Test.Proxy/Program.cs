@@ -3,7 +3,7 @@ using System.Threading;
 
 using log4net;
 
-using Nuclear.Test.Execution;
+using Nuclear.Test.Execution.Proxy;
 using Nuclear.Test.Link;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
@@ -19,15 +19,13 @@ namespace Nuclear.Test.Proxy {
 
         private static IProxyClient _client;
 
-        private static readonly IFactory _factory = Factory.Instance;
-
         #endregion
 
         #region methods
 
         internal static void Main(String[] args) {
-            _factory.Create(out IClientLink link, args[0]);
-            _client = new ProxyClient(link, _factory);
+            Factory.Instance.Create(out IClientLink link, args[0]);
+            Factory.Instance.Create(out _client, link);
             _client.ExecutionFinished += OnClientExecutionFinished;
 
             _executionFinishedEvent.Wait();
@@ -35,7 +33,7 @@ namespace Nuclear.Test.Proxy {
             ITestResultEndPoint results = _client.Results;
 
             _log.Info("=========================");
-            _factory.CreateEmpty(out ITestResultKey emptyKey);
+            Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
             new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, results).Print();
             _log.Info("=========================");
 

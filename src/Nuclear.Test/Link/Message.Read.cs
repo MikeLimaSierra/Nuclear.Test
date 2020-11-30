@@ -5,6 +5,8 @@ using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Configurations.Proxy;
+using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Link {
