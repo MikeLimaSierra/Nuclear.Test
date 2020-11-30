@@ -396,8 +396,7 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
                 && TryGetData(out DirectoryInfo workerDirectory)
                 && TryGetData(out String workerExecutableName)
-                && TryGetData(out IWorkerRemoteConfiguration remoteConfig)
-                && TryGetData(out IWorkerClientConfiguration clientConfig)) {
+                && TryGetData(out IWorkerRemoteConfiguration remoteConfig)) {
 
                 data = new ProxyClientConfiguration {
                     TestAssembly = testAssembly,
@@ -406,8 +405,7 @@ namespace Nuclear.Test.Link {
                     SelectedRuntimes = selectedRuntimes,
                     WorkerDirectory = workerDirectory,
                     WorkerExecutableName = workerExecutableName,
-                    WorkerRemoteConfiguration = remoteConfig,
-                    WorkerClientConfiguration = clientConfig
+                    WorkerRemoteConfiguration = remoteConfig
                 };
             }
 
@@ -423,9 +421,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IWorkerRemoteConfiguration data) {
             data = default;
 
-            if(TryGetData(out Boolean startClientVisible)) {
+            if(TryGetData(out FileInfo executable)
+                && TryGetData(out Boolean startClientVisible)
+                && TryGetData(out IWorkerClientConfiguration clientConfiguration)) {
+
                 data = new WorkerRemoteConfiguration {
-                    StartClientVisible = startClientVisible
+                    Executable = executable,
+                    StartClientVisible = startClientVisible,
+                    ClientConfiguration = clientConfiguration
                 };
             }
 
@@ -440,9 +443,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IProxyRemoteConfiguration data) {
             data = default;
 
-            if(TryGetData(out Boolean startClientVisible)) {
+            if(TryGetData(out FileInfo executable)
+                && TryGetData(out Boolean startClientVisible)
+                && TryGetData(out IProxyClientConfiguration clientConfiguration)) {
+
                 data = new ProxyRemoteConfiguration {
-                    StartClientVisible = startClientVisible
+                    Executable = executable,
+                    StartClientVisible = startClientVisible,
+                    ClientConfiguration = clientConfiguration
                 };
             }
 

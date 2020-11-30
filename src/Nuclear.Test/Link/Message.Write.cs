@@ -296,7 +296,6 @@ namespace Nuclear.Test.Link {
             Append(data.WorkerDirectory);
             Append(data.WorkerExecutableName);
             Append(data.WorkerRemoteConfiguration);
-            Append(data.WorkerClientConfiguration);
 
             return this;
         }
@@ -308,7 +307,10 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IWorkerRemoteConfiguration data) {
+            Append(data.Executable);
             Append(data.StartClientVisible);
+
+            Append(data.ClientConfiguration);
 
             return this;
         }
@@ -319,7 +321,10 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(IProxyRemoteConfiguration data) {
+            Append(data.Executable);
             Append(data.StartClientVisible);
+
+            Append(data.ClientConfiguration);
 
             return this;
         }
