@@ -11,11 +11,11 @@ using Nuclear.Test.Results;
 using Nuclear.TestSite;
 
 namespace Nuclear.Test.Execution.Worker {
-    internal class TestMethod {
+    internal class TestMethodInfo {
 
         #region fields
 
-        private static readonly ILog _log = LogManager.GetLogger(typeof(TestMethod));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TestMethodInfo));
 
         private readonly MethodInfo _methodInfo;
 
@@ -43,7 +43,7 @@ namespace Nuclear.Test.Execution.Worker {
 
         #region ctors
 
-        internal TestMethod(ITestResultEndPoint results, MethodInfo method) {
+        internal TestMethodInfo(ITestResultEndPoint results, MethodInfo method) {
             Throw.If.Object.IsNull(results, nameof(results));
             Throw.If.Object.IsNull(method, nameof(method));
 

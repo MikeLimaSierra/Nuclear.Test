@@ -105,7 +105,7 @@ namespace Nuclear.Test.Execution.Worker {
             Results.Initialize(scenario);
             ResultProxy.Results = Results;
 
-            CollectTestMethods(TestAssembly, Results, out IList<TestMethod> sequential, out IList<TestMethod> parallel);
+            CollectTestMethods(TestAssembly, Results, out IList<TestMethodInfo> sequential, out IList<TestMethodInfo> parallel);
             InvokeTestMethods(sequential, parallel);
 
             SendResults(Results.GetKeyedResults());
@@ -118,11 +118,11 @@ namespace Nuclear.Test.Execution.Worker {
 
         #region private methods
 
-        private void CollectTestMethods(Assembly assembly, ITestResultEndPoint results, out IList<TestMethod> sequentialTestMethods, out IList<TestMethod> parallelTestMethods) {
+        private void CollectTestMethods(Assembly assembly, ITestResultEndPoint results, out IList<TestMethodInfo> sequentialTestMethods, out IList<TestMethodInfo> parallelTestMethods) {
             _log.Debug(nameof(CollectTestMethods));
 
-            sequentialTestMethods = new List<TestMethod>();
-            parallelTestMethods = new List<TestMethod>();
+            sequentialTestMethods = new List<TestMethodInfo>();
+            parallelTestMethods = new List<TestMethodInfo>();
             
             foreach(Type type in assembly.GetTypes()) {
                 _log.Debug($"Searching type {type.Format()}.");
@@ -147,18 +147,18 @@ namespace Nuclear.Test.Execution.Worker {
 
                         if(classLevelMode == TestMode.Sequential || m_attr.TestMode == TestMode.Sequential || Configuration.TestsInSequence) {
                             _log.Info($"Adding sequential test method {type.Format()}.{testMethod.Name.Format()}.");
-                            sequentialTestMethods.Add(new TestMethod(results, testMethod));
+                            sequentialTestMethods.Add(new TestMethodInfo(results, testMethod));
 
                         } else {
                             _log.Info($"Adding parallel test method {type.Format()}.{testMethod.Name.Format()}.");
-                            parallelTestMethods.Add(new TestMethod(results, testMethod));
+                            parallelTestMethods.Add(new TestMethodInfo(results, testMethod));
                         }
                     }
                 }
             }
         }
 
-        private void InvokeTestMethods(IEnumerable<TestMethod> sequentialTestMethods, IEnumerable<TestMethod> parallelTestMethods) {
+        private void InvokeTestMethods(IEnumerable<TestMethodInfo> sequentialTestMethods, IEnumerable<TestMethodInfo> parallelTestMethods) {
             _log.Debug(nameof(InvokeTestMethods));
 
             _log.Info($"Invoking {sequentialTestMethods.Count()} sequential test methods.");
