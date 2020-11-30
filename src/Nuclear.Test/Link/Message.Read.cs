@@ -374,11 +374,10 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out Boolean autoShutdown)
                 && TryGetData(out Boolean testsInSequence)) {
 
-                data = new WorkerClientConfiguration {
-                    TestAssembly = testAssembly,
-                    AutoShutdown = autoShutdown,
-                    TestsInSequence = testsInSequence
-                };
+                Factory.Instance.Create(out data);
+                data.TestAssembly = testAssembly;
+                data.AutoShutdown = autoShutdown;
+                data.TestsInSequence = testsInSequence;
             }
 
             return data != null;
@@ -400,15 +399,14 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out String workerExecutableName)
                 && TryGetData(out IWorkerRemoteConfiguration remoteConfig)) {
 
-                data = new ProxyClientConfiguration {
-                    TestAssembly = testAssembly,
-                    AutoShutdown = autoShutdown,
-                    AssembliesInSequence = assembliesInSequence,
-                    SelectedRuntimes = selectedRuntimes,
-                    WorkerDirectory = workerDirectory,
-                    WorkerExecutableName = workerExecutableName,
-                    WorkerRemoteConfiguration = remoteConfig
-                };
+                Factory.Instance.Create(out data);
+                data.TestAssembly = testAssembly;
+                data.AutoShutdown = autoShutdown;
+                data.AssembliesInSequence = assembliesInSequence;
+                data.SelectedRuntimes = selectedRuntimes;
+                data.WorkerDirectory = workerDirectory;
+                data.WorkerExecutableName = workerExecutableName;
+                data.WorkerRemoteConfiguration = remoteConfig;
             }
 
             return data != null;
@@ -427,11 +425,10 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out Boolean startClientVisible)
                 && TryGetData(out IWorkerClientConfiguration clientConfiguration)) {
 
-                data = new WorkerRemoteConfiguration {
-                    Executable = executable,
-                    StartClientVisible = startClientVisible,
-                    ClientConfiguration = clientConfiguration
-                };
+                Factory.Instance.Create(out data);
+                data.Executable = executable;
+                data.StartClientVisible = startClientVisible;
+                data.ClientConfiguration = clientConfiguration;
             }
 
             return data != null;
@@ -449,11 +446,10 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out Boolean startClientVisible)
                 && TryGetData(out IProxyClientConfiguration clientConfiguration)) {
 
-                data = new ProxyRemoteConfiguration {
-                    Executable = executable,
-                    StartClientVisible = startClientVisible,
-                    ClientConfiguration = clientConfiguration
-                };
+                Factory.Instance.Create(out data);
+                data.Executable = executable;
+                data.StartClientVisible = startClientVisible;
+                data.ClientConfiguration = clientConfiguration;
             }
 
             return data != null;
@@ -557,7 +553,7 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out String fileName)
                 && TryGetData(out String methodName)) {
 
-                data = new TestResultKey(asssembly,
+                Factory.Instance.Create(out data, asssembly,
                     new RuntimeInfo(tMoniker, tVersion), tArch,
                     new RuntimeInfo(eMoniker, eVersion), eArch,
                     fileName, methodName);
@@ -588,7 +584,7 @@ namespace Nuclear.Test.Link {
             }
 
             try {
-                data = new TestEntry(type, instruction, message);
+                Factory.Instance.Create(out data, type, instruction, message);
 
             } catch { }
 
@@ -607,7 +603,7 @@ namespace Nuclear.Test.Link {
                 return false;
             }
 
-            data = new TestMethodResult();
+            Factory.Instance.Create(out data);
             data.Ignore(ignore);
 
             for(Int32 i = 0; i < count; i++) {

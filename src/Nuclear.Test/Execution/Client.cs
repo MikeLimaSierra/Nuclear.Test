@@ -63,7 +63,7 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the test results sink that is in use.
         /// </summary>
-        public ITestResultEndPoint Results { get; } = new TestResultEndPoint();
+        public ITestResultEndPoint Results { get; }
 
         /// <summary>
         /// Gets or sets the header content as a <see cref="List{String}"/>.
@@ -104,6 +104,9 @@ namespace Nuclear.Test.Execution {
             Link = link;
 
             RuntimesHelper.TryGetCurrentRuntime(out _currentRuntime);
+
+            Factory.Instance.Create(out ITestResultEndPoint result);
+            Results = result;
 
             Link.ServerConnected += OnServerConnected;
             Link.Start();
@@ -174,7 +177,7 @@ namespace Nuclear.Test.Execution {
         protected void SendResults(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
             _log.Debug(nameof(SendResults));
 
-            IMessage message = new Message(Commands.Results);
+            Factory.Instance.Create(out IMessage message, Commands.Results);
             message.Append(results);
             Link.Send(message);
         }
@@ -186,7 +189,7 @@ namespace Nuclear.Test.Execution {
         protected void SendResults(ResultsReceivedEventArgs e) {
             _log.Debug(nameof(SendResults));
 
-            IMessage message = new Message(Commands.Results);
+            Factory.Instance.Create(out IMessage message, Commands.Results);
             message.Append(e.Data);
             Link.Send(message);
         }
@@ -197,7 +200,8 @@ namespace Nuclear.Test.Execution {
         protected void SendFinished() {
             _log.Debug(nameof(SendFinished));
 
-            Link.Send(new Message(Commands.Finished));
+            Factory.Instance.Create(out IMessage message, Commands.Finished);
+            Link.Send(message);
         }
 
         /// <summary>

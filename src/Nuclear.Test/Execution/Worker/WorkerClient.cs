@@ -98,7 +98,7 @@ namespace Nuclear.Test.Execution.Worker {
 
             AssemblyHelper.TryGetRuntime(_entryAssembly, out RuntimeInfo entryAssemblyInfo);
 
-            TestScenario scenario = new TestScenario(TestAssemblyName.Name,
+            Factory.Instance.Create(out ITestScenario scenario, TestAssemblyName.Name,
                 TestAssemblyRuntime, TestAssemblyName.ProcessorArchitecture,
                 entryAssemblyInfo, RuntimeArchitecure);
 

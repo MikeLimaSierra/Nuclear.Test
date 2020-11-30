@@ -49,7 +49,7 @@ namespace Nuclear.Test.Link {
                     Byte[] payload = new Byte[br.ReadInt32()];
                     br.Read(payload, 0, payload.Length);
 
-                    message = new Message(command);
+                    Factory.Instance.Create(out message, command);
                     message.Append(payload);
                 }
             }

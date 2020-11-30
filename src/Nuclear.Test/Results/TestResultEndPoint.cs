@@ -40,16 +40,22 @@ namespace Nuclear.Test.Results {
 
         public void Clear() => _results.Clear();
 
-        public void PrepareResults(MethodInfo _method)
-            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
-                new TestMethodResult());
+        public void PrepareResults(MethodInfo _method) {
+            Factory.Instance.Create(out ITestResultKey key, Scenario, _method.DeclaringType.Name, _method.Name);
+            Factory.Instance.Create(out ITestMethodResult result);
 
-        public void LogError(MethodInfo _method, String message)
-            => AddEntry(TestEntry.FromError(message), _method.DeclaringType.Name, _method.Name);
+            _results.GetOrAdd(key, result);
+        }
 
-        public void IgnoreTestMethod(MethodInfo _method, String ignoreReason)
-            => _results.GetOrAdd(new TestResultKey(Scenario, _method.DeclaringType.Name, _method.Name),
-                new TestMethodResult()).Ignore(ignoreReason);
+        public void LogError(MethodInfo _method, String message) => AddEntry(TestEntry.FromError(message), _method.DeclaringType.Name, _method.Name);
+
+        public void IgnoreTestMethod(MethodInfo _method, String ignoreReason) {
+            Factory.Instance.Create(out ITestResultKey key, Scenario, _method.DeclaringType.Name, _method.Name);
+            Factory.Instance.Create(out ITestMethodResult result);
+            result.Ignore(ignoreReason);
+
+            _results.GetOrAdd(key, result);
+        }
 
         #endregion
 
@@ -73,7 +79,11 @@ namespace Nuclear.Test.Results {
             return keys;
         }
 
-        public ITestMethodResult GetResult(ITestResultKey key) => _results.GetOrAdd(key, new TestMethodResult());
+        public ITestMethodResult GetResult(ITestResultKey key) {
+            Factory.Instance.Create(out ITestMethodResult result);
+
+            return _results.GetOrAdd(key, result);
+        }
 
         public IEnumerable<ITestMethodResult> GetResults() => _results.Values;
 
@@ -95,8 +105,12 @@ namespace Nuclear.Test.Results {
 
         #region private methods
 
-        private void AddEntry(ITestEntry entry, String _file, String _method)
-            => _results.GetOrAdd(new TestResultKey(Scenario, _file, _method), new TestMethodResult()).TestEntries.Add(entry);
+        private void AddEntry(ITestEntry entry, String _file, String _method) {
+            Factory.Instance.Create(out ITestResultKey key, Scenario, _file, _method);
+            Factory.Instance.Create(out ITestMethodResult result);
+
+            _results.GetOrAdd(key, result).TestEntries.Add(entry);
+        }
 
 
         #endregion
