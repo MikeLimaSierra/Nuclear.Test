@@ -1,6 +1,6 @@
-﻿using Nuclear.Test.Execution;
+﻿using Nuclear.Test.Execution.Worker;
 
-namespace Nuclear.Test.Configurations {
+namespace Nuclear.Test.Configurations.Worker {
 
     /// <summary>
     /// Defines configuration values for an <see cref="IWorkerRemote"/>.
