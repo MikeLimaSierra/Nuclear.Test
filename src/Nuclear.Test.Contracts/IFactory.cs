@@ -3,10 +3,15 @@ using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Execution;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test {
+
+    /// <summary>
+    /// Defines a factory for internal implementations.
+    /// </summary>
     public interface IFactory {
 
         #region Configurations
@@ -18,6 +23,18 @@ namespace Nuclear.Test {
         void Create(out IWorkerRemoteConfiguration @object);
 
         void Create(out IWorkerClientConfiguration @object);
+
+        #endregion
+
+        #region Execution
+
+        void Create(out IProxyRemote @object, IProxyRemoteConfiguration configuration, IServerLink link);
+
+        void Create(out IProxyClient @object, IClientLink link);
+
+        void Create(out IWorkerRemote @object, IWorkerRemoteConfiguration configuration, IServerLink link);
+
+        void Create(out IWorkerClient @object, IClientLink link);
 
         #endregion
 
