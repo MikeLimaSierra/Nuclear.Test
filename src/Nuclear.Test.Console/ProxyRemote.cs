@@ -5,7 +5,7 @@ using Nuclear.Test.Execution;
 using Nuclear.Test.Link;
 
 namespace Nuclear.Test.Console {
-    internal class ProxyRemote : Remote<IProxyRemoteConfiguration, IProxyClientConfiguration> {
+    internal class ProxyRemote : Remote<IProxyRemoteConfiguration, IProxyClientConfiguration>, IProxyRemote {
 
         #region fields
 
@@ -15,8 +15,8 @@ namespace Nuclear.Test.Console {
 
         #region ctors
 
-        public ProxyRemote(IProxyRemoteConfiguration remoteConfig, IProxyClientConfiguration clientConfiguration, IServerLink link)
-            : base(remoteConfig, clientConfiguration, link) { }
+        public ProxyRemote(IProxyRemoteConfiguration remoteConfig, IServerLink link)
+            : base(remoteConfig, link) { }
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace Nuclear.Test.Console {
         protected override IMessage GetSetupMessage() {
             _log.Debug(nameof(GetSetupMessage));
 
-            return base.GetSetupMessage().Append(ClientConfiguration);
+            return base.GetSetupMessage().Append(Configuration.ClientConfiguration);
         }
 
         #endregion

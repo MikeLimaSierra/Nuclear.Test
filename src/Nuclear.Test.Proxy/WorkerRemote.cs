@@ -5,7 +5,7 @@ using Nuclear.Test.Execution;
 using Nuclear.Test.Link;
 
 namespace Nuclear.Test.Proxy {
-    internal class WorkerRemote : Remote<IWorkerRemoteConfiguration, IWorkerClientConfiguration> {
+    internal class WorkerRemote : Remote<IWorkerRemoteConfiguration, IWorkerClientConfiguration>, IWorkerRemote {
 
         #region fields
 
@@ -15,8 +15,8 @@ namespace Nuclear.Test.Proxy {
 
         #region ctors
 
-        internal WorkerRemote(IWorkerRemoteConfiguration remoteConfig, IWorkerClientConfiguration clientConfiguration, IServerLink link)
-            : base(remoteConfig, clientConfiguration, link) { }
+        internal WorkerRemote(IWorkerRemoteConfiguration remoteConfig, IServerLink link)
+            : base(remoteConfig, link) { }
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace Nuclear.Test.Proxy {
         protected override IMessage GetSetupMessage() {
             _log.Debug(nameof(GetSetupMessage));
 
-            return base.GetSetupMessage().Append(ClientConfiguration);
+            return base.GetSetupMessage().Append(Configuration.ClientConfiguration);
         }
 
         #endregion
