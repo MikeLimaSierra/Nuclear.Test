@@ -8,7 +8,7 @@ using Nuclear.Extensions;
 using Nuclear.Test.Configurations.Proxy;
 
 namespace Nuclear.Test.Execution.Proxy {
-    internal class RemoteInfo {
+    internal class WorkerRemoteInfo {
 
         #region properties
 
@@ -24,7 +24,7 @@ namespace Nuclear.Test.Execution.Proxy {
 
         #region ctors
 
-        internal RemoteInfo(IProxyClientConfiguration proxyConfig, RuntimeInfo runtime) {
+        internal WorkerRemoteInfo(IProxyClientConfiguration proxyConfig, RuntimeInfo runtime) {
             Throw.If.Object.IsNull(proxyConfig, nameof(proxyConfig));
             Throw.If.Object.IsNull(runtime, nameof(runtime));
 

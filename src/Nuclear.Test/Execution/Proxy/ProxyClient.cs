@@ -107,7 +107,7 @@ namespace Nuclear.Test.Execution.Proxy {
 
             base.Execute();
 
-            IEnumerable<RemoteInfo> remoteInfos = CreateRemoteInfos();
+            IEnumerable<WorkerRemoteInfo> remoteInfos = CreateRemoteInfos();
             ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.HasExecutable, r.IsSelected)));
             IEnumerable<IWorkerRemote> remotes = CreateRemotes(remoteInfos);
 
@@ -132,11 +132,11 @@ namespace Nuclear.Test.Execution.Proxy {
 
         #region private methods
 
-        private IEnumerable<RemoteInfo> CreateRemoteInfos() {
+        private IEnumerable<WorkerRemoteInfo> CreateRemoteInfos() {
             _log.Debug(nameof(CreateRemoteInfos));
 
             if(RuntimesHelper.TryGetMatchingRuntimes(TestAssemblyRuntime, out IEnumerable<RuntimeInfo> matchingRuntimes)) {
-                IEnumerable<RemoteInfo> remotes = matchingRuntimes.Select(r => new RemoteInfo(Configuration, r));
+                IEnumerable<WorkerRemoteInfo> remotes = matchingRuntimes.Select(r => new WorkerRemoteInfo(Configuration, r));
 
                 Func<IEnumerable<Version>, Version> filter = Configuration.SelectedRuntimes == SelectedExecutionRuntimes.Highest ? Enumerable.Max : Enumerable.Min;
 
@@ -151,15 +151,15 @@ namespace Nuclear.Test.Execution.Proxy {
 
             _log.Info($"Could not find matching runtimes for {TestAssemblyRuntime.Format()}.");
 
-            return Enumerable.Empty<RemoteInfo>();
+            return Enumerable.Empty<WorkerRemoteInfo>();
         }
 
-        private IEnumerable<IWorkerRemote> CreateRemotes(IEnumerable<RemoteInfo> remoteInfos) {
+        private IEnumerable<IWorkerRemote> CreateRemotes(IEnumerable<WorkerRemoteInfo> remoteInfos) {
             _log.Debug(nameof(CreateRemotes));
 
             IList<IWorkerRemote> remotes = new List<IWorkerRemote>();
 
-            foreach(RemoteInfo remoteInfo in remoteInfos.Where(r => r.IsSelected)) {
+            foreach(WorkerRemoteInfo remoteInfo in remoteInfos.Where(r => r.IsSelected)) {
                 Factory.Instance.Create(out IServerLink link);
                 Factory.Instance.Create(out IWorkerRemote remote, Configuration.WorkerRemoteConfiguration, link);
 
