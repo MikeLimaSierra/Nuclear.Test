@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 
 using log4net;
+using log4net.Config;
 
 using Nuclear.Arguments;
 using Nuclear.Extensions;
+using Nuclear.Test.Extensions;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
-using Nuclear.Test.Extensions;
 
 namespace Nuclear.Test.Console {
     internal static class Program {
@@ -40,6 +42,8 @@ namespace Nuclear.Test.Console {
         #region public methods
 
         internal static void Main(String[] args) {
+            XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetEntryAssembly()), new FileInfo("log4net.config"));
+
             _arguments.Collect(args);
 
             Argument arg;
