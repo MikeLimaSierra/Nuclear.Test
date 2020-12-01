@@ -115,24 +115,7 @@ namespace Nuclear.Test.Console {
             IEnumerable<FileInfo> assemblies = _locator.DiscoverAssemblies();
             IEnumerable<IProxyRemoteInfo> remoteInfos = CreateRemoteInfos(assemblies);
             IEnumerable<IProxyRemote> remotes = CreateRemotes(remoteInfos);
-
-            if(!_configuration.Execution.AssembliesInSequence) {
-                _remotesFinishedEvent = new CountdownEvent(remotes.Where(r => r.Configuration.HasExecutable).Count());
-            }
-
-            foreach(IProxyRemote remote in remotes.Where(r => r.Configuration.HasExecutable)) {
-                if(_configuration.Execution.AssembliesInSequence) {
-                    _remotesFinishedEvent = new CountdownEvent(1);
-                }
-
-                remote.Execute();
-
-                if(_configuration.Execution.AssembliesInSequence) {
-                    _remotesFinishedEvent.Wait();
-                }
-            }
-
-            _remotesFinishedEvent.Wait();
+            ExecuteRemotes(remotes);
         }
 
         private IEnumerable<IProxyRemoteInfo> CreateRemoteInfos(IEnumerable<FileInfo> assemblies) {
@@ -238,6 +221,41 @@ namespace Nuclear.Test.Console {
             } else { _log.Info("No remotes created."); }
 
             return remotes;
+        }
+
+        private void ExecuteRemotes(IEnumerable<IProxyRemote> remotes) {
+            _log.Debug(nameof(ExecuteRemotes));
+            _log.Info($"Execute {remotes.Count().Format()} {(_configuration.Execution.AssembliesInSequence ? "sequential" : "parallel")} proxy remotes.");
+
+            if(!_configuration.Execution.AssembliesInSequence) {
+                _remotesFinishedEvent = new CountdownEvent(remotes.Where(r => r.Configuration.HasExecutable).Count());
+            }
+
+            foreach(IProxyRemote remote in remotes) {
+                if(!remote.Configuration.HasExecutable) {
+                    _log.Info($"Skipping {remote.Format()} with missing executable.");
+
+                    continue;
+                }
+
+                if(_configuration.Execution.AssembliesInSequence) {
+                    _remotesFinishedEvent = new CountdownEvent(1);
+                }
+
+                _log.Info($"Executing proxy remote {remote.Format()}.");
+
+                remote.Execute();
+
+                if(_configuration.Execution.AssembliesInSequence) {
+                    _log.Info($"Waiting for proxy remote {remote.Format()} to finish.");
+
+                    _remotesFinishedEvent.Wait();
+                }
+            }
+
+            if(!_configuration.Execution.AssembliesInSequence) {
+                _remotesFinishedEvent.Wait();
+            }
         }
 
         #endregion
