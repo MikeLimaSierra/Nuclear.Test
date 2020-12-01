@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
@@ -23,7 +24,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Boolean data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -36,7 +37,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Byte data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -49,7 +50,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(SByte data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -62,7 +63,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Char data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -75,7 +76,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Int16 data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -88,7 +89,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(UInt16 data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -101,7 +102,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Int32 data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -114,7 +115,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(UInt32 data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -127,7 +128,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Int64 data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -140,7 +141,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(UInt64 data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -153,7 +154,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Single data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -166,7 +167,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Double data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -179,7 +180,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(Decimal data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -195,7 +196,7 @@ namespace Nuclear.Test.Link {
         public IMessage Append(String data) {
             Throw.If.Object.IsNull(data, nameof(data));
 
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -211,7 +212,7 @@ namespace Nuclear.Test.Link {
         public IMessage Append(FileInfo data) {
             Throw.If.Object.IsNull(data, nameof(data));
 
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data.FullName);
             }
 
@@ -227,7 +228,7 @@ namespace Nuclear.Test.Link {
         public IMessage Append(DirectoryInfo data) {
             Throw.If.Object.IsNull(data, nameof(data));
 
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data.FullName);
             }
 
@@ -243,7 +244,7 @@ namespace Nuclear.Test.Link {
         public IMessage Append(Byte[] data) {
             Throw.If.Object.IsNull(data, nameof(data));
 
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -259,7 +260,7 @@ namespace Nuclear.Test.Link {
         public IMessage Append(Char[] data) {
             Throw.If.Object.IsNull(data, nameof(data));
 
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write(data);
             }
 
@@ -338,7 +339,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(EntryTypes data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write((Int32) data);
             }
 
@@ -351,7 +352,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(FrameworkIdentifiers data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write((Int32) data);
             }
 
@@ -364,7 +365,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(ProcessorArchitecture data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write((Int32) data);
             }
 
@@ -377,7 +378,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
         public IMessage Append(SelectedExecutionRuntimes data) {
-            using(BinaryWriter bw = new BinaryWriter(Payload)) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
                 bw.Write((Int32) data);
             }
 

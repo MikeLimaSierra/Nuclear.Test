@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Configurations;
@@ -22,7 +23,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Boolean data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadBoolean();
                     return true;
@@ -41,7 +42,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Byte data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadByte();
                     return true;
@@ -60,7 +61,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out SByte data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadSByte();
                     return true;
@@ -79,7 +80,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Char data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadChar();
                     return true;
@@ -98,7 +99,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Int16 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadInt16();
                     return true;
@@ -117,7 +118,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out UInt16 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadUInt16();
                     return true;
@@ -136,7 +137,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Int32 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadInt32();
                     return true;
@@ -155,7 +156,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out UInt32 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadUInt32();
                     return true;
@@ -174,7 +175,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Int64 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadInt64();
                     return true;
@@ -193,7 +194,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out UInt64 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadUInt64();
                     return true;
@@ -212,7 +213,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Single data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadSingle();
                     return true;
@@ -231,7 +232,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Double data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadDouble();
                     return true;
@@ -250,7 +251,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Decimal data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadDecimal();
                     return true;
@@ -269,7 +270,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out String data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadString();
                     return true;
@@ -288,7 +289,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out FileInfo data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = new FileInfo(br.ReadString());
                     return true;
@@ -307,7 +308,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out DirectoryInfo data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = new DirectoryInfo(br.ReadString());
                     return true;
@@ -326,7 +327,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Byte[] data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     Int32 count = br.ReadInt32();
                     data = br.ReadBytes(count);
@@ -346,7 +347,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Char[] data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     Int32 count = br.ReadInt32();
                     data = br.ReadChars(count);
@@ -464,7 +465,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out EntryTypes data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = (EntryTypes) br.ReadInt32();
                     return true;
@@ -483,7 +484,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out FrameworkIdentifiers data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = (FrameworkIdentifiers) br.ReadInt32();
                     return true;
@@ -502,7 +503,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out ProcessorArchitecture data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = (ProcessorArchitecture) br.ReadInt32();
                     return true;
@@ -521,7 +522,7 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out SelectedExecutionRuntimes data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = (SelectedExecutionRuntimes) br.ReadInt32();
                     return true;
