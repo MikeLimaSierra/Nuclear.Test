@@ -316,8 +316,11 @@ namespace Nuclear.Test.Link {
 
             while(!_cancel.IsCancellationRequested) {
                 Read(out Byte[] data);
-                _messagesIn.Enqueue(data);
-                _messageInEvent.Set();
+
+                if(data.Length > 0) {
+                    _messagesIn.Enqueue(data);
+                    _messageInEvent.Set();
+                }
             }
         }
 
