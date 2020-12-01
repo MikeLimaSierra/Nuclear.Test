@@ -38,7 +38,10 @@ namespace Nuclear.Test.Execution.Worker {
 
         #region methods
 
-        public override String ToString() => $"Runtime: {Runtime.Format()}; Executable: {Configuration.Executable.FullName.Format()}; IsSelected: {IsSelected.Format()}";
+        public override String ToString() => $"Runtime: {Runtime.Format()}; " +
+            $"Executable: {Configuration.Executable.FullName.Format()}; " +
+            $"Assembly: {Configuration.ClientConfiguration.TestAssembly.FullName.Format()}; " +
+            $"IsSelected: {IsSelected.Format()}";
 
         #endregion
 

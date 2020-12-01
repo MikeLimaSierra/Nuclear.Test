@@ -23,8 +23,6 @@ namespace Nuclear.Test.Execution.Worker {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(WorkerClient));
 
-        private readonly IFactory _factory;
-
         private readonly Assembly _entryAssembly = Assembly.GetEntryAssembly();
 
         #endregion
@@ -123,7 +121,7 @@ namespace Nuclear.Test.Execution.Worker {
 
             sequentialTestMethods = new List<TestMethodInfo>();
             parallelTestMethods = new List<TestMethodInfo>();
-            
+
             foreach(Type type in assembly.GetTypes()) {
                 _log.Debug($"Searching type {type.Format()}.");
 

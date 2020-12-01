@@ -173,18 +173,26 @@ namespace Nuclear.Test.Console {
                         proxyRemoteConfiguration.StartClientVisible = _configuration.Clients.StartClientVisible;
 
                         _factory.Create(out IProxyRemoteInfo info, proxyRemoteConfiguration);
+
+                        _log.Debug($"Defined proxy remote: {info.Format()}");
+
                         remoteInfos.Add(info);
                     }
 
                 } else { _log.Error($"Could not load assembly name for {assembly.FullName.Format()}."); }
             }
 
-            _log.Info("Could not find existing assemblies.");
+            if(remoteInfos.Count > 0) {
+                _log.Info($"Defined {remoteInfos.Count.Format()} proxy remotes.");
+
+            } else { _log.Info("No remotes defined."); }
 
             return remoteInfos;
         }
 
         private IEnumerable<ProcessorArchitecture> GetArchitectures(ProcessorArchitecture architecture) {
+            _log.Debug(nameof(GetArchitectures));
+
             IList<ProcessorArchitecture> architectures = new List<ProcessorArchitecture>();
 
             switch(architecture) {
@@ -202,27 +210,32 @@ namespace Nuclear.Test.Console {
                     break;
             }
 
+            _log.Info($"Chose {architectures.Count.Format()} architectures ({architectures.Format()}) to execute tests in assembly ({architecture.Format()})");
+
             return architectures;
         }
 
-        private IEnumerable<IProxyRemote> CreateRemotes(IEnumerable<IProxyRemoteInfo> remoteInfos) {
+        private IEnumerable<IProxyRemote> CreateRemotes(IEnumerable<IProxyRemoteInfo> infos) {
             _log.Debug(nameof(CreateRemotes));
 
             IList<IProxyRemote> remotes = new List<IProxyRemote>();
 
-            foreach(IProxyRemoteInfo remoteInfo in remoteInfos) {
+            foreach(IProxyRemoteInfo info in infos) {
                 _factory.Create(out IServerLink link);
-                _factory.Create(out IProxyRemote remote, remoteInfo.Configuration, link);
+                _factory.Create(out IProxyRemote remote, info.Configuration, link);
 
                 remote.RemotingFinished += OnRemotingFinished;
                 remote.ResultsAvailable += OnResultsAvailable;
 
-                _log.Debug($"Remote created: {remoteInfo.Format()}");
+                _log.Debug($"Created proxy remote: {info.Format()}");
 
                 remotes.Add(remote);
             }
 
-            _log.Info($"Created {remotes.Count} remotes.");
+            if(remotes.Count > 0) {
+                _log.Info($"Created {remotes.Count.Format()} proxy remotes.");
+
+            } else { _log.Info("No remotes created."); }
 
             return remotes;
         }
