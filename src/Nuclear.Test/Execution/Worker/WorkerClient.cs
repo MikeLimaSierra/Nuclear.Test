@@ -86,7 +86,19 @@ namespace Nuclear.Test.Execution.Worker {
         protected override IWorkerClientConfiguration LoadConfiguration(IMessage message) {
             _log.Debug(nameof(LoadConfiguration));
 
-            return message.TryGetData(out IWorkerClientConfiguration config) ? config : null;
+            if(message == null) {
+                _log.Error($"{nameof(message)} is null.");
+                return null;
+            }
+
+            if(message.TryGetData(out IWorkerClientConfiguration config)) {
+                return config;
+
+            } else {
+                _log.Error($"{nameof(message)} doesn't contain a configuration object.");
+
+                return null;
+            }
         }
 
         protected override void Execute() {

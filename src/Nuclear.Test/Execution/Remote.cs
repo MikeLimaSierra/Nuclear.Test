@@ -108,8 +108,8 @@ namespace Nuclear.Test.Execution {
             Link.ClientConnected -= OnClientConnected;
             RaiseClientConnected();
 
-            if(Link.Connect()) {
-                _log.Info("Connecting to client.");
+            if(Link.ConnectInput()) {
+                _log.Info("Connected to client.");
 
                 SendSetup();
                 Link.MessageReceived += OnResultsReceived;
@@ -154,8 +154,10 @@ namespace Nuclear.Test.Execution {
             _log.Debug(nameof(Execute));
 
             if(Configuration.Executable != null && Configuration.Executable.Exists) {
-                Link.ClientConnected += OnClientConnected;
+                Link.StartOutput();
                 StartProcess();
+                Link.ClientConnected += OnClientConnected;
+                Link.WaitForConnection();
 
             } else {
                 _log.Error("Failed to start the client process.");

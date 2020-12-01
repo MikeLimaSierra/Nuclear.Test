@@ -21,7 +21,7 @@ namespace Nuclear.Test.Execution.Proxy {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(ProxyClient));
 
-        private readonly CountdownEvent _remotesFinishedEvent = new CountdownEvent(0);
+        private CountdownEvent _remotesFinishedEvent = new CountdownEvent(0);
 
         #endregion
 
@@ -110,18 +110,7 @@ namespace Nuclear.Test.Execution.Proxy {
             IEnumerable<IWorkerRemoteInfo> remoteInfos = CreateRemoteInfos();
             ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.Configuration.HasExecutable, r.IsSelected)));
             IEnumerable<IWorkerRemote> remotes = CreateRemotes(remoteInfos);
-
-            foreach(IWorkerRemote remote in remotes) {
-                _remotesFinishedEvent.AddCount();
-
-                remote.Execute();
-
-                if(Configuration.AssembliesInSequence) {
-                    _remotesFinishedEvent.Wait();
-                }
-            }
-
-            _remotesFinishedEvent.Wait();
+            ExecuteRemotes(remotes);
 
             SendFinished();
             Link.WaitForOutputFlush();
@@ -178,6 +167,41 @@ namespace Nuclear.Test.Execution.Proxy {
             _log.Info($"Created {remotes.Count} remotes.");
 
             return remotes;
+        }
+
+        private void ExecuteRemotes(IEnumerable<IWorkerRemote> remotes) {
+            _log.Debug(nameof(ExecuteRemotes));
+            _log.Info($"Execute {remotes.Count().Format()} {(Configuration.AssembliesInSequence ? "sequential" : "parallel")} worker remotes.");
+
+            if(!Configuration.AssembliesInSequence) {
+                _remotesFinishedEvent = new CountdownEvent(remotes.Where(r => r.Configuration.HasExecutable).Count());
+            }
+
+            foreach(IProxyRemote remote in remotes) {
+                if(!remote.Configuration.HasExecutable) {
+                    _log.Info($"Skipping {remote.Format()} with missing executable.");
+
+                    continue;
+                }
+
+                if(Configuration.AssembliesInSequence) {
+                    _remotesFinishedEvent = new CountdownEvent(1);
+                }
+
+                _log.Info($"Executing worker remote {remote.Format()}.");
+
+                remote.Execute();
+
+                if(Configuration.AssembliesInSequence) {
+                    _log.Info($"Waiting for worker remote {remote.Format()} to finish.");
+
+                    _remotesFinishedEvent.Wait();
+                }
+            }
+
+            if(!Configuration.AssembliesInSequence) {
+                _remotesFinishedEvent.Wait();
+            }
         }
 
         #endregion

@@ -108,11 +108,12 @@ namespace Nuclear.Test.Execution {
             Factory.Instance.Create(out ITestResultEndPoint result);
             Results = result;
 
-            Link.ServerConnected += OnServerConnected;
-            Link.Start();
+            Link.StartOutput();
             Link.MessageReceived += OnSetupReceived;
             Link.MessageReceived += OnExecuteReceived;
-            Link.Connect();
+            Link.ConnectInput();
+            Link.ServerConnected += OnServerConnected;
+            Link.WaitForConnection();
         }
 
         #endregion
