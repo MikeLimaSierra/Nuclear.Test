@@ -74,10 +74,10 @@ namespace Nuclear.Test.Link {
         /// Connects to the output channel another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
-        public override Boolean Connect() {
-            _log.Debug(nameof(Connect));
+        public override Boolean ConnectInput() {
+            _log.Debug(nameof(ConnectInput));
 
-            if(base.Connect()) {
+            if(base.ConnectInput()) {
                 RaiseConnectedToClient();
                 return true;
             }

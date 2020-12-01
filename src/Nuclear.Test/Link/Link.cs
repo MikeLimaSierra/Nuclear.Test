@@ -114,8 +114,8 @@ namespace Nuclear.Test.Link {
         /// Starts the output channel.
         /// </summary>
         /// <returns>True if successful.</returns>
-        public virtual Boolean Start() {
-            _log.Debug(nameof(Start));
+        public virtual Boolean StartOutput() {
+            _log.Debug(nameof(StartOutput));
 
             try {
                 _messageWriteT = new Thread(MessageWriteTS);
@@ -153,8 +153,8 @@ namespace Nuclear.Test.Link {
         /// Connects to the output channel another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
-        public virtual Boolean Connect() {
-            _log.Debug(nameof(Connect));
+        public virtual Boolean ConnectInput() {
+            _log.Debug(nameof(ConnectInput));
 
             try {
                 _messageReadT = new Thread(MessageReadTS);
