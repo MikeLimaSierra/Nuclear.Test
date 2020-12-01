@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Configurations.Proxy;
 using Nuclear.Test.Configurations.Worker;
@@ -28,7 +29,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadBoolean();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Boolean).Format()}", ex);
+
                     return false;
                 }
             }
@@ -47,7 +50,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadByte();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Byte).Format()}", ex);
+
                     return false;
                 }
             }
@@ -66,7 +71,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadSByte();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(SByte).Format()}", ex);
+
                     return false;
                 }
             }
@@ -85,7 +92,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadChar();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Char).Format()}", ex);
+
                     return false;
                 }
             }
@@ -104,7 +113,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadInt16();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Int16).Format()}", ex);
+
                     return false;
                 }
             }
@@ -123,7 +134,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadUInt16();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(UInt16).Format()}", ex);
+
                     return false;
                 }
             }
@@ -142,7 +155,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Int32).Format()}", ex);
+
                     return false;
                 }
             }
@@ -161,7 +176,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadUInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(UInt32).Format()}", ex);
+
                     return false;
                 }
             }
@@ -180,7 +197,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadInt64();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Int64).Format()}", ex);
+
                     return false;
                 }
             }
@@ -199,7 +218,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadUInt64();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(UInt64).Format()}", ex);
+
                     return false;
                 }
             }
@@ -218,7 +239,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadSingle();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Single).Format()}", ex);
+
                     return false;
                 }
             }
@@ -237,7 +260,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadDouble();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Double).Format()}", ex);
+
                     return false;
                 }
             }
@@ -256,7 +281,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadDecimal();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Decimal).Format()}", ex);
+
                     return false;
                 }
             }
@@ -275,7 +302,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadString();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(String).Format()}", ex);
+
                     return false;
                 }
             }
@@ -294,7 +323,9 @@ namespace Nuclear.Test.Link {
                     data = new FileInfo(br.ReadString());
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(FileInfo).Format()}", ex);
+
                     return false;
                 }
             }
@@ -313,7 +344,9 @@ namespace Nuclear.Test.Link {
                     data = new DirectoryInfo(br.ReadString());
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(DirectoryInfo).Format()}", ex);
+
                     return false;
                 }
             }
@@ -333,7 +366,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadBytes(count);
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Byte[]).Format()}", ex);
+
                     return false;
                 }
             }
@@ -353,7 +388,9 @@ namespace Nuclear.Test.Link {
                     data = br.ReadChars(count);
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Char[]).Format()}", ex);
+
                     return false;
                 }
             }
@@ -470,7 +507,9 @@ namespace Nuclear.Test.Link {
                     data = (EntryTypes) br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(EntryTypes).Format()}", ex);
+
                     return false;
                 }
             }
@@ -489,7 +528,9 @@ namespace Nuclear.Test.Link {
                     data = (FrameworkIdentifiers) br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(FrameworkIdentifiers).Format()}", ex);
+
                     return false;
                 }
             }
@@ -508,7 +549,9 @@ namespace Nuclear.Test.Link {
                     data = (ProcessorArchitecture) br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(ProcessorArchitecture).Format()}", ex);
+
                     return false;
                 }
             }
@@ -527,7 +570,9 @@ namespace Nuclear.Test.Link {
                     data = (SelectedExecutionRuntimes) br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(SelectedExecutionRuntimes).Format()}", ex);
+
                     return false;
                 }
             }
@@ -554,10 +599,16 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out String fileName)
                 && TryGetData(out String methodName)) {
 
-                Factory.Instance.Create(out data, asssembly,
-                    new RuntimeInfo(tMoniker, tVersion), tArch,
-                    new RuntimeInfo(eMoniker, eVersion), eArch,
-                    fileName, methodName);
+
+                try {
+                    Factory.Instance.Create(out data, asssembly,
+                        new RuntimeInfo(tMoniker, tVersion), tArch,
+                        new RuntimeInfo(eMoniker, eVersion), eArch,
+                        fileName, methodName);
+
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(ITestResultKey).Format()}", ex);
+                }
             }
 
             return data != null;
@@ -587,7 +638,9 @@ namespace Nuclear.Test.Link {
             try {
                 Factory.Instance.Create(out data, type, instruction, message);
 
-            } catch { }
+            } catch(Exception ex) {
+                _log.Error($"Failed to read {typeof(ITestEntry).Format()}", ex);
+            }
 
             return data != null;
         }

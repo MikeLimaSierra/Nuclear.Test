@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 
+using log4net;
+
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
 
@@ -10,6 +12,12 @@ namespace Nuclear.Test.Link {
     /// Implements a message that can be transmitted between <see cref="ILink"/> instances.
     /// </summary>
     internal partial class Message : IMessage {
+
+        #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Message));
+
+        #endregion
 
         #region properties
 
