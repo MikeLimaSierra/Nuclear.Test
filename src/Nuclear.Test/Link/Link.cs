@@ -157,11 +157,11 @@ namespace Nuclear.Test.Link {
             _log.Debug(nameof(ConnectInput));
 
             try {
+                _inStream.Connect(ConnectionTimeout);
                 _messageReadT = new Thread(MessageReadTS);
                 _messageReadT.Start();
                 _messageForwardT = new Thread(MessageForwardTS);
                 _messageForwardT.Start();
-                _inStream.Connect(ConnectionTimeout);
 
                 return true;
 
