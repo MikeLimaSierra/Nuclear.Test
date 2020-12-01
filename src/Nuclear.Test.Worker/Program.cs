@@ -32,10 +32,8 @@ namespace Nuclear.Test.Worker {
 
             ITestResultEndPoint results = _client.Results;
 
-            _log.Info("=========================");
             Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
             new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, results).Print();
-            _log.Info("=========================");
 
             if(!_client.Configuration.AutoShutdown) {
                 Console.WriteLine("Press any key to exit.");

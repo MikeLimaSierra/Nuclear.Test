@@ -77,10 +77,8 @@ namespace Nuclear.Test.Console {
             _executer = new Executer(_configuration, Factory.Instance);
             _executer.Execute();
 
-            _log.Info("=========================");
             Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
             new ResultTree(Verbosity.Collapsed, emptyKey, _executer.Results).Print();
-            _log.Info("=========================");
 
             WaitOnDebug();
 
