@@ -138,7 +138,7 @@ namespace Nuclear.Test.Console {
 
                         _factory.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
                         workerRemoteConfig.ClientConfiguration = workerClientConfig;
-                        workerRemoteConfig.Executable = null;
+                        workerRemoteConfig.Executable = assembly;
                         workerRemoteConfig.StartClientVisible = _configuration.Clients.StartClientVisible;
 
                         _factory.Create(out IProxyClientConfiguration proxyClientConfiguration);
