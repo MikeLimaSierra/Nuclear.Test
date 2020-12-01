@@ -1,5 +1,7 @@
 ﻿using System;
 
+using log4net;
+
 namespace Nuclear.Test.Link {
 
     /// <summary>
@@ -18,6 +20,12 @@ namespace Nuclear.Test.Link {
         /// Is raised when connected to the output channel of an <see cref="IClientLink"/>.
         /// </summary>
         public event EventHandler ConnectedToClient;
+
+        #endregion
+
+        #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ClientLink));
 
         #endregion
 
@@ -48,11 +56,13 @@ namespace Nuclear.Test.Link {
         #region ILink methods
 
         /// <summary>
-        /// Starts the output channel.
+        /// Waits for a connecting <see cref="ILink"/> on the output channel.
         /// </summary>
-        /// <returns>True if successful.</returns>
-        public override Boolean Start() {
-            if(base.Start()) {
+        /// <returns>True if a connection was established.</returns>
+        public override Boolean WaitForConnection() {
+            _log.Debug(nameof(WaitForConnection));
+
+            if(base.WaitForConnection()) {
                 RaiseClientConnected();
                 return true;
             }
@@ -61,10 +71,12 @@ namespace Nuclear.Test.Link {
         }
 
         /// <summary>
-        /// Connects to another <see cref="ILink"/>.
+        /// Connects to the output channel another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
         public override Boolean Connect() {
+            _log.Debug(nameof(Connect));
+
             if(base.Connect()) {
                 RaiseConnectedToClient();
                 return true;
@@ -80,12 +92,20 @@ namespace Nuclear.Test.Link {
         /// <summary>
         /// Raises the event <see cref="ClientConnected"/>.
         /// </summary>
-        protected internal void RaiseClientConnected() => ClientConnected?.Invoke(this, new EventArgs());
+        protected internal void RaiseClientConnected() {
+            _log.Debug(nameof(RaiseClientConnected));
+
+            ClientConnected?.Invoke(this, new EventArgs());
+        }
 
         /// <summary>
         /// Raises the event <see cref="ConnectedToClient"/>.
         /// </summary>
-        protected internal void RaiseConnectedToClient() => ConnectedToClient?.Invoke(this, new EventArgs());
+        protected internal void RaiseConnectedToClient() {
+            _log.Debug(nameof(RaiseConnectedToClient));
+
+            ConnectedToClient?.Invoke(this, new EventArgs());
+        }
 
         #endregion
 
