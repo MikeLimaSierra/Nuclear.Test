@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 using log4net;
 
@@ -37,11 +36,20 @@ namespace Nuclear.Test.Console {
 
         #region methods
 
-        internal IEnumerable<FileInfo> DiscoverAssemblies()
-            => SearchDirectory != null && SearchDirectory.Exists ? DiscoverAssemblies(SearchDirectory, SearchDepth) : Enumerable.Empty<FileInfo>();
+        internal IEnumerable<FileInfo> DiscoverAssemblies() {
+            _log.Debug(nameof(DiscoverAssemblies));
+
+            return SearchDirectory != null && SearchDirectory.Exists ? DiscoverAssemblies(SearchDirectory, SearchDepth) : Enumerable.Empty<FileInfo>();
+        }
 
         private IEnumerable<FileInfo> DiscoverAssemblies(DirectoryInfo directory, Int32 depth) {
+            _log.Debug(nameof(DiscoverAssemblies));
+
             List<FileInfo> files = directory.EnumerateFiles(SearchPattern).ToList();
+
+            if(files.Count > 0) {
+                _log.Info($"Found {files.Count.Format()} assemblies in {directory.FullName.Format()}.");
+            }
 
             if(depth != 0) {
                 directory
