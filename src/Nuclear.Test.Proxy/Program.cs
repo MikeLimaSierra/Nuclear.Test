@@ -1,7 +1,10 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 
 using log4net;
+using log4net.Config;
 
 using Nuclear.Test.Execution.Proxy;
 using Nuclear.Test.Link;
@@ -24,6 +27,8 @@ namespace Nuclear.Test.Proxy {
         #region methods
 
         internal static void Main(String[] args) {
+            XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetEntryAssembly()), new FileInfo("log4net.config"));
+
             Factory.Instance.Create(out IClientLink link, args[0]);
             Factory.Instance.Create(out _client, link);
             _client.ExecutionFinished += OnClientExecutionFinished;

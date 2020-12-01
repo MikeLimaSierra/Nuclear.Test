@@ -31,5 +31,11 @@
       <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
     </Reference>
   </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>
