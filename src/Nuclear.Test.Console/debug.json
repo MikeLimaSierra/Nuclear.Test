@@ -1,11 +1,13 @@
 {
     "Locator": {
-        "SearchDirectory": "../../../../",
+        "SearchDirectory": "D:/Dev/GitHub/Nuclear.Net/bin",
         "SearchDepth": -1,
         "SearchPattern": "*Tests.dll",
         "IgnoredDirectoryNames": [
             "obj",
-            ".vs"
+            ".vs",
+            "Debug",
+            "Integration"
         ]
     },
     "Clients": {
@@ -17,7 +19,7 @@
         "AutoShutdown": false
     },
     "Execution": {
-        "AssembliesInSequence": false,
+        "AssembliesInSequence": true,
         "TestsInSequence": false,
         "SelectedRuntimes": "All"
     }
