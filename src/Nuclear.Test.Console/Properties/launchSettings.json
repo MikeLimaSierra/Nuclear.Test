@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Nuclear.Test.Console": {
-      "commandName": "Project",
-      "commandLineArgs": "-d ../../../../ -i .vs;Release;Debug;obj;x86;x64 -v 7 --worker-base-dir ../../../../../publish/Nuclear.Test.Console/Nuclear.Test.Worker/ --proxy-base-dir ../../../../../publish/Nuclear.Test.Console/Nuclear.Test.Proxy/ -p *tests.dll --show-clientsx --diagnostic-outputx"
-    }
-  }
-}
