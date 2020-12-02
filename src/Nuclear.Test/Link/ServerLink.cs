@@ -25,7 +25,7 @@ namespace Nuclear.Test.Link {
 
         #region fields
 
-        private static readonly ILog _log = LogManager.GetLogger(typeof(ClientLink));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(ServerLink));
 
         #endregion
 
