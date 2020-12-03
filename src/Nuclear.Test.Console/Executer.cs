@@ -32,7 +32,7 @@ namespace Nuclear.Test.Console {
 
         private readonly List<String> _headerContent = new List<String>();
 
-        private readonly AssemblyLocator _locator;
+        private readonly IEnumerable<FileInfo> _assemblies = Enumerable.Empty<FileInfo>();
 
         private CountdownEvent _remotesFinishedEvent;
 
@@ -46,11 +46,13 @@ namespace Nuclear.Test.Console {
 
         #region ctors
 
-        public Executer(Configuration configuration, IFactory factory) {
+        public Executer(Configuration configuration, IEnumerable<FileInfo> assemblies, IFactory factory) {
             Throw.If.Object.IsNull(configuration, nameof(configuration));
+            Throw.If.Object.IsNull(assemblies, nameof(assemblies));
             Throw.If.Object.IsNull(factory, nameof(factory));
 
             _configuration = configuration;
+            _assemblies = assemblies;
             _factory = factory;
 
             _factory.Create(out ITestResultEndPoint results);
@@ -67,13 +69,6 @@ namespace Nuclear.Test.Console {
             _headerContent.Add(@"| |___| (_) || | | |\__ \| (_) || ||  __/                     ");
             _headerContent.Add(@" \____|\___/ |_| |_||___/ \___/ |_| \___|                     ");
             _headerContent.Add(@"                                                              ");
-
-            _locator = new AssemblyLocator() {
-                SearchDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(_configuration.Locator.SearchDirectory)),
-                SearchDepth = _configuration.Locator.SearchDepth,
-                SearchPattern = _configuration.Locator.SearchPattern,
-                IgnoredDirectoryNames = _configuration.Locator.IgnoredDirectoryNames
-            };
         }
 
         #endregion
@@ -112,8 +107,7 @@ namespace Nuclear.Test.Console {
             ConsoleHelper.SetConsoleTitle(currentRuntime);
             ConsoleHelper.PrintProcessInfo(currentRuntime, _headerContent);
 
-            IEnumerable<FileInfo> assemblies = _locator.DiscoverAssemblies();
-            IEnumerable<IProxyRemoteInfo> remoteInfos = CreateRemoteInfos(assemblies);
+            IEnumerable<IProxyRemoteInfo> remoteInfos = CreateRemoteInfos(_assemblies);
             IEnumerable<IProxyRemote> remotes = CreateRemotes(remoteInfos);
             ExecuteRemotes(remotes);
         }
