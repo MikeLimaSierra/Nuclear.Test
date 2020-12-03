@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 using log4net;
@@ -25,6 +27,10 @@ namespace Nuclear.Test.Console {
 
         private const String CONFIG_SWITCH_L = "config";
 
+        private const String FILE_SWITCH_S = "f";
+
+        private const String FILE_SWITCH_L = "file";
+
         #endregion
 
         #region fields
@@ -34,6 +40,8 @@ namespace Nuclear.Test.Console {
         private static readonly ArgumentCollector _arguments = new ArgumentCollector();
 
         private static Configuration _configuration;
+
+        private static IEnumerable<FileInfo> _assemblies = Enumerable.Empty<FileInfo>();
 
         private static Executer _executer;
 
@@ -74,7 +82,24 @@ namespace Nuclear.Test.Console {
                 }
             }
 
-            _executer = new Executer(_configuration, Factory.Instance);
+            if((_arguments.TryGetSwitch(FILE_SWITCH_S, out arg) || _arguments.TryGetSwitch(FILE_SWITCH_L, out arg)) && arg.HasValue) {
+                if(File.Exists(arg.Value)) {
+                    _assemblies = new FileInfo[] { new FileInfo(arg.Value) };
+
+                } else {
+                    _log.Error($"Could not find assembly at path {arg.Value.Format()}");
+                }
+
+            } else {
+                _assemblies = new AssemblyLocator() {
+                    SearchDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(_configuration.Locator.SearchDirectory)),
+                    SearchDepth = _configuration.Locator.SearchDepth,
+                    SearchPattern = _configuration.Locator.SearchPattern,
+                    IgnoredDirectoryNames = _configuration.Locator.IgnoredDirectoryNames
+                }.DiscoverAssemblies();
+            }
+
+            _executer = new Executer(_configuration, _assemblies, Factory.Instance);
             _executer.Execute();
 
             Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
@@ -108,6 +133,9 @@ namespace Nuclear.Test.Console {
             System.Console.WriteLine();
             System.Console.WriteLine("  {0} {1}", $"-{CONFIG_SWITCH_S} path".PadRight(colWidth, ' '), "The configuration file path.");
             System.Console.WriteLine("  {0} {1}", $"--{CONFIG_SWITCH_L} path".PadRight(colWidth, ' '), $"Same as -{CONFIG_SWITCH_S}.");
+            System.Console.WriteLine();
+            System.Console.WriteLine("  {0} {1}", $"-{FILE_SWITCH_S} path".PadRight(colWidth, ' '), "Override to specify one specific test assembly.");
+            System.Console.WriteLine("  {0} {1}", $"--{FILE_SWITCH_L} path".PadRight(colWidth, ' '), $"Same as -{FILE_SWITCH_S}.");
 
         }
 
