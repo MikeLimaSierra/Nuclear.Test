@@ -140,6 +140,7 @@ namespace Nuclear.Test.Execution {
                 Link.MessageReceived -= OnResultsReceived;
                 Link.MessageReceived -= OnFinishedReceived;
                 RaiseRemotingFinished();
+                Link.Stop();
             }
         }
 

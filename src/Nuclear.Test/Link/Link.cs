@@ -8,6 +8,7 @@ using System.Threading;
 using log4net;
 
 using Nuclear.Exceptions;
+using Nuclear.Extensions;
 
 namespace Nuclear.Test.Link {
 
@@ -181,6 +182,8 @@ namespace Nuclear.Test.Link {
             _log.Debug(nameof(Send));
 
             if(message != null) {
+                _log.Debug($"Sending message {message.Format()}");
+
                 _messagesOut.Enqueue(_serializer.Serialize(message));
                 _messageOutEvent.Set();
             }
@@ -195,6 +198,13 @@ namespace Nuclear.Test.Link {
             SpinWait.SpinUntil(() => _messagesOut.IsEmpty);
 
             _log.Debug("Output flush complete.");
+        }
+
+        /// <summary>
+        /// Stops all threads.
+        /// </summary>
+        public void Stop() {
+            _cancel.Cancel();
         }
 
         #endregion
@@ -259,7 +269,7 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The byte array that is written.</param>
         protected void Write(Byte[] data) {
-            _log.Debug(nameof(Write));
+            _log.Debug($"{nameof(Write)}({data.Length} Bytes)");
 
             _outWriter.Write(data.Length);
 
@@ -277,16 +287,23 @@ namespace Nuclear.Test.Link {
         protected void Read(out Byte[] data) {
             _log.Debug(nameof(Read));
 
-            Byte[] lengthBuffer = new Byte[sizeof(Int32)];
-            _inStream.Read(lengthBuffer, 0, lengthBuffer.Length);
+            Byte[] buffer = new Byte[sizeof(Int32)];
+            Int32 byteCount = _inStream.Read(buffer, 0, buffer.Length);
 
-            Int32 length = BitConverter.ToInt32(lengthBuffer, 0);
+            _log.Debug($"Read {byteCount.Format()} out of expected {buffer.Length.Format()} Bytes.");
+
+            Int32 length = BitConverter.ToInt32(buffer, 0);
+
+            _log.Debug($"Length is {length.Format()}.");
 
             using(MemoryStream ms = new MemoryStream()) {
                 for(Int32 i = 0; i < length; i += UInt16.MaxValue) {
-                    Byte[] databuffer = new Byte[Math.Min(length - i, UInt16.MaxValue)];
-                    _inReader.Read(databuffer, 0, databuffer.Length);
-                    ms.Write(databuffer, 0, databuffer.Length);
+                    buffer = new Byte[Math.Min(length - i, UInt16.MaxValue)];
+                    byteCount = _inReader.Read(buffer, 0, buffer.Length);
+
+                    _log.Debug($"Read {byteCount.Format()} out of expected {buffer.Length.Format()} Bytes.");
+
+                    ms.Write(buffer, 0, buffer.Length);
                 }
 
                 data = ms.ToArray();
@@ -321,6 +338,8 @@ namespace Nuclear.Test.Link {
                     _messagesIn.Enqueue(data);
                     _messageInEvent.Set();
                 }
+
+                Thread.Sleep(100);
             }
         }
 

@@ -72,6 +72,11 @@ namespace Nuclear.Test.Link {
         /// </summary>
         void WaitForOutputFlush();
 
+        /// <summary>
+        /// Stops all threads.
+        /// </summary>
+        void Stop();
+
         #endregion
 
     }

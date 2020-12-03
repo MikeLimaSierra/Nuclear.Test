@@ -52,8 +52,8 @@ namespace Nuclear.Test.Execution.Proxy {
 
             if(sender is IWorkerRemote remote) {
                 remote.ResultsReceived -= OnResultsReceived;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}.");
-            }
+
+            } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}."); }
 
             SendResults(e);
         }
@@ -63,8 +63,8 @@ namespace Nuclear.Test.Execution.Proxy {
 
             if(sender is IWorkerRemote remote) {
                 remote.ResultsAvailable -= OnResultsAvailable;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}.");
-            }
+
+            } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}."); }
 
             Results.Add(e.Results);
         }
@@ -74,8 +74,8 @@ namespace Nuclear.Test.Execution.Proxy {
 
             if(sender is IWorkerRemote remote) {
                 remote.RemotingFinished -= OnRemotingFinished;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}.");
-            }
+
+            } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}."); }
 
             _remotesFinishedEvent.Signal();
         }

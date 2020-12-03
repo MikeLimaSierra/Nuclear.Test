@@ -203,6 +203,8 @@ namespace Nuclear.Test.Execution {
 
             Factory.Instance.Create(out IMessage message, Commands.Finished);
             Link.Send(message);
+            Link.WaitForOutputFlush();
+            Link.Stop();
         }
 
         /// <summary>

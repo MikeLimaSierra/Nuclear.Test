@@ -80,8 +80,8 @@ namespace Nuclear.Test.Console {
 
             if(sender is IProxyRemote remote) {
                 remote.ResultsAvailable -= OnResultsAvailable;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}.");
-            }
+
+            } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}."); }
 
             Results.Add(e.Results);
         }
@@ -91,8 +91,8 @@ namespace Nuclear.Test.Console {
 
             if(sender is IProxyRemote remote) {
                 remote.RemotingFinished -= OnRemotingFinished;
-                _log.Debug($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}.");
-            }
+
+            } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}."); }
 
             _remotesFinishedEvent.Signal();
         }
