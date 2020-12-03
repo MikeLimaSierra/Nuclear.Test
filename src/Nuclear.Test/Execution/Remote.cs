@@ -238,6 +238,7 @@ namespace Nuclear.Test.Execution {
                 process.StartInfo.Arguments = Link.PipeID;
                 process.StartInfo.UseShellExecute = Configuration.StartClientVisible;
                 process.StartInfo.CreateNoWindow = !Configuration.StartClientVisible;
+                process.StartInfo.WorkingDirectory = Configuration.Executable.Directory.FullName;
 
                 _log.Info($"Starting process {Configuration.Executable.FullName.Format()} {Link.PipeID.Format()} ...");
 
