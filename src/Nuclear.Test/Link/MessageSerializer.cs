@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 
+using log4net;
+
 using Nuclear.Exceptions;
+using Nuclear.Extensions;
 
 namespace Nuclear.Test.Link {
 
@@ -10,12 +13,22 @@ namespace Nuclear.Test.Link {
     /// </summary>
     internal class MessageSerializer : IMessageSerializer {
 
+        #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(MessageSerializer));
+
+        #endregion
+
+        #region methods
+
         /// <summary>
         /// Serializes an <see cref="IMessage"/> to a byte array.
         /// </summary>
         /// <param name="message">The <see cref="IMessage"/> that is serialized.</param>
         /// <returns>The byte array.</returns>
         public Byte[] Serialize(IMessage message) {
+            _log.Debug($"{nameof(Serialize)}(Payload = {message.Payload.ToArray().Format()})");
+
             Throw.If.Object.IsNull(message, nameof(message));
 
             Byte[] data;
@@ -30,6 +43,8 @@ namespace Nuclear.Test.Link {
                 data = ms.ToArray();
             }
 
+            _log.Debug($"data = {data.Format()}");
+
             return data;
         }
 
@@ -39,6 +54,8 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The byte array that is deserialized.</param>
         /// <returns>The <see cref="IMessage"/>.</returns>
         public IMessage Deserialize(Byte[] data) {
+            _log.Debug($"{nameof(Deserialize)}(data = {data.Format()})");
+
             Throw.If.Object.IsNull(data, nameof(data));
 
             IMessage message;
@@ -46,15 +63,21 @@ namespace Nuclear.Test.Link {
             using(MemoryStream ms = new MemoryStream(data)) {
                 using(BinaryReader br = new BinaryReader(ms)) {
                     String command = br.ReadString();
-                    Byte[] payload = new Byte[br.ReadInt32()];
+                    Byte[] payload = new Byte[br.ReadInt64()];
                     br.Read(payload, 0, payload.Length);
 
                     Factory.Instance.Create(out message, command);
                     message.Append(payload);
+                    message.Payload.Seek(0, SeekOrigin.Begin);
                 }
             }
 
+            _log.Debug($"Payload = {message.Payload.ToArray().Format()}");
+
             return message;
         }
+
+        #endregion
+
     }
 }
