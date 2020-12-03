@@ -4,7 +4,6 @@ using System.IO;
 using log4net;
 
 using Nuclear.Exceptions;
-using Nuclear.Extensions;
 
 namespace Nuclear.Test.Link {
 
@@ -27,7 +26,7 @@ namespace Nuclear.Test.Link {
         /// <param name="message">The <see cref="IMessage"/> that is serialized.</param>
         /// <returns>The byte array.</returns>
         public Byte[] Serialize(IMessage message) {
-            _log.Debug($"{nameof(Serialize)}(Payload = {message.Payload.ToArray().Format()})");
+            _log.Debug(nameof(Serialize));
 
             Throw.If.Object.IsNull(message, nameof(message));
 
@@ -43,8 +42,6 @@ namespace Nuclear.Test.Link {
                 data = ms.ToArray();
             }
 
-            _log.Debug($"data = {data.Format()}");
-
             return data;
         }
 
@@ -54,7 +51,7 @@ namespace Nuclear.Test.Link {
         /// <param name="data">The byte array that is deserialized.</param>
         /// <returns>The <see cref="IMessage"/>.</returns>
         public IMessage Deserialize(Byte[] data) {
-            _log.Debug($"{nameof(Deserialize)}(data = {data.Format()})");
+            _log.Debug(nameof(Deserialize));
 
             Throw.If.Object.IsNull(data, nameof(data));
 
@@ -71,8 +68,6 @@ namespace Nuclear.Test.Link {
                     message.Payload.Seek(0, SeekOrigin.Begin);
                 }
             }
-
-            _log.Debug($"Payload = {message.Payload.ToArray().Format()}");
 
             return message;
         }
