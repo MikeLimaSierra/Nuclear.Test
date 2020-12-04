@@ -124,42 +124,49 @@ namespace Nuclear.Test.Execution.Proxy {
         private IEnumerable<IWorkerRemoteInfo> CreateRemoteInfos() {
             _log.Debug(nameof(CreateRemoteInfos));
 
+            IList<IWorkerRemoteInfo> infos = new List<IWorkerRemoteInfo>();
+
             if(RuntimesHelper.TryGetMatchingRuntimes(TestAssemblyRuntime, out IEnumerable<RuntimeInfo> matchingRuntimes)) {
-                IEnumerable<IWorkerRemoteInfo> remotes = matchingRuntimes.Select(r => {
-                    Factory.Instance.Create(out IWorkerRemoteInfo info, Configuration, r);
-                    return info;
-                });
 
                 Func<IEnumerable<Version>, Version> filter = Configuration.SelectedRuntimes == SelectedExecutionRuntimes.Highest ? Enumerable.Max : Enumerable.Min;
-
                 IDictionary<FrameworkIdentifiers, Version> versionfilter = matchingRuntimes
                     .GroupBy(r => r.Framework)
                     .ToDictionary(g => g.Key, g => filter(g.Select(r => r.Version)));
 
-                remotes.Foreach(r => r.IsSelected = r.Configuration.HasExecutable && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All || r.Runtime.Version == versionfilter[r.Runtime.Framework]));
+                _log.Debug($"Selected versions are {versionfilter.Format()}.");
 
-                return remotes;
+                foreach(RuntimeInfo runtime in matchingRuntimes) {
+                    Factory.Instance.Create(out IWorkerRemoteInfo info, Configuration, runtime);
+                    info.IsSelected = info.Configuration.HasExecutable && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All || info.Runtime.Version == versionfilter[info.Runtime.Framework]);
+
+                    _log.Debug($"Created worker remote: {info.Format()}");
+
+                    infos.Add(info);
+                }
             }
 
-            _log.Info($"Could not find matching runtimes for {TestAssemblyRuntime.Format()}.");
+            if(infos.Count > 0) {
+                _log.Info($"Defined {infos.Count.Format()} worker remotes.");
 
-            return Enumerable.Empty<IWorkerRemoteInfo>();
+            } else { _log.Info("No remotes defined."); }
+
+            return infos;
         }
 
-        private IEnumerable<IWorkerRemote> CreateRemotes(IEnumerable<IWorkerRemoteInfo> remoteInfos) {
+        private IEnumerable<IWorkerRemote> CreateRemotes(IEnumerable<IWorkerRemoteInfo> infos) {
             _log.Debug(nameof(CreateRemotes));
 
             IList<IWorkerRemote> remotes = new List<IWorkerRemote>();
 
-            foreach(IWorkerRemoteInfo remoteInfo in remoteInfos.Where(r => r.IsSelected)) {
+            foreach(IWorkerRemoteInfo info in infos.Where(r => r.IsSelected)) {
                 Factory.Instance.Create(out IServerLink link);
-                Factory.Instance.Create(out IWorkerRemote remote, remoteInfo.Configuration, link);
+                Factory.Instance.Create(out IWorkerRemote remote, info.Configuration, link);
 
                 remote.RemotingFinished += OnRemotingFinished;
                 remote.ResultsReceived += OnResultsReceived;
                 remote.ResultsAvailable += OnResultsAvailable;
 
-                _log.Debug($"Remote created: {remoteInfo.Format()}");
+                _log.Debug($"Remote created: {info.Format()}");
 
                 remotes.Add(remote);
             }
@@ -177,7 +184,7 @@ namespace Nuclear.Test.Execution.Proxy {
                 _remotesFinishedEvent = new CountdownEvent(remotes.Where(r => r.Configuration.HasExecutable).Count());
             }
 
-            foreach(IProxyRemote remote in remotes) {
+            foreach(IWorkerRemote remote in remotes) {
                 if(!remote.Configuration.HasExecutable) {
                     _log.Info($"Skipping {remote.Format()} with missing executable.");
 
