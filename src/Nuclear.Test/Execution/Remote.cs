@@ -127,7 +127,11 @@ namespace Nuclear.Test.Execution {
             if(e.Message.Command == Commands.Results) {
                 _log.Info("Results message received.");
 
-                // TODO: handle results
+                RaiseResultsReceived(e.Message.Payload.ToArray());
+
+                if(e.Message.TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection)) {
+                    RaiseResultsAvailable(resultCollection);
+                }
             }
         }
 

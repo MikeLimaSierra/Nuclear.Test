@@ -112,10 +112,14 @@ namespace Nuclear.Test.Console {
             ExecuteRemotes(remotes);
         }
 
+        #endregion
+
+        #region private methods
+
         private IEnumerable<IProxyRemoteInfo> CreateRemoteInfos(IEnumerable<FileInfo> assemblies) {
             _log.Debug(nameof(CreateRemoteInfos));
 
-            IList<IProxyRemoteInfo> remoteInfos = new List<IProxyRemoteInfo>();
+            IList<IProxyRemoteInfo> infos = new List<IProxyRemoteInfo>();
 
             foreach(FileInfo assembly in assemblies.Where(a => a.Exists)) {
                 if(AssemblyHelper.TryGetAssemblyName(assembly, out AssemblyName assemblyName)) {
@@ -132,7 +136,7 @@ namespace Nuclear.Test.Console {
 
                         _factory.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
                         workerRemoteConfig.ClientConfiguration = workerClientConfig;
-                        workerRemoteConfig.Executable = assembly;
+                        workerRemoteConfig.Executable = assembly; // dummy, will be corrected on proxy level
                         workerRemoteConfig.StartClientVisible = _configuration.Clients.StartClientVisible;
 
                         _factory.Create(out IProxyClientConfiguration proxyClientConfiguration);
@@ -153,18 +157,18 @@ namespace Nuclear.Test.Console {
 
                         _log.Debug($"Defined proxy remote: {info.Format()}");
 
-                        remoteInfos.Add(info);
+                        infos.Add(info);
                     }
 
                 } else { _log.Error($"Could not load assembly name for {assembly.FullName.Format()}."); }
             }
 
-            if(remoteInfos.Count > 0) {
-                _log.Info($"Defined {remoteInfos.Count.Format()} proxy remotes.");
+            if(infos.Count > 0) {
+                _log.Info($"Defined {infos.Count.Format()} proxy remotes.");
 
             } else { _log.Info("No remotes defined."); }
 
-            return remoteInfos;
+            return infos;
         }
 
         private IEnumerable<ProcessorArchitecture> GetArchitectures(ProcessorArchitecture architecture) {
