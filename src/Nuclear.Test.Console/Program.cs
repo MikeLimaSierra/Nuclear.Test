@@ -47,10 +47,18 @@ namespace Nuclear.Test.Console {
 
         #endregion
 
-        #region public methods
+        #region event handlers
+
+        private static void OnUnhandledException(Object sender, UnhandledExceptionEventArgs e) => _log.Fatal($"Unhandled exception thrown: {e.ExceptionObject.Format()}");
+
+        #endregion
+
+        #region methods
 
         internal static void Main(String[] args) {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetEntryAssembly()), new FileInfo("log4net.config"));
+
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
             _arguments.Collect(args);
 

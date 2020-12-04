@@ -6,6 +6,7 @@ using System.Threading;
 using log4net;
 using log4net.Config;
 
+using Nuclear.Extensions;
 using Nuclear.Test.Execution.Proxy;
 using Nuclear.Test.Link;
 using Nuclear.Test.Printer;
@@ -24,10 +25,18 @@ namespace Nuclear.Test.Proxy {
 
         #endregion
 
+        #region event handlers
+
+        private static void OnUnhandledException(Object sender, UnhandledExceptionEventArgs e) => _log.Fatal($"Unhandled exception thrown: {e.ExceptionObject.Format()}");
+
+        #endregion
+
         #region methods
 
         internal static void Main(String[] args) {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetEntryAssembly()), new FileInfo("log4net.config"));
+
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
             Factory.Instance.Create(out IClientLink link, args[0]);
             Factory.Instance.Create(out _client, link);
