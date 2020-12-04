@@ -29,8 +29,8 @@ namespace Nuclear.Test.Execution.Proxy {
 
         #region methods
 
-        public override String ToString() => $"Executable: {Configuration.Executable.FullName.Format()}; " +
-            $"Assembly: {Configuration.ClientConfiguration.TestAssembly.FullName.Format()}";
+        public override String ToString() => $"Executable: {Configuration?.Executable?.FullName.Format()}; " +
+            $"Assembly: {Configuration?.ClientConfiguration?.TestAssembly?.FullName.Format()}";
 
         #endregion
 
