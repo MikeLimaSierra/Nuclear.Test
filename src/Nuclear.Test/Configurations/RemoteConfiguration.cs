@@ -1,14 +1,9 @@
 ﻿using System;
 using System.IO;
 
-using Nuclear.Test.Execution;
+using Nuclear.Exceptions;
 
 namespace Nuclear.Test.Configurations {
-
-    /// <summary>
-    /// Implements configuration values for an <see cref="IRemote{TRemoteConfiguration, TClientConfiguration}"/>.
-    /// </summary>
-    /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
     internal abstract class RemoteConfiguration<TClientConfiguration> : IRemoteConfiguration<TClientConfiguration>
         where TClientConfiguration : IClientConfiguration {
 
@@ -33,6 +28,19 @@ namespace Nuclear.Test.Configurations {
         /// Gets or sets the client configuration object.
         /// </summary>
         public TClientConfiguration ClientConfiguration { get; set; }
+
+        #endregion
+
+        #region ctors
+
+        internal RemoteConfiguration() { }
+
+        internal RemoteConfiguration(IRemoteConfiguration<TClientConfiguration> original) {
+            Throw.If.Object.IsNull(original, nameof(original));
+
+            Executable = original.Executable;
+            StartClientVisible = original.StartClientVisible;
+        }
 
         #endregion
 

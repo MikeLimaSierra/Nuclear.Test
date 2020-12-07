@@ -14,8 +14,8 @@ namespace Nuclear.Test.Execution.Worker {
 
         #region ctors
 
-        internal WorkerRemote(IWorkerRemoteConfiguration remoteConfig, IServerLink link)
-            : base(remoteConfig, link) { }
+        internal WorkerRemote(IWorkerRemoteConfiguration configuration, IServerLink link)
+            : base(configuration, link) { }
 
         #endregion
 

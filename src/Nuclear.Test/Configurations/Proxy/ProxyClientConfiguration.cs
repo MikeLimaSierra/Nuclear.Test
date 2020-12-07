@@ -1,14 +1,10 @@
 ﻿using System;
 using System.IO;
 
+using Nuclear.Exceptions;
 using Nuclear.Test.Configurations.Worker;
-using Nuclear.Test.Execution.Proxy;
 
 namespace Nuclear.Test.Configurations.Proxy {
-
-    /// <summary>
-    /// Implements configuration values for an <see cref="IProxyClient"/>.
-    /// </summary>
     internal class ProxyClientConfiguration : ClientConfiguration, IProxyClientConfiguration {
 
         #region properties
@@ -39,6 +35,23 @@ namespace Nuclear.Test.Configurations.Proxy {
         /// Gets or sets the worker remote configuration object.
         /// </summary>
         public IWorkerRemoteConfiguration WorkerRemoteConfiguration { get; set; }
+
+        #endregion
+
+        #region ctors
+
+        internal ProxyClientConfiguration() : base() { }
+
+        internal ProxyClientConfiguration(IProxyClientConfiguration original) : base(original) {
+            Throw.If.Object.IsNull(original, nameof(original));
+
+            AssembliesInSequence = original.AssembliesInSequence;
+            SelectedRuntimes = original.SelectedRuntimes;
+            WorkerDirectory = original.WorkerDirectory;
+            WorkerExecutableName = original.WorkerExecutableName;
+            Factory.Instance.Copy(out IWorkerRemoteConfiguration remoteConfig, original.WorkerRemoteConfiguration);
+            WorkerRemoteConfiguration = remoteConfig;
+        }
 
         #endregion
 

@@ -1,12 +1,8 @@
 ﻿using System;
 
-using Nuclear.Test.Execution.Worker;
+using Nuclear.Exceptions;
 
 namespace Nuclear.Test.Configurations.Worker {
-
-    /// <summary>
-    /// Implements configuration values for an <see cref="IWorkerClient"/>.
-    /// </summary>
     internal class WorkerClientConfiguration : ClientConfiguration, IWorkerClientConfiguration {
 
         #region properties
@@ -17,6 +13,18 @@ namespace Nuclear.Test.Configurations.Worker {
         ///     If set to false, the worker will execute each test as configured via attributes.
         /// </summary>
         public Boolean TestsInSequence { get; set; }
+
+        #endregion
+
+        #region ctors
+
+        internal WorkerClientConfiguration() : base() { }
+
+        internal WorkerClientConfiguration(IWorkerClientConfiguration original) : base(original) {
+            Throw.If.Object.IsNull(original, nameof(original));
+
+            TestsInSequence = original.TestsInSequence;
+        }
 
         #endregion
 

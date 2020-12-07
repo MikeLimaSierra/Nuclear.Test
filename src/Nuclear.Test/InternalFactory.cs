@@ -16,11 +16,19 @@ namespace Nuclear.Test {
 
         public void Create(out IProxyRemoteConfiguration @object) => @object = new ProxyRemoteConfiguration();
 
+        public void Copy(out IProxyRemoteConfiguration @object, IProxyRemoteConfiguration original) => @object = new ProxyRemoteConfiguration(original);
+
         public void Create(out IProxyClientConfiguration @object) => @object = new ProxyClientConfiguration();
+
+        public void Copy(out IProxyClientConfiguration @object, IProxyClientConfiguration original) => @object = new ProxyClientConfiguration(original);
 
         public void Create(out IWorkerRemoteConfiguration @object) => @object = new WorkerRemoteConfiguration();
 
+        public void Copy(out IWorkerRemoteConfiguration @object, IWorkerRemoteConfiguration original) => @object = new WorkerRemoteConfiguration(original);
+
         public void Create(out IWorkerClientConfiguration @object) => @object = new WorkerClientConfiguration();
+
+        public void Copy(out IWorkerClientConfiguration @object, IWorkerClientConfiguration original) => @object = new WorkerClientConfiguration(original);
 
         #endregion
 
@@ -32,7 +40,7 @@ namespace Nuclear.Test {
 
         public void Create(out IProxyClient @object, IClientLink link) => @object = new ProxyClient(link);
 
-        public void Create(out IWorkerRemoteInfo @object, IProxyClientConfiguration proxyConfig, RuntimeInfo runtime) => @object = new WorkerRemoteInfo(proxyConfig, runtime);
+        public void Create(out IWorkerRemoteInfo @object, IProxyClientConfiguration configuration, RuntimeInfo runtime) => @object = new WorkerRemoteInfo(configuration, runtime);
 
         public void Create(out IWorkerRemote @object, IWorkerRemoteConfiguration configuration, IServerLink link) => @object = new WorkerRemote(configuration, link);
 

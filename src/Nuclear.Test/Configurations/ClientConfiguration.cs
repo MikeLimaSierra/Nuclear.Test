@@ -1,11 +1,9 @@
 ﻿using System;
 using System.IO;
 
-namespace Nuclear.Test.Configurations {
+using Nuclear.Exceptions;
 
-    /// <summary>
-    /// Implements configuration values for an client.
-    /// </summary>
+namespace Nuclear.Test.Configurations {
     internal abstract class ClientConfiguration : IClientConfiguration {
 
         #region properties
@@ -21,6 +19,19 @@ namespace Nuclear.Test.Configurations {
         ///     If set to false, the client will will wait for console input.
         /// </summary>
         public Boolean AutoShutdown { get; set; }
+
+        #endregion
+
+        #region ctors
+
+        internal ClientConfiguration() { }
+
+        internal ClientConfiguration(IClientConfiguration original) {
+            Throw.If.Object.IsNull(original, nameof(original));
+
+            TestAssembly = original.TestAssembly;
+            AutoShutdown = original.AutoShutdown;
+        }
 
         #endregion
 

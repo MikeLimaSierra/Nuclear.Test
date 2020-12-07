@@ -14,8 +14,8 @@ namespace Nuclear.Test.Execution.Proxy {
 
         #region ctors
 
-        public ProxyRemote(IProxyRemoteConfiguration remoteConfig, IServerLink link)
-            : base(remoteConfig, link) { }
+        public ProxyRemote(IProxyRemoteConfiguration configuration, IServerLink link)
+            : base(configuration, link) { }
 
         #endregion
 

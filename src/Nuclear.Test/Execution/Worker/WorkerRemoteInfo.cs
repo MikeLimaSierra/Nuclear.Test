@@ -29,7 +29,7 @@ namespace Nuclear.Test.Execution.Worker {
 
             Runtime = runtime;
             ProcessorArchitecture architecture = Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86;
-            Factory.Instance.Create(out IWorkerRemoteConfiguration configuration);
+            Factory.Instance.Copy(out IWorkerRemoteConfiguration configuration, proxyConfig.WorkerRemoteConfiguration);
             Configuration = configuration;
             Configuration.Executable = new FileInfo(Path.Combine(proxyConfig.WorkerDirectory.FullName, architecture.ToString(), $"{Runtime.Framework}{Runtime.Version}", proxyConfig.WorkerExecutableName));
         }

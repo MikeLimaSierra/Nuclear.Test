@@ -20,11 +20,19 @@ namespace Nuclear.Test {
 
         void Create(out IProxyRemoteConfiguration @object);
 
+        void Copy(out IProxyRemoteConfiguration @object, IProxyRemoteConfiguration original);
+
         void Create(out IProxyClientConfiguration @object);
+
+        void Copy(out IProxyClientConfiguration @object, IProxyClientConfiguration original);
 
         void Create(out IWorkerRemoteConfiguration @object);
 
+        void Copy(out IWorkerRemoteConfiguration @object, IWorkerRemoteConfiguration original);
+
         void Create(out IWorkerClientConfiguration @object);
+
+        void Copy(out IWorkerClientConfiguration @object, IWorkerClientConfiguration original);
 
         #endregion
 
