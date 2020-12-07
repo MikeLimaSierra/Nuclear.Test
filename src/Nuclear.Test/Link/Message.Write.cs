@@ -417,7 +417,7 @@ namespace Nuclear.Test.Link {
                 Append(data.Instruction);
             }
 
-            Append(data.EntryType);
+            Append(data.Message);
 
             return this;
         }
