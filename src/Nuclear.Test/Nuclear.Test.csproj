@@ -10,14 +10,11 @@
   <Import Project="..\Configurations.targets" />
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Nuclear.Assemblies" Version="1.0.0" />
-    <PackageReference Include="Nuclear.Test.Contracts" Version="2.0.0" />
-    <PackageReference Include="Nuclear.Test.Printer.Contracts" Version="2.0.0" />
+    <PackageReference Include="Nuclear.Test.Contracts" Version="2.0.0-beta1" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
     <ProjectReference Include="..\Nuclear.Test.Contracts\Nuclear.Test.Contracts.csproj" />
-    <ProjectReference Include="..\Nuclear.Test.Printer.Contracts\Nuclear.Test.Printer.Contracts.csproj" />
     <Reference Include="Nuclear.Exceptions">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Exceptions\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.Exceptions.dll</HintPath>
     </Reference>
@@ -35,5 +32,9 @@
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.12" />
   </ItemGroup>
+
+  <Target Condition="'$(Configuration)' == 'Release'" Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="publish.bat" />
+  </Target>
 
 </Project>
