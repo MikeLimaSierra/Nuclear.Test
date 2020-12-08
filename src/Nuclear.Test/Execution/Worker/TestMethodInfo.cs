@@ -215,10 +215,10 @@ namespace Nuclear.Test.Execution.Worker {
                     return false;
                 }
 
-                String note = $"Invoking generic method {method.Name}<{String.Join(", ", typeParams.Select(t => t.Format()))}>({String.Join(", ", _parameters.Select(p => p.ParameterType.Format()))})";
+                String invokationMessage = $"Invoking generic method {method.Name}<{String.Join(", ", typeParams.Select(t => t.Format()))}>({String.Join(", ", _parameters.Select(p => p.ParameterType.Format()))})";
 
-                _log.Debug(note);
-                _results.AddNote(note, File, Method);
+                _log.Debug(invokationMessage);
+                _results.LogInvokation(method, invokationMessage);
             }
 
             return true;

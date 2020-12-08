@@ -47,6 +47,13 @@ namespace Nuclear.Test.Results {
         void LogError(MethodInfo _method, String message);
 
         /// <summary>
+        /// Logs a test method invokation.
+        /// </summary>
+        /// <param name="_method">The <see cref="MethodInfo"/> that is invoked.</param>
+        /// <param name="message">The detailed invokation message.</param>
+        void LogInvokation(MethodInfo _method, String message);
+
+        /// <summary>
         /// Set an entire test method to ignored.
         /// </summary>
         /// <param name="_method">The test method to ignore.</param>

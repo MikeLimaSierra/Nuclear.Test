@@ -58,6 +58,14 @@ namespace Nuclear.Test.Results {
             return entry;
         }
 
+        internal static ITestEntry FromInvokation(String message) {
+            Throw.If.String.IsNullOrWhiteSpace(message, nameof(message));
+
+            Factory.Instance.Create(out ITestEntry entry, EntryTypes.Invokation, null, message);
+
+            return entry;
+        }
+
         #endregion
 
     }
