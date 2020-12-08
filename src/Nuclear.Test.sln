@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1939BFF1-B590-46D7-80D6-4290FA299810}"
 	ProjectSection(SolutionItems) = preProject
+		Configurations.nosigning.targets = Configurations.nosigning.targets
 		Configurations.targets = Configurations.targets
 	EndProjectSection
 EndProject
