@@ -10,6 +10,7 @@ using log4net.Config;
 
 using Nuclear.Arguments;
 using Nuclear.Extensions;
+using Nuclear.Test.Execution;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;

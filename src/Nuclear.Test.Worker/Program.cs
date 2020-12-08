@@ -7,7 +7,9 @@ using log4net;
 using log4net.Config;
 
 using Nuclear.Extensions;
+using Nuclear.Test.Execution;
 using Nuclear.Test.Execution.Worker;
+using Nuclear.Test.Extensions;
 using Nuclear.Test.Link;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
@@ -53,6 +55,8 @@ namespace Nuclear.Test.Worker {
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey(true);
             }
+
+            Environment.ExitCode = (Int32) (results.GetResults().HasFails() ? ExitCode.Fail : ExitCode.OK);
         }
 
         #endregion
