@@ -9,7 +9,7 @@
   <Import Project="..\Configurations.targets" />
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Nuclear.Test" Version="2.0.0-beta1" />
+    <PackageReference Include="Nuclear.Test.Contracts" Version="2.0.0-beta1" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
@@ -27,5 +27,9 @@
       <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
     </Reference>
   </ItemGroup>
+
+  <Target Condition="'$(Configuration)' == 'Release'" Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="publish.bat" />
+  </Target>
 
 </Project>
