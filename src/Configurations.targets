@@ -13,6 +13,13 @@
         <Configurations>Release;Integration;Debug</Configurations>
     </PropertyGroup>
 
+  <!-- Signing -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' OR '$(Configuration)' == 'Integration'">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\PublicKey.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>true</DelaySign>
+  </PropertyGroup>
+
     <!-- Conditional -->
     <PropertyGroup Condition="'$(Configuration)' == 'Debug' ">
         <DebugSymbols>true</DebugSymbols>
