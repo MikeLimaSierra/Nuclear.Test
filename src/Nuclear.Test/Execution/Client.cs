@@ -250,14 +250,17 @@ namespace Nuclear.Test.Execution {
                     _log.Debug($"TestAssemblyName = {testAssemblyName.FullName.Format()}");
 
                     TestAssemblyName = testAssemblyName;
-                }
+
+                } else { _log.Error($"Failed to get assembly name from {Configuration.TestAssembly.FullName.Format()}."); }
 
                 if(AssemblyHelper.TryGetRuntime(TestAssembly, out RuntimeInfo testAssemblyRuntime)) {
                     _log.Debug($"TestAssemblyRuntime = {testAssemblyRuntime.Format()}");
 
                     TestAssemblyRuntime = testAssemblyRuntime;
-                }
-            }
+
+                } else { _log.Error($"Failed to get runtime from {Configuration.TestAssembly.FullName.Format()}."); }
+
+            } else { _log.Error($"Failed to loaded from {Configuration.TestAssembly.FullName.Format()}."); }
         }
 
         #endregion
