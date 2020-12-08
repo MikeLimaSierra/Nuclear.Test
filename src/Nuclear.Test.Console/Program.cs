@@ -10,6 +10,7 @@ using log4net.Config;
 
 using Nuclear.Arguments;
 using Nuclear.Extensions;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Printer;
@@ -43,8 +44,6 @@ namespace Nuclear.Test.Console {
         private static Configuration _configuration;
 
         private static IEnumerable<FileInfo> _assemblies = Enumerable.Empty<FileInfo>();
-
-        private static Executer _executer;
 
         #endregion
 
@@ -108,15 +107,17 @@ namespace Nuclear.Test.Console {
                 }.DiscoverAssemblies();
             }
 
-            Factory.Instance.Create(out IExecutor executor, _configuration.Dump());
-            _executer.Execute();
+            IExecutorConfiguration configuration = _configuration.Dump();
+            configuration.Assemblies = _assemblies;
+            Factory.Instance.Create(out IExecutor executor, configuration);
+            executor.Execute();
 
             Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
-            new ResultTree(Verbosity.Collapsed, emptyKey, _executer.Results).Print();
+            new ResultTree(Verbosity.Collapsed, emptyKey, executor.Results).Print();
 
             WaitOnDebug();
 
-            Environment.ExitCode = (Int32) (_executer.Results.GetResults().HasFails() ? ExitCode.Fail : ExitCode.OK);
+            Environment.ExitCode = (Int32) (executor.Results.GetResults().HasFails() ? ExitCode.Fail : ExitCode.OK);
 
         }
 
