@@ -5,6 +5,7 @@ using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Configurations.Proxy;
 using Nuclear.Test.Configurations.Worker;
+using Nuclear.Test.Execution;
 using Nuclear.Test.Execution.Proxy;
 using Nuclear.Test.Execution.Worker;
 using Nuclear.Test.Link;
@@ -36,6 +37,8 @@ namespace Nuclear.Test {
         #endregion
 
         #region Execution
+
+        public void Create(out IExecutor @object, IExecutorConfiguration configuration) => @object = new Executor(configuration);
 
         public void Create(out IProxyRemoteInfo @object, IProxyRemoteConfiguration configuration) => @object = new ProxyRemoteInfo(configuration);
 
