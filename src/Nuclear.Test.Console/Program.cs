@@ -108,7 +108,7 @@ namespace Nuclear.Test.Console {
                 }.DiscoverAssemblies();
             }
 
-            _executer = new Executer(_configuration, _assemblies, Factory.Instance);
+            Factory.Instance.Create(out IExecutor executor, _configuration.Dump());
             _executer.Execute();
 
             Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);

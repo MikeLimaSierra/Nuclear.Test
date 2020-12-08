@@ -13,7 +13,6 @@ using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Configurations.Proxy;
-using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Execution.Proxy;
 using Nuclear.Test.Helpers;
 using Nuclear.Test.Link;
@@ -131,29 +130,11 @@ namespace Nuclear.Test.Execution {
                             architecture.ToString(),
                             Configuration.ProxyExecutableName);
 
-                        Factory.Instance.Create(out IWorkerClientConfiguration workerClientConfig);
-                        workerClientConfig.AutoShutdown = Configuration.ProxyRemoteConfiguration.ClientConfiguration.WorkerRemoteConfiguration.ClientConfiguration.AutoShutdown;
-                        workerClientConfig.TestAssembly = assembly;
-                        workerClientConfig.TestsInSequence = Configuration.ProxyRemoteConfiguration.ClientConfiguration.WorkerRemoteConfiguration.ClientConfiguration.TestsInSequence;
-
-                        Factory.Instance.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
-                        workerRemoteConfig.ClientConfiguration = workerClientConfig;
-                        workerRemoteConfig.Executable = assembly; // dummy, will be corrected on proxy level
-                        workerRemoteConfig.StartClientVisible = Configuration.ProxyRemoteConfiguration.ClientConfiguration.WorkerRemoteConfiguration.StartClientVisible;
-
-                        Factory.Instance.Create(out IProxyClientConfiguration proxyClientConfiguration);
-                        proxyClientConfiguration.WorkerRemoteConfiguration = workerRemoteConfig;
-                        proxyClientConfiguration.AssembliesInSequence = Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssembliesInSequence;
-                        proxyClientConfiguration.AutoShutdown = Configuration.ProxyRemoteConfiguration.ClientConfiguration.AutoShutdown;
-                        proxyClientConfiguration.SelectedRuntimes = Configuration.ProxyRemoteConfiguration.ClientConfiguration.SelectedRuntimes;
-                        proxyClientConfiguration.TestAssembly = assembly;
-                        proxyClientConfiguration.WorkerDirectory = Configuration.ProxyRemoteConfiguration.ClientConfiguration.WorkerDirectory;
-                        proxyClientConfiguration.WorkerExecutableName = Configuration.ProxyRemoteConfiguration.ClientConfiguration.WorkerExecutableName;
-
-                        Factory.Instance.Create(out IProxyRemoteConfiguration proxyRemoteConfiguration);
-                        proxyRemoteConfiguration.ClientConfiguration = proxyClientConfiguration;
+                        Factory.Instance.Copy(out IProxyRemoteConfiguration proxyRemoteConfiguration, Configuration.ProxyRemoteConfiguration);
+                        proxyRemoteConfiguration.ClientConfiguration.WorkerRemoteConfiguration.ClientConfiguration.TestAssembly = assembly;
+                        proxyRemoteConfiguration.ClientConfiguration.WorkerRemoteConfiguration.Executable = assembly; // dummy, will be corrected on proxy level
+                        proxyRemoteConfiguration.ClientConfiguration.TestAssembly = assembly;
                         proxyRemoteConfiguration.Executable = new FileInfo(executablePath);
-                        proxyRemoteConfiguration.StartClientVisible = Configuration.ProxyRemoteConfiguration.StartClientVisible;
 
                         Factory.Instance.Create(out IProxyRemoteInfo info, proxyRemoteConfiguration);
 

@@ -6,6 +6,9 @@ using log4net;
 using Newtonsoft.Json;
 
 using Nuclear.Extensions;
+using Nuclear.Test.Configurations;
+using Nuclear.Test.Configurations.Proxy;
+using Nuclear.Test.Configurations.Worker;
 
 namespace Nuclear.Test.Console {
 
@@ -97,6 +100,40 @@ namespace Nuclear.Test.Console {
             }
 
             return true;
+        }
+
+        internal IExecutorConfiguration Dump() {
+
+            Factory.Instance.Create(out IWorkerClientConfiguration workerClientConfig);
+            workerClientConfig.AutoShutdown = Clients.AutoShutdown;
+            workerClientConfig.TestAssembly = null;
+            workerClientConfig.TestsInSequence = Execution.TestsInSequence;
+
+            Factory.Instance.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
+            workerRemoteConfig.ClientConfiguration = workerClientConfig;
+            workerRemoteConfig.Executable = null;
+            workerRemoteConfig.StartClientVisible = Clients.StartClientVisible;
+
+            Factory.Instance.Create(out IProxyClientConfiguration proxyClientConfiguration);
+            proxyClientConfiguration.WorkerRemoteConfiguration = workerRemoteConfig;
+            proxyClientConfiguration.AssembliesInSequence = Execution.AssembliesInSequence;
+            proxyClientConfiguration.AutoShutdown = Clients.AutoShutdown;
+            proxyClientConfiguration.SelectedRuntimes = Execution.SelectedRuntimes;
+            proxyClientConfiguration.TestAssembly = null;
+            proxyClientConfiguration.WorkerDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Clients.WorkerDirectory));
+            proxyClientConfiguration.WorkerExecutableName = Clients.WorkerExecutableName;
+
+            Factory.Instance.Create(out IProxyRemoteConfiguration proxyRemoteConfiguration);
+            proxyRemoteConfiguration.ClientConfiguration = proxyClientConfiguration;
+            proxyRemoteConfiguration.Executable = null;
+            proxyRemoteConfiguration.StartClientVisible = Clients.StartClientVisible;
+
+            Factory.Instance.Create(out IExecutorConfiguration configuration);
+            configuration.ProxyRemoteConfiguration = proxyRemoteConfiguration;
+            configuration.ProxyDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Clients.ProxyDirectory));
+            configuration.ProxyExecutableName = Clients.ProxyExecutableName;
+
+            return configuration;
         }
 
         #endregion
