@@ -60,7 +60,7 @@ namespace Nuclear.Test.Execution {
         #region methods
 
         /// <summary>
-        /// Commands the client to execute its task.
+        /// Commands to execute.
         /// </summary>
         void Execute();
 

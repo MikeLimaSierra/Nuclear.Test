@@ -213,7 +213,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseRemoteConnected() {
             _log.Debug(nameof(RaiseRemoteConnected));
 
-            RemoteConnected?.Invoke(this, new EventArgs());
+            RemoteConnected?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -222,7 +222,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseConnectionLost() {
             _log.Debug(nameof(RaiseConnectionLost));
 
-            ConnectionLost?.Invoke(this, new EventArgs());
+            ConnectionLost?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseExecutionFinished() {
             _log.Debug(nameof(RaiseExecutionFinished));
 
-            ExecutionFinished?.Invoke(this, new EventArgs());
+            ExecutionFinished?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

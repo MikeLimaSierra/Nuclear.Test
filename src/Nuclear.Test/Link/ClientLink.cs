@@ -95,7 +95,7 @@ namespace Nuclear.Test.Link {
         protected internal void RaiseServerConnected() {
             _log.Debug(nameof(RaiseServerConnected));
 
-            ServerConnected?.Invoke(this, new EventArgs());
+            ServerConnected?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Nuclear.Test.Link {
         protected internal void RaiseConnectedToServer() {
             _log.Debug(nameof(RaiseConnectedToServer));
 
-            ConnectedToServer?.Invoke(this, new EventArgs());
+            ConnectedToServer?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion

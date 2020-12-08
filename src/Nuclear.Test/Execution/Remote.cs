@@ -153,7 +153,7 @@ namespace Nuclear.Test.Execution {
         #region public methods
 
         /// <summary>
-        /// Commands the client to execute its task.
+        /// Commands to execute.
         /// </summary>
         public void Execute() {
             _log.Debug(nameof(Execute));
@@ -190,7 +190,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseClientConnected() {
             _log.Debug(nameof(RaiseClientConnected));
 
-            ClientConnected?.Invoke(this, new EventArgs());
+            ClientConnected?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseConnectionLost() {
             _log.Debug(nameof(RaiseConnectionLost));
 
-            ConnectionLost?.Invoke(this, new EventArgs());
+            ConnectionLost?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -228,7 +228,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseRemotingFinished() {
             _log.Debug(nameof(RaiseRemotingFinished));
 
-            RemotingFinished?.Invoke(this, new EventArgs());
+            RemotingFinished?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion
