@@ -9,9 +9,7 @@
   <Import Project="..\Configurations.targets" />
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Nuclear.Assemblies" Version="1.0.0" />
-    <PackageReference Include="Nuclear.Extensions" Version="2.0.0" />
-    <PackageReference Include="Nuclear.Test.Contracts" Version="2.0.0" />
+    <PackageReference Include="Nuclear.Test" Version="2.0.0-beta1" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
