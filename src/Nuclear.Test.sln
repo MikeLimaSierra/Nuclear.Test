@@ -20,7 +20,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Tests", "Nucle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Contracts", "Nuclear.Test.Contracts\Nuclear.Test.Contracts.csproj", "{2902C5AB-5541-4EFE-8964-0AC3244C51BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Printer.Contracts", "Nuclear.Test.Printer.Contracts\Nuclear.Test.Printer.Contracts.csproj", "{8D3EC14E-B3E5-4F52-869C-0899ECF3E0D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Printer", "Nuclear.Test.Printer\Nuclear.Test.Printer.csproj", "{8D3EC14E-B3E5-4F52-869C-0899ECF3E0D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
