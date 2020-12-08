@@ -2,6 +2,7 @@
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Configurations.Proxy;
 using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Execution.Proxy;
@@ -13,6 +14,8 @@ namespace Nuclear.Test {
     internal class InternalFactory : IFactory {
 
         #region Configurations
+
+        public void Create(out IExecutorConfiguration @object) => @object = new ExecutorConfiguration();
 
         public void Create(out IProxyRemoteConfiguration @object) => @object = new ProxyRemoteConfiguration();
 
