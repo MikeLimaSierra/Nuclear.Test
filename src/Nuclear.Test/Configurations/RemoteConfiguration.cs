@@ -1,23 +1,11 @@
 ﻿using System;
 using System.IO;
 
-using Nuclear.Test.Execution;
+using Nuclear.Exceptions;
 
 namespace Nuclear.Test.Configurations {
-
-    /// <summary>
-    /// Implements configuration values for an <see cref="IRemote{TConfiguration}"/>.
-    /// </summary>
-    public class RemoteConfiguration : IRemoteConfiguration {
-
-        #region constants
-
-        /// <summary>
-        /// Configuration values for <see cref="StartClientVisible"/>.
-        /// </summary>
-        public const String START_CLIENT_VISIBLE = "Remote.StartClientVisible";
-
-        #endregion
+    internal abstract class RemoteConfiguration<TClientConfiguration> : IRemoteConfiguration<TClientConfiguration>
+        where TClientConfiguration : IClientConfiguration {
 
         #region properties
 
@@ -27,9 +15,32 @@ namespace Nuclear.Test.Configurations {
         public FileInfo Executable { get; set; }
 
         /// <summary>
+        /// Gets if the executable is set and if it exists.
+        /// </summary>
+        public Boolean HasExecutable => Executable != null && Executable.Exists;
+
+        /// <summary>
         /// Gets or sets if client process should be started in a visible window.
         /// </summary>
         public Boolean StartClientVisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets the client configuration object.
+        /// </summary>
+        public TClientConfiguration ClientConfiguration { get; set; }
+
+        #endregion
+
+        #region ctors
+
+        internal RemoteConfiguration() { }
+
+        internal RemoteConfiguration(IRemoteConfiguration<TClientConfiguration> original) {
+            Throw.If.Object.IsNull(original, nameof(original));
+
+            Executable = original.Executable;
+            StartClientVisible = original.StartClientVisible;
+        }
 
         #endregion
 

@@ -18,7 +18,7 @@ namespace Nuclear.Test.Execution {
     /// <typeparam name="TRemoteConfiguration">The remote configuration type.</typeparam>
     /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
     public abstract class Remote<TRemoteConfiguration, TClientConfiguration> : IRemote<TRemoteConfiguration, TClientConfiguration>
-        where TRemoteConfiguration : IRemoteConfiguration
+        where TRemoteConfiguration : IRemoteConfiguration<TClientConfiguration>
         where TClientConfiguration : IClientConfiguration {
 
         #region events
@@ -66,17 +66,12 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the client configuration object.
         /// </summary>
-        public TRemoteConfiguration Configuration { get; protected set; }
-
-        /// <summary>
-        /// Gets the client configuration object.
-        /// </summary>
-        public TClientConfiguration ClientConfiguration { get; protected set; }
+        public TRemoteConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets the test results sink that is in use.
         /// </summary>
-        public ITestResultEndPoint Results { get; } = new TestResultEndPoint();
+        public ITestResultEndPoint Results { get; }
 
         #endregion
 
@@ -86,16 +81,21 @@ namespace Nuclear.Test.Execution {
         /// Creates a new instance of <see cref="Remote{TRemoteConfiguration, TClientConfiguration}"/>.
         /// </summary>
         /// <param name="configuration">The remote configuration object.</param>
-        /// <param name="clientConfiguration">The client configuration object.</param>
         /// <param name="link">The link object used to communicate with the client.</param>
-        public Remote(TRemoteConfiguration configuration, TClientConfiguration clientConfiguration, IServerLink link) {
+        public Remote(TRemoteConfiguration configuration, IServerLink link) {
             Throw.If.Object.IsNull(configuration, nameof(configuration));
-            Throw.If.Object.IsNull(clientConfiguration, nameof(clientConfiguration));
             Throw.If.Object.IsNull(link, nameof(link));
 
             Configuration = configuration;
-            ClientConfiguration = clientConfiguration;
+
+            if(!Configuration.StartClientVisible) {
+                Configuration.ClientConfiguration.AutoShutdown = true;
+            }
+
             Link = link;
+
+            Factory.Instance.Create(out ITestResultEndPoint result);
+            Results = result;
         }
 
         #endregion
@@ -108,8 +108,8 @@ namespace Nuclear.Test.Execution {
             Link.ClientConnected -= OnClientConnected;
             RaiseClientConnected();
 
-            if(Link.Connect()) {
-                _log.Info("Connecting to client.");
+            if(Link.ConnectInput()) {
+                _log.Info("Connected to client.");
 
                 SendSetup();
                 Link.MessageReceived += OnResultsReceived;
@@ -127,7 +127,11 @@ namespace Nuclear.Test.Execution {
             if(e.Message.Command == Commands.Results) {
                 _log.Info("Results message received.");
 
-                // TODO: handle results
+                RaiseResultsReceived(e.Message.Payload.ToArray());
+
+                if(e.Message.TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection)) {
+                    RaiseResultsAvailable(resultCollection);
+                }
             }
         }
 
@@ -140,6 +144,7 @@ namespace Nuclear.Test.Execution {
                 Link.MessageReceived -= OnResultsReceived;
                 Link.MessageReceived -= OnFinishedReceived;
                 RaiseRemotingFinished();
+                Link.Stop();
             }
         }
 
@@ -148,15 +153,16 @@ namespace Nuclear.Test.Execution {
         #region public methods
 
         /// <summary>
-        /// Commands the client to execute its task.
+        /// Commands to execute.
         /// </summary>
         public void Execute() {
             _log.Debug(nameof(Execute));
 
-            Link.ClientConnected += OnClientConnected;
-
             if(Configuration.Executable != null && Configuration.Executable.Exists) {
+                Link.StartOutput();
                 StartProcess();
+                Link.ClientConnected += OnClientConnected;
+                Link.WaitForConnection();
 
             } else {
                 _log.Error("Failed to start the client process.");
@@ -174,7 +180,8 @@ namespace Nuclear.Test.Execution {
         protected virtual IMessage GetSetupMessage() {
             _log.Debug(nameof(GetSetupMessage));
 
-            return new Message(Commands.Setup);
+            Factory.Instance.Create(out IMessage message, Commands.Setup);
+            return message;
         }
 
         /// <summary>
@@ -183,7 +190,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseClientConnected() {
             _log.Debug(nameof(RaiseClientConnected));
 
-            ClientConnected?.Invoke(this, new EventArgs());
+            ClientConnected?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -192,7 +199,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseConnectionLost() {
             _log.Debug(nameof(RaiseConnectionLost));
 
-            ConnectionLost?.Invoke(this, new EventArgs());
+            ConnectionLost?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -221,7 +228,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseRemotingFinished() {
             _log.Debug(nameof(RaiseRemotingFinished));
 
-            RemotingFinished?.Invoke(this, new EventArgs());
+            RemotingFinished?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion
@@ -236,6 +243,7 @@ namespace Nuclear.Test.Execution {
                 process.StartInfo.Arguments = Link.PipeID;
                 process.StartInfo.UseShellExecute = Configuration.StartClientVisible;
                 process.StartInfo.CreateNoWindow = !Configuration.StartClientVisible;
+                process.StartInfo.WorkingDirectory = Configuration.Executable.Directory.FullName;
 
                 _log.Info($"Starting process {Configuration.Executable.FullName.Format()} {Link.PipeID.Format()} ...");
 
@@ -252,7 +260,8 @@ namespace Nuclear.Test.Execution {
         private void SendExecute() {
             _log.Debug(nameof(SendExecute));
 
-            Link.Send(new Message(Commands.Execute));
+            Factory.Instance.Create(out IMessage message, Commands.Execute);
+            Link.Send(message);
         }
 
         #endregion

@@ -11,6 +11,11 @@
         Note,
 
         /// <summary>
+        /// The entry is a test method invokation.
+        /// </summary>
+        Invokation,
+
+        /// <summary>
         /// The entry is an error.
         /// </summary>
         Error,

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 
+using log4net;
+
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
 
@@ -9,7 +11,13 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Implements a message that can be transmitted between <see cref="ILink"/> instances.
     /// </summary>
-    public partial class Message : IMessage {
+    internal partial class Message : IMessage {
+
+        #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Message));
+
+        #endregion
 
         #region properties
 
@@ -32,7 +40,7 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <exception cref="ArgumentNullException">Is thrown when <paramref name="command"/> is null or empty.</exception>
         /// <param name="command">The message command.</param>
-        public Message(String command) {
+        internal Message(String command) {
             Throw.If.String.IsNullOrWhiteSpace(command, nameof(command));
 
             Command = command;
@@ -71,148 +79,6 @@ namespace Nuclear.Test.Link {
             GC.SuppressFinalize(this);
         }
 #pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
-
-        #endregion
-
-        #region static creation methods
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command) => new Message(command);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Boolean data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Byte data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, SByte data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Char data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Int16 data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, UInt16 data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Int32 data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, UInt32 data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Int64 data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, UInt64 data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Single data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Double data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Decimal data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="data"/> is null.</exception>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, String data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="data"/> is null.</exception>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Byte[] data) => new Message(command).Append(data);
-
-        /// <summary>
-        /// Creates a new instance of <see cref="Message"/>.
-        /// </summary>
-        /// <param name="command">The message command.</param>
-        /// <param name="data">The message payload.</param>
-        /// <exception cref="ArgumentNullException">Is thrown when <paramref name="data"/> is null.</exception>
-        /// <returns>The new message object.</returns>
-        public static IMessage From(String command, Char[] data) => new Message(command).Append(data);
 
         #endregion
 

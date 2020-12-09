@@ -2,13 +2,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Configurations.Proxy;
+using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Link {
-    public partial class Message {
+    internal partial class Message {
 
         #region get bcl type methods
 
@@ -20,12 +24,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Boolean data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadBoolean();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Boolean).Format()}", ex);
+
                     return false;
                 }
             }
@@ -39,12 +45,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Byte data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadByte();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Byte).Format()}", ex);
+
                     return false;
                 }
             }
@@ -58,12 +66,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out SByte data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadSByte();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(SByte).Format()}", ex);
+
                     return false;
                 }
             }
@@ -77,12 +87,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Char data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadChar();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Char).Format()}", ex);
+
                     return false;
                 }
             }
@@ -96,12 +108,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Int16 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadInt16();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Int16).Format()}", ex);
+
                     return false;
                 }
             }
@@ -115,12 +129,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out UInt16 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadUInt16();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(UInt16).Format()}", ex);
+
                     return false;
                 }
             }
@@ -134,12 +150,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Int32 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Int32).Format()}", ex);
+
                     return false;
                 }
             }
@@ -153,12 +171,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out UInt32 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadUInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(UInt32).Format()}", ex);
+
                     return false;
                 }
             }
@@ -172,12 +192,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Int64 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadInt64();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Int64).Format()}", ex);
+
                     return false;
                 }
             }
@@ -191,12 +213,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out UInt64 data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadUInt64();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(UInt64).Format()}", ex);
+
                     return false;
                 }
             }
@@ -210,12 +234,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Single data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadSingle();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Single).Format()}", ex);
+
                     return false;
                 }
             }
@@ -229,12 +255,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Double data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadDouble();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Double).Format()}", ex);
+
                     return false;
                 }
             }
@@ -248,12 +276,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Decimal data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadDecimal();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Decimal).Format()}", ex);
+
                     return false;
                 }
             }
@@ -267,12 +297,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out String data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = br.ReadString();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(String).Format()}", ex);
+
                     return false;
                 }
             }
@@ -286,12 +318,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out FileInfo data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = new FileInfo(br.ReadString());
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(FileInfo).Format()}", ex);
+
                     return false;
                 }
             }
@@ -305,12 +339,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out DirectoryInfo data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = new DirectoryInfo(br.ReadString());
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(DirectoryInfo).Format()}", ex);
+
                     return false;
                 }
             }
@@ -324,13 +360,15 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Byte[] data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     Int32 count = br.ReadInt32();
                     data = br.ReadBytes(count);
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Byte[]).Format()}", ex);
+
                     return false;
                 }
             }
@@ -344,13 +382,15 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out Char[] data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     Int32 count = br.ReadInt32();
                     data = br.ReadChars(count);
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(Char[]).Format()}", ex);
+
                     return false;
                 }
             }
@@ -368,15 +408,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IWorkerClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ClientConfiguration.FILE && TryGetData(out FileInfo file)
-                && TryGetData(out identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)
-                && TryGetData(out identifier) && identifier == WorkerClientConfiguration.TESTS_IN_SEQUENCE && TryGetData(out Boolean testsInSequence)) {
+            if(TryGetData(out FileInfo testAssembly)
+                && TryGetData(out Boolean autoShutdown)
+                && TryGetData(out Boolean testsInSequence)) {
 
-                data = new WorkerClientConfiguration {
-                    File = file,
-                    AutoShutdown = autoShutdown,
-                    TestsInSequence = testsInSequence
-                };
+                Factory.Instance.Create(out data);
+                data.TestAssembly = testAssembly;
+                data.AutoShutdown = autoShutdown;
+                data.TestsInSequence = testsInSequence;
             }
 
             return data != null;
@@ -390,21 +429,22 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out IProxyClientConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == ClientConfiguration.FILE && TryGetData(out FileInfo file)
-                && TryGetData(out identifier) && identifier == ClientConfiguration.AUTO_SHUTDOWN && TryGetData(out Boolean autoShutdown)
-                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.ASSEMBLIES_IN_SEQUENCE && TryGetData(out Boolean assembliesInSequence)
-                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.SELECTED_RUNTIMES && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
-                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.WORKER_DIRECTORY && TryGetData(out DirectoryInfo workerDirectory)
-                && TryGetData(out identifier) && identifier == ProxyClientConfiguration.WORKER_EXECUTABLE_NAME && TryGetData(out String workerExecutableName)) {
+            if(TryGetData(out FileInfo testAssembly)
+                && TryGetData(out Boolean autoShutdown)
+                && TryGetData(out Boolean assembliesInSequence)
+                && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
+                && TryGetData(out DirectoryInfo workerDirectory)
+                && TryGetData(out String workerExecutableName)
+                && TryGetData(out IWorkerRemoteConfiguration remoteConfig)) {
 
-                data = new ProxyClientConfiguration {
-                    File = file,
-                    AutoShutdown = autoShutdown,
-                    AssembliesInSequence = assembliesInSequence,
-                    SelectedRuntimes = selectedRuntimes,
-                    WorkerDirectory = workerDirectory,
-                    WorkerExecutableName = workerExecutableName
-                };
+                Factory.Instance.Create(out data);
+                data.TestAssembly = testAssembly;
+                data.AutoShutdown = autoShutdown;
+                data.AssembliesInSequence = assembliesInSequence;
+                data.SelectedRuntimes = selectedRuntimes;
+                data.WorkerDirectory = workerDirectory;
+                data.WorkerExecutableName = workerExecutableName;
+                data.WorkerRemoteConfiguration = remoteConfig;
             }
 
             return data != null;
@@ -416,13 +456,38 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
-        public Boolean TryGetData(out IRemoteConfiguration data) {
+        public Boolean TryGetData(out IWorkerRemoteConfiguration data) {
             data = default;
 
-            if(TryGetData(out String identifier) && identifier == RemoteConfiguration.START_CLIENT_VISIBLE && TryGetData(out Boolean startClientVisible)) {
-                data = new RemoteConfiguration {
-                    StartClientVisible = startClientVisible
-                };
+            if(TryGetData(out FileInfo executable)
+                && TryGetData(out Boolean startClientVisible)
+                && TryGetData(out IWorkerClientConfiguration clientConfiguration)) {
+
+                Factory.Instance.Create(out data);
+                data.Executable = executable;
+                data.StartClientVisible = startClientVisible;
+                data.ClientConfiguration = clientConfiguration;
+            }
+
+            return data != null;
+        }
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out IProxyRemoteConfiguration data) {
+            data = default;
+
+            if(TryGetData(out FileInfo executable)
+                && TryGetData(out Boolean startClientVisible)
+                && TryGetData(out IProxyClientConfiguration clientConfiguration)) {
+
+                Factory.Instance.Create(out data);
+                data.Executable = executable;
+                data.StartClientVisible = startClientVisible;
+                data.ClientConfiguration = clientConfiguration;
             }
 
             return data != null;
@@ -437,12 +502,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out EntryTypes data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = (EntryTypes) br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(EntryTypes).Format()}", ex);
+
                     return false;
                 }
             }
@@ -456,12 +523,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out FrameworkIdentifiers data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = (FrameworkIdentifiers) br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(FrameworkIdentifiers).Format()}", ex);
+
                     return false;
                 }
             }
@@ -475,12 +544,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out ProcessorArchitecture data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = (ProcessorArchitecture) br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(ProcessorArchitecture).Format()}", ex);
+
                     return false;
                 }
             }
@@ -494,12 +565,14 @@ namespace Nuclear.Test.Link {
         public Boolean TryGetData(out SelectedExecutionRuntimes data) {
             data = default;
 
-            using(BinaryReader br = new BinaryReader(Payload)) {
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
                 try {
                     data = (SelectedExecutionRuntimes) br.ReadInt32();
                     return true;
 
-                } catch(Exception) {
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(SelectedExecutionRuntimes).Format()}", ex);
+
                     return false;
                 }
             }
@@ -526,10 +599,16 @@ namespace Nuclear.Test.Link {
                 && TryGetData(out String fileName)
                 && TryGetData(out String methodName)) {
 
-                data = new TestResultKey(asssembly,
-                    new RuntimeInfo(tMoniker, tVersion), tArch,
-                    new RuntimeInfo(eMoniker, eVersion), eArch,
-                    fileName, methodName);
+
+                try {
+                    Factory.Instance.Create(out data, asssembly,
+                        new RuntimeInfo(tMoniker, tVersion), tArch,
+                        new RuntimeInfo(eMoniker, eVersion), eArch,
+                        fileName, methodName);
+
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(ITestResultKey).Format()}", ex);
+                }
             }
 
             return data != null;
@@ -557,9 +636,11 @@ namespace Nuclear.Test.Link {
             }
 
             try {
-                data = new TestEntry(type, instruction, message);
+                Factory.Instance.Create(out data, type, instruction, message);
 
-            } catch { }
+            } catch(Exception ex) {
+                _log.Error($"Failed to read {typeof(ITestEntry).Format()}", ex);
+            }
 
             return data != null;
         }
@@ -576,7 +657,7 @@ namespace Nuclear.Test.Link {
                 return false;
             }
 
-            data = new TestMethodResult();
+            Factory.Instance.Create(out data);
             data.Ignore(ignore);
 
             for(Int32 i = 0; i < count; i++) {

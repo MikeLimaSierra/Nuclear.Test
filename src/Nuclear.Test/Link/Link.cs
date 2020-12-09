@@ -5,7 +5,10 @@ using System.IO.Pipes;
 using System.Security.Principal;
 using System.Threading;
 
+using log4net;
+
 using Nuclear.Exceptions;
+using Nuclear.Extensions;
 
 namespace Nuclear.Test.Link {
 
@@ -24,6 +27,8 @@ namespace Nuclear.Test.Link {
         #endregion
 
         #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Link));
 
         private readonly CancellationTokenSource _cancel = new CancellationTokenSource();
 
@@ -110,14 +115,18 @@ namespace Nuclear.Test.Link {
         /// Starts the output channel.
         /// </summary>
         /// <returns>True if successful.</returns>
-        public virtual Boolean Start() {
+        public virtual Boolean StartOutput() {
+            _log.Debug(nameof(StartOutput));
+
             try {
                 _messageWriteT = new Thread(MessageWriteTS);
                 _messageWriteT.Start();
 
                 return true;
 
-            } catch {
+            } catch(Exception ex) {
+                _log.Error("Failed to start link.", ex);
+
                 return false;
             }
         }
@@ -127,31 +136,39 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <returns>True if a connection was established.</returns>
         public virtual Boolean WaitForConnection() {
+            _log.Debug(nameof(WaitForConnection));
+
             try {
                 _outStream.WaitForConnection();
 
                 return true;
 
-            } catch {
+            } catch(Exception ex) {
+                _log.Error("Failed to wait for connection.", ex);
+
                 return false;
             }
         }
 
         /// <summary>
-        /// Connects to another <see cref="ILink"/>.
+        /// Connects to the output channel another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
-        public virtual Boolean Connect() {
+        public virtual Boolean ConnectInput() {
+            _log.Debug(nameof(ConnectInput));
+
             try {
+                _inStream.Connect(ConnectionTimeout);
                 _messageReadT = new Thread(MessageReadTS);
                 _messageReadT.Start();
                 _messageForwardT = new Thread(MessageForwardTS);
                 _messageForwardT.Start();
-                _inStream.Connect(ConnectionTimeout);
 
                 return true;
 
-            } catch {
+            } catch(Exception ex) {
+                _log.Error("Failed to connect.", ex);
+
                 return false;
             }
         }
@@ -162,7 +179,11 @@ namespace Nuclear.Test.Link {
         /// <param name="message"></param>
         /// <returns></returns>
         public virtual void Send(IMessage message) {
+            _log.Debug(nameof(Send));
+
             if(message != null) {
+                _log.Debug($"Sending message {message.Format()}");
+
                 _messagesOut.Enqueue(_serializer.Serialize(message));
                 _messageOutEvent.Set();
             }
@@ -172,9 +193,18 @@ namespace Nuclear.Test.Link {
         /// Waits until the output buffer has been emptied.
         /// </summary>
         public void WaitForOutputFlush() {
+            _log.Debug(nameof(WaitForOutputFlush));
+
             SpinWait.SpinUntil(() => _messagesOut.IsEmpty);
 
-            return;
+            _log.Debug("Output flush complete.");
+        }
+
+        /// <summary>
+        /// Stops all threads.
+        /// </summary>
+        public void Stop() {
+            _cancel.Cancel();
         }
 
         #endregion
@@ -228,13 +258,19 @@ namespace Nuclear.Test.Link {
         /// Raises the event <see cref="MessageReceived"/> with the received <paramref name="message"/>.
         /// </summary>
         /// <param name="message">The message that was received.</param>
-        protected internal void RaiseMessageReceived(IMessage message) => MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
+        protected internal void RaiseMessageReceived(IMessage message) {
+            _log.Debug(nameof(RaiseMessageReceived));
+
+            MessageReceived?.Invoke(this, new MessageReceivedEventArgs(message));
+        }
 
         /// <summary>
         /// Writes a byte array to the outbound pipe using one or more packages.
         /// </summary>
         /// <param name="data">The byte array that is written.</param>
         protected void Write(Byte[] data) {
+            _log.Debug($"{nameof(Write)}({data.Length} Bytes)");
+
             _outWriter.Write(data.Length);
 
             for(Int32 i = 0; i < data.Length; i += UInt16.MaxValue) {
@@ -249,16 +285,25 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <returns>The byte array that is read.</returns>
         protected void Read(out Byte[] data) {
-            Byte[] lengthBuffer = new Byte[sizeof(Int32)];
-            _inStream.Read(lengthBuffer, 0, lengthBuffer.Length);
+            _log.Debug(nameof(Read));
 
-            Int32 length = BitConverter.ToInt32(lengthBuffer, 0);
+            Byte[] buffer = new Byte[sizeof(Int32)];
+            Int32 byteCount = _inStream.Read(buffer, 0, buffer.Length);
+
+            _log.Debug($"Read {byteCount.Format()} out of expected {buffer.Length.Format()} Bytes.");
+
+            Int32 length = BitConverter.ToInt32(buffer, 0);
+
+            _log.Debug($"Length is {length.Format()}.");
 
             using(MemoryStream ms = new MemoryStream()) {
                 for(Int32 i = 0; i < length; i += UInt16.MaxValue) {
-                    Byte[] databuffer = new Byte[Math.Min(length - i, UInt16.MaxValue)];
-                    _inReader.Read(databuffer, 0, databuffer.Length);
-                    ms.Write(databuffer, 0, databuffer.Length);
+                    buffer = new Byte[Math.Min(length - i, UInt16.MaxValue)];
+                    byteCount = _inReader.Read(buffer, 0, buffer.Length);
+
+                    _log.Debug($"Read {byteCount.Format()} out of expected {buffer.Length.Format()} Bytes.");
+
+                    ms.Write(buffer, 0, buffer.Length);
                 }
 
                 data = ms.ToArray();
@@ -270,6 +315,8 @@ namespace Nuclear.Test.Link {
         #region private methods
 
         private void MessageWriteTS() {
+            _log.Debug(nameof(MessageWriteTS));
+
             while(!_cancel.IsCancellationRequested) {
                 _messageOutEvent.WaitOne();
 
@@ -282,14 +329,23 @@ namespace Nuclear.Test.Link {
         }
 
         private void MessageReadTS() {
+            _log.Debug(nameof(MessageReadTS));
+
             while(!_cancel.IsCancellationRequested) {
                 Read(out Byte[] data);
-                _messagesIn.Enqueue(data);
-                _messageInEvent.Set();
+
+                if(data.Length > 0) {
+                    _messagesIn.Enqueue(data);
+                    _messageInEvent.Set();
+                }
+
+                Thread.Sleep(100);
             }
         }
 
         private void MessageForwardTS() {
+            _log.Debug(nameof(MessageForwardTS));
+
             while(!_cancel.IsCancellationRequested) {
                 _messageInEvent.WaitOne();
 

@@ -1,0 +1,26 @@
+{
+    "Locator": {
+        "SearchDirectory": "D:/Dev/GitHub/Nuclear.Net/bin",
+        "SearchDepth": -1,
+        "SearchPattern": "*Tests.dll",
+        "IgnoredDirectoryNames": [
+            "obj",
+            ".vs",
+            "Debug",
+            "Integration"
+        ]
+    },
+    "Clients": {
+        "ProxyDirectory": "%APPDATA%/Nuclear.Test.Proxy/",
+        "ProxyExecutableName": "Nuclear.Test.Proxy.exe",
+        "WorkerDirectory": "%APPDATA%/Nuclear.Test.Worker/",
+        "WorkerExecutableName": "Nuclear.Test.Worker.exe",
+        "StartClientVisible": true,
+        "AutoShutdown": false
+    },
+    "Execution": {
+        "AssembliesInSequence": true,
+        "TestsInSequence": false,
+        "SelectedRuntimes": "All"
+    }
+}

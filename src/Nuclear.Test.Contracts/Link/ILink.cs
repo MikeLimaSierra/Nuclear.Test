@@ -46,7 +46,7 @@ namespace Nuclear.Test.Link {
         /// Starts the output channel.
         /// </summary>
         /// <returns>True if successful.</returns>
-        Boolean Start();
+        Boolean StartOutput();
 
         /// <summary>
         /// Waits for a connecting <see cref="ILink"/> on the output channel.
@@ -55,10 +55,10 @@ namespace Nuclear.Test.Link {
         Boolean WaitForConnection();
 
         /// <summary>
-        /// Connects to another <see cref="ILink"/>.
+        /// Connects to the output channel another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
-        Boolean Connect();
+        Boolean ConnectInput();
 
         /// <summary>
         /// Sends an <see cref="IMessage"/> through the output channel.
@@ -71,6 +71,11 @@ namespace Nuclear.Test.Link {
         /// Waits until the output buffer has been emptied.
         /// </summary>
         void WaitForOutputFlush();
+
+        /// <summary>
+        /// Stops all threads.
+        /// </summary>
+        void Stop();
 
         #endregion
 

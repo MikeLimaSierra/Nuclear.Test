@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,8 +9,7 @@
   <Import Project="..\Configurations.targets" />
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Nuclear.Assemblies" Version="1.0.0" />
-    <PackageReference Include="Nuclear.Test" Version="2.0.0" />
+    <PackageReference Include="Nuclear.Test" Version="2.0.0-beta1" />
     <PackageReference Include="Nuclear.TestSite" Version="2.0.0" />
   </ItemGroup>
   

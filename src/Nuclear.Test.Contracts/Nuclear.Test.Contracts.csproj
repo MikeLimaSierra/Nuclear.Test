@@ -29,4 +29,8 @@
     </Reference>
   </ItemGroup>
 
+  <Target Condition="'$(Configuration)' == 'Release'" Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="publish.bat" />
+  </Target>
+
 </Project>

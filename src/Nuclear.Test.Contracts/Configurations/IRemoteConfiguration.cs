@@ -6,9 +6,11 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Defines configuration values for an <see cref="IRemote{TConfiguration}"/>.
+    /// Defines configuration values for an <see cref="IRemote{TRemoteConfiguration, TClientConfiguration}"/>.
     /// </summary>
-    public interface IRemoteConfiguration {
+    /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
+    public interface IRemoteConfiguration<TClientConfiguration>
+        where TClientConfiguration : IClientConfiguration {
 
         #region properties
 
@@ -18,9 +20,19 @@ namespace Nuclear.Test.Configurations {
         FileInfo Executable { get; set; }
 
         /// <summary>
+        /// Gets if the executable is set and if it exists.
+        /// </summary>
+        Boolean HasExecutable { get; }
+
+        /// <summary>
         /// Gets or sets if client process should be started in a visible window.
         /// </summary>
         Boolean StartClientVisible { get; set; }
+
+        /// <summary>
+        /// Gets or sets the client configuration object.
+        /// </summary>
+        TClientConfiguration ClientConfiguration { get; set; }
 
         #endregion
 

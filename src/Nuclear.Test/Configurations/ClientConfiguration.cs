@@ -1,35 +1,17 @@
 ﻿using System;
 using System.IO;
 
-using Nuclear.Test.Execution;
+using Nuclear.Exceptions;
 
 namespace Nuclear.Test.Configurations {
-
-    /// <summary>
-    /// Implements configuration values for an <see cref="IClient{TConfiguration}"/>.
-    /// </summary>
-    public abstract class ClientConfiguration : IClientConfiguration {
-
-        #region constants
-
-        /// <summary>
-        /// Configuration values for <see cref="File"/>.
-        /// </summary>
-        public const String FILE = "Client.File";
-
-        /// <summary>
-        /// Configuration values for <see cref="AutoShutdown"/>.
-        /// </summary>
-        public const String AUTO_SHUTDOWN = "Client.AutoShutdown";
-
-        #endregion
+    internal abstract class ClientConfiguration : IClientConfiguration {
 
         #region properties
 
         /// <summary>
         /// Gets or sets the file path of the test assembly.
         /// </summary>
-        public FileInfo File { get; set; }
+        public FileInfo TestAssembly { get; set; }
 
         /// <summary>
         /// Gets or sets if client window will remain open after test execution.
@@ -37,6 +19,19 @@ namespace Nuclear.Test.Configurations {
         ///     If set to false, the client will will wait for console input.
         /// </summary>
         public Boolean AutoShutdown { get; set; }
+
+        #endregion
+
+        #region ctors
+
+        internal ClientConfiguration() { }
+
+        internal ClientConfiguration(IClientConfiguration original) {
+            Throw.If.Object.IsNull(original, nameof(original));
+
+            TestAssembly = original.TestAssembly;
+            AutoShutdown = original.AutoShutdown;
+        }
 
         #endregion
 

@@ -37,19 +37,33 @@ namespace Nuclear.Test.Results {
             Throw.If.String.IsNullOrWhiteSpace(instruction, nameof(instruction));
             Throw.If.String.IsNullOrWhiteSpace(message, nameof(message));
 
-            return new TestEntry(result ? EntryTypes.ResultOk : EntryTypes.ResultFail, instruction, message);
+            Factory.Instance.Create(out ITestEntry entry, result ? EntryTypes.ResultOk : EntryTypes.ResultFail, instruction, message);
+
+            return entry;
         }
 
         internal static ITestEntry FromNote(String message) {
             Throw.If.String.IsNullOrWhiteSpace(message, nameof(message));
 
-            return new TestEntry(EntryTypes.Note, null, message);
+            Factory.Instance.Create(out ITestEntry entry, EntryTypes.Note, null, message);
+
+            return entry;
         }
 
         internal static ITestEntry FromError(String message) {
             Throw.If.String.IsNullOrWhiteSpace(message, nameof(message));
 
-            return new TestEntry(EntryTypes.Error, null, message);
+            Factory.Instance.Create(out ITestEntry entry, EntryTypes.Error, null, message);
+
+            return entry;
+        }
+
+        internal static ITestEntry FromInvokation(String message) {
+            Throw.If.String.IsNullOrWhiteSpace(message, nameof(message));
+
+            Factory.Instance.Create(out ITestEntry entry, EntryTypes.Invokation, null, message);
+
+            return entry;
         }
 
         #endregion

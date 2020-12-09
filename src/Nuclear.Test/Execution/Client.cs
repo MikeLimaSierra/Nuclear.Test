@@ -63,7 +63,7 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the test results sink that is in use.
         /// </summary>
-        public ITestResultEndPoint Results { get; } = new TestResultEndPoint();
+        public ITestResultEndPoint Results { get; }
 
         /// <summary>
         /// Gets or sets the header content as a <see cref="List{String}"/>.
@@ -105,11 +105,15 @@ namespace Nuclear.Test.Execution {
 
             RuntimesHelper.TryGetCurrentRuntime(out _currentRuntime);
 
-            Link.ServerConnected += OnServerConnected;
-            Link.Start();
+            Factory.Instance.Create(out ITestResultEndPoint result);
+            Results = result;
+
+            Link.StartOutput();
             Link.MessageReceived += OnSetupReceived;
             Link.MessageReceived += OnExecuteReceived;
-            Link.Connect();
+            Link.ConnectInput();
+            Link.ServerConnected += OnServerConnected;
+            Link.WaitForConnection();
         }
 
         #endregion
@@ -174,8 +178,20 @@ namespace Nuclear.Test.Execution {
         protected void SendResults(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
             _log.Debug(nameof(SendResults));
 
-            IMessage message = new Message(Commands.Results);
+            Factory.Instance.Create(out IMessage message, Commands.Results);
             message.Append(results);
+            Link.Send(message);
+        }
+
+        /// <summary>
+        /// Sends test results back to the attached remote.
+        /// </summary>
+        /// <param name="e">The <see cref="ResultsReceivedEventArgs"/> containing forwarded serialized test data.</param>
+        protected void SendResults(ResultsReceivedEventArgs e) {
+            _log.Debug(nameof(SendResults));
+
+            Factory.Instance.Create(out IMessage message, Commands.Results);
+            message.Append(e.Data);
             Link.Send(message);
         }
 
@@ -185,7 +201,10 @@ namespace Nuclear.Test.Execution {
         protected void SendFinished() {
             _log.Debug(nameof(SendFinished));
 
-            Link.Send(new Message(Commands.Finished));
+            Factory.Instance.Create(out IMessage message, Commands.Finished);
+            Link.Send(message);
+            Link.WaitForOutputFlush();
+            Link.Stop();
         }
 
         /// <summary>
@@ -194,7 +213,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseRemoteConnected() {
             _log.Debug(nameof(RaiseRemoteConnected));
 
-            RemoteConnected?.Invoke(this, new EventArgs());
+            RemoteConnected?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -203,7 +222,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseConnectionLost() {
             _log.Debug(nameof(RaiseConnectionLost));
 
-            ConnectionLost?.Invoke(this, new EventArgs());
+            ConnectionLost?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -212,7 +231,7 @@ namespace Nuclear.Test.Execution {
         protected internal void RaiseExecutionFinished() {
             _log.Debug(nameof(RaiseExecutionFinished));
 
-            ExecutionFinished?.Invoke(this, new EventArgs());
+            ExecutionFinished?.Invoke(this, EventArgs.Empty);
         }
 
         #endregion
@@ -222,23 +241,26 @@ namespace Nuclear.Test.Execution {
         private void LoadAssembly() {
             _log.Debug(nameof(LoadAssembly));
 
-            if(AssemblyHelper.TryLoadFrom(Configuration.File, out Assembly testAssembly)) {
-                _log.Debug($"Assembly loaded from {Configuration.File.FullName.Format()}");
+            if(AssemblyHelper.TryLoadFrom(Configuration.TestAssembly, out Assembly testAssembly)) {
+                _log.Debug($"Assembly loaded from {Configuration.TestAssembly.FullName.Format()}");
 
                 TestAssembly = testAssembly;
 
-                if(AssemblyHelper.TryGetAssemblyName(Configuration.File, out AssemblyName testAssemblyName)) {
+                if(AssemblyHelper.TryGetAssemblyName(Configuration.TestAssembly, out AssemblyName testAssemblyName)) {
                     _log.Debug($"TestAssemblyName = {testAssemblyName.FullName.Format()}");
 
                     TestAssemblyName = testAssemblyName;
-                }
+
+                } else { _log.Error($"Failed to get assembly name from {Configuration.TestAssembly.FullName.Format()}."); }
 
                 if(AssemblyHelper.TryGetRuntime(TestAssembly, out RuntimeInfo testAssemblyRuntime)) {
                     _log.Debug($"TestAssemblyRuntime = {testAssemblyRuntime.Format()}");
 
                     TestAssemblyRuntime = testAssemblyRuntime;
-                }
-            }
+
+                } else { _log.Error($"Failed to get runtime from {Configuration.TestAssembly.FullName.Format()}."); }
+
+            } else { _log.Error($"Failed to loaded from {Configuration.TestAssembly.FullName.Format()}."); }
         }
 
         #endregion

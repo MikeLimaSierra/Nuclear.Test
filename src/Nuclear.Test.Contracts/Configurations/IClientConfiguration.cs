@@ -15,7 +15,7 @@ namespace Nuclear.Test.Configurations {
         /// <summary>
         /// Gets or sets the file path of the test assembly.
         /// </summary>
-        FileInfo File { get; set; }
+        FileInfo TestAssembly { get; set; }
 
         /// <summary>
         /// Gets or sets if client window will remain open after test execution.

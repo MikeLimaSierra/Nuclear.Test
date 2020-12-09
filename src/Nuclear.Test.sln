@@ -5,6 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1939BFF1-B590-46D7-80D6-4290FA299810}"
 	ProjectSection(SolutionItems) = preProject
+		Configurations.nosigning.targets = Configurations.nosigning.targets
 		Configurations.targets = Configurations.targets
 	EndProjectSection
 EndProject
@@ -20,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Tests", "Nucle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Contracts", "Nuclear.Test.Contracts\Nuclear.Test.Contracts.csproj", "{2902C5AB-5541-4EFE-8964-0AC3244C51BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Printer.Contracts", "Nuclear.Test.Printer.Contracts\Nuclear.Test.Printer.Contracts.csproj", "{8D3EC14E-B3E5-4F52-869C-0899ECF3E0D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Printer", "Nuclear.Test.Printer\Nuclear.Test.Printer.csproj", "{8D3EC14E-B3E5-4F52-869C-0899ECF3E0D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

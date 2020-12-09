@@ -5,6 +5,8 @@ using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Configurations.Proxy;
+using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Results;
 
 namespace Nuclear.Test.Link {
@@ -180,7 +182,14 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
-        Boolean TryGetData(out IRemoteConfiguration data);
+        Boolean TryGetData(out IWorkerRemoteConfiguration data);
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        Boolean TryGetData(out IProxyRemoteConfiguration data);
 
 
         /// <summary>
@@ -389,7 +398,14 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
-        IMessage Append(IRemoteConfiguration data);
+        IMessage Append(IWorkerRemoteConfiguration data);
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(IProxyRemoteConfiguration data);
 
 
         /// <summary>

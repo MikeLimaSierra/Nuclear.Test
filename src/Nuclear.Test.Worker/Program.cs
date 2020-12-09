@@ -1,8 +1,15 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
 using System.Threading;
 
 using log4net;
+using log4net.Config;
 
+using Nuclear.Extensions;
+using Nuclear.Test.Execution;
+using Nuclear.Test.Execution.Worker;
+using Nuclear.Test.Extensions;
 using Nuclear.Test.Link;
 using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
@@ -16,28 +23,40 @@ namespace Nuclear.Test.Worker {
 
         private static readonly ManualResetEventSlim _executionFinishedEvent = new ManualResetEventSlim(false);
 
-        private static WorkerClient _client;
+        private static IWorkerClient _client;
 
         #endregion
 
-        #region public methods
+        #region event handlers
+
+        private static void OnUnhandledException(Object sender, UnhandledExceptionEventArgs e) => _log.Fatal($"Unhandled exception thrown: {e.ExceptionObject.Format()}");
+
+        #endregion
+
+        #region methods
 
         internal static void Main(String[] args) {
-            _client = new WorkerClient(new ClientLink(args[0]));
+            XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetEntryAssembly()), new FileInfo("log4net.config"));
+
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
+            Factory.Instance.Create(out IClientLink link, args[0]);
+            Factory.Instance.Create(out _client, link);
             _client.ExecutionFinished += OnClientExecutionFinished;
 
             _executionFinishedEvent.Wait();
 
             ITestResultEndPoint results = _client.Results;
 
-            _log.Info("=========================");
-            new ResultTree(Verbosity.ExecutionArchitecture, TestResultKey.Empty, results).Print();
-            _log.Info("=========================");
+            Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
+            new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, results).Print();
 
             if(!_client.Configuration.AutoShutdown) {
                 Console.WriteLine("Press any key to exit.");
                 Console.ReadKey(true);
             }
+
+            Environment.ExitCode = (Int32) (results.GetResults().HasFails() ? ExitCode.Fail : ExitCode.OK);
         }
 
         #endregion
