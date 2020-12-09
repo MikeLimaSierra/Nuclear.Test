@@ -33,6 +33,10 @@ namespace Nuclear.Test.Console {
 
         private const String FILE_SWITCH_L = "file";
 
+        private const String DIR_SWITCH_S = "d";
+
+        private const String DIR_SWITCH_L = "dir";
+
         #endregion
 
         #region fields
@@ -99,6 +103,10 @@ namespace Nuclear.Test.Console {
                 }
 
             } else {
+                if((_arguments.TryGetSwitch(DIR_SWITCH_S, out arg) || _arguments.TryGetSwitch(DIR_SWITCH_L, out arg)) && arg.HasValue) {
+                    _configuration.Locator.SearchDirectory = arg.Value;
+                }
+
                 _assemblies = new AssemblyLocator() {
                     SearchDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(_configuration.Locator.SearchDirectory)),
                     SearchDepth = _configuration.Locator.SearchDepth,
@@ -146,6 +154,9 @@ namespace Nuclear.Test.Console {
             System.Console.WriteLine();
             System.Console.WriteLine("  {0} {1}", $"-{FILE_SWITCH_S} path".PadRight(colWidth, ' '), "Override to specify one specific test assembly.");
             System.Console.WriteLine("  {0} {1}", $"--{FILE_SWITCH_L} path".PadRight(colWidth, ' '), $"Same as -{FILE_SWITCH_S}.");
+            System.Console.WriteLine();
+            System.Console.WriteLine("  {0} {1}", $"-{DIR_SWITCH_S} path".PadRight(colWidth, ' '), "Override to specify a search directory.");
+            System.Console.WriteLine("  {0} {1}", $"--{DIR_SWITCH_L} path".PadRight(colWidth, ' '), $"Same as -{DIR_SWITCH_S}.");
 
         }
 
