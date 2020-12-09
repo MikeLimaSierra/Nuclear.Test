@@ -74,7 +74,7 @@ namespace Nuclear.Test.Execution.Worker {
                 }
             }
 
-            _log.Debug("No matching assembly found.");
+            _log.Debug($"No matching assembly found for {args.Name.Format()}.");
 
             return null;
         }
