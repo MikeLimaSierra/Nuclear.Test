@@ -3,9 +3,11 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
-using Nuclear.TestSite.Attributes;
-using Nuclear.TestSite.Tests;
+
+using Nuclear.TestSite;
+
 using Sample;
+
 using TestExtensions;
 
 namespace SampleTests {
@@ -14,8 +16,8 @@ namespace SampleTests {
         [TestMethod]
         void TestImplementation() {
 
-            Test.If.TypeImplements<MyClass, INotifyPropertyChanged>();
-            Test.IfNot.TypeImplements<MyClass, IDisposable>();
+            Test.If.Type.Implements<MyClass, INotifyPropertyChanged>();
+            Test.IfNot.Type.Implements<MyClass, IDisposable>();
 
         }
 
@@ -25,31 +27,16 @@ namespace SampleTests {
             MyClass obj = null;
 
             Test.Note("new MyClass(null)");
-            Test.If.ThrowsException(() => obj = new MyClass(null), out ArgumentNullException ex);
-            Test.If.Null(obj);
-            Test.IfNot.Null(ex);
-            Test.If.ValuesEqual(ex.ParamName, "title");
+            Test.If.Action.ThrowsException(() => obj = new MyClass(null), out ArgumentNullException ex);
+            Test.If.Object.IsNull(obj);
+            Test.IfNot.Object.IsNull(ex);
+            Test.If.Value.IsEqual(ex.ParamName, "title");
 
             Test.Note("new MyClass(\"Hello World!\")");
-            Test.IfNot.ThrowsException(() => obj = new MyClass("Hello World!"), out ex);
-            Test.IfNot.Null(obj);
-            Test.If.Null(ex);
-            Test.If.ValuesEqual(obj.Title, "Hello World!");
-
-        }
-
-        [TestMethod]
-        void TestConstructorsAnotherWay() {
-
-            Test.Note("Test constructor with 'The quick brown fox'");
-            GenericTests.TestCtorGeneric("The quick brown fox");
-            Test.Note("Test constructor with 'jumped over the lazy dog.'");
-            GenericTests.TestCtorGeneric("jumped over the lazy dog.");
-
-            Test.Note("Test constructor with 'The sun went down in the east.'");
-            GenericTests.TestCtorGeneric("The sun went down in the east.");
-            Test.Note("Test constructor with 'Holy crap, this is not astronomically correct.'");
-            GenericTests.TestCtorGeneric("Holy crap, this is not astronomically correct.");
+            Test.IfNot.Action.ThrowsException(() => obj = new MyClass("Hello World!"), out ex);
+            Test.IfNot.Object.IsNull(obj);
+            Test.If.Object.IsNull(ex);
+            Test.If.Value.IsEqual(obj.Title, "Hello World!");
 
         }
 
@@ -57,10 +44,10 @@ namespace SampleTests {
         void TestConstructorsUsingTestExtensions() {
 
             MyClass obj = new MyClass("Hello World!");
-            Test.If.IsHelloWorld(obj.Title);
+            Test.If.String.IsHelloWorld(obj.Title);
 
             obj = new MyClass("Good bye World!");
-            Test.IfNot.IsHelloWorld(obj.Title);
+            Test.IfNot.String.IsHelloWorld(obj.Title);
 
         }
 
@@ -69,9 +56,9 @@ namespace SampleTests {
 
             MyClass obj = new MyClass("asdf");
 
-            Test.IfNot.ThrowsException(() => obj.Title = "new content", out Exception ex);
-            Test.If.Null(ex);
-            Test.If.ValuesEqual(obj.Title, "new content");
+            Test.IfNot.Action.ThrowsException(() => obj.Title = "new content", out Exception ex);
+            Test.If.Object.IsNull(ex);
+            Test.If.Value.IsEqual(obj.Title, "new content");
 
         }
 
@@ -80,9 +67,12 @@ namespace SampleTests {
 
             MyClass obj = new MyClass("asdf");
 
-            Test.If.RaisesPropertyChangedEvent(obj, () => obj.Title = "new content", out Object sender, out PropertyChangedEventArgs e);
-            Test.If.ReferencesEqual(obj, sender);
-            Test.If.ValuesEqual(e.PropertyName, "Title");
+            Test.If.Action.RaisesPropertyChangedEvent(() => obj.Title = "new content", obj, out EventData<PropertyChangedEventArgs> eventData);
+
+            Test.IfNot.Object.IsNull(eventData.Sender);
+            Test.If.Reference.IsEqual(eventData.Sender, obj);
+
+            Test.If.Value.IsEqual(eventData.EventArgs.PropertyName, "Title");
 
         }
 
@@ -92,17 +82,17 @@ namespace SampleTests {
             MyClass obj = new MyClass("asdf");
             XDocument doc = null;
 
-            Test.IfNot.ThrowsException(() => doc = obj.ToXml(), out Exception ex);
-            Test.If.Null(ex);
-            Test.IfNot.Null(doc);
-            Test.IfNot.Null(doc.Root);
-            Test.If.ValuesEqual(doc.Root.Name.LocalName, "myroot");
-            Test.If.True(doc.Root.HasAttributes);
-            Test.If.ValuesEqual(doc.Root.Attributes().Count(), 3);
-            Test.IfNot.Null(doc.Root.Attribute(XName.Get("mytitle")));
-            Test.If.ValuesEqual(doc.Root.Attribute(XName.Get("mytitle")).Value, "asdf");
-            Test.IfNot.Null(doc.Root.Attribute(XName.Get("calltimestamp")));
-            Test.IfNot.Null(doc.Root.Attribute(XName.Get("waketimestamp")));
+            Test.IfNot.Action.ThrowsException(() => doc = obj.ToXml(), out Exception ex);
+            Test.If.Object.IsNull(ex);
+            Test.IfNot.Object.IsNull(doc);
+            Test.IfNot.Object.IsNull(doc.Root);
+            Test.If.Value.IsEqual(doc.Root.Name.LocalName, "myroot");
+            Test.If.Value.IsTrue(doc.Root.HasAttributes);
+            Test.If.Value.IsEqual(doc.Root.Attributes().Count(), 3);
+            Test.IfNot.Object.IsNull(doc.Root.Attribute(XName.Get("mytitle")));
+            Test.If.Value.IsEqual(doc.Root.Attribute(XName.Get("mytitle")).Value, "asdf");
+            Test.IfNot.Object.IsNull(doc.Root.Attribute(XName.Get("calltimestamp")));
+            Test.IfNot.Object.IsNull(doc.Root.Attribute(XName.Get("waketimestamp")));
 
         }
 
@@ -112,19 +102,19 @@ namespace SampleTests {
             MyClass obj = new MyClass("asdf");
             XDocument doc = null;
 
-            Test.If.RaisesEvent(obj, "TimeStampEvent", () => doc = obj.ToXml(), out Object sender, out MyCustomEventArgs e);
+            Test.If.Action.RaisesEvent(() => doc = obj.ToXml(), obj, "TimeStampEvent", out EventData<MyCustomEventArgs> eventData);
 
-            Test.IfNot.Null(sender);
-            Test.If.ReferencesEqual(sender, obj);
+            Test.IfNot.Object.IsNull(eventData.Sender);
+            Test.If.Reference.IsEqual(eventData.Sender, obj);
 
-            Test.IfNot.Null(e);
-            Test.IfNot.Null(e.XmlDoc);
-            Test.If.ValuesEqual(e.XmlDoc, doc);
-            Test.If.ReferencesEqual(e.XmlDoc, doc);
-            Test.IfNot.Null(e.CallTimeStamp);
-            Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, e.CallTimeStamp.ToString("o"));
-            Test.IfNot.Null(e.WakeTimeStamp);
-            Test.If.ValuesEqual(e.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, e.WakeTimeStamp.ToString("o"));
+            Test.IfNot.Object.IsNull(eventData);
+            Test.IfNot.Object.IsNull(eventData.EventArgs.XmlDoc);
+            Test.If.Value.IsEqual(eventData.EventArgs.XmlDoc, doc);
+            Test.If.Reference.IsEqual(eventData.EventArgs.XmlDoc, doc);
+            Test.IfNot.Object.IsNull(eventData.EventArgs.CallTimeStamp);
+            Test.If.Value.IsEqual(eventData.EventArgs.XmlDoc.Root.Attribute(XName.Get("calltimestamp")).Value, eventData.EventArgs.CallTimeStamp.ToString("o"));
+            Test.IfNot.Object.IsNull(eventData.EventArgs.WakeTimeStamp);
+            Test.If.Value.IsEqual(eventData.EventArgs.XmlDoc.Root.Attribute(XName.Get("waketimestamp")).Value, eventData.EventArgs.WakeTimeStamp.ToString("o"));
 
         }
 
@@ -134,14 +124,14 @@ namespace SampleTests {
     [TestClass]
     class MyOtherClassTests {
 
-        //[TestMethod]
+        [TestMethod(ignoreReason: "class name doesn't match file name.")]
         void TestSomething() {
             FileInfo file = null;
 
             Test.Note("This test result will be registered to MyClassTests.TestSomething");
-            Test.If.True(true);
+            Test.If.Value.IsTrue(true);
             Test.Note("This test will cause an exception which will be registered to MyOtherClassTests.TestSomething");
-            Test.If.StringStartsWith(file.FullName, "file:///");
+            Test.If.String.StartsWith(file.FullName, "file:///");
         }
     }
 }

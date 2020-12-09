@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Xml.Linq;
+
 using Nuclear.Exceptions;
 
 namespace Sample {
@@ -41,7 +42,7 @@ namespace Sample {
         }
 
         public MyClass(String title) {
-            Throw.If.Null(title, "title");
+            Throw.If.Object.IsNull(title, nameof(title));
 
             Title = title;
         }
