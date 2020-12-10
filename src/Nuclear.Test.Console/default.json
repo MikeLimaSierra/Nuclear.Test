@@ -21,6 +21,6 @@
     "Execution": {
         "AssembliesInSequence": true,
         "TestsInSequence": false,
-        "SelectedRuntimes": "All"
+        "SelectedRuntimes": "Lowest"
     }
 }

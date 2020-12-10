@@ -121,7 +121,7 @@ namespace Nuclear.Test.Console {
             executor.Execute();
 
             Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
-            new ResultTree(Verbosity.Collapsed, emptyKey, executor.Results).Print();
+            new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, executor.Results).Print();
 
             WaitOnDebug();
 
