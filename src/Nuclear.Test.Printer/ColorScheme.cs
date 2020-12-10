@@ -20,6 +20,7 @@ namespace Nuclear.Test.Printer {
             StateEmpty = ConsoleColor.Cyan,
             ResultFailMessage = ConsoleColor.Red,
             NoteMessage = ConsoleColor.Yellow,
+            InvokationMessage = ConsoleColor.Cyan,
             IgnoreMessage = ConsoleColor.Cyan,
             ErrorDetails = ConsoleColor.Red,
         };
@@ -58,6 +59,11 @@ namespace Nuclear.Test.Printer {
         /// Gets or sets the color used to display the message of a test note.
         /// </summary>
         public ConsoleColor NoteMessage { get; set; }
+
+        /// <summary>
+        /// Gets or sets the color used to display the message of a test note.
+        /// </summary>
+        public ConsoleColor InvokationMessage { get; set; }
 
         /// <summary>
         /// Gets or sets the color used to display the ignore message of test methods.
