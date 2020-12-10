@@ -12,28 +12,28 @@
   <Import Project="..\Configurations.nosigning.targets" />
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
-    <PackageReference Include="Nuclear.Arguments" Version="1.0.1" />
-    <PackageReference Include="Nuclear.Test" Version="2.0.0-beta1" />
-    <PackageReference Include="Nuclear.Test.Printer" Version="2.0.0-beta1" />
+    <PackageReference Include="Nuclear.Arguments" Version="2.0.1" />
+    <PackageReference Include="Nuclear.Test" Version="2.0.0-beta3" />
+    <PackageReference Include="Nuclear.Test.Printer" Version="2.0.0-beta3" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
     <ProjectReference Include="..\Nuclear.Test\Nuclear.Test.csproj" />
     <ProjectReference Include="..\Nuclear.Test.Printer\Nuclear.Test.Printer.csproj" />
     <Reference Include="Nuclear.Exceptions">
-      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Exceptions\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.Exceptions.dll</HintPath>
+      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Exceptions\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Exceptions.dll</HintPath>
     </Reference>
     <Reference Include="Nuclear.Extensions">
-      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Extensions\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.Extensions.dll</HintPath>
+      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Extensions\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Nuclear.Assemblies">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Assemblies\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Assemblies.dll</HintPath>
     </Reference>
     <Reference Include="Nuclear.Arguments">
-      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Arguments\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.Arguments.dll</HintPath>
+      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Arguments\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Arguments.dll</HintPath>
     </Reference>
     <Reference Include="Nuclear.TestSite.Contracts">
-      <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard1.0\Nuclear.TestSite.Contracts.dll</HintPath>
+      <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.TestSite.Contracts.dll</HintPath>
     </Reference>
   </ItemGroup>
   
