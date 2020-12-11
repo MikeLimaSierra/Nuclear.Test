@@ -30,8 +30,8 @@ namespace Nuclear.Test.Printer.Nodes {
                     } else if(result.EntryType == EntryTypes.Note) {
                         Children.Add(new NoteLeaf(Verbosity, result.Message));
 
-                    } else if(result.EntryType == EntryTypes.Invokation) {
-                        Children.Add(new InvokationLeaf(Verbosity, result.Message));
+                    } else if(result.EntryType == EntryTypes.Injection) {
+                        Children.Add(new InjectionLeaf(Verbosity, result.Message));
 
                     } else {
                         Children.Add(new ResultLeaf(Verbosity, result, index++));

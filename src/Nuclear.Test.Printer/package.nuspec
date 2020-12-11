@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Nuclear.Test.Printer</id>
-    <version>2.0.0-beta3</version>
+    <version>2.0.0-beta4</version>
     <title>Nuclear.Test.Printer</title>
     <description>Implementation of a console printer for Nuclear.Test results.</description>
     <authors>MikeLimaSierra</authors>
@@ -15,7 +15,7 @@
     <language>en-US</language>
     <dependencies>
       <group>
-        <dependency id="Nuclear.Test.Contracts" version="2.0.0-beta3" />
+        <dependency id="Nuclear.Test.Contracts" version="2.0.0-beta4" />
         <dependency id="log4net" version="2.0.12" />
       </group>
     </dependencies>

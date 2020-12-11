@@ -1,11 +1,11 @@
 ﻿using System;
 
 namespace Nuclear.Test.Printer.Leafs {
-    internal class InvokationLeaf : TreeLeaf {
+    internal class InjectionLeaf : TreeLeaf {
 
         #region properties
 
-        internal override String Title => "Parameter Invokation";
+        internal override String Title => "Parameter Injection";
 
         internal String Message { get; private set; }
 
@@ -13,7 +13,7 @@ namespace Nuclear.Test.Printer.Leafs {
 
         #region ctors
 
-        internal InvokationLeaf(Verbosity verbosity, String message) : base(verbosity) {
+        internal InjectionLeaf(Verbosity verbosity, String message) : base(verbosity) {
             Message = message;
         }
 
@@ -23,7 +23,7 @@ namespace Nuclear.Test.Printer.Leafs {
 
         protected override void PrintResult() { }
 
-        protected override void PrintDetails() => Write(ResultTree.ColorScheme.InvokationMessage, $"'{Message}'");
+        protected override void PrintDetails() => Write(ResultTree.ColorScheme.InjectionMessage, $"'{Message}'");
 
         #endregion
 
