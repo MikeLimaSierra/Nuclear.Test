@@ -1,5 +1,7 @@
 # Nuclear.Test
 
+`Nuclear.Test` is a test platform for `.NET`, which can exeute tests made with [Nuclear.TestSite](https://github.com/MikeLimaSierra/Nuclear.TestSite).
+
 This is a quick and dirty readme with very little information due to the current pre-release state.
 There is going to be more in the near future along with a proper release.
 
