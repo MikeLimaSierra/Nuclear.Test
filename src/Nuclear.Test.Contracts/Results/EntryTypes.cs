@@ -11,9 +11,9 @@
         Note,
 
         /// <summary>
-        /// The entry is a test method invokation.
+        /// The entry is a test method data injection.
         /// </summary>
-        Invokation,
+        Injection,
 
         /// <summary>
         /// The entry is an error.
