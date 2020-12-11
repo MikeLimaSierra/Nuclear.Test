@@ -127,8 +127,16 @@ namespace Nuclear.Test.Execution {
                 _log.Info("Setup message received.");
 
                 Link.MessageReceived -= OnSetupReceived;
-                Configuration = LoadConfiguration(e.Message);
-                LoadAssembly();
+
+                try {
+                    Configuration = LoadConfiguration(e.Message);
+                    LoadAssembly();
+
+                } catch(Exception ex) {
+                    _log.Fatal("Failed to load configuration and load assembly.", ex);
+
+                    RaiseExecutionFinished();
+                }
             }
         }
 
@@ -139,7 +147,15 @@ namespace Nuclear.Test.Execution {
                 _log.Info("Execute message received.");
 
                 Link.MessageReceived -= OnExecuteReceived;
-                Execute();
+
+                try {
+                    Execute();
+
+                } catch(Exception ex) {
+                    _log.Fatal("Failed to execute.", ex);
+
+                    RaiseExecutionFinished();
+                }
             }
         }
 

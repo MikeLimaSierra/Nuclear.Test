@@ -61,7 +61,7 @@ namespace Nuclear.Test.Worker {
 
         #endregion
 
-        #region private methods
+        #region event handlers
 
         private static void OnClientExecutionFinished(Object sender, EventArgs e) {
             _log.Debug(nameof(OnClientExecutionFinished));
