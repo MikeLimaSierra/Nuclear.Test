@@ -215,10 +215,7 @@ namespace Nuclear.Test.Execution.Worker {
                     return false;
                 }
 
-                String invokationMessage = $"Invoking generic method {method.Name}<{String.Join(", ", typeParams.Select(t => t.Format()))}>({String.Join(", ", _parameters.Select(p => p.ParameterType.Format()))})";
-
-                _log.Debug(invokationMessage);
-                _results.LogInvokation(method, invokationMessage);
+                _log.Debug($"Invoking generic method {method.Name}<{String.Join(", ", typeParams.Select(t => t.Format()))}>({String.Join(", ", _parameters.Select(p => p.ParameterType.Format()))})");
             }
 
             return true;
@@ -229,10 +226,10 @@ namespace Nuclear.Test.Execution.Worker {
 
             if(TryGetInstance(_methodInfo.DeclaringType, out Object instance) && TryPrepareForInvoke(@params, out MethodInfo method, out Object[] parameters)) {
                 if(parameters.Length > 0) {
-                    String message = $"Injecting data set {parameters.Format()}.";
+                    String paramString = parameters.Format();
 
-                    _log.Debug(message);
-                    _results.AddNote(message, File, Method);
+                    _log.Debug($"Injecting data set {paramString}.");
+                    _results.LogInjection(method, paramString);
                 }
 
                 try {

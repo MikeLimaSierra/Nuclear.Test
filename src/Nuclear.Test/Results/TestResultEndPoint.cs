@@ -49,7 +49,7 @@ namespace Nuclear.Test.Results {
 
         public void LogError(MethodInfo _method, String message) => AddEntry(TestEntry.FromError(message), _method.DeclaringType.Name, _method.Name);
 
-        public void LogInvokation(MethodInfo _method, String message) => AddEntry(TestEntry.FromInvokation(message), _method.DeclaringType.Name, _method.Name);
+        public void LogInjection(MethodInfo _method, String message) => AddEntry(TestEntry.FromInjection(message), _method.DeclaringType.Name, _method.Name);
 
         public void IgnoreTestMethod(MethodInfo _method, String ignoreReason) {
             Factory.Instance.Create(out ITestResultKey key, Scenario, _method.DeclaringType.Name, _method.Name);

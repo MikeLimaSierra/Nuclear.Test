@@ -47,11 +47,11 @@ namespace Nuclear.Test.Results {
         void LogError(MethodInfo _method, String message);
 
         /// <summary>
-        /// Logs a test method invokation.
+        /// Logs a test method data injection.
         /// </summary>
         /// <param name="_method">The <see cref="MethodInfo"/> that is invoked.</param>
         /// <param name="message">The detailed invokation message.</param>
-        void LogInvokation(MethodInfo _method, String message);
+        void LogInjection(MethodInfo _method, String message);
 
         /// <summary>
         /// Set an entire test method to ignored.
