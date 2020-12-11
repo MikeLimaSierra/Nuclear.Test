@@ -226,10 +226,10 @@ namespace Nuclear.Test.Execution.Worker {
 
             if(TryGetInstance(_methodInfo.DeclaringType, out Object instance) && TryPrepareForInvoke(@params, out MethodInfo method, out Object[] parameters)) {
                 if(parameters.Length > 0) {
-                    String message = $"Injecting data set {parameters.Format()}.";
+                    String paramString = parameters.Format();
 
-                    _log.Debug(message);
-                    _results.LogInjection(method, message);
+                    _log.Debug($"Injecting data set {paramString}.");
+                    _results.LogInjection(method, paramString);
                 }
 
                 try {
