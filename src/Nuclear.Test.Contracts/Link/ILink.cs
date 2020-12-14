@@ -49,16 +49,28 @@ namespace Nuclear.Test.Link {
         Boolean StartOutput();
 
         /// <summary>
+        /// Stops the output channel.
+        /// </summary>
+        /// <returns>True if successful.</returns>
+        Boolean StopOutput();
+
+        /// <summary>
         /// Waits for a connecting <see cref="ILink"/> on the output channel.
         /// </summary>
         /// <returns>True if a connection was established.</returns>
         Boolean WaitForConnection();
 
         /// <summary>
-        /// Connects to the output channel another <see cref="ILink"/>.
+        /// Connects to the output channel of another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
         Boolean ConnectInput();
+
+        /// <summary>
+        /// Disconnects from the output channel of another <see cref="ILink"/>.
+        /// </summary>
+        /// <returns>True if successful.</returns>
+        Boolean DisconnectInput();
 
         /// <summary>
         /// Sends an <see cref="IMessage"/> through the output channel.
