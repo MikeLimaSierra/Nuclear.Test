@@ -114,7 +114,6 @@ namespace Nuclear.Test.Execution.Proxy {
             ExecuteRemotes(remotes);
 
             SendFinished();
-            Link.WaitForOutputFlush();
             RaiseExecutionFinished();
         }
 

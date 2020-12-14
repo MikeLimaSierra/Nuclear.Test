@@ -120,7 +120,6 @@ namespace Nuclear.Test.Execution.Worker {
 
             SendResults(Results.GetKeyedResults());
             SendFinished();
-            Link.WaitForOutputFlush();
             RaiseExecutionFinished();
         }
 

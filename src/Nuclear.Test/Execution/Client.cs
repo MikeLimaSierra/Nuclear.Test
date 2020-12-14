@@ -159,6 +159,17 @@ namespace Nuclear.Test.Execution {
             }
         }
 
+        private void OnFinishedReceived(Object sender, MessageReceivedEventArgs e) {
+            _log.Debug(nameof(OnFinishedReceived));
+
+            if(e.Message.Command == Commands.Finished) {
+                _log.Info("Finished message received.");
+
+                Link.MessageReceived -= OnFinishedReceived;
+                Link.DisconnectInput();
+            }
+        }
+
         private void OnServerConnected(Object sender, EventArgs e) {
             _log.Debug(nameof(OnServerConnected));
 
@@ -243,10 +254,11 @@ namespace Nuclear.Test.Execution {
         protected void SendFinished() {
             _log.Debug(nameof(SendFinished));
 
+            Link.MessageReceived += OnFinishedReceived;
             Factory.Instance.Create(out IMessage message, Commands.Finished);
             Link.Send(message);
             Link.WaitForOutputFlush();
-            Link.Stop();
+            Link.StopOutput();
         }
 
         /// <summary>

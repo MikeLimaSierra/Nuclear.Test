@@ -15,7 +15,7 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Implements the basic communication link.
     /// </summary>
-    public abstract class Link : ILink {
+    internal abstract class Link : ILink {
 
         #region events
 
@@ -30,7 +30,9 @@ namespace Nuclear.Test.Link {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(Link));
 
-        private readonly CancellationTokenSource _cancel = new CancellationTokenSource();
+        private readonly CancellationTokenSource _readCancel = new CancellationTokenSource();
+
+        private readonly CancellationTokenSource _writeCancel = new CancellationTokenSource();
 
         private readonly IMessageSerializer _serializer = new MessageSerializer();
 
@@ -132,6 +134,32 @@ namespace Nuclear.Test.Link {
         }
 
         /// <summary>
+        /// Stops the output channel.
+        /// </summary>
+        /// <returns>True if successful.</returns>
+        public virtual Boolean StopOutput() {
+            _log.Debug(nameof(StopOutput));
+
+            try {
+                _writeCancel.Cancel();
+
+                _messageOutEvent.Set();
+                _messageWriteT.Join();
+
+                _outStream.WaitForPipeDrain();
+                _outWriter.Close();
+                _outStream.Dispose();
+
+                return true;
+
+            } catch(Exception ex) {
+                _log.Error("Failed to start link.", ex);
+
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Waits for a connecting <see cref="ILink"/> on the output channel.
         /// </summary>
         /// <returns>True if a connection was established.</returns>
@@ -151,7 +179,7 @@ namespace Nuclear.Test.Link {
         }
 
         /// <summary>
-        /// Connects to the output channel another <see cref="ILink"/>.
+        /// Connects to the output channel of another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
         public virtual Boolean ConnectInput() {
@@ -168,6 +196,38 @@ namespace Nuclear.Test.Link {
 
             } catch(Exception ex) {
                 _log.Error("Failed to connect.", ex);
+
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Disconnects from the output channel of another <see cref="ILink"/>.
+        /// </summary>
+        /// <returns>True if successful.</returns>
+        public virtual Boolean DisconnectInput() {
+            _log.Debug(nameof(DisconnectInput));
+
+            try {
+                _readCancel.Cancel();
+                _log.Debug("read canceled");
+
+                _messageInEvent.Set();
+                _log.Debug("in event set");
+                _messageForwardT.Join();
+                _log.Debug("forwarding joined");
+                _messageReadT.Join();
+                _log.Debug("reading joined");
+
+                _inReader.Close();
+                _log.Debug("reader closed");
+                _inStream.Dispose();
+                _log.Debug("stream disposed");
+
+                return true;
+
+            } catch(Exception ex) {
+                _log.Error("Failed to disconnect.", ex);
 
                 return false;
             }
@@ -203,9 +263,7 @@ namespace Nuclear.Test.Link {
         /// <summary>
         /// Stops all threads.
         /// </summary>
-        public void Stop() {
-            _cancel.Cancel();
-        }
+        public void Stop() { }
 
         #endregion
 
@@ -217,15 +275,16 @@ namespace Nuclear.Test.Link {
         protected virtual void Dispose(Boolean disposing) {
             _log.Debug(nameof(Dispose));
 
-            _cancel.Cancel();
+            _readCancel.Cancel();
+            _writeCancel.Cancel();
 
             if(!_disposedValue) {
-                _messageOutEvent.Set();
-                _messageWriteT.Join();
+                //_messageOutEvent.Set();
+                //_messageWriteT.Join();
 
-                _messageInEvent.Set();
-                _messageForwardT.Join();
-                _messageReadT.Abort();
+                //_messageInEvent.Set();
+                //_messageForwardT.Join();
+                //_messageReadT.Join();
 
                 if(disposing) {
                     _outStream?.Dispose();
@@ -319,10 +378,10 @@ namespace Nuclear.Test.Link {
         private void MessageWriteTS() {
             _log.Debug(nameof(MessageWriteTS));
 
-            while(!_cancel.IsCancellationRequested) {
+            while(!_writeCancel.IsCancellationRequested) {
                 _messageOutEvent.WaitOne();
 
-                if(!_cancel.IsCancellationRequested) {
+                if(!_writeCancel.IsCancellationRequested) {
                     while(_messagesOut.TryDequeue(out Byte[] data)) {
                         Write(data);
                     }
@@ -335,7 +394,7 @@ namespace Nuclear.Test.Link {
         private void MessageReadTS() {
             _log.Debug(nameof(MessageReadTS));
 
-            while(!_cancel.IsCancellationRequested) {
+            while(!_readCancel.IsCancellationRequested) {
                 Read(out Byte[] data);
 
                 if(data.Length > 0) {
@@ -352,10 +411,10 @@ namespace Nuclear.Test.Link {
         private void MessageForwardTS() {
             _log.Debug(nameof(MessageForwardTS));
 
-            while(!_cancel.IsCancellationRequested) {
+            while(!_readCancel.IsCancellationRequested) {
                 _messageInEvent.WaitOne();
 
-                if(!_cancel.IsCancellationRequested) {
+                if(!_readCancel.IsCancellationRequested) {
                     while(_messagesIn.TryDequeue(out Byte[] data)) {
                         RaiseMessageReceived(_serializer.Deserialize(data));
                     }
