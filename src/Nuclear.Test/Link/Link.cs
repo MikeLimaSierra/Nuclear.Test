@@ -215,6 +215,8 @@ namespace Nuclear.Test.Link {
 
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected virtual void Dispose(Boolean disposing) {
+            _log.Debug(nameof(Dispose));
+
             _cancel.Cancel();
 
             if(!_disposedValue) {
@@ -326,6 +328,8 @@ namespace Nuclear.Test.Link {
                     }
                 }
             }
+
+            _log.Debug($"Thread {nameof(MessageWriteTS)} stopped.");
         }
 
         private void MessageReadTS() {
@@ -341,6 +345,8 @@ namespace Nuclear.Test.Link {
 
                 Thread.Sleep(100);
             }
+
+            _log.Debug($"Thread {nameof(MessageReadTS)} stopped.");
         }
 
         private void MessageForwardTS() {
@@ -355,6 +361,8 @@ namespace Nuclear.Test.Link {
                     }
                 }
             }
+
+            _log.Debug($"Thread {nameof(MessageForwardTS)} stopped.");
         }
 
         #endregion
