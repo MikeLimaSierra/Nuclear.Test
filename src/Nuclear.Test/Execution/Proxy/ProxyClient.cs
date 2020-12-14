@@ -74,6 +74,7 @@ namespace Nuclear.Test.Execution.Proxy {
 
             if(sender is IWorkerRemote remote) {
                 remote.RemotingFinished -= OnRemotingFinished;
+                remote.Dispose();
 
             } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IWorkerRemote)}."); }
 
