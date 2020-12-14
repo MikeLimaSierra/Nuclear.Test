@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Nuclear.Test.Contracts</id>
-    <version>2.0.0-beta5</version>
+    <version>2.0.0-beta6</version>
     <title>Nuclear.Test.Contracts</title>
     <description>Contracts and API for Nuclear.Test.</description>
     <authors>MikeLimaSierra</authors>
