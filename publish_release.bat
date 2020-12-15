@@ -17,8 +17,8 @@ dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp3.0 -o %
 dotnet publish --self-contained true -r win-x64 -c Release -f netcoreapp3.1 -o %APPDATA%\Nuclear.Test.Worker\Amd64\NETCoreApp3.1\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
 dotnet publish --self-contained true -r win-x86 -c Release -f netcoreapp3.1 -o %APPDATA%\Nuclear.Test.Worker\X86\NETCoreApp3.1\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
 
-dotnet publish --self-contained true -r win-x64 -c Release -f net5.0 -o %APPDATA%\Nuclear.Test.Worker\Amd64\NET5.0\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
-dotnet publish --self-contained true -r win-x86 -c Release -f net5.0 -o %APPDATA%\Nuclear.Test.Worker\X86\NET5.0\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
+dotnet publish --self-contained true -r win-x64 -c Release -f net5.0 -o %APPDATA%\Nuclear.Test.Worker\Amd64\NETCoreApp5.0\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
+dotnet publish --self-contained true -r win-x86 -c Release -f net5.0 -o %APPDATA%\Nuclear.Test.Worker\X86\NETCoreApp5.0\ src\Nuclear.Test.Worker\Nuclear.Test.Worker.csproj
 
 xcopy /Y bin\Nuclear.Test.Worker\x64\Release\net461\* %APPDATA%\Nuclear.Test.Worker\Amd64\NETFramework4.6.1\
 xcopy /Y bin\Nuclear.Test.Worker\x86\Release\net461\* %APPDATA%\Nuclear.Test.Worker\X86\NETFramework4.6.1\

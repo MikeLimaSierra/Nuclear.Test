@@ -15,7 +15,7 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Implements the basic communication link.
     /// </summary>
-    public abstract class Link : ILink {
+    internal abstract class Link : ILink {
 
         #region events
 
@@ -30,8 +30,6 @@ namespace Nuclear.Test.Link {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(Link));
 
-        private readonly CancellationTokenSource _cancel = new CancellationTokenSource();
-
         private readonly IMessageSerializer _serializer = new MessageSerializer();
 
         #region outbound
@@ -40,27 +38,25 @@ namespace Nuclear.Test.Link {
 
         private readonly AutoResetEvent _messageOutEvent = new AutoResetEvent(false);
 
+        private readonly CancellationTokenSource _writeCancel = new CancellationTokenSource();
+
         private Thread _messageWriteT;
 
-        private NamedPipeServerStream _outStream;
+        private readonly NamedPipeServerStream _outStream;
 
-        private BinaryWriter _outWriter;
+        private readonly BinaryWriter _outWriter;
 
         #endregion
 
         #region inbound
 
-        private readonly ConcurrentQueue<Byte[]> _messagesIn = new ConcurrentQueue<Byte[]>();
-
-        private readonly AutoResetEvent _messageInEvent = new AutoResetEvent(false);
+        private readonly CancellationTokenSource _readCancel = new CancellationTokenSource();
 
         private Thread _messageReadT;
 
-        private Thread _messageForwardT;
+        private readonly NamedPipeClientStream _inStream;
 
-        private NamedPipeClientStream _inStream;
-
-        private BinaryReader _inReader;
+        private readonly BinaryReader _inReader;
 
         #endregion
 
@@ -132,6 +128,31 @@ namespace Nuclear.Test.Link {
         }
 
         /// <summary>
+        /// Stops the output channel.
+        /// </summary>
+        /// <returns>True if successful.</returns>
+        public virtual Boolean StopOutput() {
+            _log.Debug(nameof(StopOutput));
+
+            try {
+                _writeCancel.Cancel();
+
+                _messageOutEvent.Set();
+                _messageWriteT.Join();
+
+                _outStream.WaitForPipeDrain();
+                _outWriter.Close();
+
+                return true;
+
+            } catch(Exception ex) {
+                _log.Error("Failed to start link.", ex);
+
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Waits for a connecting <see cref="ILink"/> on the output channel.
         /// </summary>
         /// <returns>True if a connection was established.</returns>
@@ -151,7 +172,7 @@ namespace Nuclear.Test.Link {
         }
 
         /// <summary>
-        /// Connects to the output channel another <see cref="ILink"/>.
+        /// Connects to the output channel of another <see cref="ILink"/>.
         /// </summary>
         /// <returns>True if successful.</returns>
         public virtual Boolean ConnectInput() {
@@ -161,8 +182,6 @@ namespace Nuclear.Test.Link {
                 _inStream.Connect(ConnectionTimeout);
                 _messageReadT = new Thread(MessageReadTS);
                 _messageReadT.Start();
-                _messageForwardT = new Thread(MessageForwardTS);
-                _messageForwardT.Start();
 
                 return true;
 
@@ -199,56 +218,6 @@ namespace Nuclear.Test.Link {
 
             _log.Debug("Output flush complete.");
         }
-
-        /// <summary>
-        /// Stops all threads.
-        /// </summary>
-        public void Stop() {
-            _cancel.Cancel();
-        }
-
-        #endregion
-
-        #region IDisposable
-
-        private Boolean _disposedValue;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected virtual void Dispose(Boolean disposing) {
-            _cancel.Cancel();
-
-            if(!_disposedValue) {
-                _messageOutEvent.Set();
-                _messageWriteT.Join();
-
-                _messageInEvent.Set();
-                _messageForwardT.Join();
-                _messageReadT.Abort();
-
-                if(disposing) {
-                    _outStream?.Dispose();
-                    _outStream = null;
-
-                    _inStream?.Dispose();
-                    _inStream = null;
-
-                    _outWriter?.Dispose();
-                    _outWriter = null;
-
-                    _inReader?.Dispose();
-                    _inReader = null;
-                }
-
-                _disposedValue = true;
-            }
-        }
-
-        public void Dispose() {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -317,44 +286,42 @@ namespace Nuclear.Test.Link {
         private void MessageWriteTS() {
             _log.Debug(nameof(MessageWriteTS));
 
-            while(!_cancel.IsCancellationRequested) {
+            while(!_writeCancel.IsCancellationRequested) {
                 _messageOutEvent.WaitOne();
 
-                if(!_cancel.IsCancellationRequested) {
+                if(!_writeCancel.IsCancellationRequested) {
                     while(_messagesOut.TryDequeue(out Byte[] data)) {
                         Write(data);
                     }
                 }
             }
+
+            _log.Debug($"Thread {nameof(MessageWriteTS)} stopped.");
         }
 
         private void MessageReadTS() {
             _log.Debug(nameof(MessageReadTS));
 
-            while(!_cancel.IsCancellationRequested) {
+            while(!_readCancel.IsCancellationRequested) {
                 Read(out Byte[] data);
 
                 if(data.Length > 0) {
-                    _messagesIn.Enqueue(data);
-                    _messageInEvent.Set();
+                    IMessage message = _serializer.Deserialize(data);
+
+                    if(message.Command == Commands.Finished) { _readCancel.Cancel(); }
+
+                    RaiseMessageReceived(message);
                 }
 
                 Thread.Sleep(100);
             }
-        }
 
-        private void MessageForwardTS() {
-            _log.Debug(nameof(MessageForwardTS));
+            try {
+                _inReader.Close();
 
-            while(!_cancel.IsCancellationRequested) {
-                _messageInEvent.WaitOne();
+            } catch(Exception ex) { _log.Error("Failed to disconnect.", ex); }
 
-                if(!_cancel.IsCancellationRequested) {
-                    while(_messagesIn.TryDequeue(out Byte[] data)) {
-                        RaiseMessageReceived(_serializer.Deserialize(data));
-                    }
-                }
-            }
+            _log.Debug($"Thread {nameof(MessageReadTS)} stopped.");
         }
 
         #endregion

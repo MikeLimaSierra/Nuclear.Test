@@ -20,9 +20,9 @@
       <DelaySign>true</DelaySign>
     </PropertyGroup>
 
-  <Target Condition="'$(Configuration)' == 'Release'" Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="publish.bat" />
-  </Target>
+    <Target Condition="'$(Configuration)' == 'Release'" Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="publish.bat" />
+    </Target>
 
     <!-- Conditional -->
     <PropertyGroup Condition="'$(Configuration)' == 'Debug' ">

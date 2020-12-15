@@ -144,7 +144,7 @@ namespace Nuclear.Test.Execution {
                 Link.MessageReceived -= OnResultsReceived;
                 Link.MessageReceived -= OnFinishedReceived;
                 RaiseRemotingFinished();
-                Link.Stop();
+                SendFinished();
             }
         }
 
@@ -229,6 +229,18 @@ namespace Nuclear.Test.Execution {
             _log.Debug(nameof(RaiseRemotingFinished));
 
             RemotingFinished?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Sends the <see cref="Commands.Finished"/> message to the attached remote.
+        /// </summary>
+        protected void SendFinished() {
+            _log.Debug(nameof(SendFinished));
+
+            Factory.Instance.Create(out IMessage message, Commands.Finished);
+            Link.Send(message);
+            Link.WaitForOutputFlush();
+            Link.StopOutput();
         }
 
         #endregion
