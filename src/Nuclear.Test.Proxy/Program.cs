@@ -56,8 +56,6 @@ namespace Nuclear.Test.Proxy {
                 Console.ReadKey(true);
             }
 
-            _client.Dispose();
-
             Environment.ExitCode = (Int32) (results.GetResults().HasFails() ? ExitCode.Fail : ExitCode.OK);
         }
 

@@ -144,9 +144,8 @@ namespace Nuclear.Test.Execution {
                 Link.MessageReceived -= OnResultsReceived;
                 Link.MessageReceived -= OnFinishedReceived;
                 RaiseRemotingFinished();
-                Link.DisconnectInput();
-
                 SendFinished();
+                Link.StopOutput();
             }
         }
 
@@ -162,7 +161,6 @@ namespace Nuclear.Test.Execution {
 
             if(!_disposedValue) {
                 if(disposing) {
-                    Link?.Dispose();
                 }
 
                 _disposedValue = true;

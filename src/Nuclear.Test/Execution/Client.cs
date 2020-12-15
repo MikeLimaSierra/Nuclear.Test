@@ -166,7 +166,7 @@ namespace Nuclear.Test.Execution {
                 _log.Info("Finished message received.");
 
                 Link.MessageReceived -= OnFinishedReceived;
-                Link.DisconnectInput();
+                Link.StopOutput();
             }
         }
 
@@ -189,7 +189,6 @@ namespace Nuclear.Test.Execution {
 
             if(!_disposedValue) {
                 if(disposing) {
-                    Link?.Dispose();
                 }
 
                 _disposedValue = true;
