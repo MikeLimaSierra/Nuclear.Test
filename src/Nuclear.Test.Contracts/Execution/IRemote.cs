@@ -10,7 +10,7 @@ namespace Nuclear.Test.Execution {
     /// </summary>
     /// <typeparam name="TRemoteConfiguration">The remote configuration type.</typeparam>
     /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
-    public interface IRemote<TRemoteConfiguration, TClientConfiguration> : IDisposable
+    public interface IRemote<TRemoteConfiguration, TClientConfiguration>
         where TRemoteConfiguration : IRemoteConfiguration<TClientConfiguration>
         where TClientConfiguration : IClientConfiguration {
 

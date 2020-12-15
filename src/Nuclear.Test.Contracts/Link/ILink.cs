@@ -5,7 +5,7 @@ namespace Nuclear.Test.Link {
     /// <summary>
     /// Defines the basic communication link.
     /// </summary>
-    public interface ILink : IDisposable {
+    public interface ILink {
 
         #region events
 
@@ -67,12 +67,6 @@ namespace Nuclear.Test.Link {
         Boolean ConnectInput();
 
         /// <summary>
-        /// Disconnects from the output channel of another <see cref="ILink"/>.
-        /// </summary>
-        /// <returns>True if successful.</returns>
-        Boolean DisconnectInput();
-
-        /// <summary>
         /// Sends an <see cref="IMessage"/> through the output channel.
         /// </summary>
         /// <param name="message"></param>
@@ -83,11 +77,6 @@ namespace Nuclear.Test.Link {
         /// Waits until the output buffer has been emptied.
         /// </summary>
         void WaitForOutputFlush();
-
-        /// <summary>
-        /// Stops all threads.
-        /// </summary>
-        void Stop();
 
         #endregion
 

@@ -9,7 +9,7 @@ namespace Nuclear.Test.Execution {
     /// Defines the base functionality of a remote controlled test client.
     /// </summary>
     /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
-    public interface IClient<TClientConfiguration> : IDisposable
+    public interface IClient<TClientConfiguration>
         where TClientConfiguration : IClientConfiguration {
 
         #region events
