@@ -75,11 +75,6 @@ namespace Nuclear.Test.Execution {
         private void OnResultsAvailable(Object sender, ResultsAvailableEventArgs e) {
             _log.Debug(nameof(OnResultsAvailable));
 
-            if(sender is IProxyRemote remote) {
-                remote.ResultsAvailable -= OnResultsAvailable;
-
-            } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}."); }
-
             Results.Add(e.Results);
         }
 
@@ -87,6 +82,7 @@ namespace Nuclear.Test.Execution {
             _log.Debug(nameof(OnRemotingFinished));
 
             if(sender is IProxyRemote remote) {
+                remote.ResultsAvailable -= OnResultsAvailable;
                 remote.RemotingFinished -= OnRemotingFinished;
 
             } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}."); }

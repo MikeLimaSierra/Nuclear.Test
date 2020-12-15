@@ -4,12 +4,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using log4net;
+
 using Nuclear.Extensions;
 
 namespace Nuclear.Test.Results {
     internal class TestResultEndPoint : ITestResultEndPoint {
 
         #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TestResultEndPoint));
 
         private readonly ConcurrentDictionary<ITestResultKey, ITestMethodResult> _results =
             new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(_comparer);
@@ -26,10 +30,15 @@ namespace Nuclear.Test.Results {
 
         #region methods
 
-        public void Add(ITestResultKey key, ITestMethodResult results)
-            => _results.AddOrUpdate(key, results, (_, __) => results);
+        public void Add(ITestResultKey key, ITestMethodResult results) {
+            _log.Debug($"{nameof(Add)}({key.Format()}, {results.CountEntries.Format()})");
+
+            _results.AddOrUpdate(key, results, (_, __) => results);
+        }
 
         public void Add(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
+            _log.Debug($"{nameof(Add)}({results.Count().Format()})");
+
             foreach(KeyValuePair<ITestResultKey, ITestMethodResult> result in results) {
                 Add(result.Key, result.Value);
             }
