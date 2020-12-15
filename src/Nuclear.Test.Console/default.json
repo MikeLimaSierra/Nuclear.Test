@@ -16,10 +16,10 @@
         "WorkerDirectory": "%APPDATA%/Nuclear.Test.Worker/",
         "WorkerExecutableName": "Nuclear.Test.Worker.exe",
         "StartClientVisible": true,
-        "AutoShutdown": false
+        "AutoShutdown": true
     },
     "Execution": {
-        "AssembliesInSequence": true,
+        "AssembliesInSequence": false,
         "TestsInSequence": false,
         "SelectedRuntimes": "Lowest"
     }
