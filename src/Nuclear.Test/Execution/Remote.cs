@@ -145,27 +145,8 @@ namespace Nuclear.Test.Execution {
                 Link.MessageReceived -= OnFinishedReceived;
                 RaiseRemotingFinished();
                 SendFinished();
-                Link.StopOutput();
             }
         }
-
-        #endregion
-
-        #region IDisposable
-
-        private Boolean _disposedValue;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected virtual void Dispose(Boolean disposing) {
-            _log.Debug(nameof(Dispose));
-        }
-
-        public void Dispose() {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 

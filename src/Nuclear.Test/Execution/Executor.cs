@@ -88,7 +88,6 @@ namespace Nuclear.Test.Execution {
 
             if(sender is IProxyRemote remote) {
                 remote.RemotingFinished -= OnRemotingFinished;
-                remote.Dispose();
 
             } else { _log.Error($"Failed to cast {nameof(sender)} to {nameof(IProxyRemote)}."); }
 

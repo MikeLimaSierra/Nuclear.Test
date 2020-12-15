@@ -42,9 +42,9 @@ namespace Nuclear.Test.Link {
 
         private Thread _messageWriteT;
 
-        private NamedPipeServerStream _outStream;
+        private readonly NamedPipeServerStream _outStream;
 
-        private BinaryWriter _outWriter;
+        private readonly BinaryWriter _outWriter;
 
         #endregion
 
@@ -54,9 +54,9 @@ namespace Nuclear.Test.Link {
 
         private Thread _messageReadT;
 
-        private NamedPipeClientStream _inStream;
+        private readonly NamedPipeClientStream _inStream;
 
-        private BinaryReader _inReader;
+        private readonly BinaryReader _inReader;
 
         #endregion
 
@@ -142,7 +142,6 @@ namespace Nuclear.Test.Link {
 
                 _outStream.WaitForPipeDrain();
                 _outWriter.Close();
-                _outStream.Dispose();
 
                 return true;
 
@@ -194,12 +193,6 @@ namespace Nuclear.Test.Link {
         }
 
         /// <summary>
-        /// Disconnects from the output channel of another <see cref="ILink"/>.
-        /// </summary>
-        /// <returns>True if successful.</returns>
-        public virtual Boolean DisconnectInput() => throw new NotImplementedException();
-
-        /// <summary>
         /// Sends an <see cref="IMessage"/> through the output channel.
         /// </summary>
         /// <param name="message"></param>
@@ -224,27 +217,6 @@ namespace Nuclear.Test.Link {
             SpinWait.SpinUntil(() => _messagesOut.IsEmpty);
 
             _log.Debug("Output flush complete.");
-        }
-
-        /// <summary>
-        /// Stops all threads.
-        /// </summary>
-        public void Stop() { }
-
-        #endregion
-
-        #region IDisposable
-
-        private Boolean _disposedValue;
-
-        protected virtual void Dispose(Boolean disposing) {
-            _log.Debug(nameof(Dispose));
-        }
-
-        public void Dispose() {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
         }
 
         #endregion
@@ -346,7 +318,6 @@ namespace Nuclear.Test.Link {
 
             try {
                 _inReader.Close();
-                _inStream.Dispose();
 
             } catch(Exception ex) { _log.Error("Failed to disconnect.", ex); }
 

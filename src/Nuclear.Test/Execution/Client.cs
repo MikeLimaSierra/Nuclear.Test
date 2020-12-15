@@ -159,41 +159,12 @@ namespace Nuclear.Test.Execution {
             }
         }
 
-        private void OnFinishedReceived(Object sender, MessageReceivedEventArgs e) {
-            _log.Debug(nameof(OnFinishedReceived));
-
-            if(e.Message.Command == Commands.Finished) {
-                _log.Info("Finished message received.");
-
-                Link.MessageReceived -= OnFinishedReceived;
-                Link.StopOutput();
-            }
-        }
-
         private void OnServerConnected(Object sender, EventArgs e) {
             _log.Debug(nameof(OnServerConnected));
 
             Link.ServerConnected -= OnServerConnected;
             RaiseRemoteConnected();
         }
-
-        #endregion
-
-        #region IDisposable
-
-        private Boolean _disposedValue;
-
-#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
-        protected virtual void Dispose(Boolean disposing) {
-            _log.Debug(nameof(Dispose));
-        }
-
-        public void Dispose() {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member
 
         #endregion
 
@@ -246,7 +217,6 @@ namespace Nuclear.Test.Execution {
         protected void SendFinished() {
             _log.Debug(nameof(SendFinished));
 
-            Link.MessageReceived += OnFinishedReceived;
             Factory.Instance.Create(out IMessage message, Commands.Finished);
             Link.Send(message);
             Link.WaitForOutputFlush();
