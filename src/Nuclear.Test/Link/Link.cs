@@ -239,34 +239,6 @@ namespace Nuclear.Test.Link {
 
         protected virtual void Dispose(Boolean disposing) {
             _log.Debug(nameof(Dispose));
-
-            _readCancel.Cancel();
-            _writeCancel.Cancel();
-
-            if(!_disposedValue) {
-                //_messageOutEvent.Set();
-                //_messageWriteT.Join();
-
-                //_messageInEvent.Set();
-                //_messageForwardT.Join();
-                //_messageReadT.Join();
-
-                if(disposing) {
-                    _outStream?.Dispose();
-                    _outStream = null;
-
-                    _inStream?.Dispose();
-                    _inStream = null;
-
-                    _outWriter?.Dispose();
-                    _outWriter = null;
-
-                    _inReader?.Dispose();
-                    _inReader = null;
-                }
-
-                _disposedValue = true;
-            }
         }
 
         public void Dispose() {

@@ -186,13 +186,6 @@ namespace Nuclear.Test.Execution {
 #pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
         protected virtual void Dispose(Boolean disposing) {
             _log.Debug(nameof(Dispose));
-
-            if(!_disposedValue) {
-                if(disposing) {
-                }
-
-                _disposedValue = true;
-            }
         }
 
         public void Dispose() {
