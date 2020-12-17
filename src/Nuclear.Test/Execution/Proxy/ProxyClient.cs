@@ -129,6 +129,7 @@ namespace Nuclear.Test.Execution.Proxy {
 
                 Func<IEnumerable<Version>, Version> filter = Configuration.SelectedRuntimes == SelectedExecutionRuntimes.Highest ? Enumerable.Max : Enumerable.Min;
                 IDictionary<FrameworkIdentifiers, Version> versionfilter = matchingRuntimes
+                    .Where(r => Configuration.AvailableRuntimes.Contains(r))
                     .GroupBy(r => r.Framework)
                     .ToDictionary(g => g.Key, g => filter(g.Select(r => r.Version)));
 
