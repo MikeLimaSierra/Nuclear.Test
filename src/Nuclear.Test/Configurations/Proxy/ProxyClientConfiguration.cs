@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations.Worker;
 
@@ -15,6 +17,11 @@ namespace Nuclear.Test.Configurations.Proxy {
         ///     If set to false, all proxies and workers will start immediately.
         /// </summary>
         public Boolean AssembliesInSequence { get; set; }
+
+        /// <summary>
+        /// Gets or sets the runtimes that can be used.
+        /// </summary>
+        public IEnumerable<RuntimeInfo> AvailableRuntimes { get; set; }
 
         /// <summary>
         /// Gets or sets the selected runtimes that are used to execute tests.
@@ -46,6 +53,7 @@ namespace Nuclear.Test.Configurations.Proxy {
             Throw.If.Object.IsNull(original, nameof(original));
 
             AssembliesInSequence = original.AssembliesInSequence;
+            AvailableRuntimes = original.AvailableRuntimes;
             SelectedRuntimes = original.SelectedRuntimes;
             WorkerDirectory = original.WorkerDirectory;
             WorkerExecutableName = original.WorkerExecutableName;
