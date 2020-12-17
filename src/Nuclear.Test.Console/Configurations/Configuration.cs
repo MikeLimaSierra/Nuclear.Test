@@ -16,7 +16,7 @@ using Nuclear.Test.Configurations.Proxy;
 using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Console.Filters;
 
-namespace Nuclear.Test.Console {
+namespace Nuclear.Test.Console.Configurations {
 
     internal class Configuration {
 
