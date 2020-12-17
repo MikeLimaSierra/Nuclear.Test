@@ -108,7 +108,11 @@ namespace Nuclear.Test.Execution.Proxy {
             base.Execute();
 
             IEnumerable<IWorkerRemoteInfo> remoteInfos = CreateRemoteInfos();
-            ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.Configuration.HasExecutable, r.IsSelected)));
+            ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (
+                r.Runtime,
+                r.Configuration.HasExecutable,
+                (Boolean?) (Configuration.AvailableRuntimes.Contains(r.Runtime) ? r.IsSelected : null)
+            )));
             IEnumerable<IWorkerRemote> remotes = CreateRemotes(remoteInfos);
             ExecuteRemotes(remotes);
 

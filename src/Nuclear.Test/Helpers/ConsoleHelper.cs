@@ -53,7 +53,7 @@ namespace Nuclear.Test.Helpers {
             Console.Write(sb);
         }
 
-        public static void PrintWorkerRemotesInfo(IEnumerable<(RuntimeInfo runtime, Boolean hasExecutable, Boolean isSelected)> remoteInfos) {
+        public static void PrintWorkerRemotesInfo(IEnumerable<(RuntimeInfo runtime, Boolean hasExecutable, Boolean? isSelected)> remoteInfos) {
             Throw.If.Object.IsNull(remoteInfos, nameof(remoteInfos));
 
             StringBuilder sb = new StringBuilder();
@@ -63,10 +63,26 @@ namespace Nuclear.Test.Helpers {
             sb.AppendLine(@"╠══════════════════════════════════════════════════════════════════════╣");
             Console.Write(sb);
 
-            foreach((RuntimeInfo runtime, Boolean hasExecutable, Boolean isSelected) in remoteInfos) {
+            foreach((RuntimeInfo runtime, Boolean hasExecutable, Boolean? isSelected) in remoteInfos) {
                 Console.Write("║    ");
-                Console.ForegroundColor = (hasExecutable) ? (isSelected ? ConsoleColor.Green : ConsoleColor.DarkYellow) : ConsoleColor.DarkGray;
-                Console.Write("[{0}]", (hasExecutable) ? (isSelected ? "Y" : "N") : "?");
+
+                if(!hasExecutable) {
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    Console.Write("[?]");
+
+                } else if(!isSelected.HasValue) {
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write("[X]");
+
+                } else if(isSelected.Value) {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("[Y]");
+
+                } else {
+                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                    Console.Write("[N]");
+                }
+
                 Console.ResetColor();
                 Console.WriteLine(" {0}    ║", runtime.ToString().PadRight(58, ' '));
             }

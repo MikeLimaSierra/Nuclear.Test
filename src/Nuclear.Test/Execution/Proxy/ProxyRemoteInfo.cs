@@ -20,9 +20,6 @@ namespace Nuclear.Test.Execution.Proxy {
             Throw.If.Object.IsNull(configuration, nameof(configuration));
 
             Configuration = configuration;
-
-            ProcessorArchitecture architecture = Environment.Is64BitProcess ? ProcessorArchitecture.Amd64 : ProcessorArchitecture.X86;
-            //Executable = new FileInfo(Path.Combine(proxyConfig.Executable.FullName, architecture.ToString(), proxyConfig.WorkerExecutableName));
         }
 
         #endregion
