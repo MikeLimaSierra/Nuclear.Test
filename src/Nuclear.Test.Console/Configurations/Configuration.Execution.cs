@@ -8,7 +8,7 @@ using Newtonsoft.Json.Converters;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Console.Filters;
 
-namespace Nuclear.Test.Console {
+namespace Nuclear.Test.Console.Configurations {
 
     internal class ExecutionConfig {
 
