@@ -172,7 +172,7 @@ namespace Nuclear.Test.Execution {
 
             _log.Info($"Chose {architectures.Count.Format()} architectures ({architectures.Format()}) to execute tests in assembly ({architecture.Format()})");
 
-            return architectures;
+            return architectures.Where(a => Configuration.AvailableArchitectures.Contains(a));
         }
 
         private IEnumerable<IProxyRemote> CreateRemotes(IEnumerable<IProxyRemoteInfo> infos) {
