@@ -432,19 +432,43 @@ namespace Nuclear.Test.Link {
             if(TryGetData(out FileInfo testAssembly)
                 && TryGetData(out Boolean autoShutdown)
                 && TryGetData(out Boolean assembliesInSequence)
-                && TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
-                && TryGetData(out DirectoryInfo workerDirectory)
-                && TryGetData(out String workerExecutableName)
-                && TryGetData(out IWorkerRemoteConfiguration remoteConfig)) {
+                && TryGetData(out Int32 runtimesCount)) {
 
-                Factory.Instance.Create(out data);
-                data.TestAssembly = testAssembly;
-                data.AutoShutdown = autoShutdown;
-                data.AssembliesInSequence = assembliesInSequence;
-                data.SelectedRuntimes = selectedRuntimes;
-                data.WorkerDirectory = workerDirectory;
-                data.WorkerExecutableName = workerExecutableName;
-                data.WorkerRemoteConfiguration = remoteConfig;
+                RuntimeInfo[] availableRuntimes = new RuntimeInfo[runtimesCount];
+
+                for(Int32 i = 0; i < runtimesCount; i++) {
+                    if(TryGetData(out FrameworkIdentifiers framework)
+                        && TryGetData(out String _version)
+                        && Version.TryParse(_version, out Version version)) {
+
+                        try {
+                            availableRuntimes[i] = new RuntimeInfo(framework, version);
+
+                        } catch(Exception ex) {
+                            _log.Error($"Failed to read {typeof(RuntimeInfo).Format()}", ex);
+
+                            return false;
+                        }
+
+                    } else { return false; }
+                }
+
+                if(TryGetData(out SelectedExecutionRuntimes selectedRuntimes)
+                    && TryGetData(out DirectoryInfo workerDirectory)
+                    && TryGetData(out String workerExecutableName)
+                    && TryGetData(out IWorkerRemoteConfiguration remoteConfig)) {
+
+
+                    Factory.Instance.Create(out data);
+                    data.TestAssembly = testAssembly;
+                    data.AutoShutdown = autoShutdown;
+                    data.AssembliesInSequence = assembliesInSequence;
+                    data.AvailableRuntimes = availableRuntimes;
+                    data.SelectedRuntimes = selectedRuntimes;
+                    data.WorkerDirectory = workerDirectory;
+                    data.WorkerExecutableName = workerExecutableName;
+                    data.WorkerRemoteConfiguration = remoteConfig;
+                }
             }
 
             return data != null;
