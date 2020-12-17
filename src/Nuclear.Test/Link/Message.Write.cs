@@ -295,6 +295,13 @@ namespace Nuclear.Test.Link {
             Append(data.AutoShutdown);
 
             Append(data.AssembliesInSequence);
+            Append(data.AvailableRuntimes.Count());
+
+            foreach(RuntimeInfo runtime in data.AvailableRuntimes) {
+                Append(runtime.Framework);
+                Append(runtime.Version.ToString());
+            }
+
             Append(data.SelectedRuntimes);
             Append(data.WorkerDirectory);
             Append(data.WorkerExecutableName);

@@ -108,7 +108,11 @@ namespace Nuclear.Test.Execution.Proxy {
             base.Execute();
 
             IEnumerable<IWorkerRemoteInfo> remoteInfos = CreateRemoteInfos();
-            ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (r.Runtime, r.Configuration.HasExecutable, r.IsSelected)));
+            ConsoleHelper.PrintWorkerRemotesInfo(remoteInfos.Select(r => (
+                r.Runtime,
+                r.Configuration.HasExecutable,
+                (Boolean?) (Configuration.AvailableRuntimes.Contains(r.Runtime) ? r.IsSelected : null)
+            )));
             IEnumerable<IWorkerRemote> remotes = CreateRemotes(remoteInfos);
             ExecuteRemotes(remotes);
 
@@ -129,6 +133,7 @@ namespace Nuclear.Test.Execution.Proxy {
 
                 Func<IEnumerable<Version>, Version> filter = Configuration.SelectedRuntimes == SelectedExecutionRuntimes.Highest ? Enumerable.Max : Enumerable.Min;
                 IDictionary<FrameworkIdentifiers, Version> versionfilter = matchingRuntimes
+                    .Where(r => Configuration.AvailableRuntimes.Contains(r))
                     .GroupBy(r => r.Framework)
                     .ToDictionary(g => g.Key, g => filter(g.Select(r => r.Version)));
 
@@ -136,7 +141,9 @@ namespace Nuclear.Test.Execution.Proxy {
 
                 foreach(RuntimeInfo runtime in matchingRuntimes) {
                     Factory.Instance.Create(out IWorkerRemoteInfo info, Configuration, runtime);
-                    info.IsSelected = info.Configuration.HasExecutable && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All || info.Runtime.Version == versionfilter[info.Runtime.Framework]);
+                    info.IsSelected = info.Configuration.HasExecutable
+                        && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All
+                            || (versionfilter.ContainsKey(info.Runtime.Framework) && info.Runtime.Version == versionfilter[info.Runtime.Framework]));
 
                     _log.Debug($"Created worker remote: {info.Format()}");
 

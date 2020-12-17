@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
 using Nuclear.Test.Configurations.Proxy;
 
@@ -13,6 +14,11 @@ namespace Nuclear.Test.Configurations {
         /// Gets or sets the test assemblies that should be executed.
         /// </summary>
         public IEnumerable<FileInfo> Assemblies { get; set; }
+
+        /// <summary>
+        /// Gets or sets the processor architectures that can be used.
+        /// </summary>
+        public IEnumerable<ProcessorArchitecture> AvailableArchitectures { get; set; }
 
         /// <summary>
         /// Gets or sets the directory that contains all workers.

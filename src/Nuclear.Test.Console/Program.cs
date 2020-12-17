@@ -11,6 +11,7 @@ using log4net.Config;
 using Nuclear.Arguments;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
+using Nuclear.Test.Console.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Printer;

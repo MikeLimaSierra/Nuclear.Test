@@ -13,7 +13,7 @@ namespace Nuclear.Test.Results {
             => TestEntries.Count;
 
         public Int32 CountRelevantEntries
-            => TestEntries.Where(result => result.EntryType != EntryTypes.Note).Count();
+            => TestEntries.Where(result => result.EntryType != EntryTypes.Note && result.EntryType != EntryTypes.Injection).Count();
 
         public Int32 CountResults
             => TestEntries.Where(result => result.EntryType == EntryTypes.ResultOk || result.EntryType == EntryTypes.ResultFail).Count();
