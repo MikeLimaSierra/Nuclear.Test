@@ -13,8 +13,8 @@
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Nuclear.Arguments" Version="2.0.1" />
-    <PackageReference Include="Nuclear.Test" Version="2.0.0-beta8" />
-    <PackageReference Include="Nuclear.Test.Printer" Version="2.0.0-beta8" />
+    <PackageReference Include="Nuclear.Test" Version="2.0.0-beta9" />
+    <PackageReference Include="Nuclear.Test.Printer" Version="2.0.0-beta9" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
