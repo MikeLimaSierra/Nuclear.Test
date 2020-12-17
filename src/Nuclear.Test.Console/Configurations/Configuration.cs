@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 using log4net;
 
 using Newtonsoft.Json;
 
+using Nuclear.Assemblies;
+using Nuclear.Assemblies.Runtimes;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Configurations.Proxy;
 using Nuclear.Test.Configurations.Worker;
+using Nuclear.Test.Console.Filters;
 
 namespace Nuclear.Test.Console {
 
@@ -117,6 +123,16 @@ namespace Nuclear.Test.Console {
             Factory.Instance.Create(out IProxyClientConfiguration proxyClientConfiguration);
             proxyClientConfiguration.WorkerRemoteConfiguration = workerRemoteConfig;
             proxyClientConfiguration.AssembliesInSequence = Execution.AssembliesInSequence;
+
+            RuntimesHelper.TryGetCurrentRuntime(out RuntimeInfo current);
+            RuntimesHelper.TryGetMatchingRuntimes(current, out IEnumerable<RuntimeInfo> runtimes);
+
+            proxyClientConfiguration.AvailableRuntimes = runtimes
+                .Where(r => Execution.ArchitecturesFilter.Mode switch {
+                    FilterModes.Blacklist => !Execution.RuntimesFilter.Values.Any(ri => ri.Convert().Contains(r)),
+                    FilterModes.WhiteList => Execution.RuntimesFilter.Values.Any(ri => ri.Convert().Contains(r)),
+                    _ => false,
+                });
             proxyClientConfiguration.AutoShutdown = Clients.AutoShutdown;
             proxyClientConfiguration.SelectedRuntimes = Execution.SelectedRuntimes;
             proxyClientConfiguration.TestAssembly = null;
@@ -130,6 +146,13 @@ namespace Nuclear.Test.Console {
 
             Factory.Instance.Create(out IExecutorConfiguration configuration);
             configuration.ProxyRemoteConfiguration = proxyRemoteConfiguration;
+            configuration.AvailableArchitectures = Enum.GetValues(typeof(ProcessorArchitecture))
+                .Cast<ProcessorArchitecture>()
+                .Where(a => Execution.ArchitecturesFilter.Mode switch {
+                    FilterModes.Blacklist => !Execution.ArchitecturesFilter.Values.Contains(a),
+                    FilterModes.WhiteList => Execution.ArchitecturesFilter.Values.Contains(a),
+                    _ => false,
+                });
             configuration.ProxyDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Clients.ProxyDirectory));
             configuration.ProxyExecutableName = Clients.ProxyExecutableName;
 

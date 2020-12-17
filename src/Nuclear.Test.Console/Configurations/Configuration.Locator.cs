@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
-namespace Nuclear.Test.Console {
+namespace Nuclear.Test.Console.Configurations {
 
     internal class LocatorConfig {
 

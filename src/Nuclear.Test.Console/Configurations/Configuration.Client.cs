@@ -2,7 +2,7 @@
 
 using Newtonsoft.Json;
 
-namespace Nuclear.Test.Console {
+namespace Nuclear.Test.Console.Configurations {
 
     internal class ClientConfig {
 
