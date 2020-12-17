@@ -141,7 +141,9 @@ namespace Nuclear.Test.Execution.Proxy {
 
                 foreach(RuntimeInfo runtime in matchingRuntimes) {
                     Factory.Instance.Create(out IWorkerRemoteInfo info, Configuration, runtime);
-                    info.IsSelected = info.Configuration.HasExecutable && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All || info.Runtime.Version == versionfilter[info.Runtime.Framework]);
+                    info.IsSelected = info.Configuration.HasExecutable
+                        && (Configuration.SelectedRuntimes == SelectedExecutionRuntimes.All
+                            || (versionfilter.ContainsKey(info.Runtime.Framework) && info.Runtime.Version == versionfilter[info.Runtime.Framework]));
 
                     _log.Debug($"Created worker remote: {info.Format()}");
 
