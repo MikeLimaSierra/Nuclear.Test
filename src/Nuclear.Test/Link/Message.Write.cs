@@ -398,7 +398,7 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
-        public IMessage Append(ITestResultKey data) {
+        public IMessage Append(IResultKey data) {
             Append(data.AssemblyName);
             Append(data.TargetRuntime.Framework);
             Append(data.TargetRuntime.Version.ToString());
@@ -447,10 +447,10 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>The current <see cref="IMessage"/>.</returns>
-        public IMessage Append(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data) {
+        public IMessage Append(IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> data) {
             Append(data.Count());
 
-            foreach(KeyValuePair<ITestResultKey, ITestMethodResult> entry in data) {
+            foreach(KeyValuePair<IResultKey, ITestMethodResult> entry in data) {
                 Append(entry.Key);
                 Append(entry.Value);
             }

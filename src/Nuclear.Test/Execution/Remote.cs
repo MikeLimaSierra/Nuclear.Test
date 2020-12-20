@@ -129,7 +129,7 @@ namespace Nuclear.Test.Execution {
 
                 RaiseResultsReceived(e.Message.Payload.ToArray());
 
-                if(e.Message.TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection)) {
+                if(e.Message.TryGetData(out IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> resultCollection)) {
                     RaiseResultsAvailable(resultCollection);
                 }
             }
@@ -216,7 +216,7 @@ namespace Nuclear.Test.Execution {
         /// Raises the event <see cref="ResultsAvailable"/> with the given <paramref name="resultCollection"/>.
         /// </summary>
         /// <param name="resultCollection">The results that were received and deserialized.</param>
-        protected internal void RaiseResultsAvailable(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> resultCollection) {
+        protected internal void RaiseResultsAvailable(IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> resultCollection) {
             _log.Debug(nameof(RaiseResultsAvailable));
 
             ResultsAvailable?.Invoke(this, new ResultsAvailableEventArgs(resultCollection));

@@ -608,7 +608,7 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
-        public Boolean TryGetData(out ITestResultKey data) {
+        public Boolean TryGetData(out IResultKey data) {
             data = default;
 
             if(TryGetData(out String asssembly)
@@ -631,7 +631,7 @@ namespace Nuclear.Test.Link {
                         fileName, methodName);
 
                 } catch(Exception ex) {
-                    _log.Error($"Failed to read {typeof(ITestResultKey).Format()}", ex);
+                    _log.Error($"Failed to read {typeof(IResultKey).Format()}", ex);
                 }
             }
 
@@ -701,18 +701,18 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
-        public Boolean TryGetData(out IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> data) {
+        public Boolean TryGetData(out IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> data) {
             data = default;
 
             if(!TryGetData(out Int32 count)) {
                 return false;
             }
 
-            IList<KeyValuePair<ITestResultKey, ITestMethodResult>> _data = new List<KeyValuePair<ITestResultKey, ITestMethodResult>>();
+            IList<KeyValuePair<IResultKey, ITestMethodResult>> _data = new List<KeyValuePair<IResultKey, ITestMethodResult>>();
 
             for(Int32 i = 0; i < count; i++) {
-                if(TryGetData(out ITestResultKey key) && TryGetData(out ITestMethodResult result)) {
-                    _data.Add(new KeyValuePair<ITestResultKey, ITestMethodResult>(key, result));
+                if(TryGetData(out IResultKey key) && TryGetData(out ITestMethodResult result)) {
+                    _data.Add(new KeyValuePair<IResultKey, ITestMethodResult>(key, result));
 
                 } else {
                     return false;

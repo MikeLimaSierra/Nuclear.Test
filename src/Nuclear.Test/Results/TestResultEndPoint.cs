@@ -15,10 +15,10 @@ namespace Nuclear.Test.Results {
 
         private static readonly ILog _log = LogManager.GetLogger(typeof(TestResultEndPoint));
 
-        private readonly ConcurrentDictionary<ITestResultKey, ITestMethodResult> _results =
-            new ConcurrentDictionary<ITestResultKey, ITestMethodResult>(_comparer);
+        private readonly ConcurrentDictionary<IResultKey, ITestMethodResult> _results =
+            new ConcurrentDictionary<IResultKey, ITestMethodResult>(_comparer);
 
-        private static readonly IEqualityComparer<ITestResultKey> _comparer = DynamicEqualityComparer.FromIEquatable<ITestResultKey>();
+        private static readonly IEqualityComparer<IResultKey> _comparer = DynamicEqualityComparer.FromIEquatable<IResultKey>();
 
         #endregion
 
@@ -30,16 +30,16 @@ namespace Nuclear.Test.Results {
 
         #region methods
 
-        public void Add(ITestResultKey key, ITestMethodResult results) {
+        public void Add(IResultKey key, ITestMethodResult results) {
             _log.Debug($"{nameof(Add)}({key.Format()}, {results.CountEntries.Format()})");
 
             _results.AddOrUpdate(key, results, (_, __) => results);
         }
 
-        public void Add(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
+        public void Add(IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results) {
             _log.Debug($"{nameof(Add)}({results.Count().Format()})");
 
-            foreach(KeyValuePair<ITestResultKey, ITestMethodResult> result in results) {
+            foreach(KeyValuePair<IResultKey, ITestMethodResult> result in results) {
                 Add(result.Key, result.Value);
             }
         }
@@ -50,7 +50,7 @@ namespace Nuclear.Test.Results {
         public void Clear() => _results.Clear();
 
         public void PrepareResults(MethodInfo _method) {
-            Factory.Instance.Create(out ITestResultKey key, Scenario, _method.DeclaringType.Name, _method.Name);
+            Factory.Instance.Create(out IResultKey key, Scenario, _method.DeclaringType.Name, _method.Name);
             Factory.Instance.Create(out ITestMethodResult result);
 
             _results.GetOrAdd(key, result);
@@ -61,7 +61,7 @@ namespace Nuclear.Test.Results {
         public void LogInjection(MethodInfo _method, String message) => AddEntry(TestEntry.FromInjection(message), _method.DeclaringType.Name, _method.Name);
 
         public void IgnoreTestMethod(MethodInfo _method, String ignoreReason) {
-            Factory.Instance.Create(out ITestResultKey key, Scenario, _method.DeclaringType.Name, _method.Name);
+            Factory.Instance.Create(out IResultKey key, Scenario, _method.DeclaringType.Name, _method.Name);
             Factory.Instance.Create(out ITestMethodResult result);
             result.Ignore(ignoreReason);
 
@@ -72,15 +72,15 @@ namespace Nuclear.Test.Results {
 
         #region ITestResultSource
 
-        public IEnumerable<ITestResultKey> GetKeys() => _results.Keys;
+        public IEnumerable<IResultKey> GetKeys() => _results.Keys;
 
-        public IEnumerable<ITestResultKey> GetKeys(ITestResultKey match) => GetKeys().Where(key => key.Matches(match));
+        public IEnumerable<IResultKey> GetKeys(IResultKey match) => GetKeys().Where(key => key.Matches(match));
 
-        public IEnumerable<ITestResultKey> GetKeys(ITestResultKey match, TestResultKeyPrecisions precision) {
-            List<ITestResultKey> keys = new List<ITestResultKey>();
+        public IEnumerable<IResultKey> GetKeys(IResultKey match, TestResultKeyPrecisions precision) {
+            List<IResultKey> keys = new List<IResultKey>();
 
-            foreach(ITestResultKey key in GetKeys(match)) {
-                ITestResultKey clippedKey = key.Clip(precision);
+            foreach(IResultKey key in GetKeys(match)) {
+                IResultKey clippedKey = key.Clip(precision);
 
                 if(!keys.Contains(clippedKey, _comparer)) {
                     keys.Add(clippedKey);
@@ -90,7 +90,7 @@ namespace Nuclear.Test.Results {
             return keys;
         }
 
-        public ITestMethodResult GetResult(ITestResultKey key) {
+        public ITestMethodResult GetResult(IResultKey key) {
             Factory.Instance.Create(out ITestMethodResult result);
 
             return _results.GetOrAdd(key, result);
@@ -98,9 +98,9 @@ namespace Nuclear.Test.Results {
 
         public IEnumerable<ITestMethodResult> GetResults() => _results.Values;
 
-        public IEnumerable<ITestMethodResult> GetResults(ITestResultKey match) => _results.Where(kvp => kvp.Key.Matches(match)).Select(value => value.Value);
+        public IEnumerable<ITestMethodResult> GetResults(IResultKey match) => _results.Where(kvp => kvp.Key.Matches(match)).Select(value => value.Value);
 
-        public IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> GetKeyedResults() => _results;
+        public IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> GetKeyedResults() => _results;
 
         #endregion
 
@@ -117,7 +117,7 @@ namespace Nuclear.Test.Results {
         #region private methods
 
         private void AddEntry(ITestEntry entry, String _file, String _method) {
-            Factory.Instance.Create(out ITestResultKey key, Scenario, _file, _method);
+            Factory.Instance.Create(out IResultKey key, Scenario, _file, _method);
             Factory.Instance.Create(out ITestMethodResult result);
 
             _results.GetOrAdd(key, result).TestEntries.Add(entry);

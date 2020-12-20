@@ -76,20 +76,20 @@ namespace Nuclear.Test {
 
         public void Create(out ITestResultEndPoint @object) => @object = new TestResultEndPoint();
 
-        public void CreateEmpty(out ITestResultKey @object) => @object = TestResultKey.Empty;
+        public void CreateEmpty(out IResultKey @object) => @object = ResultKey.Empty;
 
-        public void Create(out ITestResultKey @object, ITestScenario scenario, MethodInfo methodInfo) => @object = new TestResultKey(scenario, methodInfo);
+        public void Create(out IResultKey @object, ITestScenario scenario, MethodInfo methodInfo) => @object = new ResultKey(scenario, methodInfo);
 
-        public void Create(out ITestResultKey @object, ITestScenario scenario, String fileName, String methodName) => @object = new TestResultKey(scenario, fileName, methodName);
+        public void Create(out IResultKey @object, ITestScenario scenario, String fileName, String methodName) => @object = new ResultKey(scenario, fileName, methodName);
 
-        public void Create(out ITestResultKey @object,
+        public void Create(out IResultKey @object,
             String assemblyName,
             RuntimeInfo targetRuntime,
             ProcessorArchitecture targetArchitecture,
             RuntimeInfo executionRuntime,
             ProcessorArchitecture executionArchitecture,
             String fileName,
-            String methodName) => @object = new TestResultKey(assemblyName, targetRuntime, targetArchitecture, executionRuntime, executionArchitecture, fileName, methodName);
+            String methodName) => @object = new ResultKey(assemblyName, targetRuntime, targetArchitecture, executionRuntime, executionArchitecture, fileName, methodName);
 
         #endregion
 

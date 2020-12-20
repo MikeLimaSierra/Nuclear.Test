@@ -191,7 +191,7 @@ namespace Nuclear.Test.Execution {
         /// Sends test results back to the attached remote.
         /// </summary>
         /// <param name="results">The test result collection that will be sent.</param>
-        protected void SendResults(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
+        protected void SendResults(IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results) {
             _log.Debug(nameof(SendResults));
 
             Factory.Instance.Create(out IMessage message, Commands.Results);

@@ -5,11 +5,11 @@ using Nuclear.Assemblies.Runtimes;
 using Nuclear.Extensions;
 
 namespace Nuclear.Test.Results {
-    internal class TestResultKey : ITestResultKey {
+    internal class ResultKey : IResultKey {
 
         #region statics
 
-        internal static ITestResultKey Empty => new TestResultKey(null,
+        internal static IResultKey Empty => new ResultKey(null,
             new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
             new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
             null, null);
@@ -82,10 +82,10 @@ namespace Nuclear.Test.Results {
 
         #region ctors
 
-        internal TestResultKey(ITestScenario scenario, MethodInfo methodInfo)
+        internal ResultKey(ITestScenario scenario, MethodInfo methodInfo)
             : this(scenario, methodInfo.DeclaringType.Name, methodInfo.Name) { }
 
-        internal TestResultKey(ITestScenario scenario, String fileName, String methodName)
+        internal ResultKey(ITestScenario scenario, String fileName, String methodName)
             : this(scenario.AssemblyName,
                   scenario.TargetRuntime,
                   scenario.TargetArchitecture,
@@ -94,7 +94,7 @@ namespace Nuclear.Test.Results {
                   fileName,
                   methodName) { }
 
-        internal TestResultKey(
+        internal ResultKey(
             String assemblyName,
             RuntimeInfo targetRuntime,
             ProcessorArchitecture targetArchitecture,
@@ -116,7 +116,7 @@ namespace Nuclear.Test.Results {
 
         #region methods
 
-        public Boolean Matches(ITestResultKey match) {
+        public Boolean Matches(IResultKey match) {
             if(match == null) { return false; }
 
             if(match.HasAssemblyName && match.AssemblyName != AssemblyName) { return false; }
@@ -136,8 +136,8 @@ namespace Nuclear.Test.Results {
             return true;
         }
 
-        public ITestResultKey Clip(TestResultKeyPrecisions precision) {
-            ITestResultKey key;
+        public IResultKey Clip(TestResultKeyPrecisions precision) {
+            IResultKey key;
 
             switch(precision) {
                 case TestResultKeyPrecisions.FileName:
@@ -212,20 +212,20 @@ namespace Nuclear.Test.Results {
         }
 
         public override Boolean Equals(Object obj) {
-            if(obj != null && obj is ITestResultKey other) {
+            if(obj != null && obj is IResultKey other) {
                 return Equals(other);
             }
 
             return false;
         }
 
-        public Boolean Equals(ITestResultKey other) {
+        public Boolean Equals(IResultKey other) {
             if(other == null || Precision != other.Precision) { return false; }
 
             return Equals(other, Precision);
         }
 
-        public Boolean Equals(ITestResultKey other, TestResultKeyPrecisions precision) {
+        public Boolean Equals(IResultKey other, TestResultKeyPrecisions precision) {
             if(other == null) { return false; }
 
             if(Precision != other.Precision && (Precision < precision || other.Precision < precision)) { return false; }
@@ -233,7 +233,7 @@ namespace Nuclear.Test.Results {
             return Matches(other.Clip(precision));
         }
 
-        public Int32 CompareTo(ITestResultKey other) {
+        public Int32 CompareTo(IResultKey other) {
             if(!Equals(other)) {
                 Int32 result = AssemblyName.CompareTo(other.AssemblyName);
                 if(result != 0) { return result; }
