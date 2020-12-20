@@ -16,7 +16,7 @@ namespace Nuclear.Test.Printer.Nodes {
 
         #region ctors
 
-        internal MethodNode(Verbosity verbosity, ITestResultKey key, ITestResultSource results)
+        internal MethodNode(Verbosity verbosity, IResultKey key, ITestResultSource results)
             : base(verbosity, key, results) {
 
             Results = results.GetResult(Key);

@@ -9,7 +9,7 @@ namespace Nuclear.Test.Printer.Nodes {
 
         #region properties
 
-        internal ITestResultKey Key { get; private set; }
+        internal IResultKey Key { get; private set; }
 
         internal Int32 ResultsTotal { get; private set; }
 
@@ -31,7 +31,7 @@ namespace Nuclear.Test.Printer.Nodes {
 
         #region ctors
 
-        internal TreeNode(Verbosity verbosity, ITestResultKey key, ITestResultSource results)
+        internal TreeNode(Verbosity verbosity, IResultKey key, ITestResultSource results)
             : base(verbosity) {
 
             Key = key;

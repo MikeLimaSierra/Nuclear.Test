@@ -17,12 +17,12 @@ namespace Nuclear.Test.Printer.Nodes {
 
         #region ctors
 
-        internal SummaryNode(Verbosity verbosity, ITestResultKey key, ITestResultSource results)
+        internal SummaryNode(Verbosity verbosity, IResultKey key, ITestResultSource results)
             : base(verbosity, key, results) {
 
             Results = results;
 
-            List<ITestResultKey> keys = new List<ITestResultKey>();
+            List<IResultKey> keys = new List<IResultKey>();
 
             if(Verbosity > Verbosity.Collapsed || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.AssemblyName).ToList();

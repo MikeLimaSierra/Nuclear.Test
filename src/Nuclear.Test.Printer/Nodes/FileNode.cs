@@ -15,10 +15,10 @@ namespace Nuclear.Test.Printer.Nodes {
 
         #region ctors
 
-        internal FileNode(Verbosity verbosity, ITestResultKey key, ITestResultSource results)
+        internal FileNode(Verbosity verbosity, IResultKey key, ITestResultSource results)
             : base(verbosity, key, results) {
 
-            List<ITestResultKey> keys = new List<ITestResultKey>();
+            List<IResultKey> keys = new List<IResultKey>();
 
             if(Verbosity > Verbosity.FileName || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.MethodName).ToList();

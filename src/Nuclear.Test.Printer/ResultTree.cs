@@ -27,7 +27,7 @@ namespace Nuclear.Test.Printer {
         /// <param name="verbosity">The desired verbosity of the tree.</param>
         /// <param name="key">The key that limits the contents of the tree.</param>
         /// <param name="results">The results that are shown in the tree.</param>
-        public ResultTree(Verbosity verbosity, ITestResultKey key, ITestResultSource results) {
+        public ResultTree(Verbosity verbosity, IResultKey key, ITestResultSource results) {
             Node = new SummaryNode(verbosity, key, results);
         }
 

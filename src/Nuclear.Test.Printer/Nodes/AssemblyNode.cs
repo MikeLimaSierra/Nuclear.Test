@@ -15,10 +15,10 @@ namespace Nuclear.Test.Printer.Nodes {
 
         #region ctors
 
-        internal AssemblyNode(Verbosity verbosity, ITestResultKey key, ITestResultSource results)
+        internal AssemblyNode(Verbosity verbosity, IResultKey key, ITestResultSource results)
             : base(verbosity, key, results) {
 
-            List<ITestResultKey> keys = new List<ITestResultKey>();
+            List<IResultKey> keys = new List<IResultKey>();
 
             if(Verbosity > Verbosity.TargetFrameworkVersion || HasFails || HasIgnores || HasBlanks) {
                 keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetArchitecture).ToList();
