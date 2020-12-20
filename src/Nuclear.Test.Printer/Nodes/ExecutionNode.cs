@@ -12,10 +12,10 @@ namespace Nuclear.Test.Printer.Nodes {
         internal override String Title {
             get {
                 switch(Key.Precision) {
-                    case TestResultKeyPrecisions.ExecutionArchitecture:
+                    case ResultKeyItems.ExecutionArchitecture:
                         return $"{Key.ExecutionRuntime.Framework} v{Key.ExecutionRuntime.Version} [{Key.ExecutionArchitecture}]";
 
-                    case TestResultKeyPrecisions.ExecutionFrameworkVersion:
+                    case ResultKeyItems.ExecutionFrameworkVersion:
                         return $"{Key.ExecutionRuntime.Framework} v{Key.ExecutionRuntime.Version}";
 
                     default:
@@ -34,7 +34,7 @@ namespace Nuclear.Test.Printer.Nodes {
             List<IResultKey> keys = new List<IResultKey>();
 
             if(Verbosity > Verbosity.ExecutionArchitecture || HasFails || HasIgnores || HasBlanks) {
-                keys = results.GetKeys(Key, TestResultKeyPrecisions.FileName).ToList();
+                keys = results.GetKeys(Key, ResultKeyItems.FileName).ToList();
             }
 
             keys.Sort();

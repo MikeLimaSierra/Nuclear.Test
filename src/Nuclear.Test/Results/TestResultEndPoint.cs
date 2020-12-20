@@ -76,7 +76,7 @@ namespace Nuclear.Test.Results {
 
         public IEnumerable<IResultKey> GetKeys(IResultKey match) => GetKeys().Where(key => key.Matches(match));
 
-        public IEnumerable<IResultKey> GetKeys(IResultKey match, TestResultKeyPrecisions precision) {
+        public IEnumerable<IResultKey> GetKeys(IResultKey match, ResultKeyItems precision) {
             List<IResultKey> keys = new List<IResultKey>();
 
             foreach(IResultKey key in GetKeys(match)) {

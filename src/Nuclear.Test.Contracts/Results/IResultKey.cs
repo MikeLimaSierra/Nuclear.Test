@@ -120,9 +120,9 @@ namespace Nuclear.Test.Results {
         Boolean IsFullyQualified { get; }
 
         /// <summary>
-        /// Gets the <see cref="TestResultKeyPrecisions"/> of the key.
+        /// Gets the <see cref="ResultKeyItems"/> of the key.
         /// </summary>
-        TestResultKeyPrecisions Precision { get; }
+        ResultKeyItems Precision { get; }
 
         #endregion
 
@@ -138,17 +138,17 @@ namespace Nuclear.Test.Results {
         /// <summary>
         /// Returns a new version of the current key that is clipped to a given precision.
         /// </summary>
-        /// <param name="precision">The <see cref="TestResultKeyPrecisions"/> for the new key.</param>
+        /// <param name="precision">The <see cref="ResultKeyItems"/> for the new key.</param>
         /// <returns>The new key.</returns>
-        IResultKey Clip(TestResultKeyPrecisions precision);
+        IResultKey Clip(ResultKeyItems precision);
 
         /// <summary>
         /// Gets if two keys are equal in respect of a given precision.
         /// </summary>
         /// <param name="other">The other key to compare.</param>
-        /// <param name="precision">The <see cref="TestResultKeyPrecisions"/> to use for comparing.</param>
+        /// <param name="precision">The <see cref="ResultKeyItems"/> to use for comparing.</param>
         /// <returns>True if both keys are equal.</returns>
-        Boolean Equals(IResultKey other, TestResultKeyPrecisions precision);
+        Boolean Equals(IResultKey other, ResultKeyItems precision);
 
         #endregion
 

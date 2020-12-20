@@ -62,19 +62,19 @@ namespace Nuclear.Test.Results {
 
         public Boolean IsFullyQualified => HasAssemblyName && HasFullyQualifiedTargetRuntime && HasTargetArchitecture && HasFullyQualifiedExecutionRuntime && HasExecutionArchitecture && HasFileName && HasMethodName;
 
-        public TestResultKeyPrecisions Precision {
+        public ResultKeyItems Precision {
             get {
-                if(!HasAssemblyName) { return TestResultKeyPrecisions.None; }
-                if(!HasTargetFrameworkIdentifier) { return TestResultKeyPrecisions.AssemblyName; }
-                if(!HasTargetFrameworkVersion) { return TestResultKeyPrecisions.TargetFrameworkIdentifier; }
-                if(!HasTargetArchitecture) { return TestResultKeyPrecisions.TargetFrameworkVersion; }
-                if(!HasExecutionFrameworkIdentifier) { return TestResultKeyPrecisions.TargetArchitecture; }
-                if(!HasExecutionFrameworkVersion) { return TestResultKeyPrecisions.ExecutionFrameworkIdentifier; }
-                if(!HasExecutionArchitecture) { return TestResultKeyPrecisions.ExecutionFrameworkVersion; }
-                if(!HasFileName) { return TestResultKeyPrecisions.ExecutionArchitecture; }
-                if(!HasMethodName) { return TestResultKeyPrecisions.FileName; }
+                if(!HasAssemblyName) { return ResultKeyItems.Unknown; }
+                if(!HasTargetFrameworkIdentifier) { return ResultKeyItems.AssemblyName; }
+                if(!HasTargetFrameworkVersion) { return ResultKeyItems.TargetFrameworkIdentifier; }
+                if(!HasTargetArchitecture) { return ResultKeyItems.TargetFrameworkVersion; }
+                if(!HasExecutionFrameworkIdentifier) { return ResultKeyItems.TargetArchitecture; }
+                if(!HasExecutionFrameworkVersion) { return ResultKeyItems.ExecutionFrameworkIdentifier; }
+                if(!HasExecutionArchitecture) { return ResultKeyItems.ExecutionFrameworkVersion; }
+                if(!HasFileName) { return ResultKeyItems.ExecutionArchitecture; }
+                if(!HasMethodName) { return ResultKeyItems.FileName; }
 
-                return TestResultKeyPrecisions.MethodName;
+                return ResultKeyItems.MethodName;
             }
         }
 
@@ -136,67 +136,67 @@ namespace Nuclear.Test.Results {
             return true;
         }
 
-        public IResultKey Clip(TestResultKeyPrecisions precision) {
+        public IResultKey Clip(ResultKeyItems precision) {
             IResultKey key;
 
             switch(precision) {
-                case TestResultKeyPrecisions.FileName:
+                case ResultKeyItems.FileName:
                     Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         ExecutionRuntime, ExecutionArchitecture,
                         FileName, null);
                     break;
 
-                case TestResultKeyPrecisions.ExecutionArchitecture:
+                case ResultKeyItems.ExecutionArchitecture:
                     Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         ExecutionRuntime, ExecutionArchitecture,
                         null, null);
                     break;
 
-                case TestResultKeyPrecisions.ExecutionFrameworkVersion:
+                case ResultKeyItems.ExecutionFrameworkVersion:
                     Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         ExecutionRuntime, ProcessorArchitecture.None,
                         null, null);
                     break;
 
-                case TestResultKeyPrecisions.ExecutionFrameworkIdentifier:
+                case ResultKeyItems.ExecutionFrameworkIdentifier:
                     Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         new RuntimeInfo(ExecutionRuntime.Framework, new Version()), ProcessorArchitecture.None,
                         null, null);
                     break;
 
-                case TestResultKeyPrecisions.TargetArchitecture:
+                case ResultKeyItems.TargetArchitecture:
                     Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, TargetArchitecture,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
                     break;
 
-                case TestResultKeyPrecisions.TargetFrameworkVersion:
+                case ResultKeyItems.TargetFrameworkVersion:
                     Factory.Instance.Create(out key, AssemblyName,
                         TargetRuntime, ProcessorArchitecture.None,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
                     break;
 
-                case TestResultKeyPrecisions.TargetFrameworkIdentifier:
+                case ResultKeyItems.TargetFrameworkIdentifier:
                     Factory.Instance.Create(out key, AssemblyName,
                         new RuntimeInfo(TargetRuntime.Framework, new Version()), ProcessorArchitecture.None,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
                     break;
 
-                case TestResultKeyPrecisions.AssemblyName:
+                case ResultKeyItems.AssemblyName:
                     Factory.Instance.Create(out key, AssemblyName,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         null, null);
                     break;
 
-                case TestResultKeyPrecisions.None:
+                case ResultKeyItems.Unknown:
                     Factory.Instance.Create(out key, null,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
                         new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
@@ -225,7 +225,7 @@ namespace Nuclear.Test.Results {
             return Equals(other, Precision);
         }
 
-        public Boolean Equals(IResultKey other, TestResultKeyPrecisions precision) {
+        public Boolean Equals(IResultKey other, ResultKeyItems precision) {
             if(other == null) { return false; }
 
             if(Precision != other.Precision && (Precision < precision || other.Precision < precision)) { return false; }

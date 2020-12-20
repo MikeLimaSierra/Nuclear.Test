@@ -3,57 +3,57 @@
 namespace Nuclear.Test.Results {
 
     /// <summary>
-    /// Defines a precision for test result keys.
+    /// Defines all available items in an <see cref="IResultKey"/>.
     /// </summary>
-    public enum TestResultKeyPrecisions : Int32 {
+    public enum ResultKeyItems : Int32 {
 
         /// <summary>
-        /// The key is a blank and does not contain information.
+        /// An unknown item.
         /// </summary>
-        None = 0,
+        Unknown = 0,
 
         /// <summary>
-        /// The key is precise to the test assembly name.
+        /// The test assembly name.
         /// </summary>
         AssemblyName = 1,
 
         /// <summary>
-        /// The key is precise to the targeted framework.
+        /// The targeted framework.
         /// </summary>
         TargetFrameworkIdentifier = 2,
 
         /// <summary>
-        /// The key is precise to the targeted framework version.
+        /// The targeted framework version.
         /// </summary>
         TargetFrameworkVersion = 3,
 
         /// <summary>
-        /// The key is precise to the targeted processor architecure.
+        /// The targeted processor architecure.
         /// </summary>
         TargetArchitecture = 4,
 
         /// <summary>
-        /// The key is precise to the executing framework.
+        /// The executing framework.
         /// </summary>
         ExecutionFrameworkIdentifier = 5,
 
         /// <summary>
-        /// The key is precise to the executing framework version.
+        /// The executing framework version.
         /// </summary>
         ExecutionFrameworkVersion = 6,
 
         /// <summary>
-        /// The key is precise to the executing processor architecure.
+        /// The executing processor architecure.
         /// </summary>
         ExecutionArchitecture = 7,
 
         /// <summary>
-        /// The key is precise to the file name.
+        /// The file name.
         /// </summary>
         FileName = 8,
 
         /// <summary>
-        /// The key is fully qualified.
+        /// The method name.
         /// </summary>
         MethodName = 9
     }

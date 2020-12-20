@@ -21,13 +21,13 @@ namespace Nuclear.Test.Printer.Nodes {
             List<IResultKey> keys = new List<IResultKey>();
 
             if(Verbosity > Verbosity.TargetFrameworkVersion || HasFails || HasIgnores || HasBlanks) {
-                keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetArchitecture).ToList();
+                keys = results.GetKeys(Key, ResultKeyItems.TargetArchitecture).ToList();
 
             } else if(verbosity > Verbosity.TargetFrameworkIdentifier) {
-                keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetFrameworkVersion).ToList();
+                keys = results.GetKeys(Key, ResultKeyItems.TargetFrameworkVersion).ToList();
 
             } else if(verbosity > Verbosity.AssemblyName) {
-                keys = results.GetKeys(Key, TestResultKeyPrecisions.TargetFrameworkIdentifier).ToList();
+                keys = results.GetKeys(Key, ResultKeyItems.TargetFrameworkIdentifier).ToList();
             }
 
             keys.Sort();

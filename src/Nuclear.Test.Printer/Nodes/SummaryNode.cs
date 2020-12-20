@@ -25,7 +25,7 @@ namespace Nuclear.Test.Printer.Nodes {
             List<IResultKey> keys = new List<IResultKey>();
 
             if(Verbosity > Verbosity.Collapsed || HasFails || HasIgnores || HasBlanks) {
-                keys = results.GetKeys(Key, TestResultKeyPrecisions.AssemblyName).ToList();
+                keys = results.GetKeys(Key, ResultKeyItems.AssemblyName).ToList();
             }
 
             keys.Sort();

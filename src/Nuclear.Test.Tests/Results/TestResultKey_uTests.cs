@@ -315,9 +315,9 @@ namespace Nuclear.Test.Results {
 
         [TestMethod]
         [TestData(nameof(PrecisionData))]
-        void Precision(IResultKey input, TestResultKeyPrecisions expected) {
+        void Precision(IResultKey input, ResultKeyItems expected) {
 
-            TestResultKeyPrecisions precision = TestResultKeyPrecisions.None;
+            ResultKeyItems precision = ResultKeyItems.Unknown;
 
             TestX.IfNot.Action.ThrowsException(() => precision = input.Precision, out Exception ex);
             TestX.If.Value.IsEqual(precision, expected);
@@ -326,28 +326,28 @@ namespace Nuclear.Test.Results {
 
         IEnumerable<Object[]> PrecisionData() {
             return new List<Object[]>() {
-                new Object[] { ResultKey.Empty, TestResultKeyPrecisions.None },
-                new Object[] { _hasAssemblyName, TestResultKeyPrecisions.AssemblyName },
-                new Object[] { _hasTargetFramework, TestResultKeyPrecisions.None },
-                new Object[] { _hasTargetFrameworkIdentifier, TestResultKeyPrecisions.None },
-                new Object[] { _hasTargetFrameworkVersion, TestResultKeyPrecisions.None },
-                new Object[] { _hasTargetArchitecture, TestResultKeyPrecisions.None },
-                new Object[] { _hasExecutionFramework, TestResultKeyPrecisions.None },
-                new Object[] { _hasExecutionFrameworkIdentifier, TestResultKeyPrecisions.None },
-                new Object[] { _hasExecutionFrameworkVersion, TestResultKeyPrecisions.None },
-                new Object[] { _hasExecutionArchitecture, TestResultKeyPrecisions.None },
-                new Object[] { _hasFileName, TestResultKeyPrecisions.None },
-                new Object[] { _hasMethodName, TestResultKeyPrecisions.None },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.MethodName },
+                new Object[] { ResultKey.Empty, ResultKeyItems.Unknown },
+                new Object[] { _hasAssemblyName, ResultKeyItems.AssemblyName },
+                new Object[] { _hasTargetFramework, ResultKeyItems.Unknown },
+                new Object[] { _hasTargetFrameworkIdentifier, ResultKeyItems.Unknown },
+                new Object[] { _hasTargetFrameworkVersion, ResultKeyItems.Unknown },
+                new Object[] { _hasTargetArchitecture, ResultKeyItems.Unknown },
+                new Object[] { _hasExecutionFramework, ResultKeyItems.Unknown },
+                new Object[] { _hasExecutionFrameworkIdentifier, ResultKeyItems.Unknown },
+                new Object[] { _hasExecutionFrameworkVersion, ResultKeyItems.Unknown },
+                new Object[] { _hasExecutionArchitecture, ResultKeyItems.Unknown },
+                new Object[] { _hasFileName, ResultKeyItems.Unknown },
+                new Object[] { _hasMethodName, ResultKeyItems.Unknown },
+                new Object[] { _isFullyQualified, ResultKeyItems.MethodName },
 
-                new Object[] { _matchTargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkIdentifier },
-                new Object[] { _matchTargetFrameworkVersion, TestResultKeyPrecisions.TargetFrameworkVersion },
-                new Object[] { _matchTargetArchitecture, TestResultKeyPrecisions.TargetArchitecture },
-                new Object[] { _matchExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkIdentifier },
-                new Object[] { _matchExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionFrameworkVersion },
-                new Object[] { _matchExecutionArchitecture, TestResultKeyPrecisions.ExecutionArchitecture },
-                new Object[] { _matchFileName, TestResultKeyPrecisions.FileName },
-                new Object[] { _matchMethodName, TestResultKeyPrecisions.MethodName },
+                new Object[] { _matchTargetFrameworkIdentifier, ResultKeyItems.TargetFrameworkIdentifier },
+                new Object[] { _matchTargetFrameworkVersion, ResultKeyItems.TargetFrameworkVersion },
+                new Object[] { _matchTargetArchitecture, ResultKeyItems.TargetArchitecture },
+                new Object[] { _matchExecutionFrameworkIdentifier, ResultKeyItems.ExecutionFrameworkIdentifier },
+                new Object[] { _matchExecutionFrameworkVersion, ResultKeyItems.ExecutionFrameworkVersion },
+                new Object[] { _matchExecutionArchitecture, ResultKeyItems.ExecutionArchitecture },
+                new Object[] { _matchFileName, ResultKeyItems.FileName },
+                new Object[] { _matchMethodName, ResultKeyItems.MethodName },
             };
         }
 
@@ -428,7 +428,7 @@ namespace Nuclear.Test.Results {
 
         [TestMethod]
         [TestData(nameof(ClipData))]
-        void Clip(IResultKey key, TestResultKeyPrecisions precision, IResultKey expected) {
+        void Clip(IResultKey key, ResultKeyItems precision, IResultKey expected) {
 
             IResultKey result = null;
 
@@ -439,16 +439,16 @@ namespace Nuclear.Test.Results {
 
         IEnumerable<Object[]> ClipData() {
             return new List<Object[]>() {
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.None, ResultKey.Empty },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.AssemblyName, _matchAssemblyName },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.TargetFrameworkIdentifier, _matchTargetFrameworkIdentifier },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.TargetFrameworkVersion, _matchTargetFrameworkVersion },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.TargetArchitecture, _matchTargetArchitecture },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.ExecutionFrameworkIdentifier, _matchExecutionFrameworkIdentifier },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.ExecutionFrameworkVersion, _matchExecutionFrameworkVersion },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.ExecutionArchitecture, _matchExecutionArchitecture },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.FileName, _matchFileName },
-                new Object[] { _isFullyQualified, TestResultKeyPrecisions.MethodName, _matchMethodName },
+                new Object[] { _isFullyQualified, ResultKeyItems.Unknown, ResultKey.Empty },
+                new Object[] { _isFullyQualified, ResultKeyItems.AssemblyName, _matchAssemblyName },
+                new Object[] { _isFullyQualified, ResultKeyItems.TargetFrameworkIdentifier, _matchTargetFrameworkIdentifier },
+                new Object[] { _isFullyQualified, ResultKeyItems.TargetFrameworkVersion, _matchTargetFrameworkVersion },
+                new Object[] { _isFullyQualified, ResultKeyItems.TargetArchitecture, _matchTargetArchitecture },
+                new Object[] { _isFullyQualified, ResultKeyItems.ExecutionFrameworkIdentifier, _matchExecutionFrameworkIdentifier },
+                new Object[] { _isFullyQualified, ResultKeyItems.ExecutionFrameworkVersion, _matchExecutionFrameworkVersion },
+                new Object[] { _isFullyQualified, ResultKeyItems.ExecutionArchitecture, _matchExecutionArchitecture },
+                new Object[] { _isFullyQualified, ResultKeyItems.FileName, _matchFileName },
+                new Object[] { _isFullyQualified, ResultKeyItems.MethodName, _matchMethodName },
             };
         }
 
@@ -525,17 +525,17 @@ namespace Nuclear.Test.Results {
         [TestMethod]
         void EqualsPrecision() {
 
-            DDTEqualsPrecision(ResultKey.Empty, null, TestResultKeyPrecisions.None, false);
+            DDTEqualsPrecision(ResultKey.Empty, null, ResultKeyItems.Unknown, false);
 
-            DDTEqualsPrecision(ResultKey.Empty, ResultKey.Empty, TestResultKeyPrecisions.None, true);
-            DDTEqualsPrecision(ResultKey.Empty, ResultKey.Empty, TestResultKeyPrecisions.AssemblyName, true);
+            DDTEqualsPrecision(ResultKey.Empty, ResultKey.Empty, ResultKeyItems.Unknown, true);
+            DDTEqualsPrecision(ResultKey.Empty, ResultKey.Empty, ResultKeyItems.AssemblyName, true);
 
         }
 
 
         [TestMethod]
         [TestData(nameof(EqualsPrecisionLMHData))]
-        void EqualsPrecisionLMH((IResultKey low, IResultKey high) keys, (TestResultKeyPrecisions low, TestResultKeyPrecisions med, TestResultKeyPrecisions high) precision) {
+        void EqualsPrecisionLMH((IResultKey low, IResultKey high) keys, (ResultKeyItems low, ResultKeyItems med, ResultKeyItems high) precision) {
 
             DDTEqualsPrecision(keys.low, keys.high, precision.low, true);
             DDTEqualsPrecision(keys.low, keys.high, precision.med, false);
@@ -551,20 +551,20 @@ namespace Nuclear.Test.Results {
 
         IEnumerable<Object[]> EqualsPrecisionLMHData() {
             return new List<Object[]>() {
-                new Object[] { (ResultKey.Empty, _matchAssemblyName), (TestResultKeyPrecisions.None, TestResultKeyPrecisions.AssemblyName, TestResultKeyPrecisions.TargetFrameworkIdentifier) },
-                new Object[] { (_matchAssemblyName, _matchTargetFrameworkIdentifier), (TestResultKeyPrecisions.AssemblyName, TestResultKeyPrecisions.TargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkVersion) },
-                new Object[] { (_matchTargetFrameworkIdentifier, _matchTargetFrameworkVersion), (TestResultKeyPrecisions.TargetFrameworkIdentifier, TestResultKeyPrecisions.TargetFrameworkVersion, TestResultKeyPrecisions.TargetArchitecture) },
-                new Object[] { (_matchTargetFrameworkVersion, _matchTargetArchitecture), (TestResultKeyPrecisions.TargetFrameworkVersion, TestResultKeyPrecisions.TargetArchitecture, TestResultKeyPrecisions.ExecutionFrameworkIdentifier) },
-                new Object[] { (_matchTargetArchitecture, _matchExecutionFrameworkIdentifier), (TestResultKeyPrecisions.TargetArchitecture, TestResultKeyPrecisions.ExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkVersion) },
-                new Object[] { (_matchExecutionFrameworkIdentifier, _matchExecutionFrameworkVersion), (TestResultKeyPrecisions.ExecutionFrameworkIdentifier, TestResultKeyPrecisions.ExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionArchitecture) },
-                new Object[] { (_matchExecutionFrameworkVersion, _matchExecutionArchitecture), (TestResultKeyPrecisions.ExecutionFrameworkVersion, TestResultKeyPrecisions.ExecutionArchitecture, TestResultKeyPrecisions.FileName) },
-                new Object[] { (_matchExecutionArchitecture, _matchFileName), (TestResultKeyPrecisions.ExecutionArchitecture, TestResultKeyPrecisions.FileName, TestResultKeyPrecisions.MethodName) },
+                new Object[] { (ResultKey.Empty, _matchAssemblyName), (ResultKeyItems.Unknown, ResultKeyItems.AssemblyName, ResultKeyItems.TargetFrameworkIdentifier) },
+                new Object[] { (_matchAssemblyName, _matchTargetFrameworkIdentifier), (ResultKeyItems.AssemblyName, ResultKeyItems.TargetFrameworkIdentifier, ResultKeyItems.TargetFrameworkVersion) },
+                new Object[] { (_matchTargetFrameworkIdentifier, _matchTargetFrameworkVersion), (ResultKeyItems.TargetFrameworkIdentifier, ResultKeyItems.TargetFrameworkVersion, ResultKeyItems.TargetArchitecture) },
+                new Object[] { (_matchTargetFrameworkVersion, _matchTargetArchitecture), (ResultKeyItems.TargetFrameworkVersion, ResultKeyItems.TargetArchitecture, ResultKeyItems.ExecutionFrameworkIdentifier) },
+                new Object[] { (_matchTargetArchitecture, _matchExecutionFrameworkIdentifier), (ResultKeyItems.TargetArchitecture, ResultKeyItems.ExecutionFrameworkIdentifier, ResultKeyItems.ExecutionFrameworkVersion) },
+                new Object[] { (_matchExecutionFrameworkIdentifier, _matchExecutionFrameworkVersion), (ResultKeyItems.ExecutionFrameworkIdentifier, ResultKeyItems.ExecutionFrameworkVersion, ResultKeyItems.ExecutionArchitecture) },
+                new Object[] { (_matchExecutionFrameworkVersion, _matchExecutionArchitecture), (ResultKeyItems.ExecutionFrameworkVersion, ResultKeyItems.ExecutionArchitecture, ResultKeyItems.FileName) },
+                new Object[] { (_matchExecutionArchitecture, _matchFileName), (ResultKeyItems.ExecutionArchitecture, ResultKeyItems.FileName, ResultKeyItems.MethodName) },
             };
         }
 
         [TestMethod]
         [TestData(nameof(EqualsPrecisionLMData))]
-        void EqualsPrecisionLM((IResultKey low, IResultKey high) keys, (TestResultKeyPrecisions low, TestResultKeyPrecisions med) precision) {
+        void EqualsPrecisionLM((IResultKey low, IResultKey high) keys, (ResultKeyItems low, ResultKeyItems med) precision) {
 
             DDTEqualsPrecision(keys.low, keys.high, precision.low, true);
             DDTEqualsPrecision(keys.low, keys.high, precision.med, false);
@@ -577,11 +577,11 @@ namespace Nuclear.Test.Results {
 
         IEnumerable<Object[]> EqualsPrecisionLMData() {
             return new List<Object[]>() {
-                new Object[] { (_matchFileName, _matchMethodName), (TestResultKeyPrecisions.FileName, TestResultKeyPrecisions.MethodName) },
+                new Object[] { (_matchFileName, _matchMethodName), (ResultKeyItems.FileName, ResultKeyItems.MethodName) },
             };
         }
 
-        void DDTEqualsPrecision(IResultKey key, IResultKey other, TestResultKeyPrecisions precision, Boolean expected,
+        void DDTEqualsPrecision(IResultKey key, IResultKey other, ResultKeyItems precision, Boolean expected,
             [CallerFilePath] String _file = null, [CallerMemberName] String _method = null) {
 
             TestX.Note($"{key}.Equals({other}, {precision.Format()}) => {expected.Format()}",
