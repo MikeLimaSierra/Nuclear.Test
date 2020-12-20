@@ -26,7 +26,7 @@ namespace Nuclear.Test {
             TestX.If.Action.ThrowsException(() => e = new ResultsAvailableEventArgs(null), out ArgumentException ex);
             TestX.If.Value.IsEqual(ex.ParamName, "results");
 
-            TestX.IfNot.Action.ThrowsException(() => e = new ResultsAvailableEventArgs(Enumerable.Empty<KeyValuePair<ITestResultKey, ITestMethodResult>>()), out Exception ex1);
+            TestX.IfNot.Action.ThrowsException(() => e = new ResultsAvailableEventArgs(Enumerable.Empty<KeyValuePair<IResultKey, ITestMethodResult>>()), out Exception ex1);
             TestX.If.Enumerable.IsEmpty(e.Results);
 
         }
