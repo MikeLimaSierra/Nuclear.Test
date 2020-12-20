@@ -279,6 +279,7 @@ namespace Nuclear.Test.Link {
         public IMessage Append(IWorkerClientConfiguration data) {
             Append(data.TestAssembly);
             Append(data.AutoShutdown);
+            Append(data.WriteJsonResultFile);
 
             Append(data.TestsInSequence);
 
@@ -293,6 +294,7 @@ namespace Nuclear.Test.Link {
         public IMessage Append(IProxyClientConfiguration data) {
             Append(data.TestAssembly);
             Append(data.AutoShutdown);
+            Append(data.WriteJsonResultFile);
 
             Append(data.AssembliesInSequence);
             Append(data.AvailableRuntimes.Count());

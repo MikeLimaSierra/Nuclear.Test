@@ -26,6 +26,12 @@ namespace Nuclear.Test.Console.Configurations {
         [JsonProperty]
         internal Boolean AutoShutdown { get; set; } = true;
 
+        [JsonProperty]
+        internal Boolean ProxyWritesJsonResultFile { get; set; } = false;
+
+        [JsonProperty]
+        internal Boolean WorkerWritesJsonResultFile { get; set; } = false;
+
         #endregion
 
     }

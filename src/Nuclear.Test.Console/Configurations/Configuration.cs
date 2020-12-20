@@ -114,6 +114,7 @@ namespace Nuclear.Test.Console.Configurations {
             workerClientConfig.AutoShutdown = Clients.AutoShutdown;
             workerClientConfig.TestAssembly = null;
             workerClientConfig.TestsInSequence = Execution.TestsInSequence;
+            workerClientConfig.WriteJsonResultFile = Clients.WorkerWritesJsonResultFile;
 
             Factory.Instance.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
             workerRemoteConfig.ClientConfiguration = workerClientConfig;
@@ -138,6 +139,7 @@ namespace Nuclear.Test.Console.Configurations {
             proxyClientConfiguration.TestAssembly = null;
             proxyClientConfiguration.WorkerDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Clients.WorkerDirectory));
             proxyClientConfiguration.WorkerExecutableName = Clients.WorkerExecutableName;
+            proxyClientConfiguration.WriteJsonResultFile = Clients.ProxyWritesJsonResultFile;
 
             Factory.Instance.Create(out IProxyRemoteConfiguration proxyRemoteConfiguration);
             proxyRemoteConfiguration.ClientConfiguration = proxyClientConfiguration;

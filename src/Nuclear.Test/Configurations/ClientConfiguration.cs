@@ -8,17 +8,11 @@ namespace Nuclear.Test.Configurations {
 
         #region properties
 
-        /// <summary>
-        /// Gets or sets the file path of the test assembly.
-        /// </summary>
         public FileInfo TestAssembly { get; set; }
 
-        /// <summary>
-        /// Gets or sets if client window will remain open after test execution.
-        ///     If set to true, the client will automatically shut down.
-        ///     If set to false, the client will will wait for console input.
-        /// </summary>
         public Boolean AutoShutdown { get; set; }
+
+        public Boolean WriteJsonResultFile { get; set; }
 
         #endregion
 
