@@ -61,17 +61,17 @@ namespace Nuclear.Test.Results {
         void IgnoreTestMethod(MethodInfo _method, String ignoreReason);
 
         /// <summary>
-        /// Adds an <see cref="ITestMethodResult"/> and its <see cref="ITestResultKey"/>.
+        /// Adds an <see cref="ITestMethodResult"/> and its <see cref="IResultKey"/>.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="results">The test method result.</param>
-        void Add(ITestResultKey key, ITestMethodResult results);
+        void Add(IResultKey key, ITestMethodResult results);
 
         /// <summary>
         /// Adds a bunch of results with their keys.
         /// </summary>
         /// <param name="results">The results.</param>
-        void Add(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results);
+        void Add(IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results);
 
         #endregion
 

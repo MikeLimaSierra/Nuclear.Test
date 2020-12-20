@@ -80,13 +80,13 @@ namespace Nuclear.Test {
 
         void Create(out ITestResultEndPoint @object);
 
-        void CreateEmpty(out ITestResultKey @object);
+        void CreateEmpty(out IResultKey @object);
 
-        void Create(out ITestResultKey @object, ITestScenario scenario, MethodInfo methodInfo);
+        void Create(out IResultKey @object, ITestScenario scenario, MethodInfo methodInfo);
 
-        void Create(out ITestResultKey @object, ITestScenario scenario, String fileName, String methodName);
+        void Create(out IResultKey @object, ITestScenario scenario, String fileName, String methodName);
 
-        void Create(out ITestResultKey @object,
+        void Create(out IResultKey @object,
             String assemblyName,
             RuntimeInfo targetRuntime,
             ProcessorArchitecture targetArchitecture,

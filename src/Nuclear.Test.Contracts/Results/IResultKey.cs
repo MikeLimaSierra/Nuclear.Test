@@ -8,7 +8,7 @@ namespace Nuclear.Test.Results {
     /// <summary>
     /// Defines the key structure that identifies test method results.
     /// </summary>
-    public interface ITestResultKey : IEquatable<ITestResultKey>, IComparable<ITestResultKey> {
+    public interface IResultKey : IEquatable<IResultKey>, IComparable<IResultKey> {
 
         #region properties
 
@@ -133,14 +133,14 @@ namespace Nuclear.Test.Results {
         /// </summary>
         /// <param name="match">The key to use as a match pattern.</param>
         /// <returns>True if it matches.</returns>
-        Boolean Matches(ITestResultKey match);
+        Boolean Matches(IResultKey match);
 
         /// <summary>
         /// Returns a new version of the current key that is clipped to a given precision.
         /// </summary>
         /// <param name="precision">The <see cref="TestResultKeyPrecisions"/> for the new key.</param>
         /// <returns>The new key.</returns>
-        ITestResultKey Clip(TestResultKeyPrecisions precision);
+        IResultKey Clip(TestResultKeyPrecisions precision);
 
         /// <summary>
         /// Gets if two keys are equal in respect of a given precision.
@@ -148,7 +148,7 @@ namespace Nuclear.Test.Results {
         /// <param name="other">The other key to compare.</param>
         /// <param name="precision">The <see cref="TestResultKeyPrecisions"/> to use for comparing.</param>
         /// <returns>True if both keys are equal.</returns>
-        Boolean Equals(ITestResultKey other, TestResultKeyPrecisions precision);
+        Boolean Equals(IResultKey other, TestResultKeyPrecisions precision);
 
         #endregion
 

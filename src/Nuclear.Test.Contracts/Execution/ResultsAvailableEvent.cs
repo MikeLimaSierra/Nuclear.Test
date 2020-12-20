@@ -23,7 +23,7 @@ namespace Nuclear.Test.Execution {
         /// <summary>
         /// Gets the collection of test results.
         /// </summary>
-        public IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> Results { get; private set; }
+        public IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> Results { get; private set; }
 
         #endregion
 
@@ -33,7 +33,7 @@ namespace Nuclear.Test.Execution {
         /// Creates an instance of <see cref="ResultsAvailableEventArgs"/>.
         /// </summary>
         /// <param name="results">The collection of test results.</param>
-        public ResultsAvailableEventArgs(IEnumerable<KeyValuePair<ITestResultKey, ITestMethodResult>> results) {
+        public ResultsAvailableEventArgs(IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results) {
             Throw.If.Object.IsNull(results, nameof(results));
 
             Results = results;
