@@ -48,7 +48,7 @@ namespace Nuclear.Test.Proxy {
 
             ITestResultEndPoint results = _client.Results;
 
-            Factory.Instance.CreateEmpty(out ITestResultKey emptyKey);
+            Factory.Instance.CreateEmpty(out IResultKey emptyKey);
             new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, results).Print();
 
             if(!_client.Configuration.AutoShutdown) {
