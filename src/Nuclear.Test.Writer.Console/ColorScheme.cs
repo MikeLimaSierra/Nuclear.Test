@@ -3,14 +3,14 @@
 namespace Nuclear.Test.Writer.Console {
 
     /// <summary>
-    /// Defines a set of task specific colors when printing a test result tree to console.
+    /// Defines a set of task specific colors when writing test results to console.
     /// </summary>
     public class ColorScheme {
 
         #region properties
 
         /// <summary>
-        /// Gets the default color scheme for <see cref="ResultTree"/>
+        /// Gets the default color scheme for <see cref="IConsoleWriter"/>
         /// </summary>
         public static ColorScheme Default => new ColorScheme() {
             ResultsOk = ConsoleColor.Green,
