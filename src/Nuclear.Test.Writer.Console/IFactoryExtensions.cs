@@ -12,8 +12,8 @@ namespace Nuclear.Test.Writer.Console {
         /// </summary>
         /// <param name="this">The <see cref="IFactory"/> instance.</param>
         /// <param name="object">The created <see cref="IConsoleWriter"/> instance.</param>
-        /// <param name="file">The <see cref="FileInfo"/> where the resulting json file should be stored.</param>
-        public static void Create(this IFactory @this, out IConsoleWriter @object, FileInfo file) => @object = new Writer(file);
+        /// <param name="verbosity">The <see cref="Verbosity"/> of the console print-out.</param>
+        public static void Create(this IFactory @this, out IConsoleWriter @object, Verbosity verbosity) => @object = new Writer(verbosity);
 
     }
 }
