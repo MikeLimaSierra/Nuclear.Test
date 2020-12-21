@@ -13,12 +13,12 @@
   
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Nuclear.Test" Version="2.0.0-beta9" />
-    <PackageReference Include="Nuclear.Test.Printer" Version="2.0.0-beta9" />
+    <PackageReference Include="Nuclear.Test.Writer.Console" Version="2.0.0-beta9" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
     <ProjectReference Include="..\Nuclear.Test\Nuclear.Test.csproj" />
-    <ProjectReference Include="..\Nuclear.Test.Printer\Nuclear.Test.Writer.Console.csproj" />
+    <ProjectReference Include="..\Nuclear.Test.Writer.Console\Nuclear.Test.Writer.Console.csproj" />
     <Reference Include="Nuclear.Exceptions">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Exceptions\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Exceptions.dll</HintPath>
     </Reference>

@@ -14,8 +14,7 @@ using Nuclear.Test.Configurations;
 using Nuclear.Test.Console.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Extensions;
-using Nuclear.Test.Printer;
-using Nuclear.Test.Results;
+using Nuclear.Test.Writer.Console;
 
 namespace Nuclear.Test.Console {
     internal static class Program {
@@ -121,8 +120,9 @@ namespace Nuclear.Test.Console {
             Factory.Instance.Create(out IExecutor executor, configuration);
             executor.Execute();
 
-            Factory.Instance.CreateEmpty(out IResultKey emptyKey);
-            new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, executor.Results).Print();
+            Factory.Instance.Create(out IConsoleWriter writer, Verbosity.ExecutionArchitecture, ColorScheme.Default);
+            writer.Load(executor.Results);
+            writer.Write();
 
             WaitOnDebug();
 

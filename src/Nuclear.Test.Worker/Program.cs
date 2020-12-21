@@ -11,8 +11,8 @@ using Nuclear.Test.Execution;
 using Nuclear.Test.Execution.Worker;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Link;
-using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
+using Nuclear.Test.Writer.Console;
 
 namespace Nuclear.Test.Worker {
     internal static class Program {
@@ -48,8 +48,9 @@ namespace Nuclear.Test.Worker {
 
             ITestResultEndPoint results = _client.Results;
 
-            Factory.Instance.CreateEmpty(out IResultKey emptyKey);
-            new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, results).Print();
+            Factory.Instance.Create(out IConsoleWriter writer, Verbosity.ExecutionArchitecture, ColorScheme.Default);
+            writer.Load(results);
+            writer.Write();
 
             if(!_client.Configuration.AutoShutdown) {
                 Console.WriteLine("Press any key to exit.");
