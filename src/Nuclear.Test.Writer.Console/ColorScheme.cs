@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Nuclear.Test.Printer {
+namespace Nuclear.Test.Writer.Console {
 
     /// <summary>
     /// Defines a set of task specific colors when printing a test result tree to console.

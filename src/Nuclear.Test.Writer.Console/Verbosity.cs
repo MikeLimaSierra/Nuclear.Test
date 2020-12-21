@@ -1,4 +1,4 @@
-﻿namespace Nuclear.Test.Printer {
+﻿namespace Nuclear.Test.Writer.Console {
 
     /// <summary>
     /// LODs for printing test results.
