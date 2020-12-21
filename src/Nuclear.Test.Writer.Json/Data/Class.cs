@@ -8,8 +8,8 @@ using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Results;
 
-namespace Nuclear.Test.Printer.Json.PrinterData {
-    internal class ExecutionRuntime {
+namespace Nuclear.Test.Writer.Json.Data {
+    internal class Class {
 
         #region properties
 
@@ -17,23 +17,23 @@ namespace Nuclear.Test.Printer.Json.PrinterData {
         internal String Name { get; set; }
 
         [JsonProperty]
-        internal IList<Class> Classes { get; set; } = new List<Class>();
+        internal IList<Method> Methods { get; set; } = new List<Method>();
 
         #endregion
 
         #region ctors
 
-        public ExecutionRuntime() { }
+        public Class() { }
 
-        internal ExecutionRuntime(String name, IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results) {
+        internal Class(String name, IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results) {
             Throw.If.String.IsNullOrWhiteSpace(name, nameof(name));
             Throw.If.Object.IsNull(results, nameof(results));
             Throw.If.Value.IsFalse(results.Count() > 0, nameof(results));
 
             Name = name;
             results
-                .GroupBy((key) => key.Key.FileName)
-                .Foreach(group => Classes.Add(new Class(group.Key, group)));
+                .Select(result => (result.Key.MethodName, result.Value))
+                .Foreach(item => Methods.Add(new Method(item.MethodName, item.Value)));
         }
 
         #endregion

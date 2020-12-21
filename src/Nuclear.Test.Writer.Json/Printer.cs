@@ -7,10 +7,10 @@ using Newtonsoft.Json;
 
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
-using Nuclear.Test.Printer.Json.PrinterData;
 using Nuclear.Test.Results;
+using Nuclear.Test.Writer.Json.Data;
 
-namespace Nuclear.Test.Printer.Json {
+namespace Nuclear.Test.Writer.Json {
     internal class Printer : IJsonPrinter {
 
         #region fields

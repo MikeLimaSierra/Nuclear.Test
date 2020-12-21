@@ -8,7 +8,7 @@ using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.Test.Results;
 
-namespace Nuclear.Test.Printer.Json.PrinterData {
+namespace Nuclear.Test.Writer.Json.Data {
     internal class Assembly {
 
         #region properties

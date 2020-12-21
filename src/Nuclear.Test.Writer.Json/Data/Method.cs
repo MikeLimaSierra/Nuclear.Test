@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 using Nuclear.Exceptions;
 using Nuclear.Test.Results;
 
-namespace Nuclear.Test.Printer.Json.PrinterData {
+namespace Nuclear.Test.Writer.Json.Data {
     internal class Method {
 
         #region properties

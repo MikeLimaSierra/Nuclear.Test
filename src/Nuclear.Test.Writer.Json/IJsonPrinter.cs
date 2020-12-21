@@ -1,4 +1,4 @@
-﻿namespace Nuclear.Test.Printer.Json {
+﻿namespace Nuclear.Test.Writer.Json {
 
     /// <summary>
     /// Defines a json file printer type to make test results human readable.

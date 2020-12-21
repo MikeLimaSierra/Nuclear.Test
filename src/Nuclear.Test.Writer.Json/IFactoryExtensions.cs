@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Nuclear.Test.Printer.Json {
+namespace Nuclear.Test.Writer.Json {
 
     /// <summary>
     /// Extends <see cref="IFactory"/> with creation functionality for <see cref="IJsonPrinter"/>.
