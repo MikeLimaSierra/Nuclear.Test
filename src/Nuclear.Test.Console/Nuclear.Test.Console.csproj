@@ -19,7 +19,7 @@
   
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
     <ProjectReference Include="..\Nuclear.Test\Nuclear.Test.csproj" />
-    <ProjectReference Include="..\Nuclear.Test.Printer\Nuclear.Test.Printer.csproj" />
+    <ProjectReference Include="..\Nuclear.Test.Printer\Nuclear.Test.Writer.Console.csproj" />
     <Reference Include="Nuclear.Exceptions">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Exceptions\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Exceptions.dll</HintPath>
     </Reference>

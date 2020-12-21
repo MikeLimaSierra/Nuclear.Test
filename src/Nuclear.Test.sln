@@ -21,9 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Tests", "Nucle
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Contracts", "Nuclear.Test.Contracts\Nuclear.Test.Contracts.csproj", "{2902C5AB-5541-4EFE-8964-0AC3244C51BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Printer", "Nuclear.Test.Printer\Nuclear.Test.Printer.csproj", "{8D3EC14E-B3E5-4F52-869C-0899ECF3E0D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Writer.Console", "Nuclear.Test.Printer\Nuclear.Test.Writer.Console.csproj", "{8D3EC14E-B3E5-4F52-869C-0899ECF3E0D8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Printer.Json", "Nuclear.Test.Printer.Json\Nuclear.Test.Printer.Json.csproj", "{5C67ADE8-B602-4109-BDA4-6EA673EE52E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Writer.Json", "Nuclear.Test.Printer.Json\Nuclear.Test.Writer.Json.csproj", "{5C67ADE8-B602-4109-BDA4-6EA673EE52E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

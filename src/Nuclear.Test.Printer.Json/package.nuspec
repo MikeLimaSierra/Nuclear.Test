@@ -3,8 +3,8 @@
   <metadata>
     <id>Nuclear.Test.Printer.Json</id>
     <version>2.0.0-beta9</version>
-    <title>Nuclear.Test.Printer</title>
-    <description>Implementation of a json file printer for Nuclear.Test results.</description>
+    <title>Nuclear.Test.Writer.Json</title>
+    <description>Implementation of a json file writer for Nuclear.Test results.</description>
     <authors>MikeLimaSierra</authors>
     <owners>MikeLimaSierra</owners>
     <copyright>Copyright (c) 2020 MikeLimaSierra</copyright>
@@ -23,9 +23,9 @@
   </metadata>
   <files>
     <file src="../../LICENSE.md" target="" />
-    <file src="../../publish/Nuclear.Test.Printer/netstandard2.0/Nuclear.Test.Printer.deps.json" target="lib/netstandard2.0" />
-    <file src="../../publish/Nuclear.Test.Printer/netstandard2.0/Nuclear.Test.Printer.dll" target="lib/netstandard2.0" />
-    <file src="../../publish/Nuclear.Test.Printer/netstandard2.0/Nuclear.Test.Printer.pdb" target="lib/netstandard2.0" />
-    <file src="../../publish/Nuclear.Test.Printer/netstandard2.0/Nuclear.Test.Printer.xml" target="lib/netstandard2.0" />
+    <file src="../../publish/Nuclear.Test.Writer.Json/netstandard2.0/Nuclear.Test.Writer.Json.deps.json" target="lib/netstandard2.0" />
+    <file src="../../publish/Nuclear.Test.Writer.Json/netstandard2.0/Nuclear.Test.Writer.Json.dll" target="lib/netstandard2.0" />
+    <file src="../../publish/Nuclear.Test.Writer.Json/netstandard2.0/Nuclear.Test.Writer.Json.pdb" target="lib/netstandard2.0" />
+    <file src="../../publish/Nuclear.Test.Writer.Json/netstandard2.0/Nuclear.Test.Writer.Json.xml" target="lib/netstandard2.0" />
   </files>
 </package>

@@ -2,12 +2,12 @@
 
 SET sn_exe="C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\sn.exe"
 SET key=..\KeyPair.snk
-SET bin=..\..\bin\Nuclear.Test.Printer.Json\AnyCPU\Release\netstandard2.0\
-SET publish=..\..\publish\Nuclear.Test.Printer.Json\netstandard2.0\
-SET dll=Nuclear.Test.Printer.Json.dll
-SET pdb=Nuclear.Test.Printer.Json.pdb
-SET xml=Nuclear.Test.Printer.Json.xml
-SET deps=Nuclear.Test.Printer.Json.deps.json
+SET bin=..\..\bin\Nuclear.Test.Writer.Json\AnyCPU\Release\netstandard2.0\
+SET publish=..\..\publish\Nuclear.Test.Writer.Json\netstandard2.0\
+SET dll=Nuclear.Test.Writer.Json.dll
+SET pdb=Nuclear.Test.Writer.Json.pdb
+SET xml=Nuclear.Test.Writer.Json.xml
+SET deps=Nuclear.Test.Writer.Json.deps.json
 
 REM delete publish dir
 RMDIR /S /Q %publish%

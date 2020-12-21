@@ -2,17 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>Nuclear.Test.Printer.Json</RootNamespace>
+    <RootNamespace>Nuclear.Test.Writer.Console</RootNamespace>
     <Platforms>AnyCPU</Platforms>
-    <Version>2.0.0</Version>
   </PropertyGroup>
 
   <Import Project="..\Configurations.targets" />
-
+  
   <ItemGroup Condition="'$(Configuration)' == 'Release'">
     <PackageReference Include="Nuclear.Test.Contracts" Version="2.0.0-beta9" />
   </ItemGroup>
-
+  
   <ItemGroup Condition="'$(Configuration)' == 'Debug' OR '$(Configuration)' == 'Integration'">
     <ProjectReference Include="..\Nuclear.Test.Contracts\Nuclear.Test.Contracts.csproj" />
     <Reference Include="Nuclear.Exceptions">
@@ -27,11 +26,6 @@
     <Reference Include="Nuclear.TestSite.Contracts">
       <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.TestSite.Contracts.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="log4net" Version="2.0.12" />
   </ItemGroup>
 
 </Project>
