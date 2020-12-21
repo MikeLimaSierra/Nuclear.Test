@@ -11,11 +11,11 @@ using Nuclear.Test.Results;
 using Nuclear.Test.Writer.Json.Data;
 
 namespace Nuclear.Test.Writer.Json {
-    internal class Printer : IJsonPrinter {
+    internal class Writer : IJsonWriter {
 
         #region fields
 
-        private static readonly ILog _log = LogManager.GetLogger(typeof(Printer));
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Writer));
 
         private readonly FileInfo _file;
 
@@ -25,7 +25,7 @@ namespace Nuclear.Test.Writer.Json {
 
         #region ctors
 
-        internal Printer(FileInfo file) {
+        internal Writer(FileInfo file) {
             Throw.If.Object.IsNull(file, nameof(file));
 
             _file = file;
@@ -33,7 +33,7 @@ namespace Nuclear.Test.Writer.Json {
 
         #endregion
 
-        #region IJsonPrinter methods
+        #region IJsonWriter methods
 
         public Boolean Load(ITestResultSource source) {
             if(source == null) {
@@ -50,7 +50,7 @@ namespace Nuclear.Test.Writer.Json {
             return false;
         }
 
-        public void Print() {
+        public void Write() {
             String json;
 
             try {

@@ -5,9 +5,9 @@ using Nuclear.Test.Results;
 namespace Nuclear.Test {
 
     /// <summary>
-    /// Defines a basic printer type to make test results human readable.
+    /// Defines a basic writer type to make test results human readable.
     /// </summary>
-    public interface IPrinter {
+    public interface IWriter {
 
         #region methods
 
@@ -19,9 +19,9 @@ namespace Nuclear.Test {
         Boolean Load(ITestResultSource results);
 
         /// <summary>
-        /// Prints all results.
+        /// Write all results.
         /// </summary>
-        void Print();
+        void Write();
 
         #endregion
 
