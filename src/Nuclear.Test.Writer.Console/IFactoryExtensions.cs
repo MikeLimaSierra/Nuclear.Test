@@ -13,7 +13,8 @@ namespace Nuclear.Test.Writer.Console {
         /// <param name="this">The <see cref="IFactory"/> instance.</param>
         /// <param name="object">The created <see cref="IConsoleWriter"/> instance.</param>
         /// <param name="verbosity">The <see cref="Verbosity"/> of the console print-out.</param>
-        public static void Create(this IFactory @this, out IConsoleWriter @object, Verbosity verbosity) => @object = new Writer(verbosity);
+        /// <param name="colors">The color scheme to be used for printing.</param>
+        public static void Create(this IFactory @this, out IConsoleWriter @object, Verbosity verbosity, ColorScheme colors) => @object = new Writer(verbosity, colors);
 
     }
 }
