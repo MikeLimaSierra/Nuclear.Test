@@ -13,6 +13,7 @@ using Nuclear.Test.Extensions;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 using Nuclear.Test.Writer.Console;
+using Nuclear.Test.Writer.Json;
 
 namespace Nuclear.Test.Worker {
     internal static class Program {
@@ -51,6 +52,12 @@ namespace Nuclear.Test.Worker {
             Factory.Instance.Create(out IConsoleWriter writer, Verbosity.ExecutionArchitecture, ColorScheme.Default);
             writer.Load(results);
             writer.Write();
+
+            if(_client.Configuration.WriteJsonResultFile) {
+                Factory.Instance.Create(out IJsonWriter jsonWriter, new FileInfo($"{DateTime.Now.Format()}-{_client.Configuration.TestAssembly.Name}.json"));
+                jsonWriter.Load(results);
+                jsonWriter.Write();
+            }
 
             if(!_client.Configuration.AutoShutdown) {
                 Console.WriteLine("Press any key to exit.");
