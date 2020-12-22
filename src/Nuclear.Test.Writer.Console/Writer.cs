@@ -52,6 +52,8 @@ namespace Nuclear.Test.Writer.Console {
         #region IConsoleWriter methods
 
         public Boolean Load(ITestResultSource source) {
+            _log.Debug(nameof(Load));
+
             if(source == null) {
                 return false;
             }
@@ -72,6 +74,8 @@ namespace Nuclear.Test.Writer.Console {
         }
 
         public void Write() {
+            _log.Debug(nameof(Write));
+
             _reportRoot.Write(0);
             ConsoleAdapter.WriteLine($"=> {_countWorkers} workers running {_countAssemblies} test assemblies with {_countMethods} test methods in {_countClasses} classes.");
         }

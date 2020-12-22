@@ -36,6 +36,8 @@ namespace Nuclear.Test.Writer.Json {
         #region IJsonWriter methods
 
         public Boolean Load(ITestResultSource source) {
+            _log.Debug(nameof(Load));
+
             if(source == null) {
                 return false;
             }
@@ -51,6 +53,8 @@ namespace Nuclear.Test.Writer.Json {
         }
 
         public void Write() {
+            _log.Debug(nameof(Write));
+
             String json;
 
             try {
@@ -65,6 +69,8 @@ namespace Nuclear.Test.Writer.Json {
                 if(!_file.Directory.Exists) {
                     Directory.CreateDirectory(_file.Directory.FullName);
                 }
+
+                _log.Info($"Writing file to {_file.FullName.Format()}.");
 
                 File.WriteAllText(_file.FullName, json);
 
