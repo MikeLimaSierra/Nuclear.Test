@@ -89,7 +89,7 @@ namespace Nuclear.Test.Console {
 
                 } else {
                     _log.Info("Using default configuration.");
-                    _configuration = new Configuration();
+                    _configuration = Configuration.Default;
                     _configuration.Save();
                 }
             }
