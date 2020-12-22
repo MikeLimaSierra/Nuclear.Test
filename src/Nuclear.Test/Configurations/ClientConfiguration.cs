@@ -25,6 +25,7 @@ namespace Nuclear.Test.Configurations {
 
             TestAssembly = original.TestAssembly;
             AutoShutdown = original.AutoShutdown;
+            WriteJsonResultFile = original.WriteJsonResultFile;
         }
 
         #endregion
