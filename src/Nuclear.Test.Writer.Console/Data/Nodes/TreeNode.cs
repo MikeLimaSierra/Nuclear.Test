@@ -38,7 +38,6 @@ namespace Nuclear.Test.Writer.Console.Data.Nodes {
 
             Throw.IfNot.Enum.IsDefined<Verbosity>(verbosity, nameof(verbosity));
             Throw.If.Object.IsNull(results, nameof(results));
-            Throw.If.Value.IsFalse(results.Count() > 0, nameof(results));
 
             IEnumerable<ITestMethodResult> _results = results.Select(kvp => kvp.Value);
 
