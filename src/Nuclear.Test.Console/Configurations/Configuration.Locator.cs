@@ -10,16 +10,16 @@ namespace Nuclear.Test.Console.Configurations {
         #region properties
 
         [JsonProperty]
-        internal String SearchDirectory { get; set; } = "%USERPROFILE%/source";
+        internal String SearchDirectory { get; set; }
 
         [JsonProperty]
-        internal Int32 SearchDepth { get; set; } = -1;
+        internal Int32 SearchDepth { get; set; }
 
         [JsonProperty]
-        internal String SearchPattern { get; set; } = "*Tests.dll";
+        internal String SearchPattern { get; set; }
 
         [JsonProperty]
-        internal IList<String> IgnoredDirectoryNames { get; set; } = new List<String>() { "obj", ".vs" };
+        internal IList<String> IgnoredDirectoryNames { get; set; }
 
         #endregion
 

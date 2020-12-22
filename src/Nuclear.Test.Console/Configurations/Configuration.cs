@@ -37,13 +37,76 @@ namespace Nuclear.Test.Console.Configurations {
         internal static String DefaultFilePath => Environment.ExpandEnvironmentVariables(DEFAULT_FILE_PATH);
 
         [JsonProperty]
-        internal LocatorConfig Locator { get; set; } = new LocatorConfig();
+        internal LocatorConfig Locator { get; set; } = new LocatorConfig() {
+            SearchDirectory = "%USERPROFILE%/source",
+            SearchDepth = -1,
+            SearchPattern = "*Tests.dll",
+            IgnoredDirectoryNames = new List<String>() {
+                "obj",
+                ".vs"
+            }
+        };
 
         [JsonProperty]
-        internal ClientConfig Clients { get; set; } = new ClientConfig();
+        internal ClientConfig Proxy { get; set; } = new ClientConfig() {
+            Directory = "%APPDATA%/Nuclear.Test.Proxy/",
+            ExecutableName = "Nuclear.Test.Proxy.exe",
+            StartClientVisible = false,
+            AutoShutdown = true,
+            WriteJsonResultFile = false
+        };
 
         [JsonProperty]
-        internal ExecutionConfig Execution { get; set; } = new ExecutionConfig();
+        internal ClientConfig Worker { get; set; } = new ClientConfig() {
+            Directory = "%APPDATA%/Nuclear.Test.Worker/",
+            ExecutableName = "Nuclear.Test.Worker.exe",
+            StartClientVisible = false,
+            AutoShutdown = true,
+            WriteJsonResultFile = false
+        };
+
+        [JsonProperty]
+        internal ExecutionConfig Execution { get; set; } = new ExecutionConfig() {
+            ArchitecturesFilter = new ArchitectureFilterList() {
+                Mode = FilterModes.Blacklist,
+                Values = new List<ProcessorArchitecture>() {
+                    ProcessorArchitecture.MSIL,
+                    ProcessorArchitecture.IA64,
+                    ProcessorArchitecture.Arm,
+                    ProcessorArchitecture.None
+                }
+            },
+            RuntimesFilter = new RuntimeInfoFilterList() {
+                Mode = FilterModes.WhiteList,
+                Values = new List<RuntimeInfoItem>() {
+                    new RuntimeInfoItem() {
+                        Framework = FrameworkIdentifiers.NETCoreApp,
+                        Versions = new List<String>() {
+                            "2.0",
+                            "2.1",
+                            "2.2",
+                            "3.0",
+                            "3.1",
+                            "5.0"
+                        }
+                    },
+                    new RuntimeInfoItem() {
+                        Framework = FrameworkIdentifiers.NETFramework,
+                        Versions = new List<String>() {
+                            "4.6.1",
+                            "4.6.2",
+                            "4.7",
+                            "4.7.1",
+                            "4.7.1",
+                            "4.8"
+                        }
+                    }
+                }
+            },
+            AssembliesInSequence = false,
+            TestsInSequence = false,
+            SelectedRuntimes = SelectedExecutionRuntimes.All
+        };
 
         #endregion
 
@@ -111,15 +174,15 @@ namespace Nuclear.Test.Console.Configurations {
         internal IExecutorConfiguration Dump() {
 
             Factory.Instance.Create(out IWorkerClientConfiguration workerClientConfig);
-            workerClientConfig.AutoShutdown = Clients.AutoShutdown;
+            workerClientConfig.AutoShutdown = Worker.AutoShutdown;
             workerClientConfig.TestAssembly = null;
             workerClientConfig.TestsInSequence = Execution.TestsInSequence;
-            workerClientConfig.WriteJsonResultFile = Clients.WorkerWritesJsonResultFile;
+            workerClientConfig.WriteJsonResultFile = Worker.WriteJsonResultFile;
 
             Factory.Instance.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
             workerRemoteConfig.ClientConfiguration = workerClientConfig;
             workerRemoteConfig.Executable = null;
-            workerRemoteConfig.StartClientVisible = Clients.StartClientVisible;
+            workerRemoteConfig.StartClientVisible = Worker.StartClientVisible;
 
             Factory.Instance.Create(out IProxyClientConfiguration proxyClientConfiguration);
             proxyClientConfiguration.WorkerRemoteConfiguration = workerRemoteConfig;
@@ -134,17 +197,17 @@ namespace Nuclear.Test.Console.Configurations {
                     FilterModes.WhiteList => Execution.RuntimesFilter.Values.Any(ri => ri.Convert().Contains(r)),
                     _ => false,
                 });
-            proxyClientConfiguration.AutoShutdown = Clients.AutoShutdown;
+            proxyClientConfiguration.AutoShutdown = Proxy.AutoShutdown;
             proxyClientConfiguration.SelectedRuntimes = Execution.SelectedRuntimes;
             proxyClientConfiguration.TestAssembly = null;
-            proxyClientConfiguration.WorkerDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Clients.WorkerDirectory));
-            proxyClientConfiguration.WorkerExecutableName = Clients.WorkerExecutableName;
-            proxyClientConfiguration.WriteJsonResultFile = Clients.ProxyWritesJsonResultFile;
+            proxyClientConfiguration.WorkerDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Worker.Directory));
+            proxyClientConfiguration.WorkerExecutableName = Worker.ExecutableName;
+            proxyClientConfiguration.WriteJsonResultFile = Proxy.WriteJsonResultFile;
 
             Factory.Instance.Create(out IProxyRemoteConfiguration proxyRemoteConfiguration);
             proxyRemoteConfiguration.ClientConfiguration = proxyClientConfiguration;
             proxyRemoteConfiguration.Executable = null;
-            proxyRemoteConfiguration.StartClientVisible = Clients.StartClientVisible;
+            proxyRemoteConfiguration.StartClientVisible = Proxy.StartClientVisible;
 
             Factory.Instance.Create(out IExecutorConfiguration configuration);
             configuration.ProxyRemoteConfiguration = proxyRemoteConfiguration;
@@ -155,8 +218,8 @@ namespace Nuclear.Test.Console.Configurations {
                     FilterModes.WhiteList => Execution.ArchitecturesFilter.Values.Contains(a),
                     _ => false,
                 });
-            configuration.ProxyDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Clients.ProxyDirectory));
-            configuration.ProxyExecutableName = Clients.ProxyExecutableName;
+            configuration.ProxyDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Proxy.Directory));
+            configuration.ProxyExecutableName = Proxy.ExecutableName;
 
             return configuration;
         }
