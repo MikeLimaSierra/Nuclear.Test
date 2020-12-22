@@ -16,6 +16,7 @@ namespace Nuclear.Test.Writer.Console.Data.Nodes {
             if(verbosity > Verbosity.ExecutionArchitecture || HasFails || HasIgnores || HasBlanks) {
                 results
                     .GroupBy((key) => key.Key.FileName)
+                    .OrderBy(group => group.Key)
                     .Foreach(group => Children.Add(new FileNode(group.Key, verbosity, group)));
             }
         }

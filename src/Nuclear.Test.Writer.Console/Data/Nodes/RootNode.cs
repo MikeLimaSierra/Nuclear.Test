@@ -15,6 +15,7 @@ namespace Nuclear.Test.Writer.Console.Data.Nodes {
             if(verbosity > Verbosity.Collapsed || HasFails || HasIgnores || HasBlanks) {
                 results
                     .GroupBy((key) => key.Key.AssemblyName)
+                    .OrderBy(group => group.Key)
                     .Foreach(group => Children.Add(new AssemblyNode(group.Key, verbosity, group)));
             }
         }

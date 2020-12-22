@@ -25,7 +25,9 @@ namespace Nuclear.Test.Writer.Console.Data.Nodes {
                 groups = results.GroupBy((key) => $"{key.Key.TargetRuntime.Framework}");
             }
 
-            groups.Foreach(group => Children.Add(new TargetNode(group.Key, verbosity, group)));
+            groups
+                .OrderBy(group => group.Key)
+                .Foreach(group => Children.Add(new TargetNode(group.Key, verbosity, group)));
         }
 
         #endregion
