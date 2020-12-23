@@ -7,15 +7,6 @@ using Nuclear.Extensions;
 namespace Nuclear.Test.Results {
     internal class ResultKey : IResultKey {
 
-        #region statics
-
-        internal static IResultKey Empty => new ResultKey(null,
-            new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
-            new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
-            null, null);
-
-        #endregion
-
         #region properties
 
         public String AssemblyName { get; private set; }
