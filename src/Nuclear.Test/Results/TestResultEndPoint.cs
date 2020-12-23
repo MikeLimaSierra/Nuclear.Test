@@ -74,21 +74,7 @@ namespace Nuclear.Test.Results {
 
         public IEnumerable<IResultKey> GetKeys() => _results.Keys;
 
-        public IEnumerable<IResultKey> GetKeys(IResultKey match) => GetKeys().Where(key => key.Matches(match));
-
-        public IEnumerable<IResultKey> GetKeys(IResultKey match, ResultKeyItems precision) {
-            List<IResultKey> keys = new List<IResultKey>();
-
-            foreach(IResultKey key in GetKeys(match)) {
-                IResultKey clippedKey = key.Clip(precision);
-
-                if(!keys.Contains(clippedKey, _comparer)) {
-                    keys.Add(clippedKey);
-                }
-            }
-
-            return keys;
-        }
+        public IEnumerable<IResultKey> GetKeys(IResultKey match) => GetKeys().Where(key => key.Equals(match));
 
         public ITestMethodResult GetResult(IResultKey key) {
             Factory.Instance.Create(out ITestMethodResult result);
@@ -98,7 +84,7 @@ namespace Nuclear.Test.Results {
 
         public IEnumerable<ITestMethodResult> GetResults() => _results.Values;
 
-        public IEnumerable<ITestMethodResult> GetResults(IResultKey match) => _results.Where(kvp => kvp.Key.Matches(match)).Select(value => value.Value);
+        public IEnumerable<ITestMethodResult> GetResults(IResultKey match) => _results.Where(kvp => kvp.Key.Equals(match)).Select(value => value.Value);
 
         public IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> GetKeyedResults() => _results;
 
