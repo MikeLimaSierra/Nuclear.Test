@@ -8,6 +8,10 @@
             ".vs"
         ]
     },
+    "Executor": {
+        "Verbosity": "ExecutionArchitecture",
+        "WriteReport": false
+    },
     "Proxy": {
         "Directory": "%APPDATA%/Nuclear.Test.Proxy/",
         "ExecutableName": "Nuclear.Test.Proxy.exe",
