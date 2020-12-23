@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Nuclear.Test.Printer</id>
+    <id>Nuclear.Test.Writer.Console</id>
     <version>2.0.0-rc1</version>
     <title>Nuclear.Test.Writer.Console</title>
     <description>Implementation of a console writer for Nuclear.Test results.</description>

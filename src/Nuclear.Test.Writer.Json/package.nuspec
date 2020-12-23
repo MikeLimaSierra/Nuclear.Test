@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>Nuclear.Test.Printer.Json</id>
+    <id>Nuclear.Test.Writer.Json</id>
     <version>2.0.0-rc1</version>
     <title>Nuclear.Test.Writer.Json</title>
     <description>Implementation of a json file writer for Nuclear.Test results.</description>
