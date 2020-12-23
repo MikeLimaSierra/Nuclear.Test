@@ -93,7 +93,7 @@ namespace Nuclear.Test.Console.Configurations {
                                 "4.6.2",
                                 "4.7",
                                 "4.7.1",
-                                "4.7.1",
+                                "4.7.2",
                                 "4.8"
                             }
                         }

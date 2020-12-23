@@ -1,6 +1,6 @@
 {
     "Locator": {
-        "SearchDirectory": "D:/Dev/GitHub/Nuclear.Net/bin",
+        "SearchDirectory": "%USERPROFILE%/source",
         "SearchDepth": -1,
         "SearchPattern": "*Tests.dll",
         "IgnoredDirectoryNames": [
@@ -8,19 +8,23 @@
             ".vs"
         ]
     },
+    "Executor": {
+        "Verbosity": "ExecutionArchitecture",
+        "WriteReport": false
+    },
     "Proxy": {
         "Directory": "%APPDATA%/Nuclear.Test.Proxy/",
         "ExecutableName": "Nuclear.Test.Proxy.exe",
         "StartClientVisible": true,
         "AutoShutdown": false,
-        "WriteReport": true
+        "WriteReport": false
     },
     "Worker": {
         "Directory": "%APPDATA%/Nuclear.Test.Worker/",
         "ExecutableName": "Nuclear.Test.Worker.exe",
         "StartClientVisible": true,
         "AutoShutdown": false,
-        "WriteReport": true
+        "WriteReport": false
     },
     "Execution": {
         "ArchitecturesFilter": {
@@ -52,7 +56,7 @@
                         "4.6.2",
                         "4.7",
                         "4.7.1",
-                        "4.7.1",
+                        "4.7.2",
                         "4.8"
                     ]
                 }
@@ -61,6 +65,6 @@
         },
         "AssembliesInSequence": true,
         "TestsInSequence": false,
-        "SelectedRuntimes": "Lowest"
+        "SelectedRuntimes": "All"
     }
 }
