@@ -44,6 +44,10 @@ namespace Nuclear.Test.Console.Configurations {
                     ".vs"
                 }
             },
+            Executor = new ExecutorConfig() {
+                Verbosity = Writer.Console.Verbosity.ExecutionArchitecture,
+                WriteJsonResultFile = false
+            },
             Proxy = new ClientConfig() {
                 Directory = "%APPDATA%/Nuclear.Test.Proxy/",
                 ExecutableName = "Nuclear.Test.Proxy.exe",
@@ -105,6 +109,9 @@ namespace Nuclear.Test.Console.Configurations {
 
         [JsonProperty]
         internal LocatorConfig Locator { get; set; }
+
+        [JsonProperty]
+        internal ExecutorConfig Executor { get; set; }
 
         [JsonProperty]
         internal ClientConfig Proxy { get; set; }
@@ -226,7 +233,8 @@ namespace Nuclear.Test.Console.Configurations {
                     _ => false,
                 });
             configuration.ProxyDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Proxy.Directory));
-            configuration.ProxyExecutableName = Proxy.ExecutableName;
+            configuration.ProxyExecutableName = Proxy.ExecutableName;            
+            configuration.WriteJsonResultFile = Executor.WriteJsonResultFile;
 
             return configuration;
         }

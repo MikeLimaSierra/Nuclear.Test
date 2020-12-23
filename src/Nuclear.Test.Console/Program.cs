@@ -15,6 +15,7 @@ using Nuclear.Test.Console.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Writer.Console;
+using Nuclear.Test.Writer.Json;
 
 namespace Nuclear.Test.Console {
     internal static class Program {
@@ -120,9 +121,15 @@ namespace Nuclear.Test.Console {
             Factory.Instance.Create(out IExecutor executor, configuration);
             executor.Execute();
 
-            Factory.Instance.Create(out IConsoleWriter writer, Verbosity.ExecutionArchitecture, ColorScheme.Default);
+            Factory.Instance.Create(out IConsoleWriter writer, _configuration.Executor.Verbosity, ColorScheme.Default);
             writer.Load(executor.Results);
             writer.Write();
+
+            if(executor.Configuration.WriteJsonResultFile) {
+                Factory.Instance.Create(out IJsonWriter jsonWriter, new FileInfo($"Execution_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json"));
+                jsonWriter.Load(executor.Results);
+                jsonWriter.Write();
+            }
 
             WaitOnDebug();
 
