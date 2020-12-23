@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Nuclear.Test.Printer.Json</id>
-    <version>2.0.0-beta9</version>
+    <version>2.0.0-rc1</version>
     <title>Nuclear.Test.Writer.Json</title>
     <description>Implementation of a json file writer for Nuclear.Test results.</description>
     <authors>MikeLimaSierra</authors>
@@ -15,7 +15,7 @@
     <language>en-US</language>
     <dependencies>
       <group>
-        <dependency id="Nuclear.Test.Contracts" version="2.0.0-beta9" />
+        <dependency id="Nuclear.Test.Contracts" version="2.0.0-rc1" />
         <dependency id="Newtonsoft.Json" version="12.0.3" />
         <dependency id="log4net" version="2.0.12" />
       </group>
