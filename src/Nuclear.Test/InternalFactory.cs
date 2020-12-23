@@ -76,8 +76,6 @@ namespace Nuclear.Test {
 
         public void Create(out ITestResultEndPoint @object) => @object = new TestResultEndPoint();
 
-        public void CreateEmpty(out IResultKey @object) => @object = ResultKey.Empty;
-
         public void Create(out IResultKey @object, ITestScenario scenario, MethodInfo methodInfo) => @object = new ResultKey(scenario, methodInfo);
 
         public void Create(out IResultKey @object, ITestScenario scenario, String fileName, String methodName) => @object = new ResultKey(scenario, fileName, methodName);

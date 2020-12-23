@@ -14,8 +14,8 @@ using Nuclear.Test.Configurations;
 using Nuclear.Test.Console.Configurations;
 using Nuclear.Test.Execution;
 using Nuclear.Test.Extensions;
-using Nuclear.Test.Printer;
-using Nuclear.Test.Results;
+using Nuclear.Test.Writer.Console;
+using Nuclear.Test.Writer.Json;
 
 namespace Nuclear.Test.Console {
     internal static class Program {
@@ -90,7 +90,7 @@ namespace Nuclear.Test.Console {
 
                 } else {
                     _log.Info("Using default configuration.");
-                    _configuration = new Configuration();
+                    _configuration = Configuration.Default;
                     _configuration.Save();
                 }
             }
@@ -121,8 +121,15 @@ namespace Nuclear.Test.Console {
             Factory.Instance.Create(out IExecutor executor, configuration);
             executor.Execute();
 
-            Factory.Instance.CreateEmpty(out IResultKey emptyKey);
-            new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, executor.Results).Print();
+            Factory.Instance.Create(out IConsoleWriter writer, _configuration.Executor.Verbosity, ColorScheme.Default);
+            writer.Load(executor.Results);
+            writer.Write();
+
+            if(executor.Configuration.WriteReport) {
+                Factory.Instance.Create(out IJsonWriter jsonWriter, new FileInfo($"Execution_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json"));
+                jsonWriter.Load(executor.Results);
+                jsonWriter.Write();
+            }
 
             WaitOnDebug();
 

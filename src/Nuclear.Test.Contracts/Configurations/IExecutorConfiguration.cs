@@ -40,6 +40,11 @@ namespace Nuclear.Test.Configurations {
         /// </summary>
         IProxyRemoteConfiguration ProxyRemoteConfiguration { get; set; }
 
+        /// <summary>
+        /// Gets or sets if the executor will write all results into a detailed report file.
+        /// </summary>
+        Boolean WriteReport { get; set; }
+
         #endregion
 
     }

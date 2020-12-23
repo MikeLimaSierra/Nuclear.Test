@@ -23,14 +23,6 @@ namespace Nuclear.Test.Results {
         IEnumerable<IResultKey> GetKeys(IResultKey match);
 
         /// <summary>
-        /// Gets all available keys matching a given key with clipped to a precision.
-        /// </summary>
-        /// <param name="match">The <see cref="IResultKey"/> that needs to match.</param>
-        /// <param name="precision">The precision that all returned keys are clipped to.</param>
-        /// <returns>The collection of keys.</returns>
-        IEnumerable<IResultKey> GetKeys(IResultKey match, ResultKeyItems precision);
-
-        /// <summary>
         /// Gets the <see cref="ITestMethodResult"/> to a specific <see cref="IResultKey"/>.
         /// </summary>
         /// <param name="key">The given key that identifies results.</param>

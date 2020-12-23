@@ -1,24 +1,68 @@
 {
     "Locator": {
-        "SearchDirectory": "D:/Dev/GitHub/Nuclear.Net/bin",
+        "SearchDirectory": "%USERPROFILE%/source",
         "SearchDepth": -1,
         "SearchPattern": "*Tests.dll",
         "IgnoredDirectoryNames": [
             "obj",
-            ".vs",
-            "Debug",
-            "Integration"
+            ".vs"
         ]
     },
-    "Clients": {
-        "ProxyDirectory": "%APPDATA%/Nuclear.Test.Proxy/",
-        "ProxyExecutableName": "Nuclear.Test.Proxy.exe",
-        "WorkerDirectory": "%APPDATA%/Nuclear.Test.Worker/",
-        "WorkerExecutableName": "Nuclear.Test.Worker.exe",
+    "Executor": {
+        "Verbosity": "ExecutionArchitecture",
+        "WriteReport": false
+    },
+    "Proxy": {
+        "Directory": "%APPDATA%/Nuclear.Test.Proxy/",
+        "ExecutableName": "Nuclear.Test.Proxy.exe",
         "StartClientVisible": true,
-        "AutoShutdown": false
+        "AutoShutdown": false,
+        "WriteReport": false
+    },
+    "Worker": {
+        "Directory": "%APPDATA%/Nuclear.Test.Worker/",
+        "ExecutableName": "Nuclear.Test.Worker.exe",
+        "StartClientVisible": true,
+        "AutoShutdown": false,
+        "WriteReport": false
     },
     "Execution": {
+        "ArchitecturesFilter": {
+            "Values": [
+                "MSIL",
+                "IA64",
+                "Arm",
+                "None"
+            ],
+            "Mode": "Blacklist"
+        },
+        "RuntimesFilter": {
+            "Values": [
+                {
+                    "Framework": "NETCoreApp",
+                    "Versions": [
+                        "2.0",
+                        "2.1",
+                        "2.2",
+                        "3.0",
+                        "3.1",
+                        "5.0"
+                    ]
+                },
+                {
+                    "Framework": "NETFramework",
+                    "Versions": [
+                        "4.6.1",
+                        "4.6.2",
+                        "4.7",
+                        "4.7.1",
+                        "4.7.2",
+                        "4.8"
+                    ]
+                }
+            ],
+            "Mode": "WhiteList"
+        },
         "AssembliesInSequence": true,
         "TestsInSequence": false,
         "SelectedRuntimes": "All"

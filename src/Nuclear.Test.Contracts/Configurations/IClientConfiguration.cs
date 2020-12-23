@@ -24,6 +24,11 @@ namespace Nuclear.Test.Configurations {
         /// </summary>
         Boolean AutoShutdown { get; set; }
 
+        /// <summary>
+        /// Gets or sets if the client will write all results into a detailed report file.
+        /// </summary>
+        Boolean WriteReport { get; set; }
+
         #endregion
 
     }

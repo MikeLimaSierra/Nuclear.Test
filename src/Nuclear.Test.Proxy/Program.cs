@@ -11,8 +11,9 @@ using Nuclear.Test.Execution;
 using Nuclear.Test.Execution.Proxy;
 using Nuclear.Test.Extensions;
 using Nuclear.Test.Link;
-using Nuclear.Test.Printer;
 using Nuclear.Test.Results;
+using Nuclear.Test.Writer.Console;
+using Nuclear.Test.Writer.Json;
 
 namespace Nuclear.Test.Proxy {
     internal static class Program {
@@ -48,8 +49,15 @@ namespace Nuclear.Test.Proxy {
 
             ITestResultEndPoint results = _client.Results;
 
-            Factory.Instance.CreateEmpty(out IResultKey emptyKey);
-            new ResultTree(Verbosity.ExecutionArchitecture, emptyKey, results).Print();
+            Factory.Instance.Create(out IConsoleWriter writer, Verbosity.ExecutionArchitecture, ColorScheme.Default);
+            writer.Load(results);
+            writer.Write();
+
+            if(_client.Configuration.WriteReport) {
+                Factory.Instance.Create(out IJsonWriter jsonWriter, new FileInfo($"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{_client.Configuration.TestAssembly.Name}.json"));
+                jsonWriter.Load(results);
+                jsonWriter.Write();
+            }
 
             if(!_client.Configuration.AutoShutdown) {
                 Console.WriteLine("Press any key to exit.");
