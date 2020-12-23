@@ -14,7 +14,7 @@ namespace Nuclear.Test.Console.Configurations {
         internal Verbosity Verbosity { get; set; }
 
         [JsonProperty]
-        internal Boolean WriteJsonResultFile { get; set; }
+        internal Boolean WriteReport { get; set; }
 
         #endregion
 

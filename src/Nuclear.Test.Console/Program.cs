@@ -125,7 +125,7 @@ namespace Nuclear.Test.Console {
             writer.Load(executor.Results);
             writer.Write();
 
-            if(executor.Configuration.WriteJsonResultFile) {
+            if(executor.Configuration.WriteReport) {
                 Factory.Instance.Create(out IJsonWriter jsonWriter, new FileInfo($"Execution_{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.json"));
                 jsonWriter.Load(executor.Results);
                 jsonWriter.Write();

@@ -13,14 +13,14 @@
         "ExecutableName": "Nuclear.Test.Proxy.exe",
         "StartClientVisible": true,
         "AutoShutdown": false,
-        "WriteJsonResultFile": true
+        "WriteReport": true
     },
     "Worker": {
         "Directory": "%APPDATA%/Nuclear.Test.Worker/",
         "ExecutableName": "Nuclear.Test.Worker.exe",
         "StartClientVisible": true,
         "AutoShutdown": false,
-        "WriteJsonResultFile": true
+        "WriteReport": true
     },
     "Execution": {
         "ArchitecturesFilter": {

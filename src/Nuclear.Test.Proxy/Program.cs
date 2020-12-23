@@ -53,7 +53,7 @@ namespace Nuclear.Test.Proxy {
             writer.Load(results);
             writer.Write();
 
-            if(_client.Configuration.WriteJsonResultFile) {
+            if(_client.Configuration.WriteReport) {
                 Factory.Instance.Create(out IJsonWriter jsonWriter, new FileInfo($"{DateTime.Now:yyyy-MM-dd_HH-mm-ss}_{_client.Configuration.TestAssembly.Name}.json"));
                 jsonWriter.Load(results);
                 jsonWriter.Write();

@@ -20,7 +20,7 @@ namespace Nuclear.Test.Configurations {
 
         public IProxyRemoteConfiguration ProxyRemoteConfiguration { get; set; }
 
-        public Boolean WriteJsonResultFile { get; set; }
+        public Boolean WriteReport { get; set; }
 
         #endregion
 

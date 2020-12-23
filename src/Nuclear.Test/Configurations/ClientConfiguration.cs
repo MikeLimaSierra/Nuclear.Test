@@ -12,7 +12,7 @@ namespace Nuclear.Test.Configurations {
 
         public Boolean AutoShutdown { get; set; }
 
-        public Boolean WriteJsonResultFile { get; set; }
+        public Boolean WriteReport { get; set; }
 
         #endregion
 
@@ -25,7 +25,7 @@ namespace Nuclear.Test.Configurations {
 
             TestAssembly = original.TestAssembly;
             AutoShutdown = original.AutoShutdown;
-            WriteJsonResultFile = original.WriteJsonResultFile;
+            WriteReport = original.WriteReport;
         }
 
         #endregion

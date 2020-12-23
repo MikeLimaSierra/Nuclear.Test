@@ -21,7 +21,7 @@ namespace Nuclear.Test.Console.Configurations {
         internal Boolean AutoShutdown { get; set; }
 
         [JsonProperty]
-        internal Boolean WriteJsonResultFile { get; set; }
+        internal Boolean WriteReport { get; set; }
 
         #endregion
 

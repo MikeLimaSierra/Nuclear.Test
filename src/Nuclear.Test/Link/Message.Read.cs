@@ -410,13 +410,13 @@ namespace Nuclear.Test.Link {
 
             if(TryGetData(out FileInfo testAssembly)
                 && TryGetData(out Boolean autoShutdown)
-                && TryGetData(out Boolean writeJsonResultFile)
+                && TryGetData(out Boolean writeReport)
                 && TryGetData(out Boolean testsInSequence)) {
 
                 Factory.Instance.Create(out data);
                 data.TestAssembly = testAssembly;
                 data.AutoShutdown = autoShutdown;
-                data.WriteJsonResultFile = writeJsonResultFile;
+                data.WriteReport = writeReport;
                 data.TestsInSequence = testsInSequence;
             }
 
@@ -433,7 +433,7 @@ namespace Nuclear.Test.Link {
 
             if(TryGetData(out FileInfo testAssembly)
                 && TryGetData(out Boolean autoShutdown)
-                && TryGetData(out Boolean writeJsonResultFile)
+                && TryGetData(out Boolean writeReport)
                 && TryGetData(out Boolean assembliesInSequence)
                 && TryGetData(out Int32 runtimesCount)) {
 
@@ -465,7 +465,7 @@ namespace Nuclear.Test.Link {
                     Factory.Instance.Create(out data);
                     data.TestAssembly = testAssembly;
                     data.AutoShutdown = autoShutdown;
-                    data.WriteJsonResultFile = writeJsonResultFile;
+                    data.WriteReport = writeReport;
                     data.AssembliesInSequence = assembliesInSequence;
                     data.AvailableRuntimes = availableRuntimes;
                     data.SelectedRuntimes = selectedRuntimes;

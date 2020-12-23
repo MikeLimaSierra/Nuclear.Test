@@ -46,21 +46,21 @@ namespace Nuclear.Test.Console.Configurations {
             },
             Executor = new ExecutorConfig() {
                 Verbosity = Writer.Console.Verbosity.ExecutionArchitecture,
-                WriteJsonResultFile = false
+                WriteReport = false
             },
             Proxy = new ClientConfig() {
                 Directory = "%APPDATA%/Nuclear.Test.Proxy/",
                 ExecutableName = "Nuclear.Test.Proxy.exe",
                 StartClientVisible = false,
                 AutoShutdown = true,
-                WriteJsonResultFile = false
+                WriteReport = false
             },
             Worker = new ClientConfig() {
                 Directory = "%APPDATA%/Nuclear.Test.Worker/",
                 ExecutableName = "Nuclear.Test.Worker.exe",
                 StartClientVisible = false,
                 AutoShutdown = true,
-                WriteJsonResultFile = false
+                WriteReport = false
             },
             Execution = new ExecutionConfig() {
                 ArchitecturesFilter = new ArchitectureFilterList() {
@@ -191,7 +191,7 @@ namespace Nuclear.Test.Console.Configurations {
             workerClientConfig.AutoShutdown = Worker.AutoShutdown;
             workerClientConfig.TestAssembly = null;
             workerClientConfig.TestsInSequence = Execution.TestsInSequence;
-            workerClientConfig.WriteJsonResultFile = Worker.WriteJsonResultFile;
+            workerClientConfig.WriteReport = Worker.WriteReport;
 
             Factory.Instance.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
             workerRemoteConfig.ClientConfiguration = workerClientConfig;
@@ -216,7 +216,7 @@ namespace Nuclear.Test.Console.Configurations {
             proxyClientConfiguration.TestAssembly = null;
             proxyClientConfiguration.WorkerDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Worker.Directory));
             proxyClientConfiguration.WorkerExecutableName = Worker.ExecutableName;
-            proxyClientConfiguration.WriteJsonResultFile = Proxy.WriteJsonResultFile;
+            proxyClientConfiguration.WriteReport = Proxy.WriteReport;
 
             Factory.Instance.Create(out IProxyRemoteConfiguration proxyRemoteConfiguration);
             proxyRemoteConfiguration.ClientConfiguration = proxyClientConfiguration;
@@ -234,7 +234,7 @@ namespace Nuclear.Test.Console.Configurations {
                 });
             configuration.ProxyDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Proxy.Directory));
             configuration.ProxyExecutableName = Proxy.ExecutableName;            
-            configuration.WriteJsonResultFile = Executor.WriteJsonResultFile;
+            configuration.WriteReport = Executor.WriteReport;
 
             return configuration;
         }
