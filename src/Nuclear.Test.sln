@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Worker", "Nucl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Proxy", "Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj", "{5639AE8D-A6B3-4681-86B1-937AF7EB1983}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Tests", "Nuclear.Test.Tests\Nuclear.Test.Tests.csproj", "{CE44007B-3BFA-4CBE-A3A6-71D8BFD5B66F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.uTests", "Nuclear.Test.uTests\Nuclear.Test.uTests.csproj", "{CE44007B-3BFA-4CBE-A3A6-71D8BFD5B66F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Contracts", "Nuclear.Test.Contracts\Nuclear.Test.Contracts.csproj", "{2902C5AB-5541-4EFE-8964-0AC3244C51BC}"
 EndProject

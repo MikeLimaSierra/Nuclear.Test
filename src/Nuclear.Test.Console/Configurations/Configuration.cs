@@ -99,8 +99,8 @@ namespace Nuclear.Test.Console.Configurations {
                         }
                     }
                 },
-                AssembliesInSequence = false,
-                TestsInSequence = false,
+                AssemblyModeOverride = TestModeOverrides.Auto,
+                TestMethodModeOverride = TestModeOverrides.Auto,
                 SelectedRuntimes = SelectedExecutionRuntimes.All
             }
         };
@@ -190,7 +190,7 @@ namespace Nuclear.Test.Console.Configurations {
             Factory.Instance.Create(out IWorkerClientConfiguration workerClientConfig);
             workerClientConfig.AutoShutdown = Worker.AutoShutdown;
             workerClientConfig.TestAssembly = null;
-            workerClientConfig.TestsInSequence = Execution.TestsInSequence;
+            workerClientConfig.TestMethodModeOverride = Execution.TestMethodModeOverride;
             workerClientConfig.WriteReport = Worker.WriteReport;
 
             Factory.Instance.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
@@ -200,10 +200,10 @@ namespace Nuclear.Test.Console.Configurations {
 
             Factory.Instance.Create(out IProxyClientConfiguration proxyClientConfiguration);
             proxyClientConfiguration.WorkerRemoteConfiguration = workerRemoteConfig;
-            proxyClientConfiguration.AssembliesInSequence = Execution.AssembliesInSequence;
+            proxyClientConfiguration.AssemblyModeOverride = Execution.AssemblyModeOverride;
 
             RuntimesHelper.TryGetMatchingRuntimes(new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(2, 0)), out IEnumerable<RuntimeInfo> runtimes);
-            IEnumerable<RuntimeInfo> filterRuntimes =  Execution.RuntimesFilter.Values.SelectMany(ri => ri.Convert());
+            IEnumerable<RuntimeInfo> filterRuntimes = Execution.RuntimesFilter.Values.SelectMany(ri => ri.Convert());
 
             proxyClientConfiguration.AvailableRuntimes = runtimes
                 .Where(r => Execution.RuntimesFilter.Mode switch {
@@ -233,7 +233,7 @@ namespace Nuclear.Test.Console.Configurations {
                     _ => false,
                 });
             configuration.ProxyDirectory = new DirectoryInfo(Environment.ExpandEnvironmentVariables(Proxy.Directory));
-            configuration.ProxyExecutableName = Proxy.ExecutableName;            
+            configuration.ProxyExecutableName = Proxy.ExecutableName;
             configuration.WriteReport = Executor.WriteReport;
 
             return configuration;

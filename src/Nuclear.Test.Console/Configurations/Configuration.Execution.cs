@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -19,10 +18,12 @@ namespace Nuclear.Test.Console.Configurations {
         internal RuntimeInfoFilterList RuntimesFilter { get; set; }
 
         [JsonProperty]
-        internal Boolean AssembliesInSequence { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        internal TestModeOverrides AssemblyModeOverride { get; set; }
 
         [JsonProperty]
-        internal Boolean TestsInSequence { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        internal TestModeOverrides TestMethodModeOverride { get; set; }
 
         [JsonProperty]
         [JsonConverter(typeof(StringEnumConverter))]

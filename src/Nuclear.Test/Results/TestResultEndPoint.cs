@@ -16,9 +16,7 @@ namespace Nuclear.Test.Results {
         private static readonly ILog _log = LogManager.GetLogger(typeof(TestResultEndPoint));
 
         private readonly ConcurrentDictionary<IResultKey, ITestMethodResult> _results =
-            new ConcurrentDictionary<IResultKey, ITestMethodResult>(_comparer);
-
-        private static readonly IEqualityComparer<IResultKey> _comparer = DynamicEqualityComparer.FromIEquatable<IResultKey>();
+            new ConcurrentDictionary<IResultKey, ITestMethodResult>(DynamicEqualityComparer.FromIEquatable<IResultKey>());
 
         #endregion
 
@@ -28,7 +26,7 @@ namespace Nuclear.Test.Results {
 
         #endregion
 
-        #region methods
+        #region ITestResultEndPoint
 
         public void Add(IResultKey key, ITestMethodResult results) {
             _log.Debug($"{nameof(Add)}({key.Format()}, {results.CountEntries.Format()})");
@@ -108,7 +106,6 @@ namespace Nuclear.Test.Results {
 
             _results.GetOrAdd(key, result).TestEntries.Add(entry);
         }
-
 
         #endregion
 
