@@ -63,8 +63,8 @@
             ],
             "Mode": "WhiteList"
         },
-        "AssembliesInSequence": false,
-        "TestsInSequence": false,
+        "AssemblyModeOverride": "Auto",
+        "TestMethodModeOverride": "Auto",
         "SelectedRuntimes": "All"
     }
 }
