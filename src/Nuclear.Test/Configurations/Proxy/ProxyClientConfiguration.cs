@@ -5,42 +5,23 @@ using System.IO;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations.Worker;
+using Nuclear.TestSite;
 
 namespace Nuclear.Test.Configurations.Proxy {
     internal class ProxyClientConfiguration : ClientConfiguration, IProxyClientConfiguration {
 
         #region properties
 
-        /// <summary>
-        /// Gets or sets if assemblies should all be executed in a sequence.
-        ///     If set to true, there will only be one worker running at a time.
-        ///     If set to false, all proxies and workers will start immediately.
-        /// </summary>
-        public Boolean AssembliesInSequence { get; set; }
+        public TestMode AssembliesInSequence { get; set; }
 
-        /// <summary>
-        /// Gets or sets the runtimes that can be used.
-        /// </summary>
         public IEnumerable<RuntimeInfo> AvailableRuntimes { get; set; }
 
-        /// <summary>
-        /// Gets or sets the selected runtimes that are used to execute tests.
-        /// </summary>
         public SelectedExecutionRuntimes SelectedRuntimes { get; set; }
 
-        /// <summary>
-        /// Gets or sets the directory that contains all workers.
-        /// </summary>
         public DirectoryInfo WorkerDirectory { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of any worker executable.
-        /// </summary>
         public String WorkerExecutableName { get; set; }
 
-        /// <summary>
-        /// Gets or sets the worker remote configuration object.
-        /// </summary>
         public IWorkerRemoteConfiguration WorkerRemoteConfiguration { get; set; }
 
         #endregion

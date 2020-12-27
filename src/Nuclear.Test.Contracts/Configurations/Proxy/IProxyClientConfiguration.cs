@@ -5,6 +5,7 @@ using System.IO;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Execution.Proxy;
+using Nuclear.TestSite;
 
 namespace Nuclear.Test.Configurations.Proxy {
 
@@ -16,11 +17,9 @@ namespace Nuclear.Test.Configurations.Proxy {
         #region properties
 
         /// <summary>
-        /// Gets or sets if assemblies should all be executed in a sequence.
-        ///     If set to true, there will only be one worker running at a time.
-        ///     If set to false, all proxies and workers will start immediately.
+        /// Gets or sets how assemblies should be executed.
         /// </summary>
-        Boolean AssembliesInSequence { get; set; }
+        TestMode AssembliesInSequence { get; set; }
 
         /// <summary>
         /// Gets or sets the runtimes that can be used.
