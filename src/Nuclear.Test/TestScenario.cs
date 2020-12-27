@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
 
-using Nuclear.Assemblies.Runtimes;
-
 namespace Nuclear.Test {
 
     /// <summary>
@@ -41,14 +39,6 @@ namespace Nuclear.Test {
 
         #region ctors
 
-        /// <summary>
-        /// Creates a new instance of <see cref="TestScenario"/>.
-        /// </summary>
-        /// <param name="assemblyName">The name of the test assembly.</param>
-        /// <param name="targetRuntime">The targeted runtime version.</param>
-        /// <param name="targetArchitecture">The targeted processor architecture.</param>
-        /// <param name="executionRuntime">The executing runtime version.</param>
-        /// <param name="executionArchitecture">The executing processor architecture.</param>
         internal TestScenario(
             String assemblyName,
             RuntimeInfo targetRuntime,
