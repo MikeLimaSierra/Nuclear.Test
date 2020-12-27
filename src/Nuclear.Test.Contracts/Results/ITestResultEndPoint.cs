@@ -23,6 +23,20 @@ namespace Nuclear.Test.Results {
         #region methods
 
         /// <summary>
+        /// Adds an <see cref="ITestMethodResult"/> and its <see cref="IResultKey"/>.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="results">The test method result.</param>
+        void Add(IResultKey key, ITestMethodResult results);
+
+        /// <summary>
+        /// Adds a bunch of results with their keys.
+        /// </summary>
+        /// <param name="results">The results.</param>
+        void Add(IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results);
+
+
+        /// <summary>
         /// Initializes the <see cref="ITestResultSink"/> by giving a <see cref="ITestScenario"/>.
         /// </summary>
         /// <param name="scenario">The <see cref="ITestScenario"/> relevant to the results.</param>
@@ -59,19 +73,6 @@ namespace Nuclear.Test.Results {
         /// <param name="_method">The test method to ignore.</param>
         /// <param name="ignoreReason">The reason why it is being ignored.</param>
         void IgnoreTestMethod(MethodInfo _method, String ignoreReason);
-
-        /// <summary>
-        /// Adds an <see cref="ITestMethodResult"/> and its <see cref="IResultKey"/>.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="results">The test method result.</param>
-        void Add(IResultKey key, ITestMethodResult results);
-
-        /// <summary>
-        /// Adds a bunch of results with their keys.
-        /// </summary>
-        /// <param name="results">The results.</param>
-        void Add(IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results);
 
         #endregion
 
