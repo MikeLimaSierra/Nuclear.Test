@@ -190,7 +190,7 @@ namespace Nuclear.Test.Console.Configurations {
             Factory.Instance.Create(out IWorkerClientConfiguration workerClientConfig);
             workerClientConfig.AutoShutdown = Worker.AutoShutdown;
             workerClientConfig.TestAssembly = null;
-            workerClientConfig.TestsInSequence = Execution.TestsInSequence;
+            workerClientConfig.TestMethodModeOverride = Execution.TestsInSequence;
             workerClientConfig.WriteReport = Worker.WriteReport;
 
             Factory.Instance.Create(out IWorkerRemoteConfiguration workerRemoteConfig);
@@ -200,7 +200,7 @@ namespace Nuclear.Test.Console.Configurations {
 
             Factory.Instance.Create(out IProxyClientConfiguration proxyClientConfiguration);
             proxyClientConfiguration.WorkerRemoteConfiguration = workerRemoteConfig;
-            proxyClientConfiguration.AssembliesInSequence = Execution.AssembliesInSequence;
+            proxyClientConfiguration.AssembliesTestMode = Execution.AssembliesInSequence;
 
             RuntimesHelper.TryGetMatchingRuntimes(new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(2, 0)), out IEnumerable<RuntimeInfo> runtimes);
             IEnumerable<RuntimeInfo> filterRuntimes =  Execution.RuntimesFilter.Values.SelectMany(ri => ri.Convert());

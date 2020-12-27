@@ -11,6 +11,7 @@ using Nuclear.Assemblies;
 using Nuclear.Assemblies.Resolvers;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Extensions;
+using Nuclear.Test.Configurations;
 using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
@@ -154,7 +155,7 @@ namespace Nuclear.Test.Execution.Worker {
 
                     } else {
 
-                        if(classLevelMode == TestMode.Sequential || m_attr.TestMode == TestMode.Sequential || Configuration.TestsInSequence) {
+                        if(classLevelMode == TestMode.Sequential || m_attr.TestMode == TestMode.Sequential || Configuration.TestMethodModeOverride == TestModeOverrides.Sequential) {
                             _log.Info($"Adding sequential test method {type.Format()}.{testMethod.Name.Format()}.");
                             sequentialTestMethods.Add(new TestMethodInfo(results, testMethod));
 

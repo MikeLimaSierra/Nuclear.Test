@@ -281,7 +281,7 @@ namespace Nuclear.Test.Link {
             Append(data.AutoShutdown);
             Append(data.WriteReport);
 
-            Append(data.TestsInSequence);
+            Append(data.TestMethodModeOverride);
 
             return this;
         }
@@ -296,7 +296,7 @@ namespace Nuclear.Test.Link {
             Append(data.AutoShutdown);
             Append(data.WriteReport);
 
-            Append(data.AssembliesInSequence);
+            Append(data.AssemblyModeOverride);
             Append(data.AvailableRuntimes.Count());
 
             foreach(RuntimeInfo runtime in data.AvailableRuntimes) {
@@ -341,6 +341,19 @@ namespace Nuclear.Test.Link {
             return this;
         }
 
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        public IMessage Append(TestModeOverrides data) {
+            using(BinaryWriter bw = new BinaryWriter(Payload, Encoding.Default, true)) {
+                bw.Write((Int32) data);
+            }
+
+            return this;
+        }
 
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.

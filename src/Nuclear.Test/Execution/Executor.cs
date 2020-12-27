@@ -202,9 +202,9 @@ namespace Nuclear.Test.Execution {
 
         private void ExecuteRemotes(IEnumerable<IProxyRemote> remotes) {
             _log.Debug(nameof(ExecuteRemotes));
-            _log.Info($"Execute {remotes.Count().Format()} {(Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssembliesInSequence ? "sequential" : "parallel")} proxy remotes.");
+            _log.Info($"Execute {remotes.Count().Format()} {Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssemblyModeOverride.Format()} proxy remotes.");
 
-            if(!Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssembliesInSequence) {
+            if(Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssemblyModeOverride == TestModeOverrides.Auto) {
                 _remotesFinishedEvent = new CountdownEvent(remotes.Where(r => r.Configuration.HasExecutable).Count());
             }
 
@@ -215,7 +215,7 @@ namespace Nuclear.Test.Execution {
                     continue;
                 }
 
-                if(Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssembliesInSequence) {
+                if(Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssemblyModeOverride == TestModeOverrides.Sequential) {
                     _remotesFinishedEvent = new CountdownEvent(1);
                 }
 
@@ -223,14 +223,14 @@ namespace Nuclear.Test.Execution {
 
                 remote.Execute();
 
-                if(Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssembliesInSequence) {
+                if(Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssemblyModeOverride == TestModeOverrides.Sequential) {
                     _log.Info($"Waiting for proxy remote {remote.Format()} to finish.");
 
                     _remotesFinishedEvent.Wait();
                 }
             }
 
-            if(!Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssembliesInSequence) {
+            if(Configuration.ProxyRemoteConfiguration.ClientConfiguration.AssemblyModeOverride == TestModeOverrides.Auto) {
                 _remotesFinishedEvent.Wait();
             }
         }

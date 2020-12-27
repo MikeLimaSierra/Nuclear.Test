@@ -5,14 +5,13 @@ using System.IO;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Exceptions;
 using Nuclear.Test.Configurations.Worker;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.Configurations.Proxy {
     internal class ProxyClientConfiguration : ClientConfiguration, IProxyClientConfiguration {
 
         #region properties
 
-        public TestMode AssembliesInSequence { get; set; }
+        public TestModeOverrides AssemblyModeOverride { get; set; }
 
         public IEnumerable<RuntimeInfo> AvailableRuntimes { get; set; }
 
@@ -33,7 +32,7 @@ namespace Nuclear.Test.Configurations.Proxy {
         internal ProxyClientConfiguration(IProxyClientConfiguration original) : base(original) {
             Throw.If.Object.IsNull(original, nameof(original));
 
-            AssembliesInSequence = original.AssembliesInSequence;
+            AssemblyModeOverride = original.AssemblyModeOverride;
             AvailableRuntimes = original.AvailableRuntimes;
             SelectedRuntimes = original.SelectedRuntimes;
             WorkerDirectory = original.WorkerDirectory;

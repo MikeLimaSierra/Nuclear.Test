@@ -197,6 +197,13 @@ namespace Nuclear.Test.Link {
         /// </summary>
         /// <param name="data">The data object.</param>
         /// <returns>True if data was found.</returns>
+        Boolean TryGetData(out TestModeOverrides data);
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
         Boolean TryGetData(out EntryTypes data);
 
         /// <summary>
@@ -407,6 +414,13 @@ namespace Nuclear.Test.Link {
         /// <returns>The current <see cref="IMessage"/>.</returns>
         IMessage Append(IProxyRemoteConfiguration data);
 
+
+        /// <summary>
+        /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>The current <see cref="IMessage"/>.</returns>
+        IMessage Append(TestModeOverrides data);
 
         /// <summary>
         /// Appends <paramref name="data"/> to the <see cref="Payload"/> <see cref="MemoryStream"/>.

@@ -1,12 +1,11 @@
 ﻿using Nuclear.Exceptions;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.Configurations.Worker {
     internal class WorkerClientConfiguration : ClientConfiguration, IWorkerClientConfiguration {
 
         #region properties
 
-        public TestMode TestsInSequence { get; set; }
+        public TestModeOverrides TestMethodModeOverride { get; set; }
 
         #endregion
 
@@ -17,7 +16,7 @@ namespace Nuclear.Test.Configurations.Worker {
         internal WorkerClientConfiguration(IWorkerClientConfiguration original) : base(original) {
             Throw.If.Object.IsNull(original, nameof(original));
 
-            TestsInSequence = original.TestsInSequence;
+            TestMethodModeOverride = original.TestMethodModeOverride;
         }
 
         #endregion

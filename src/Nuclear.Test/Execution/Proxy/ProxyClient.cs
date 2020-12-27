@@ -184,9 +184,9 @@ namespace Nuclear.Test.Execution.Proxy {
 
         private void ExecuteRemotes(IEnumerable<IWorkerRemote> remotes) {
             _log.Debug(nameof(ExecuteRemotes));
-            _log.Info($"Execute {remotes.Count().Format()} {(Configuration.AssembliesInSequence ? "sequential" : "parallel")} worker remotes.");
+            _log.Info($"Execute {remotes.Count().Format()} {Configuration.AssemblyModeOverride.Format()} worker remotes.");
 
-            if(!Configuration.AssembliesInSequence) {
+            if(Configuration.AssemblyModeOverride == TestModeOverrides.Auto) {
                 _remotesFinishedEvent = new CountdownEvent(remotes.Where(r => r.Configuration.HasExecutable).Count());
             }
 
@@ -197,7 +197,7 @@ namespace Nuclear.Test.Execution.Proxy {
                     continue;
                 }
 
-                if(Configuration.AssembliesInSequence) {
+                if(Configuration.AssemblyModeOverride == TestModeOverrides.Sequential) {
                     _remotesFinishedEvent = new CountdownEvent(1);
                 }
 
@@ -205,14 +205,14 @@ namespace Nuclear.Test.Execution.Proxy {
 
                 remote.Execute();
 
-                if(Configuration.AssembliesInSequence) {
+                if(Configuration.AssemblyModeOverride == TestModeOverrides.Sequential) {
                     _log.Info($"Waiting for worker remote {remote.Format()} to finish.");
 
                     _remotesFinishedEvent.Wait();
                 }
             }
 
-            if(!Configuration.AssembliesInSequence) {
+            if(Configuration.AssemblyModeOverride == TestModeOverrides.Auto) {
                 _remotesFinishedEvent.Wait();
             }
         }

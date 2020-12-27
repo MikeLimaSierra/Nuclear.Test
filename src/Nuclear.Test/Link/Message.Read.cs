@@ -411,13 +411,13 @@ namespace Nuclear.Test.Link {
             if(TryGetData(out FileInfo testAssembly)
                 && TryGetData(out Boolean autoShutdown)
                 && TryGetData(out Boolean writeReport)
-                && TryGetData(out Boolean testsInSequence)) {
+                && TryGetData(out TestModeOverrides testMethodModeOverride)) {
 
                 Factory.Instance.Create(out data);
                 data.TestAssembly = testAssembly;
                 data.AutoShutdown = autoShutdown;
                 data.WriteReport = writeReport;
-                data.TestsInSequence = testsInSequence;
+                data.TestMethodModeOverride = testMethodModeOverride;
             }
 
             return data != null;
@@ -434,7 +434,7 @@ namespace Nuclear.Test.Link {
             if(TryGetData(out FileInfo testAssembly)
                 && TryGetData(out Boolean autoShutdown)
                 && TryGetData(out Boolean writeReport)
-                && TryGetData(out Boolean assembliesInSequence)
+                && TryGetData(out TestModeOverrides assemblyModeOverride)
                 && TryGetData(out Int32 runtimesCount)) {
 
                 RuntimeInfo[] availableRuntimes = new RuntimeInfo[runtimesCount];
@@ -466,7 +466,7 @@ namespace Nuclear.Test.Link {
                     data.TestAssembly = testAssembly;
                     data.AutoShutdown = autoShutdown;
                     data.WriteReport = writeReport;
-                    data.AssembliesInSequence = assembliesInSequence;
+                    data.AssemblyModeOverride = assemblyModeOverride;
                     data.AvailableRuntimes = availableRuntimes;
                     data.SelectedRuntimes = selectedRuntimes;
                     data.WorkerDirectory = workerDirectory;
@@ -521,6 +521,27 @@ namespace Nuclear.Test.Link {
             return data != null;
         }
 
+
+        /// <summary>
+        /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.
+        /// </summary>
+        /// <param name="data">The data object.</param>
+        /// <returns>True if data was found.</returns>
+        public Boolean TryGetData(out TestModeOverrides data) {
+            data = default;
+
+            using(BinaryReader br = new BinaryReader(Payload, Encoding.Default, true)) {
+                try {
+                    data = (TestModeOverrides) br.ReadInt32();
+                    return true;
+
+                } catch(Exception ex) {
+                    _log.Error($"Failed to read {typeof(TestModeOverrides).Format()}", ex);
+
+                    return false;
+                }
+            }
+        }
 
         /// <summary>
         /// Tries to read data from the <see cref="Payload"/> <see cref="MemoryStream"/>.

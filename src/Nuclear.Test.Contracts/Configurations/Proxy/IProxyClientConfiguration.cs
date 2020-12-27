@@ -5,7 +5,6 @@ using System.IO;
 using Nuclear.Assemblies.Runtimes;
 using Nuclear.Test.Configurations.Worker;
 using Nuclear.Test.Execution.Proxy;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.Configurations.Proxy {
 
@@ -19,7 +18,7 @@ namespace Nuclear.Test.Configurations.Proxy {
         /// <summary>
         /// Gets or sets how assemblies should be executed.
         /// </summary>
-        TestMode AssembliesInSequence { get; set; }
+        TestModeOverrides AssemblyModeOverride { get; set; }
 
         /// <summary>
         /// Gets or sets the runtimes that can be used.

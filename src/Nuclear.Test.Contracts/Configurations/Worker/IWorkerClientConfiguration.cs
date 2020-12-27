@@ -1,5 +1,4 @@
 ﻿using Nuclear.Test.Execution.Worker;
-using Nuclear.TestSite;
 
 namespace Nuclear.Test.Configurations.Worker {
 
@@ -13,7 +12,7 @@ namespace Nuclear.Test.Configurations.Worker {
         /// <summary>
         /// Gets or sets how tests in an assembly should be executed.
         /// </summary>
-        TestMode TestsInSequence { get; set; }
+        TestModeOverrides TestMethodModeOverride { get; set; }
 
         #endregion
 
