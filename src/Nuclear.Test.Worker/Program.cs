@@ -49,7 +49,7 @@ namespace Nuclear.Test.Worker {
 
             ITestResultEndPoint results = _client.Results;
 
-            Factory.Instance.Create(out IConsoleWriter writer, Verbosity.ExecutionArchitecture, ColorScheme.Default);
+            Factory.Instance.Create(out IConsoleWriter writer, Verbosity.Collapsed, ColorScheme.Default);
             writer.Load(results);
             writer.Write();
 
