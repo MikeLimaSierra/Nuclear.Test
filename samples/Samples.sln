@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.168
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample", "Sample\Sample.csproj", "{7C2A45B9-BD6B-4616-944C-2E23593CB940}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleTests", "SampleTests\SampleTests.csproj", "{4F781C00-A9CB-494B-AD63-394F3432496B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Sample_uTests", "Sample_uTests\Sample_uTests.csproj", "{4F781C00-A9CB-494B-AD63-394F3432496B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestExtensions", "TestExtensions\TestExtensions.csproj", "{EAB6BD6B-01D3-4762-A523-CD5516C6EBDD}"
 EndProject
