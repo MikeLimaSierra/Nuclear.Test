@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace Nuclear.Test.Writer.Console {
+﻿namespace Nuclear.Test.Writer.Console {
 
     /// <summary>
     /// Extends <see cref="IFactory"/> with creation functionality for <see cref="IConsoleWriter"/>.

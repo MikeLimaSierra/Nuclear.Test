@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Nuclear.Test.Writer.Console {
     internal static class ConsoleAdapter {
