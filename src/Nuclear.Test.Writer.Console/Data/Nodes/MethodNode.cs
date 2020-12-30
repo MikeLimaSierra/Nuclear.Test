@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Nuclear.Exceptions;
 using Nuclear.Test.Results;
 using Nuclear.Test.Writer.Console.Data.Leafs;
 
@@ -26,11 +25,10 @@ namespace Nuclear.Test.Writer.Console.Data.Nodes {
         internal MethodNode(String name, Verbosity verbosity, IEnumerable<KeyValuePair<IResultKey, ITestMethodResult>> results)
             : base(name, verbosity, results) {
 
-            Int32 index = 1;
-
-            if(verbosity > Verbosity.MethodName || HasFails) {
+            if(verbosity > Verbosity.MethodName || HasFails || HasIgnores || HasBlanks) {
                 ITestMethodResult result = results.First().Value;
 
+                Int32 index = 1;
                 IsIgnored = result.IsIgnored;
                 IgnoreReason = result.IgnoreReason;
                 IsEmpty = result.IsEmpty;

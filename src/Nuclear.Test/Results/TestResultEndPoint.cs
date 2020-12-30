@@ -61,9 +61,8 @@ namespace Nuclear.Test.Results {
         public void IgnoreTestMethod(MethodInfo _method, String ignoreReason) {
             Factory.Instance.Create(out IResultKey key, Scenario, _method.DeclaringType.Name, _method.Name);
             Factory.Instance.Create(out ITestMethodResult result);
-            result.Ignore(ignoreReason);
 
-            _results.GetOrAdd(key, result);
+            _results.GetOrAdd(key, result).Ignore(ignoreReason);
         }
 
         #endregion
