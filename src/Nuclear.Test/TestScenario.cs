@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 
+using Nuclear.Assemblies.Runtimes;
+
 namespace Nuclear.Test {
 
     /// <summary>
