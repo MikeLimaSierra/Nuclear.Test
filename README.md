@@ -1,6 +1,7 @@
 # Nuclear.Test
 
-`Nuclear.Test` is a test platform for `.NET`, that can exeute tests on multiple runtimes and processor architectures with just one click.
+`Nuclear.Test` is an advanced test platform for `.NET`.
+It can exeute tests on multiple runtimes and processor architectures with just one click amongst other features.
 
 The manual and documentation can be found at [mikelimasierra.net](https://mikelimasierra.net/index.php/software-projects/nuclear-test-platform/).
 
