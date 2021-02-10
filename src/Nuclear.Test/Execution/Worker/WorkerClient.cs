@@ -57,7 +57,17 @@ namespace Nuclear.Test.Execution.Worker {
 
             if(AssemblyResolver.Default.TryResolve(args, out IEnumerable<FileInfo> files)) {
                 foreach(FileInfo file in files) {
-                    if(AssemblyHelper.TryLoadFrom(file, out Assembly assembly)) {
+                    if(AssemblyHelper.TryLoadFile(file, out Assembly assembly)) {
+                        _log.Debug($"Resolved assembly at {file.FullName.Format()}");
+
+                        return assembly;
+                    }
+                }
+            }
+
+            if(AssemblyResolver.Default.TryResolve(args.Name, out files)) {
+                foreach(FileInfo file in files) {
+                    if(AssemblyHelper.TryLoadFile(file, out Assembly assembly)) {
                         _log.Debug($"Resolved assembly at {file.FullName.Format()}");
 
                         return assembly;
@@ -67,7 +77,7 @@ namespace Nuclear.Test.Execution.Worker {
 
             if(AssemblyResolver.Nuget.TryResolve(args, out files)) {
                 foreach(FileInfo file in files) {
-                    if(AssemblyHelper.TryLoadFrom(file, out Assembly assembly)) {
+                    if(AssemblyHelper.TryLoadFile(file, out Assembly assembly)) {
                         _log.Debug($"Resolved assembly at {file.FullName.Format()}");
 
                         return assembly;

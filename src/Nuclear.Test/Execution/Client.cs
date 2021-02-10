@@ -257,7 +257,7 @@ namespace Nuclear.Test.Execution {
         private void LoadAssembly() {
             _log.Debug(nameof(LoadAssembly));
 
-            if(AssemblyHelper.TryLoadFrom(Configuration.TestAssembly, out Assembly testAssembly)) {
+            if(AssemblyHelper.TryLoadFile(Configuration.TestAssembly, out Assembly testAssembly)) {
                 _log.Debug($"Assembly loaded from {Configuration.TestAssembly.FullName.Format()}");
 
                 TestAssembly = testAssembly;
