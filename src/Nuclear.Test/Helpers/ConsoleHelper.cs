@@ -56,9 +56,9 @@ namespace Nuclear.Test.Helpers {
         public static void PrintWorkerRemotesInfo(IEnumerable<(RuntimeInfo runtime, Boolean hasExecutable, Boolean? isSelected)> remoteInfos) {
             Throw.If.Object.IsNull(remoteInfos, nameof(remoteInfos));
 
-            Console.Write(@"╔══════════════════════════════════════════════════════════════════════╗");
-            Console.Write(@"║                          Available Workers                           ║");
-            Console.Write(@"╠══════════════════════════════════════════════════════════════════════╣");
+            Console.WriteLine(@"╔══════════════════════════════════════════════════════════════════════╗");
+            Console.WriteLine(@"║                          Available Workers                           ║");
+            Console.WriteLine(@"╠══════════════════════════════════════════════════════════════════════╣");
 
             foreach((RuntimeInfo runtime, Boolean hasExecutable, Boolean? isSelected) in remoteInfos) {
                 Console.Write("║    ");
@@ -84,7 +84,7 @@ namespace Nuclear.Test.Helpers {
                 Console.WriteLine(" {0}    ║", runtime.ToString().PadRight(58, ' '));
             }
 
-            Console.Write(@"╠══════════════════════════════════════════════════════════════════════╣");
+            Console.WriteLine(@"╠══════════════════════════════════════════════════════════════════════╣");
 
             Console.Write("║    ");
             Console.ForegroundColor = ConsoleColor.DarkGray;
@@ -93,24 +93,24 @@ namespace Nuclear.Test.Helpers {
             Console.WriteLine(" {0}    ║", "Missing worker executable".PadRight(58, ' '));
 
             Console.Write("║    ");
-            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("[X]");
             Console.ResetColor();
             Console.WriteLine(" {0}    ║", "Ignored by configuration".PadRight(58, ' '));
 
             Console.Write("║    ");
-            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.Write("[Y]");
             Console.ResetColor();
             Console.WriteLine(" {0}    ║", "Selected for execution".PadRight(58, ' '));
 
             Console.Write("║    ");
-            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.Write("[N]");
             Console.ResetColor();
             Console.WriteLine(" {0}    ║", "No match".PadRight(58, ' '));
 
-            Console.Write(@"╚══════════════════════════════════════════════════════════════════════╝");
+            Console.WriteLine(@"╚══════════════════════════════════════════════════════════════════════╝");
         }
 
     }
