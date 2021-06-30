@@ -6,7 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1939BFF1-B590-46D7-80D6-4290FA299810}"
 	ProjectSection(SolutionItems) = preProject
 		Configurations.targets = Configurations.targets
-		publish.bat = publish.bat
+		publish.ps1 = publish.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test", "Nuclear.Test\Nuclear.Test.csproj", "{5D2E96BA-728C-40DD-B2B6-881D7A4C4080}"
