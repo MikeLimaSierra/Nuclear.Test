@@ -1,6 +1,4 @@
-﻿using Nuclear.Exceptions;
-
-namespace Nuclear.Test.Configurations.Worker {
+﻿namespace Nuclear.Test.Configurations.Worker {
     internal class WorkerClientConfiguration : ClientConfiguration, IWorkerClientConfiguration {
 
         #region properties
@@ -11,12 +9,12 @@ namespace Nuclear.Test.Configurations.Worker {
 
         #region ctors
 
-        internal WorkerClientConfiguration() : base() { }
+        internal WorkerClientConfiguration() : this(null) { }
 
         internal WorkerClientConfiguration(IWorkerClientConfiguration original) : base(original) {
-            Throw.If.Object.IsNull(original, nameof(original));
-
-            TestMethodModeOverride = original.TestMethodModeOverride;
+            if(original != null) {
+                TestMethodModeOverride = original.TestMethodModeOverride;
+            }
         }
 
         #endregion

@@ -30,29 +30,12 @@ namespace Nuclear.Test.Results {
         internal ResultKey(ITestScenario scenario, MethodInfo methodInfo)
             : this(scenario, methodInfo.DeclaringType.Name, methodInfo.Name) { }
 
-        internal ResultKey(ITestScenario scenario, String fileName, String methodName)
-            : this(scenario.AssemblyName,
-                  scenario.TargetRuntime,
-                  scenario.TargetArchitecture,
-                  scenario.ExecutionRuntime,
-                  scenario.ExecutionArchitecture,
-                  fileName,
-                  methodName) { }
-
-        internal ResultKey(
-            String assemblyName,
-            RuntimeInfo targetRuntime,
-            ProcessorArchitecture targetArchitecture,
-            RuntimeInfo executionRuntime,
-            ProcessorArchitecture executionArchitecture,
-            String fileName,
-            String methodName) {
-
-            AssemblyName = assemblyName;
-            TargetRuntime = targetRuntime;
-            TargetArchitecture = targetArchitecture;
-            ExecutionRuntime = executionRuntime;
-            ExecutionArchitecture = executionArchitecture;
+        internal ResultKey(ITestScenario scenario, String fileName, String methodName) {
+            AssemblyName = scenario.AssemblyName;
+            TargetRuntime = scenario.TargetRuntime;
+            TargetArchitecture = scenario.TargetArchitecture;
+            ExecutionRuntime = scenario.ExecutionRuntime;
+            ExecutionArchitecture = scenario.ExecutionArchitecture;
             FileName = fileName;
             MethodName = methodName;
         }

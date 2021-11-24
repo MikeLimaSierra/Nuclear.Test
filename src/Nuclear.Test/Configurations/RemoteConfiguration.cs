@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 
-using Nuclear.Exceptions;
-
 namespace Nuclear.Test.Configurations {
     internal abstract class RemoteConfiguration<TClientConfiguration> : IRemoteConfiguration<TClientConfiguration>
         where TClientConfiguration : IClientConfiguration {
@@ -21,13 +19,13 @@ namespace Nuclear.Test.Configurations {
 
         #region ctors
 
-        internal RemoteConfiguration() { }
+        internal RemoteConfiguration() : this(null) { }
 
         internal RemoteConfiguration(IRemoteConfiguration<TClientConfiguration> original) {
-            Throw.If.Object.IsNull(original, nameof(original));
-
-            Executable = original.Executable;
-            StartClientVisible = original.StartClientVisible;
+            if(original != null) {
+                Executable = original.Executable;
+                StartClientVisible = original.StartClientVisible;
+            }
         }
 
         #endregion

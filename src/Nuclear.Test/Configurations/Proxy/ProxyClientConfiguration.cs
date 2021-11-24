@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 
 using Nuclear.Assemblies.Runtimes;
-using Nuclear.Exceptions;
 using Nuclear.Test.Configurations.Worker;
 
 namespace Nuclear.Test.Configurations.Proxy {
@@ -27,18 +26,18 @@ namespace Nuclear.Test.Configurations.Proxy {
 
         #region ctors
 
-        internal ProxyClientConfiguration() : base() { }
+        internal ProxyClientConfiguration() : this(null) { }
 
         internal ProxyClientConfiguration(IProxyClientConfiguration original) : base(original) {
-            Throw.If.Object.IsNull(original, nameof(original));
-
-            AssemblyModeOverride = original.AssemblyModeOverride;
-            AvailableRuntimes = original.AvailableRuntimes;
-            SelectedRuntimes = original.SelectedRuntimes;
-            WorkerDirectory = original.WorkerDirectory;
-            WorkerExecutableName = original.WorkerExecutableName;
-            Factory.Instance.Copy(out IWorkerRemoteConfiguration remoteConfig, original.WorkerRemoteConfiguration);
-            WorkerRemoteConfiguration = remoteConfig;
+            if(original != null) {
+                AssemblyModeOverride = original.AssemblyModeOverride;
+                AvailableRuntimes = original.AvailableRuntimes;
+                SelectedRuntimes = original.SelectedRuntimes;
+                WorkerDirectory = original.WorkerDirectory;
+                WorkerExecutableName = original.WorkerExecutableName;
+                Factory.Instance.Copy(out IWorkerRemoteConfiguration remoteConfig, original.WorkerRemoteConfiguration);
+                WorkerRemoteConfiguration = remoteConfig;
+            }
         }
 
         #endregion
