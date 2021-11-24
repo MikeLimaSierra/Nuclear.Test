@@ -8,11 +8,15 @@ using System.Threading.Tasks;
 using log4net;
 
 using Nuclear.Assemblies;
+using Nuclear.Assemblies.Factories;
+using Nuclear.Assemblies.ResolverData;
 using Nuclear.Assemblies.Resolvers;
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Creation;
 using Nuclear.Extensions;
 using Nuclear.Test.Configurations;
 using Nuclear.Test.Configurations.Worker;
+using Nuclear.Test.Factories;
 using Nuclear.Test.Link;
 using Nuclear.Test.Results;
 using Nuclear.TestSite;
@@ -55,30 +59,22 @@ namespace Nuclear.Test.Execution.Worker {
         private Assembly OnAssemblyResolve(Object sender, ResolveEventArgs args) {
             _log.Debug(nameof(OnAssemblyResolve));
 
-            if(AssemblyResolver.Default.TryResolve(args, out IEnumerable<FileInfo> files)) {
-                foreach(FileInfo file in files) {
-                    if(AssemblyHelper.TryLoadFile(file, out Assembly assembly)) {
-                        _log.Debug($"Resolved assembly at {file.FullName.Format()}");
+            if(Factory.Instance.DefaultResolver().TryCreate(out IDefaultResolver defaultResolver, VersionMatchingStrategies.SemVer, SearchOption.AllDirectories)
+                && defaultResolver.TryResolve(args, out IEnumerable<IDefaultResolverData> defaultFiles)) {
+                foreach(IDefaultResolverData file in defaultFiles) {
+                    if(AssemblyHelper.TryLoadFile(file.File, out Assembly assembly)) {
+                        _log.Debug($"Resolved assembly at {file.File.FullName.Format()}");
 
                         return assembly;
                     }
                 }
             }
 
-            if(AssemblyResolver.Default.TryResolve(args.Name, out files)) {
-                foreach(FileInfo file in files) {
-                    if(AssemblyHelper.TryLoadFile(file, out Assembly assembly)) {
-                        _log.Debug($"Resolved assembly at {file.FullName.Format()}");
-
-                        return assembly;
-                    }
-                }
-            }
-
-            if(AssemblyResolver.Nuget.TryResolve(args, out files)) {
-                foreach(FileInfo file in files) {
-                    if(AssemblyHelper.TryLoadFile(file, out Assembly assembly)) {
-                        _log.Debug($"Resolved assembly at {file.FullName.Format()}");
+            if(Factory.Instance.NugetResolver().TryCreate(out INugetResolver nugetResolver, VersionMatchingStrategies.SemVer, VersionMatchingStrategies.SemVer)
+                && nugetResolver.TryResolve(args.Name, out IEnumerable<INugetResolverData> nugetFiles)) {
+                foreach(INugetResolverData file in nugetFiles) {
+                    if(AssemblyHelper.TryLoadFile(file.File, out Assembly assembly)) {
+                        _log.Debug($"Resolved assembly at {file.File.FullName.Format()}");
 
                         return assembly;
                     }
@@ -119,7 +115,7 @@ namespace Nuclear.Test.Execution.Worker {
 
             AssemblyHelper.TryGetRuntime(_entryAssembly, out RuntimeInfo entryAssemblyInfo);
 
-            Factory.Instance.Create(out ITestScenario scenario, TestAssemblyName.Name,
+            Factory.Instance.Scenario().Create(out ITestScenario scenario, TestAssemblyName.Name,
                 TestAssemblyRuntime, TestAssemblyName.ProcessorArchitecture,
                 entryAssemblyInfo, RuntimeArchitecure);
 
