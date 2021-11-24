@@ -24,6 +24,9 @@
     <Reference Include="Nuclear.Assemblies">
       <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Assemblies\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Assemblies.dll</HintPath>
     </Reference>
+    <Reference Include="Nuclear.Creation">
+      <HintPath>..\..\..\Nuclear.Net\bin\Nuclear.Creation\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.Creation.dll</HintPath>
+    </Reference>
     <Reference Include="Nuclear.TestSite.Contracts">
       <HintPath>..\..\..\Nuclear.TestSite\bin\Nuclear.TestSite\AnyCPU\$(Configuration)\netstandard2.0\Nuclear.TestSite.Contracts.dll</HintPath>
     </Reference>
