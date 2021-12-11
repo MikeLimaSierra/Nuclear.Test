@@ -6,28 +6,28 @@ using Nuclear.Test.Execution;
 namespace Nuclear.Test.Configurations {
 
     /// <summary>
-    /// Defines configuration values for an <see cref="IClient{TConfiguration}"/>.
+    /// Holds configuration values for an <see cref="IClient{TConfiguration}"/>.
     /// </summary>
-    public interface IClientConfiguration {
+    public abstract class ClientConfiguration {
 
         #region properties
 
         /// <summary>
         /// Gets or sets the file path of the test assembly.
         /// </summary>
-        FileInfo TestAssembly { get; set; }
+        public FileInfo TestAssembly { get; set; }
 
         /// <summary>
         /// Gets or sets if client window will remain open after test execution.
         ///     If set to true, the client will automatically shut down.
         ///     If set to false, the client will will wait for console input.
         /// </summary>
-        Boolean AutoShutdown { get; set; }
+        public Boolean AutoShutdown { get; set; }
 
         /// <summary>
         /// Gets or sets if the client will write all results into a detailed report file.
         /// </summary>
-        Boolean WriteReport { get; set; }
+        public Boolean WriteReport { get; set; }
 
         #endregion
 
