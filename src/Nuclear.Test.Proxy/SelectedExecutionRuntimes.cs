@@ -1,4 +1,4 @@
-﻿namespace Nuclear.Test.Configurations {
+﻿namespace Nuclear.Test.Proxy {
 
     /// <summary>
     /// Defines a range of targeted execution runtimes for test assemblies.
