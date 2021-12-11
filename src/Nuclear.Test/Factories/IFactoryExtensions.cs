@@ -8,15 +8,6 @@ namespace Nuclear.Test.Factories {
     public static class IFactoryExtensions {
 
         /// <summary>
-        /// Returns a new instance of type <see cref="ConfigFactory"/>.
-        /// </summary>
-        /// <param name="this">The extended <see cref="IFactory"/> instance.</param>
-        /// <returns>A new instance of type <see cref="ConfigFactory"/>.</returns>
-#pragma warning disable IDE0060 // Remove unused parameter
-        public static ConfigFactory Configs(this IFactory @this) => new Internal.ConfigFactory();
-#pragma warning restore IDE0060 // Remove unused parameter
-
-        /// <summary>
         /// Returns a new instance of type <see cref="ExecutionFactory"/>.
         /// </summary>
         /// <param name="this">The extended <see cref="IFactory"/> instance.</param>
