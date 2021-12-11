@@ -6,6 +6,11 @@
     public enum SelectedExecutionRuntimes {
 
         /// <summary>
+        /// Run tests on all possible dotnet core runtime versions and the highest possible dotnet framework runtime version.
+        /// </summary>
+        Reasonable,
+
+        /// <summary>
         /// Run tests on lowest possible runtime versions.
         /// </summary>
         Lowest,
@@ -19,5 +24,6 @@
         /// Run tests on all possible runtime versions.
         /// </summary>
         All,
+
     }
 }
