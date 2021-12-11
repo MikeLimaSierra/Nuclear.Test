@@ -6,13 +6,9 @@ using Nuclear.Test.Results;
 namespace Nuclear.Test.Execution {
 
     /// <summary>
-    /// Defines the base functionality of a remote control for test clients.
+    /// Defines the base functionality of a remote control for clients.
     /// </summary>
-    /// <typeparam name="TRemoteConfiguration">The remote configuration type.</typeparam>
-    /// <typeparam name="TClientConfiguration">The client configuration type.</typeparam>
-    public interface IRemote<TRemoteConfiguration, TClientConfiguration>
-        where TRemoteConfiguration : IRemoteConfiguration<TClientConfiguration>
-        where TClientConfiguration : IClientConfiguration {
+    public interface IRemote {
 
         #region events
 
@@ -44,11 +40,6 @@ namespace Nuclear.Test.Execution {
         #endregion
 
         #region properties
-
-        /// <summary>
-        /// Gets the remote configuration object.
-        /// </summary>
-        TRemoteConfiguration Configuration { get; }
 
         /// <summary>
         /// Gets the test results sink that is in use.
