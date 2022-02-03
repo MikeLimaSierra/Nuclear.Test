@@ -5,7 +5,7 @@ namespace Nuclear.Test.Worker {
     /// <summary>
     /// Describes a test data source for test methods.
     /// </summary>
-    public interface ITestMethodDataSource {
+    public interface ITestDataSource {
 
         #region methods
 

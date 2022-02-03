@@ -19,7 +19,7 @@ namespace Nuclear.Test.Worker {
 
         private TestMode _testMode = TestMode.Parallel;
 
-        private List<ITestMethodDataSource> _dataSources = new List<ITestMethodDataSource>();
+        private List<ITestDataSource> _dataSources = new List<ITestDataSource>();
 
         #endregion
 
@@ -47,7 +47,7 @@ namespace Nuclear.Test.Worker {
             set => _testMode = Enum.IsDefined(typeof(TestMode), value) ? value : TestMode.Parallel;
         }
 
-        public IEnumerable<ITestMethodDataSource> DataSources => _dataSources;
+        public IEnumerable<ITestDataSource> DataSources => _dataSources;
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace Nuclear.Test.Worker {
 
         public void Invoke(ITestObjectCreator creator, ITestMethodInvoker invoker) => throw new NotImplementedException();
 
-        public void AddData(ITestMethodDataSource dataSource) {
+        public void AddData(ITestDataSource dataSource) {
             if(dataSource != null) {
                 _dataSources.Add(dataSource);
             }

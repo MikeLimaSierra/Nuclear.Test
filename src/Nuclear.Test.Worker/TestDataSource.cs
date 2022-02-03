@@ -11,7 +11,7 @@ namespace Nuclear.Test.Worker {
     /// <returns>A collection of test data sets.</returns>
     public delegate IEnumerable<Object[]> GetTestData();
 
-    internal class TestMethodDataSource : ITestMethodDataSource {
+    internal class TestDataSource : ITestDataSource {
 
         #region fields
 
@@ -21,7 +21,7 @@ namespace Nuclear.Test.Worker {
 
         #region ctors
 
-        internal TestMethodDataSource(GetTestData @delegate) {
+        internal TestDataSource(GetTestData @delegate) {
             Throw.If.Object.IsNull(@delegate, nameof(@delegate));
 
             _delegate = @delegate;

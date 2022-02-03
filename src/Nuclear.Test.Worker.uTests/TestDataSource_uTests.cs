@@ -8,12 +8,12 @@ using Nuclear.TestSite;
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test.Worker {
-    class TestMethodDataSource_uTests {
+    class TestDataSource_uTests {
 
         [TestMethod]
         void Implementation() {
 
-            TestX.If.Type.Implements<TestMethodDataSource, ITestMethodDataSource>();
+            TestX.If.Type.Implements<TestDataSource, ITestDataSource>();
 
         }
 
@@ -22,7 +22,7 @@ namespace Nuclear.Test.Worker {
         [TestMethod]
         void Ctor_Throws() {
 
-            TestX.If.Action.ThrowsException(() => new TestMethodDataSource(null), out ArgumentNullException ex);
+            TestX.If.Action.ThrowsException(() => new TestDataSource(null), out ArgumentNullException ex);
 
             TestX.If.Value.IsEqual(ex.ParamName, "delegate");
 
@@ -31,7 +31,7 @@ namespace Nuclear.Test.Worker {
         [TestMethod]
         void Ctor() {
 
-            TestX.IfNot.Action.ThrowsException(() => new TestMethodDataSource(() => new Dummies.TestDataSourcesInternal().SingleReturnSingleData()), out ArgumentNullException ex);
+            TestX.IfNot.Action.ThrowsException(() => new TestDataSource(() => new Dummies.TestDataSourcesInternal().SingleReturnSingleData()), out ArgumentNullException ex);
 
         }
 
@@ -42,7 +42,7 @@ namespace Nuclear.Test.Worker {
         [TestMethod]
         void GetDataThrows() {
 
-            ITestMethodDataSource sut = new TestMethodDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnWithDummyException());
+            ITestDataSource sut = new TestDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnWithDummyException());
             IEnumerable<ITestDataSet> dataSets = null;
 
             TestX.If.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Dummies.DummyException _);
@@ -55,7 +55,7 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(GetData_Data))]
         void GetData(GetTestData in1, IEnumerable<Object[]> expected) {
 
-            ITestMethodDataSource sut = new TestMethodDataSource(in1);
+            ITestDataSource sut = new TestDataSource(in1);
             IEnumerable<ITestDataSet> dataSets = null;
 
             TestX.IfNot.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Exception _);

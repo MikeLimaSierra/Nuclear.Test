@@ -55,7 +55,7 @@ namespace Nuclear.Test.Worker {
         /// <summary>
         /// Gets a collection of data sources for the test method object.
         /// </summary>
-        IEnumerable<ITestMethodDataSource> DataSources { get; }
+        IEnumerable<ITestDataSource> DataSources { get; }
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace Nuclear.Test.Worker {
         /// Adds a data source to the test method object.
         /// </summary>
         /// <param name="dataSource">The data source to add.</param>
-        void AddData(ITestMethodDataSource dataSource);
+        void AddData(ITestDataSource dataSource);
 
         #endregion
 

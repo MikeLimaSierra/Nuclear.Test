@@ -108,7 +108,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
 
         [TestMethod]
         [TestData(nameof(AddFirstData_Data))]
-        void AddFirstData(ITestMethodDataSource in1, Int32 expected) {
+        void AddFirstData(ITestDataSource in1, Int32 expected) {
 
             ITestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
 
@@ -127,16 +127,16 @@ namespace Nuclear.Test.Worker.Core.uTests {
         IEnumerable<Object[]> AddFirstData_Data() {
             return new List<Object[]>() {
                 new Object[] { null, 0 },
-                new Object[] { new TestMethodDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnMixedData()), 1 },
+                new Object[] { new TestDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnMixedData()), 1 },
             };
         }
 
         [TestMethod]
         [TestData(nameof(AddSecondData_Data))]
-        void AddSecondData(ITestMethodDataSource in1, Int32 expected) {
+        void AddSecondData(ITestDataSource in1, Int32 expected) {
 
             ITestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
-            sut.AddData(new TestMethodDataSource(() => new Dummies.TestDataSourcesInternal().SingleReturnSingleData()));
+            sut.AddData(new TestDataSource(() => new Dummies.TestDataSourcesInternal().SingleReturnSingleData()));
 
             TestX.IfNot.Action.ThrowsException(() => sut.AddData(in1), out Exception _);
 
@@ -154,7 +154,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         IEnumerable<Object[]> AddSecondData_Data() {
             return new List<Object[]>() {
                 new Object[] { null, 1 },
-                new Object[] { new TestMethodDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnMixedData()), 2 },
+                new Object[] { new TestDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnMixedData()), 2 },
             };
         }
 
