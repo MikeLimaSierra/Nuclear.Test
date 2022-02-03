@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Nuclear.Test.Worker {
 
@@ -11,12 +10,13 @@ namespace Nuclear.Test.Worker {
         #region methods
 
         /// <summary>
-        /// Gets the test data from the source object.
+        /// Gets all test data sets from the source object.
         /// </summary>
         /// <returns>A collection of test data sets.</returns>
-        IEnumerable<Object[]> GetData();
+        IEnumerable<ITestDataSet> GetData();
 
         #endregion
 
     }
+
 }
