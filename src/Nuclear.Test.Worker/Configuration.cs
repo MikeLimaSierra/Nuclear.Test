@@ -1,20 +1,20 @@
-﻿using Nuclear.Test.Configurations;
+﻿//using Nuclear.Test.Configurations;
 
-namespace Nuclear.Test.Worker {
+//namespace Nuclear.Test.Worker {
 
-    /// <summary>
-    /// Holds configuration values for an <see cref="IWorkerClient"/>.
-    /// </summary>
-    public sealed class Configuration : ClientConfiguration {
+//    /// <summary>
+//    /// Holds configuration values for an <see cref="IWorkerClient"/>.
+//    /// </summary>
+//    public sealed class Configuration : ClientConfiguration {
 
-        #region properties
+//        #region properties
 
-        /// <summary>
-        /// Gets or sets how tests in an assembly should be executed.
-        /// </summary>
-        public TestModeOverrides TestMethodModeOverride { get; set; } = TestModeOverrides.Auto;
+//        /// <summary>
+//        /// Gets or sets how tests in an assembly should be executed.
+//        /// </summary>
+//        public TestModeOverrides TestMethodModeOverride { get; set; } = TestModeOverrides.Auto;
 
-        #endregion
+//        #endregion
 
-    }
-}
+//    }
+//}
