@@ -19,9 +19,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Writer.Console
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Writer.Json", "Nuclear.Test.Writer.Json\Nuclear.Test.Writer.Json.csproj", "{5C67ADE8-B602-4109-BDA4-6EA673EE52E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuclear.Test.Worker", "Nuclear.Test.Worker\Nuclear.Test.Worker.csproj", "{6E808AEF-8F31-4255-922D-A5F5E47C0F32}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Worker.Contracts", "Nuclear.Test.Worker.Contracts\Nuclear.Test.Worker.Contracts.csproj", "{AD63E733-5740-431A-ABCB-EADF8CBFAA95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nuclear.Test.Proxy", "Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj", "{7B70CD55-9D8B-4D35-A809-ED2F62520696}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Worker.Core", "Nuclear.Test.Worker\Nuclear.Test.Worker.Core.csproj", "{6E808AEF-8F31-4255-922D-A5F5E47C0F32}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Worker.uTests", "Nuclear.Test.Worker.uTests\Nuclear.Test.Worker.uTests.csproj", "{3DA8A2FA-FCEE-459A-A685-7FCD1A4CED39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nuclear.Test.Proxy", "Nuclear.Test.Proxy\Nuclear.Test.Proxy.csproj", "{7B70CD55-9D8B-4D35-A809-ED2F62520696}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,12 +64,24 @@ Global
 		{5C67ADE8-B602-4109-BDA4-6EA673EE52E4}.Integration|Any CPU.Build.0 = Integration|Any CPU
 		{5C67ADE8-B602-4109-BDA4-6EA673EE52E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C67ADE8-B602-4109-BDA4-6EA673EE52E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD63E733-5740-431A-ABCB-EADF8CBFAA95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD63E733-5740-431A-ABCB-EADF8CBFAA95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD63E733-5740-431A-ABCB-EADF8CBFAA95}.Integration|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD63E733-5740-431A-ABCB-EADF8CBFAA95}.Integration|Any CPU.Build.0 = Debug|Any CPU
+		{AD63E733-5740-431A-ABCB-EADF8CBFAA95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD63E733-5740-431A-ABCB-EADF8CBFAA95}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6E808AEF-8F31-4255-922D-A5F5E47C0F32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6E808AEF-8F31-4255-922D-A5F5E47C0F32}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E808AEF-8F31-4255-922D-A5F5E47C0F32}.Integration|Any CPU.ActiveCfg = Debug|Any CPU
 		{6E808AEF-8F31-4255-922D-A5F5E47C0F32}.Integration|Any CPU.Build.0 = Debug|Any CPU
 		{6E808AEF-8F31-4255-922D-A5F5E47C0F32}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E808AEF-8F31-4255-922D-A5F5E47C0F32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DA8A2FA-FCEE-459A-A685-7FCD1A4CED39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA8A2FA-FCEE-459A-A685-7FCD1A4CED39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DA8A2FA-FCEE-459A-A685-7FCD1A4CED39}.Integration|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DA8A2FA-FCEE-459A-A685-7FCD1A4CED39}.Integration|Any CPU.Build.0 = Debug|Any CPU
+		{3DA8A2FA-FCEE-459A-A685-7FCD1A4CED39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DA8A2FA-FCEE-459A-A685-7FCD1A4CED39}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7B70CD55-9D8B-4D35-A809-ED2F62520696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7B70CD55-9D8B-4D35-A809-ED2F62520696}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B70CD55-9D8B-4D35-A809-ED2F62520696}.Integration|Any CPU.ActiveCfg = Debug|Any CPU

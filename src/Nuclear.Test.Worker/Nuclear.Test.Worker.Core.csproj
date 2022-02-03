@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Nuclear.Test.Worker</RootNamespace>
+    <Platforms>AnyCPU</Platforms>
+    <Version>1.0.0</Version>
+  </PropertyGroup>
+
+  <Import Project="..\Configurations.targets" />
+
+  <ItemGroup>
+    <PackageReference Include="Nuclear.SemVer" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nuclear.Test.Worker.Contracts\Nuclear.Test.Worker.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

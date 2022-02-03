@@ -10,7 +10,7 @@
   <Import Project="..\Configurations.targets" />
 
   <ItemGroup>
-    <ProjectReference Include="..\Nuclear.Test.Contracts\Nuclear.Test.Contracts.csproj" />
+    <PackageReference Include="Nuclear.TestSite.Contracts" Version="2.0.1" />
   </ItemGroup>
 
 </Project>

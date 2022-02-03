@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Nuclear.Test.Worker</RootNamespace>
+    <Platforms>AnyCPU</Platforms>
+  </PropertyGroup>
+
+  <Import Project="..\Configurations.targets" />
+
+  <ItemGroup>
+    <PackageReference Include="Nuclear.TestSite" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Nuclear.Test.Worker\Nuclear.Test.Worker.Core.csproj" />
+  </ItemGroup>
+
+</Project>
