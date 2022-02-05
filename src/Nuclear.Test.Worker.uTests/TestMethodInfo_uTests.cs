@@ -46,18 +46,18 @@ namespace Nuclear.Test.Worker.Core.uTests {
 
         IEnumerable<Object[]> Ctor_Data() {
             return new List<Object[]>() {
-                new Object[] { TestClass.MethodInfo_NoArgs,
-                    (nameof(TestClass), nameof(TestClass.Method_NoArgs), false, 0, false, 0, 1, TestSite.TestMode.Parallel) },
-                new Object[] { TestClass.MethodInfo_OneArg,
-                    (nameof(TestClass), nameof(TestClass.Method_OneArg), true, 1, false, 0, 1, TestSite.TestMode.Parallel) },
-                new Object[] { TestClass.MethodInfo_TwoArgs,
-                    (nameof(TestClass), nameof(TestClass.Method_TwoArgs), true, 2, false, 0, 1, TestSite.TestMode.Parallel) },
-                new Object[] { TestClass.MethodInfo_OneGeneric_NoArgs,
-                    (nameof(TestClass), nameof(TestClass.Method_OneGeneric_NoArgs), false, 0, true, 1, 1, TestSite.TestMode.Parallel) },
-                new Object[] { TestClass.MethodInfo_OneGeneric_OneArg,
-                    (nameof(TestClass), nameof(TestClass.Method_OneGeneric_OneArg), true, 1, true, 1, 1, TestSite.TestMode.Parallel) },
-                new Object[] { TestClass.MethodInfo_TwoGeneric_TwoArgs,
-                    (nameof(TestClass), nameof(TestClass.Method_TwoGeneric_TwoArgs), true, 2, true, 2, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_NoA,
+                    (nameof(TestClass), nameof(TestClass.Method_NoA), false, 0, false, 0, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_OneA,
+                    (nameof(TestClass), nameof(TestClass.Method_OneA), true, 1, false, 0, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_TwoA,
+                    (nameof(TestClass), nameof(TestClass.Method_TwoA), true, 2, false, 0, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_OneG_NoA,
+                    (nameof(TestClass), nameof(TestClass.Method_OneG_NoA), false, 0, true, 1, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_OneG_OneA,
+                    (nameof(TestClass), nameof(TestClass.Method_OneG_OneA), true, 1, true, 1, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_TwoG_TwoA,
+                    (nameof(TestClass), nameof(TestClass.Method_TwoG_TwoA), true, 2, true, 2, 1, TestSite.TestMode.Parallel) },
             };
         }
 
@@ -75,7 +75,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestParameters(Int32.MaxValue, Int32.MaxValue)]
         void RepeatCount(Int32 in1, Int32 expected) {
 
-            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoA);
 
             TestX.IfNot.Action.ThrowsException(() => sut.RepeatCount = in1, out Exception _);
 
@@ -89,7 +89,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestParameters((TestMode) 42, TestSite.TestMode.Parallel)]
         void TestMode(TestMode in1, TestMode expected) {
 
-            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoA);
 
             TestX.IfNot.Action.ThrowsException(() => sut.TestMode = in1, out Exception _);
 
@@ -105,7 +105,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestData(nameof(AddFirstData_Data))]
         void AddFirstData(TestDataSource in1, Int32 expected) {
 
-            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoA);
 
             TestX.IfNot.Action.ThrowsException(() => sut.AddData(in1), out Exception _);
 
@@ -130,7 +130,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestData(nameof(AddSecondData_Data))]
         void AddSecondData(TestDataSource in1, Int32 expected) {
 
-            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoA);
             sut.AddData(new TestDataSource(() => new TestDataSources().SingleReturnSingleData()));
 
             TestX.IfNot.Action.ThrowsException(() => sut.AddData(in1), out Exception _);

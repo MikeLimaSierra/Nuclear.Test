@@ -37,31 +37,31 @@ namespace Nuclear.Test.Worker.Dummies {
             throw new TestException();
         }
 
-        internal IEnumerable<Object[]> Method_OneArg_Data() {
+        internal IEnumerable<Object[]> Method_OneA_Data() {
             yield return new Object[] { "A" };
             yield return new Object[] { "B" };
             yield return new Object[] { "C" };
         }
 
-        internal IEnumerable<Object[]> Method_TwoArgs_Data() {
+        internal IEnumerable<Object[]> Method_TwoA_Data() {
             yield return new Object[] { "A", 0 };
             yield return new Object[] { "B", 1 };
             yield return new Object[] { "C", 2 };
         }
 
-        internal IEnumerable<Object[]> Method_OneGeneric_NoArgs_Data() {
+        internal IEnumerable<Object[]> Method_OneG_NoA_Data() {
             yield return new Object[] { typeof(Int16) };
             yield return new Object[] { typeof(Int32) };
             yield return new Object[] { typeof(Int64) };
         }
 
-        internal IEnumerable<Object[]> Method_OneGeneric_OneArg_Data() {
+        internal IEnumerable<Object[]> Method_OneG_OneA_Data() {
             yield return new Object[] { typeof(Int16), "A" };
             yield return new Object[] { typeof(Int32), "B" };
             yield return new Object[] { typeof(Int64), "C" };
         }
 
-        internal IEnumerable<Object[]> Method_TwoGeneric_TwoArgs_Data() {
+        internal IEnumerable<Object[]> Method_TwoG_TwoA_Data() {
             yield return new Object[] { typeof(Int16), typeof(UInt16), "A", 0 };
             yield return new Object[] { typeof(Int32), typeof(UInt32), "B", 1 };
             yield return new Object[] { typeof(Int64), typeof(UInt64), "C", 2 };
