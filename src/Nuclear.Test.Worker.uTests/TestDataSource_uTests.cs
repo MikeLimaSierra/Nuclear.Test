@@ -24,7 +24,7 @@ namespace Nuclear.Test.Worker {
         [TestMethod]
         void Ctor() {
 
-            TestX.IfNot.Action.ThrowsException(() => new TestDataSource(() => new Dummies.TestDataSourcesInternal().SingleReturnSingleData()), out ArgumentNullException ex);
+            TestX.IfNot.Action.ThrowsException(() => new TestDataSource(() => new Dummies.TestDataSources().SingleReturnSingleData()), out ArgumentNullException ex);
 
         }
 
@@ -35,7 +35,7 @@ namespace Nuclear.Test.Worker {
         [TestMethod]
         void GetDataThrows() {
 
-            TestDataSource sut = new TestDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnWithDummyException());
+            TestDataSource sut = new TestDataSource(() => new Dummies.TestDataSources().TripleReturnWithDummyException());
             IEnumerable<TestDataSet> dataSets = null;
 
             TestX.If.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Dummies.TestException _);
@@ -67,11 +67,11 @@ namespace Nuclear.Test.Worker {
         }
 
         IEnumerable<Object[]> GetData_Data() {
-            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSourcesInternal().SingleReturnSingleData()), new Dummies.TestDataSourcesInternal().SingleReturnSingleData() };
-            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSourcesInternal().SingleReturnTripleData()), new Dummies.TestDataSourcesInternal().SingleReturnTripleData() };
-            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSourcesInternal().TripleReturnSingleData()), new Dummies.TestDataSourcesInternal().TripleReturnSingleData() };
-            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSourcesInternal().TripleReturnTripleData()), new Dummies.TestDataSourcesInternal().TripleReturnTripleData() };
-            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSourcesInternal().TripleReturnMixedData()), new Dummies.TestDataSourcesInternal().TripleReturnMixedData() };
+            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSources().SingleReturnSingleData()), new Dummies.TestDataSources().SingleReturnSingleData() };
+            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSources().SingleReturnTripleData()), new Dummies.TestDataSources().SingleReturnTripleData() };
+            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSources().TripleReturnSingleData()), new Dummies.TestDataSources().TripleReturnSingleData() };
+            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSources().TripleReturnTripleData()), new Dummies.TestDataSources().TripleReturnTripleData() };
+            yield return new Object[] { new GetTestData(() => new Dummies.TestDataSources().TripleReturnMixedData()), new Dummies.TestDataSources().TripleReturnMixedData() };
         }
 
         #endregion

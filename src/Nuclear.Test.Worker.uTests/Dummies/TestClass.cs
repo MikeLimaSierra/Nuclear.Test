@@ -6,21 +6,21 @@ using System.Text;
 using Nuclear.Extensions;
 
 namespace Nuclear.Test.Worker.Dummies {
-    internal class TestClassInternal {
+    internal class TestClass {
 
         internal StringBuilder ActionResult { get; } = new StringBuilder();
 
-        internal static MethodInfo MethodInfo_NoArgs { get; } = typeof(TestClassInternal).GetRuntimeMethods().First(_ => _.Name == nameof(Method_NoArgs));
+        internal static MethodInfo MethodInfo_NoArgs { get; } = typeof(TestClass).GetRuntimeMethods().First(_ => _.Name == nameof(Method_NoArgs));
 
-        internal static MethodInfo MethodInfo_OneArg { get; } = typeof(TestClassInternal).GetRuntimeMethods().First(_ => _.Name == nameof(Method_OneArg));
+        internal static MethodInfo MethodInfo_OneArg { get; } = typeof(TestClass).GetRuntimeMethods().First(_ => _.Name == nameof(Method_OneArg));
 
-        internal static MethodInfo MethodInfo_TwoArgs { get; } = typeof(TestClassInternal).GetRuntimeMethods().First(_ => _.Name == nameof(Method_TwoArgs));
+        internal static MethodInfo MethodInfo_TwoArgs { get; } = typeof(TestClass).GetRuntimeMethods().First(_ => _.Name == nameof(Method_TwoArgs));
 
-        internal static MethodInfo MethodInfo_OneGeneric_NoArgs { get; } = typeof(TestClassInternal).GetRuntimeMethods().First(_ => _.Name == nameof(Method_OneGeneric_NoArgs));
+        internal static MethodInfo MethodInfo_OneGeneric_NoArgs { get; } = typeof(TestClass).GetRuntimeMethods().First(_ => _.Name == nameof(Method_OneGeneric_NoArgs));
 
-        internal static MethodInfo MethodInfo_OneGeneric_OneArg { get; } = typeof(TestClassInternal).GetRuntimeMethods().First(_ => _.Name == nameof(Method_OneGeneric_OneArg));
+        internal static MethodInfo MethodInfo_OneGeneric_OneArg { get; } = typeof(TestClass).GetRuntimeMethods().First(_ => _.Name == nameof(Method_OneGeneric_OneArg));
 
-        internal static MethodInfo MethodInfo_TwoGeneric_TwoArgs { get; } = typeof(TestClassInternal).GetRuntimeMethods().First(_ => _.Name == nameof(Method_TwoGeneric_TwoArgs));
+        internal static MethodInfo MethodInfo_TwoGeneric_TwoArgs { get; } = typeof(TestClass).GetRuntimeMethods().First(_ => _.Name == nameof(Method_TwoGeneric_TwoArgs));
 
         internal void Method_NoArgs() {
             ActionResult.AppendLine($"{nameof(MethodInfo_NoArgs)}()");

@@ -42,7 +42,7 @@ namespace Nuclear.Test.Worker.Factories {
         IEnumerable<Object[]> Create_Data() {
             yield return new Object[] { typeof(Object) };
             yield return new Object[] { typeof(IFactoryExtensions_uTests) };
-            yield return new Object[] { typeof(Dummies.TestClassInternal) };
+            yield return new Object[] { typeof(Dummies.TestClass) };
         }
 
         #endregion
