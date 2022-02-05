@@ -5,6 +5,8 @@ using System.Reflection;
 
 using Nuclear.TestSite;
 
+using TestClass = Nuclear.Test.Worker.Dummies.TestClass;
+using TestDataSources = Nuclear.Test.Worker.Dummies.TestDataSources;
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test.Worker.Core.uTests {
@@ -44,18 +46,18 @@ namespace Nuclear.Test.Worker.Core.uTests {
 
         IEnumerable<Object[]> Ctor_Data() {
             return new List<Object[]>() {
-                new Object[] { Dummies.TestClass.MethodInfo_NoArgs,
-                    (nameof(Dummies.TestClass), nameof(Dummies.TestClass.Method_NoArgs), false, 0, false, 0, 1, TestSite.TestMode.Parallel) },
-                new Object[] { Dummies.TestClass.MethodInfo_OneArg,
-                    (nameof(Dummies.TestClass), nameof(Dummies.TestClass.Method_OneArg), true, 1, false, 0, 1, TestSite.TestMode.Parallel) },
-                new Object[] { Dummies.TestClass.MethodInfo_TwoArgs,
-                    (nameof(Dummies.TestClass), nameof(Dummies.TestClass.Method_TwoArgs), true, 2, false, 0, 1, TestSite.TestMode.Parallel) },
-                new Object[] { Dummies.TestClass.MethodInfo_OneGeneric_NoArgs,
-                    (nameof(Dummies.TestClass), nameof(Dummies.TestClass.Method_OneGeneric_NoArgs), false, 0, true, 1, 1, TestSite.TestMode.Parallel) },
-                new Object[] { Dummies.TestClass.MethodInfo_OneGeneric_OneArg,
-                    (nameof(Dummies.TestClass), nameof(Dummies.TestClass.Method_OneGeneric_OneArg), true, 1, true, 1, 1, TestSite.TestMode.Parallel) },
-                new Object[] { Dummies.TestClass.MethodInfo_TwoGeneric_TwoArgs,
-                    (nameof(Dummies.TestClass), nameof(Dummies.TestClass.Method_TwoGeneric_TwoArgs), true, 2, true, 2, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_NoArgs,
+                    (nameof(TestClass), nameof(TestClass.Method_NoArgs), false, 0, false, 0, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_OneArg,
+                    (nameof(TestClass), nameof(TestClass.Method_OneArg), true, 1, false, 0, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_TwoArgs,
+                    (nameof(TestClass), nameof(TestClass.Method_TwoArgs), true, 2, false, 0, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_OneGeneric_NoArgs,
+                    (nameof(TestClass), nameof(TestClass.Method_OneGeneric_NoArgs), false, 0, true, 1, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_OneGeneric_OneArg,
+                    (nameof(TestClass), nameof(TestClass.Method_OneGeneric_OneArg), true, 1, true, 1, 1, TestSite.TestMode.Parallel) },
+                new Object[] { TestClass.MethodInfo_TwoGeneric_TwoArgs,
+                    (nameof(TestClass), nameof(TestClass.Method_TwoGeneric_TwoArgs), true, 2, true, 2, 1, TestSite.TestMode.Parallel) },
             };
         }
 
@@ -73,7 +75,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestParameters(Int32.MaxValue, Int32.MaxValue)]
         void RepeatCount(Int32 in1, Int32 expected) {
 
-            TestMethodInfo sut = new TestMethodInfo(Dummies.TestClass.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoArgs);
 
             TestX.IfNot.Action.ThrowsException(() => sut.RepeatCount = in1, out Exception _);
 
@@ -87,7 +89,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestParameters((TestMode) 42, TestSite.TestMode.Parallel)]
         void TestMode(TestMode in1, TestMode expected) {
 
-            TestMethodInfo sut = new TestMethodInfo(Dummies.TestClass.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoArgs);
 
             TestX.IfNot.Action.ThrowsException(() => sut.TestMode = in1, out Exception _);
 
@@ -103,7 +105,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestData(nameof(AddFirstData_Data))]
         void AddFirstData(TestDataSource in1, Int32 expected) {
 
-            TestMethodInfo sut = new TestMethodInfo(Dummies.TestClass.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoArgs);
 
             TestX.IfNot.Action.ThrowsException(() => sut.AddData(in1), out Exception _);
 
@@ -120,7 +122,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         IEnumerable<Object[]> AddFirstData_Data() {
             return new List<Object[]>() {
                 new Object[] { null, 0 },
-                new Object[] { new TestDataSource(() => new Dummies.TestDataSources().TripleReturnMixedData()), 1 },
+                new Object[] { new TestDataSource(() => new TestDataSources().TripleReturnMixedData()), 1 },
             };
         }
 
@@ -128,8 +130,8 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestData(nameof(AddSecondData_Data))]
         void AddSecondData(TestDataSource in1, Int32 expected) {
 
-            TestMethodInfo sut = new TestMethodInfo(Dummies.TestClass.MethodInfo_NoArgs);
-            sut.AddData(new TestDataSource(() => new Dummies.TestDataSources().SingleReturnSingleData()));
+            TestMethodInfo sut = new TestMethodInfo(TestClass.MethodInfo_NoArgs);
+            sut.AddData(new TestDataSource(() => new TestDataSources().SingleReturnSingleData()));
 
             TestX.IfNot.Action.ThrowsException(() => sut.AddData(in1), out Exception _);
 
@@ -147,7 +149,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         IEnumerable<Object[]> AddSecondData_Data() {
             return new List<Object[]>() {
                 new Object[] { null, 1 },
-                new Object[] { new TestDataSource(() => new Dummies.TestDataSources().TripleReturnMixedData()), 2 },
+                new Object[] { new TestDataSource(() => new TestDataSources().TripleReturnMixedData()), 2 },
             };
         }
 
