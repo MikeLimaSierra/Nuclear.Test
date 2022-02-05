@@ -11,7 +11,7 @@ namespace Nuclear.Test.Worker {
     /// <returns>A collection of test data sets.</returns>
     public delegate IEnumerable<Object[]> GetTestData();
 
-    internal class TestDataSource : ITestDataSource {
+    internal class TestDataSource {
 
         #region fields
 
@@ -31,18 +31,9 @@ namespace Nuclear.Test.Worker {
 
         #region methods
 
-        public IEnumerable<ITestDataSet> GetData() {
-            IEnumerable<Object[]> dataSets = null;
-
-            try {
-                dataSets = _delegate();
-
-            } catch { /* TODO: add logging */ }
-
-            if(dataSets != null) {
-                foreach(Object[] data in dataSets) {
-                    yield return new TestDataSet(data);
-                }
+        public IEnumerable<TestDataSet> GetData() {
+            foreach(Object[] data in _delegate()) {
+                yield return new TestDataSet(data);
             }
         }
 

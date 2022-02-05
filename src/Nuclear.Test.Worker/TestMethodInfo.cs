@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.Reflection;
 
+using log4net;
+
 using Nuclear.Exceptions;
 using Nuclear.Extensions;
 using Nuclear.TestSite;
 
 namespace Nuclear.Test.Worker {
-    internal class TestMethodInfo : ITestMethodInfo {
+    internal class TestMethodInfo {
 
         #region fields
 
-        private readonly MethodInfo _method;
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TestMethodInfo));
 
         private readonly ParameterInfo[] _parameters;
 
@@ -19,35 +21,37 @@ namespace Nuclear.Test.Worker {
 
         private TestMode _testMode = TestMode.Parallel;
 
-        private List<ITestDataSource> _dataSources = new List<ITestDataSource>();
+        private List<TestDataSource> _dataSources = new List<TestDataSource>();
 
         #endregion
 
         #region properties
 
-        public String FileName => _method.DeclaringType.Name;
+        internal MethodInfo Method { get; }
 
-        public String MethodName => _method.Name;
+        internal String FileName => Method.DeclaringType.Name;
 
-        public Boolean HasParameters => ParameterCount > 0;
+        internal String MethodName => Method.Name;
 
-        public Int32 ParameterCount => _parameters.Length;
+        internal Boolean HasParameters => ParameterCount > 0;
 
-        public Boolean IsGeneric => GenericParameterCount > 0;
+        internal Int32 ParameterCount => _parameters.Length;
 
-        public Int32 GenericParameterCount { get; }
+        internal Boolean IsGeneric => GenericParameterCount > 0;
 
-        public Int32 RepeatCount {
+        internal Int32 GenericParameterCount { get; }
+
+        internal Int32 RepeatCount {
             get => _repeatCount;
             set => _repeatCount = IComparableTExtensions.Clamp(value, 1, Int32.MaxValue);
         }
 
-        public TestMode TestMode {
+        internal TestMode TestMode {
             get => _testMode;
             set => _testMode = Enum.IsDefined(typeof(TestMode), value) ? value : TestMode.Parallel;
         }
 
-        public IEnumerable<ITestDataSource> DataSources => _dataSources;
+        internal IEnumerable<TestDataSource> DataSources => _dataSources;
 
         #endregion
 
@@ -56,18 +60,16 @@ namespace Nuclear.Test.Worker {
         internal TestMethodInfo(MethodInfo method) {
             Throw.If.Object.IsNull(method, nameof(method));
 
-            _method = method;
-            _parameters = _method.GetParameters();
-            GenericParameterCount = _method.GetGenericArguments().Length;
+            Method = method;
+            _parameters = Method.GetParameters();
+            GenericParameterCount = Method.GetGenericArguments().Length;
         }
 
         #endregion
 
         #region methods
 
-        public void Invoke(ITestObjectCreator creator, ITestMethodInvoker invoker) => throw new NotImplementedException();
-
-        public void AddData(ITestDataSource dataSource) {
+        internal void AddData(TestDataSource dataSource) {
             if(dataSource != null) {
                 _dataSources.Add(dataSource);
             }

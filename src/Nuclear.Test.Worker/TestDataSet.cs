@@ -4,7 +4,7 @@ using System.Linq;
 using Nuclear.Exceptions;
 
 namespace Nuclear.Test.Worker {
-    internal class TestDataSet : ITestDataSet {
+    internal class TestDataSet {
 
         #region fields
 
@@ -14,11 +14,11 @@ namespace Nuclear.Test.Worker {
 
         #region properties
 
-        public Boolean HasData => ObjectCount > 0;
+        internal Boolean HasData => ObjectCount > 0;
 
-        public Int32 ObjectCount => _data.Length;
+        internal Int32 ObjectCount => _data.Length;
 
-        public Int32 LeadingTypeCount { get; }
+        internal Int32 LeadingTypeCount { get; }
 
         #endregion
 
@@ -38,9 +38,9 @@ namespace Nuclear.Test.Worker {
 
         #region methods
 
-        public Boolean GetObjects(out Object[] data) => GetObjects(0, out _, out data);
+        internal Boolean GetObjects(out Object[] data) => GetObjects(0, out _, out data);
 
-        public Boolean GetObjects(UInt32 typeCount, out Type[] types, out Object[] data) {
+        internal Boolean GetObjects(UInt32 typeCount, out Type[] types, out Object[] data) {
             types = new Type[0];
             data = new Object[0];
 

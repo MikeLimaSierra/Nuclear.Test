@@ -10,13 +10,6 @@ using TestX = Nuclear.TestSite.Test;
 namespace Nuclear.Test.Worker.Core.uTests {
     class TestMethodInfo_uTests {
 
-        [TestMethod]
-        void Implementation() {
-
-            TestX.If.Type.Implements<TestMethodInfo, ITestMethodInfo>();
-
-        }
-
         #region construction
 
         [TestMethod]
@@ -32,7 +25,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestData(nameof(Ctor_Data))]
         void Ctor(MethodInfo in1, (String file, String method, Boolean hasParams, Int32 @params, Boolean isGeneric, Int32 genParams, Int32 repeat, TestMode mode) expected) {
 
-            ITestMethodInfo sut = null;
+            TestMethodInfo sut = null;
 
             TestX.IfNot.Action.ThrowsException(() => sut = new TestMethodInfo(in1), out Exception _);
 
@@ -80,7 +73,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestParameters(Int32.MaxValue, Int32.MaxValue)]
         void RepeatCount(Int32 in1, Int32 expected) {
 
-            ITestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
 
             TestX.IfNot.Action.ThrowsException(() => sut.RepeatCount = in1, out Exception _);
 
@@ -94,7 +87,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestParameters((TestMode) 42, TestSite.TestMode.Parallel)]
         void TestMode(TestMode in1, TestMode expected) {
 
-            ITestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
 
             TestX.IfNot.Action.ThrowsException(() => sut.TestMode = in1, out Exception _);
 
@@ -108,9 +101,9 @@ namespace Nuclear.Test.Worker.Core.uTests {
 
         [TestMethod]
         [TestData(nameof(AddFirstData_Data))]
-        void AddFirstData(ITestDataSource in1, Int32 expected) {
+        void AddFirstData(TestDataSource in1, Int32 expected) {
 
-            ITestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
 
             TestX.IfNot.Action.ThrowsException(() => sut.AddData(in1), out Exception _);
 
@@ -133,9 +126,9 @@ namespace Nuclear.Test.Worker.Core.uTests {
 
         [TestMethod]
         [TestData(nameof(AddSecondData_Data))]
-        void AddSecondData(ITestDataSource in1, Int32 expected) {
+        void AddSecondData(TestDataSource in1, Int32 expected) {
 
-            ITestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
+            TestMethodInfo sut = new TestMethodInfo(Dummies.TestClassInternal.MethodInfo_NoArgs);
             sut.AddData(new TestDataSource(() => new Dummies.TestDataSourcesInternal().SingleReturnSingleData()));
 
             TestX.IfNot.Action.ThrowsException(() => sut.AddData(in1), out Exception _);

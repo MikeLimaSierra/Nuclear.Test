@@ -10,13 +10,6 @@ using TestX = Nuclear.TestSite.Test;
 namespace Nuclear.Test.Worker {
     class TestDataSource_uTests {
 
-        [TestMethod]
-        void Implementation() {
-
-            TestX.If.Type.Implements<TestDataSource, ITestDataSource>();
-
-        }
-
         #region construction
 
         [TestMethod]
@@ -42,10 +35,10 @@ namespace Nuclear.Test.Worker {
         [TestMethod]
         void GetDataThrows() {
 
-            ITestDataSource sut = new TestDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnWithDummyException());
-            IEnumerable<ITestDataSet> dataSets = null;
+            TestDataSource sut = new TestDataSource(() => new Dummies.TestDataSourcesInternal().TripleReturnWithDummyException());
+            IEnumerable<TestDataSet> dataSets = null;
 
-            TestX.If.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Dummies.DummyException _);
+            TestX.If.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Dummies.TestException _);
 
             TestX.If.Object.IsNull(dataSets);
 
@@ -55,8 +48,8 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(GetData_Data))]
         void GetData(GetTestData in1, IEnumerable<Object[]> expected) {
 
-            ITestDataSource sut = new TestDataSource(in1);
-            IEnumerable<ITestDataSet> dataSets = null;
+            TestDataSource sut = new TestDataSource(in1);
+            IEnumerable<TestDataSet> dataSets = null;
 
             TestX.IfNot.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Exception _);
             IEnumerable<Object[]> dataObjects = dataSets.Select(_ => { _.GetObjects(out Object[] data); return data; });

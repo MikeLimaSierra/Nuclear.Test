@@ -8,13 +8,6 @@ using TestX = Nuclear.TestSite.Test;
 namespace Nuclear.Test.Worker {
     class TestDataSet_uTests {
 
-        [TestMethod]
-        void Implementation() {
-
-            TestX.If.Type.Implements<TestDataSet, ITestDataSet>();
-
-        }
-
         #region construction
 
         [TestMethod]
@@ -30,7 +23,7 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(Ctor_Data))]
         void Ctor(Object[] in1, (Boolean hasData, Int32 count, Int32 tCount) expected) {
 
-            ITestDataSet sut = null;
+            TestDataSet sut = null;
 
             TestX.IfNot.Action.ThrowsException(() => sut = new TestDataSet(in1), out Exception _);
 
@@ -70,7 +63,7 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(GetObjects_Data))]
         void GetObjects(Object[] in1, (Boolean result, Object[] data) expected) {
 
-            ITestDataSet sut = new TestDataSet(in1);
+            TestDataSet sut = new TestDataSet(in1);
             Boolean result = false;
             Object[] data = null;
 
@@ -109,7 +102,7 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(GetSplitObjects_Data))]
         void GetSplitObjects(Object[] in1, UInt32 in2, (Boolean result, Type[] types, Object[] data) expected) {
 
-            ITestDataSet sut = new TestDataSet(in1);
+            TestDataSet sut = new TestDataSet(in1);
             Boolean result = false;
             Type[] types = null;
             Object[] data = null;
