@@ -61,10 +61,16 @@ namespace Nuclear.Test.Worker.Dummies {
             yield return new Object[] { typeof(Int64), "C" };
         }
 
-        internal IEnumerable<Object[]> Method_TwoG_TwoA_Data() {
+        internal IEnumerable<Object[]> Method_TwoG_TwoA_Data1() {
             yield return new Object[] { typeof(Int16), typeof(UInt16), "A", 0 };
             yield return new Object[] { typeof(Int32), typeof(UInt32), "B", 1 };
             yield return new Object[] { typeof(Int64), typeof(UInt64), "C", 2 };
+        }
+
+        internal IEnumerable<Object[]> Method_TwoG_TwoA_Data2() {
+            yield return new Object[] { typeof(UInt16), typeof(Int16), "D", 4 };
+            yield return new Object[] { typeof(UInt32), typeof(Int32), "E", 5 };
+            yield return new Object[] { typeof(UInt64), typeof(Int64), "F", 6 };
         }
     }
 }
