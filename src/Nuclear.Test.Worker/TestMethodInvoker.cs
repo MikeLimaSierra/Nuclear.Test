@@ -21,7 +21,7 @@ namespace Nuclear.Test.Worker {
 
         #region method
 
-        void Invoke() { }
+        internal void Invoke() { }
 
         #endregion
 
