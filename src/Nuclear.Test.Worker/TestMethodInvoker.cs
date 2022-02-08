@@ -1,7 +1,20 @@
-﻿using Nuclear.Exceptions;
+﻿using System;
+using System.Reflection;
+
+using log4net;
+
+using Nuclear.Creation;
+using Nuclear.Exceptions;
+using Nuclear.Test.Worker.Factories;
 
 namespace Nuclear.Test.Worker {
     internal class TestMethodInvoker {
+
+        #region fields
+
+        private static readonly ILog _log = LogManager.GetLogger(typeof(TestMethodInvoker));
+
+        #endregion
 
         #region properties
 
@@ -21,7 +34,35 @@ namespace Nuclear.Test.Worker {
 
         #region method
 
-        internal void Invoke() { }
+        internal void Invoke() {
+            _log.Debug(nameof(Invoke));
+
+            for(Int32 i = 0; i < TestMethod.RepeatCount; i++) {
+                if(TestMethod.HasParameters || TestMethod.IsGeneric) {
+                    foreach(TestDataSource source in TestMethod.DataSources) {
+                        foreach(TestDataSet dataSet in source.GetData()) {
+                            dataSet.GetObjects((UInt32) TestMethod.GenericParameterCount, out Type[] types, out Object[] data);
+                            InvokeInternal(TestMethod.Method, types, data);
+                        }
+                    }
+
+                } else {
+                    InvokeInternal(TestMethod.Method, new Type[0], new Object[0]);
+                }
+            }
+        }
+
+        private void InvokeInternal(MethodInfo method, Type[] genericParameters, Object[] parameters) {
+            _log.Debug(nameof(InvokeInternal));
+
+            MethodInfo invokeMethod = genericParameters.Length > 0 ? method.MakeGenericMethod(genericParameters) : method;
+
+            if(Factory.Instance.TestInstances().TryCreate(out Object instance, TestMethod.Method.DeclaringType, out Exception ex)) {
+                invokeMethod.Invoke(instance, parameters);
+
+                if(instance is IDisposable disposable) { disposable.Dispose(); }
+            }
+        }
 
         #endregion
 
