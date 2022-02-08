@@ -7,7 +7,7 @@ using Nuclear.TestSite;
 
 using TestClass = Nuclear.Test.Worker.Dummies.TestClass;
 using TestDataSources = Nuclear.Test.Worker.Dummies.TestDataSources;
-using TestResult = Nuclear.Test.Worker.Dummies.TestResult;
+using TestInvokationResult = Nuclear.Test.Worker.Dummies.TestInvokationResult;
 using TestX = Nuclear.TestSite.Test;
 
 namespace Nuclear.Test.Worker {
@@ -51,61 +51,95 @@ namespace Nuclear.Test.Worker {
 
         [TestMethod(TestMode.Sequential)]
         [TestData(nameof(Invoke_Data))]
-        void Invoke(TestMethodInfo in1, IEnumerable<GetTestData> in2, String expected) {
+        void Invoke(TestMethodInfo in1, IEnumerable<GetTestData> in2, IEnumerable<String> expected) {
 
             in2.Foreach(_ => in1.AddData(new TestDataSource(_)));
             TestMethodInvoker sut = new TestMethodInvoker(in1);
+            TestInvokationResult.ActionResult.Clear();
+            TestInvokationResult.InvokationHashCodes.Clear();
+            TestInvokationResult.DisposeHashCodes.Clear();
 
-            TestResult.ActionResult.Clear();
             TestX.IfNot.Action.ThrowsException(() => sut.Invoke(), out Exception _);
-            String result = TestResult.ActionResult.ToString();
 
-            TestX.If.Value.IsEqual(result, expected);
+            TestX.If.Value.IsEqual(TestInvokationResult.ActionResult.Count, expected.Count());
+            TestX.If.Enumerable.Matches(TestInvokationResult.ActionResult, expected);
+            TestX.If.Value.IsEqual(TestInvokationResult.InvokationHashCodes.Count, expected.Count());
+            TestX.IfNot.Enumerable.ContainsDuplicates(TestInvokationResult.InvokationHashCodes);
+            TestX.If.Value.IsEqual(TestInvokationResult.DisposeHashCodes.Count, expected.Count());
+            TestX.If.Enumerable.MatchesExactly(TestInvokationResult.InvokationHashCodes, TestInvokationResult.DisposeHashCodes);
         }
 
         IEnumerable<Object[]> Invoke_Data() {
 
-            #region no repeat / single source
+            #region no repeat / no source
 
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_NoA),
                 Enumerable.Empty<GetTestData>(),
-                $"{nameof(TestClass.Method_NoA)}()"
+                new List<String>() { $"{nameof(TestClass.Method_NoA)}()" }
             };
+
+            #endregion
+
+            #region no repeat / single source
+
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_OneA),
                 new GetTestData[] { new GetTestData(() => new TestDataSources().Method_OneA_Data()) },
-                $"{nameof(TestClass.Method_OneA)}('A')\n" +
-                $"{nameof(TestClass.Method_OneA)}('B')\n" +
-                $"{nameof(TestClass.Method_OneA)}('C')"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_OneA)}('A')",
+                    $"{nameof(TestClass.Method_OneA)}('B')",
+                    $"{nameof(TestClass.Method_OneA)}('C')"
+                }
             };
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_TwoA),
-                new GetTestData[] { new GetTestData(() => new TestDataSources().Method_OneA_Data()) },
-                $"{nameof(TestClass.Method_TwoA)}('A', '0')\n" +
-                $"{nameof(TestClass.Method_TwoA)}('B', '1')\n" +
-                $"{nameof(TestClass.Method_TwoA)}('C', '2')"
+                new GetTestData[] { new GetTestData(() => new TestDataSources().Method_TwoA_Data()) },
+                new List<String>() {
+                    $"{nameof(TestClass.Method_TwoA)}('A', '0')",
+                    $"{nameof(TestClass.Method_TwoA)}('B', '1')",
+                    $"{nameof(TestClass.Method_TwoA)}('C', '2')"
+                }
             };
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_OneG_NoA),
                 new GetTestData[] { new GetTestData(() => new TestDataSources().Method_OneG_NoA_Data()) },
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int16'>()\n" +
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int32'>()\n" +
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int64'>()"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int16'>()",
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int32'>()",
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int64'>()"
+                }
             };
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_OneG_OneA),
                 new GetTestData[] { new GetTestData(() => new TestDataSources().Method_OneG_OneA_Data()) },
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int16'>('A')\n" +
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int32'>('B')\n" +
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int64'>('C')"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int16'>('A')",
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int32'>('B')",
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int64'>('C')"
+                }
             };
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_TwoG_TwoA),
                 new GetTestData[] { new GetTestData(() => new TestDataSources().Method_TwoG_TwoA_Data1()) },
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')"
+                }
+            };
+
+            #endregion
+
+            #region repeat 2 / no source
+
+            yield return new Object[] {
+                new TestMethodInfo(TestClass.MethodInfo_NoA) { RepeatCount = 2 },
+                Enumerable.Empty<GetTestData>(),
+                new List<String>() {
+                    $"{nameof(TestClass.Method_NoA)}()",
+                    $"{nameof(TestClass.Method_NoA)}()"
+                }
             };
 
             #endregion
@@ -113,60 +147,64 @@ namespace Nuclear.Test.Worker {
             #region repeat 2 / single source
 
             yield return new Object[] {
-                new TestMethodInfo(TestClass.MethodInfo_NoA) { RepeatCount = 2 },
-                Enumerable.Empty<GetTestData>(),
-                $"{nameof(TestClass.Method_NoA)}()\n" +
-                $"{nameof(TestClass.Method_NoA)}()"
-            };
-            yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_OneA) { RepeatCount = 2 },
                 new GetTestData[] { new GetTestData(() => new TestDataSources().Method_OneA_Data()) },
-                $"{nameof(TestClass.Method_OneA)}('A')\n" +
-                $"{nameof(TestClass.Method_OneA)}('B')\n" +
-                $"{nameof(TestClass.Method_OneA)}('C')\n" +
-                $"{nameof(TestClass.Method_OneA)}('A')\n" +
-                $"{nameof(TestClass.Method_OneA)}('B')\n" +
-                $"{nameof(TestClass.Method_OneA)}('C')"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_OneA)}('A')",
+                    $"{nameof(TestClass.Method_OneA)}('B')",
+                    $"{nameof(TestClass.Method_OneA)}('C')",
+                    $"{nameof(TestClass.Method_OneA)}('A')",
+                    $"{nameof(TestClass.Method_OneA)}('B')",
+                    $"{nameof(TestClass.Method_OneA)}('C')"
+                }
             };
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_TwoA) { RepeatCount = 2 },
-                new GetTestData[] { new GetTestData(() => new TestDataSources().Method_OneA_Data()) },
-                $"{nameof(TestClass.Method_TwoA)}('A', '0')\n" +
-                $"{nameof(TestClass.Method_TwoA)}('B', '1')\n" +
-                $"{nameof(TestClass.Method_TwoA)}('C', '2')\n" +
-                $"{nameof(TestClass.Method_TwoA)}('A', '0')\n" +
-                $"{nameof(TestClass.Method_TwoA)}('B', '1')\n" +
-                $"{nameof(TestClass.Method_TwoA)}('C', '2')"
+                new GetTestData[] { new GetTestData(() => new TestDataSources().Method_TwoA_Data()) },
+                new List<String>() {
+                    $"{nameof(TestClass.Method_TwoA)}('A', '0')",
+                    $"{nameof(TestClass.Method_TwoA)}('B', '1')",
+                    $"{nameof(TestClass.Method_TwoA)}('C', '2')",
+                    $"{nameof(TestClass.Method_TwoA)}('A', '0')",
+                    $"{nameof(TestClass.Method_TwoA)}('B', '1')",
+                    $"{nameof(TestClass.Method_TwoA)}('C', '2')"
+                }
             };
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_OneG_NoA) { RepeatCount = 2 },
                 new GetTestData[] { new GetTestData(() => new TestDataSources().Method_OneG_NoA_Data()) },
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int16'>()\n" +
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int32'>()\n" +
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int64'>()\n" +
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int16'>()\n" +
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int32'>()\n" +
-                $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int64'>()"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int16'>()",
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int32'>()",
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int64'>()",
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int16'>()",
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int32'>()",
+                    $"{nameof(TestClass.Method_OneG_NoA)}<'System.Int64'>()"
+                }
             };
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_OneG_OneA) { RepeatCount = 2 },
                 new GetTestData[] { new GetTestData(() => new TestDataSources().Method_OneG_OneA_Data()) },
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int16'>('A')\n" +
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int32'>('B')\n" +
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int64'>('C')\n" +
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int16'>('A')\n" +
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int32'>('B')\n" +
-                $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int64'>('C')"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int16'>('A')",
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int32'>('B')",
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int64'>('C')",
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int16'>('A')",
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int32'>('B')",
+                    $"{nameof(TestClass.Method_OneG_OneA)}<'System.Int64'>('C')"
+                }
             };
             yield return new Object[] {
                 new TestMethodInfo(TestClass.MethodInfo_TwoG_TwoA) { RepeatCount = 2 },
                 new GetTestData[] { new GetTestData(() => new TestDataSources().Method_TwoG_TwoA_Data1()) },
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')"
+                }
             };
 
             #endregion
@@ -179,18 +217,20 @@ namespace Nuclear.Test.Worker {
                     new GetTestData(() => new TestDataSources().Method_TwoG_TwoA_Data1()),
                     new GetTestData(() => new TestDataSources().Method_TwoG_TwoA_Data2())
                 },
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt16', 'System.Int16'>('D', '4')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt32', 'System.Int32'>('E', '5')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt64', 'System.Int64'>('F', '6')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt16', 'System.Int16'>('D', '4')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt32', 'System.Int32'>('E', '5')\n" +
-                $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt64', 'System.Int64'>('F', '6')"
+                new List<String>() {
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int16', 'System.UInt16'>('A', '0')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int32', 'System.UInt32'>('B', '1')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.Int64', 'System.UInt64'>('C', '2')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt16', 'System.Int16'>('D', '4')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt32', 'System.Int32'>('E', '5')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt64', 'System.Int64'>('F', '6')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt16', 'System.Int16'>('D', '4')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt32', 'System.Int32'>('E', '5')",
+                    $"{nameof(TestClass.Method_TwoG_TwoA)}<'System.UInt64', 'System.Int64'>('F', '6')"
+                }
             };
 
             #endregion
