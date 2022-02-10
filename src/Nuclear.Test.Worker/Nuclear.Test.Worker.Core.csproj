@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="log4net" Version="2.0.14" />
+    <PackageReference Include="Nuclear.Assemblies" Version="1.2.0" />
     <PackageReference Include="Nuclear.SemVer" Version="1.2.0" />
   </ItemGroup>
 
