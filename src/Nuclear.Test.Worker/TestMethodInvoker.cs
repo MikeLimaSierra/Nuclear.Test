@@ -20,14 +20,18 @@ namespace Nuclear.Test.Worker {
 
         internal TestMethodInfo TestMethod { get; }
 
+        internal ResultsSink ResultsSink { get; }
+
         #endregion
 
         #region ctors
 
-        internal TestMethodInvoker(TestMethodInfo testMethod) {
+        internal TestMethodInvoker(TestMethodInfo testMethod, ResultsSink resultsSink) {
             Throw.If.Object.IsNull(testMethod, nameof(testMethod));
+            Throw.If.Object.IsNull(resultsSink, nameof(resultsSink));
 
             TestMethod = testMethod;
+            ResultsSink = resultsSink;
         }
 
         #endregion
