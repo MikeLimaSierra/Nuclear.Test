@@ -16,12 +16,19 @@ namespace Nuclear.Test.Worker {
         #region construction
 
         [TestMethod]
-        void CtorThrows() {
+        [TestData(nameof(CtorThrows_Data))]
+        void CtorThrows(TestMethodInfo in1, ResultsSink in2, String expected) {
 
-            TestX.If.Action.ThrowsException(() => new TestMethodInvoker(null), out ArgumentNullException ex);
+            TestX.If.Action.ThrowsException(() => new TestMethodInvoker(in1, in2), out ArgumentNullException ex);
 
-            TestX.If.Value.IsEqual(ex.ParamName, "testMethod");
+            TestX.If.Value.IsEqual(ex.ParamName, expected);
 
+        }
+
+        IEnumerable<Object[]> CtorThrows_Data() {
+            yield return new Object[] { null, null, "testMethod" };
+            yield return new Object[] { null, new ResultsSink(), "testMethod" };
+            yield return new Object[] { new TestMethodInfo(TestClass.MethodInfo_NoA), null, "resultsSink" };
         }
 
         [TestMethod]
@@ -30,7 +37,7 @@ namespace Nuclear.Test.Worker {
 
             TestMethodInvoker sut = null;
 
-            TestX.IfNot.Action.ThrowsException(() => sut = new TestMethodInvoker(in1), out Exception _);
+            TestX.IfNot.Action.ThrowsException(() => sut = new TestMethodInvoker(in1, new ResultsSink()), out Exception _);
 
             TestX.If.Value.IsEqual(sut.TestMethod, in1);
 
@@ -53,8 +60,8 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(Invoke_Data))]
         void Invoke(TestMethodInfo in1, IEnumerable<GetTestData> in2, IEnumerable<String> expected) {
 
-            in2.Foreach(_ => in1.AddData(new TestDataSource(_)));
-            TestMethodInvoker sut = new TestMethodInvoker(in1);
+            in2.Foreach(_ => in1.AddData(new TestDataSource(_, "SomeTestDataSource")));
+            TestMethodInvoker sut = new TestMethodInvoker(in1, new ResultsSink());
             TestInvokationResult.ActionResult.Clear();
             TestInvokationResult.InvokationHashCodes.Clear();
             TestInvokationResult.DisposeHashCodes.Clear();
