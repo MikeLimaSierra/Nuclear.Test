@@ -43,11 +43,6 @@ namespace Nuclear.Test.Results {
         void Initialize(ITestScenario scenario);
 
         /// <summary>
-        /// Clears all results.
-        /// </summary>
-        void Clear();
-
-        /// <summary>
         /// Prepares for test results by creating the result collection.
         /// </summary>
         /// <param name="_method">The <see cref="MethodInfo"/> that was invoked when the <see cref="Exception"/> was thrown.</param>
