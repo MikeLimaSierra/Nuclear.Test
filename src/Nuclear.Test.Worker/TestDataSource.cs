@@ -19,12 +19,20 @@ namespace Nuclear.Test.Worker {
 
         #endregion
 
+        #region properties
+
+        internal String SourceString { get; }
+
+        #endregion
+
         #region ctors
 
-        internal TestDataSource(GetTestData @delegate) {
+        internal TestDataSource(GetTestData @delegate, String sourceString) {
             Throw.If.Object.IsNull(@delegate, nameof(@delegate));
+            Throw.If.String.IsNullOrWhiteSpace(sourceString, nameof(sourceString));
 
             _delegate = @delegate;
+            SourceString = sourceString;
         }
 
         #endregion
