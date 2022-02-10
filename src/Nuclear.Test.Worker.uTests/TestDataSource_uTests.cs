@@ -14,18 +14,32 @@ namespace Nuclear.Test.Worker {
         #region construction
 
         [TestMethod]
-        void Ctor_Throws() {
+        [TestData(nameof(CtorThrows_Data))]
+        void CtorThrows<T>(GetTestData in1, String in2, String expected) where T : ArgumentException {
 
-            TestX.If.Action.ThrowsException(() => new TestDataSource(null), out ArgumentNullException ex);
+            TestX.If.Action.ThrowsException(() => new TestDataSource(in1, in2), out T ex);
 
-            TestX.If.Value.IsEqual(ex.ParamName, "delegate");
+            TestX.If.Value.IsEqual(ex.ParamName, expected);
 
+        }
+
+        IEnumerable<Object[]> CtorThrows_Data() {
+            yield return new Object[] { typeof(ArgumentNullException), null, null, "delegate" };
+            yield return new Object[] { typeof(ArgumentNullException), null, "", "delegate" };
+            yield return new Object[] { typeof(ArgumentNullException), null, "SomeTestDataSource", "delegate" };
+            yield return new Object[] { typeof(ArgumentNullException), new GetTestData(() => Enumerable.Empty<Object[]>()), null, "sourceString" };
+            yield return new Object[] { typeof(ArgumentException), new GetTestData(() => Enumerable.Empty<Object[]>()), "", "sourceString" };
+            yield return new Object[] { typeof(ArgumentException), new GetTestData(() => Enumerable.Empty<Object[]>()), " ", "sourceString" };
         }
 
         [TestMethod]
         void Ctor() {
 
-            TestX.IfNot.Action.ThrowsException(() => new TestDataSource(() => new TestDataSources().SingleReturnSingleData()), out ArgumentNullException ex);
+            TestDataSource sut = default;
+
+            TestX.IfNot.Action.ThrowsException(() => sut = new TestDataSource(() => Enumerable.Empty<Object[]>(), "SomeTestDataSource"), out ArgumentNullException ex);
+
+            TestX.If.Value.IsEqual(sut.SourceString, "SomeTestDataSource");
 
         }
 
@@ -36,7 +50,7 @@ namespace Nuclear.Test.Worker {
         [TestMethod]
         void GetDataThrows() {
 
-            TestDataSource sut = new TestDataSource(() => new TestDataSources().TripleReturnWithDummyException());
+            TestDataSource sut = new TestDataSource(() => new TestDataSources().TripleReturnWithDummyException(), "SomeTestDataSource");
             IEnumerable<TestDataSet> dataSets = null;
 
             TestX.If.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Dummies.TestException _);
@@ -49,7 +63,7 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(GetData_Data))]
         void GetData(GetTestData in1, IEnumerable<Object[]> expected) {
 
-            TestDataSource sut = new TestDataSource(in1);
+            TestDataSource sut = new TestDataSource(in1, "SomeTestDataSource");
             IEnumerable<TestDataSet> dataSets = null;
 
             TestX.IfNot.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Exception _);
