@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Test.Worker.TempTypes;
 
 namespace Nuclear.Test.Worker {
 
