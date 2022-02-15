@@ -60,6 +60,12 @@ namespace Nuclear.Test.Worker.TempTypes {
         /// <param name="entry">The new entry.</param>
         void Add(IResultEntry entry);
 
+        /// <summary>
+        /// Adds a range of entries to the collection.
+        /// </summary>
+        /// <param name="collection">The collection to add.</param>
+        void AddRange(IEnumerable<IResultEntry> collection);
+
         #endregion
 
     }
