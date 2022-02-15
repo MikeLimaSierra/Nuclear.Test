@@ -17,5 +17,11 @@ namespace Nuclear.Test.Worker.Factories {
 
         internal static Object Create(Type type) => Activator.CreateInstance(type, true);
 
+        /// <summary>
+        /// Returns a new instance of <see cref="ResultsFactory"/>.
+        /// </summary>
+        /// <returns>A  new instance of <see cref="ResultsFactory"/>.</returns>
+        public static ResultsFactory ResultEntries(this IFactory _) => new Internal.ResultsFactory();
+
     }
 }
