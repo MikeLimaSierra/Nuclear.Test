@@ -8,7 +8,7 @@ namespace Nuclear.Test.Worker.TempTypes {
     /// <summary>
     /// Defines a scenario relevant to running tests.
     /// </summary>
-    public interface IScenario : IEquatable<IScenario>, IComparable<IScenario> {
+    public interface IScenario : IEquatable<IScenario> {
 
         #region properties
 
@@ -18,7 +18,7 @@ namespace Nuclear.Test.Worker.TempTypes {
         String AssemblyName { get; }
 
         /// <summary>
-        /// Gets or sets the targeted runtime version.
+        /// Gets the targeted runtime version.
         /// </summary>
         RuntimeInfo TargetRuntime { get; }
 
@@ -28,7 +28,7 @@ namespace Nuclear.Test.Worker.TempTypes {
         ProcessorArchitecture TargetArchitecture { get; }
 
         /// <summary>
-        /// Gets or sets the executing runtime version.
+        /// Gets the executing runtime version.
         /// </summary>
         RuntimeInfo ExecutionRuntime { get; }
 

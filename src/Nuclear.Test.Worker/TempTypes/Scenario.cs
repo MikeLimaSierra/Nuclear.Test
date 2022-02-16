@@ -68,33 +68,6 @@ namespace Nuclear.Test.Worker.TempTypes {
             && ExecutionRuntime == other.ExecutionRuntime
             && ExecutionArchitecture == other.ExecutionArchitecture;
 
-        public Int32 CompareTo(IScenario other) {
-            if(!Equals(other)) {
-                Int32 result = AssemblyName.CompareTo(other.AssemblyName);
-                if(result != 0) { return result; }
-
-                result = TargetRuntime.Framework.CompareTo(other.TargetRuntime.Framework);
-                if(result != 0) { return result; }
-
-                result = TargetRuntime.Version.CompareTo(other.TargetRuntime.Version);
-                if(result != 0) { return result; }
-
-                result = TargetArchitecture.CompareTo(other.TargetArchitecture);
-                if(result != 0) { return result; }
-
-                result = ExecutionRuntime.Framework.CompareTo(other.ExecutionRuntime.Framework);
-                if(result != 0) { return result; }
-
-                result = ExecutionRuntime.Version.CompareTo(other.ExecutionRuntime.Version);
-                if(result != 0) { return result; }
-
-                result = ExecutionArchitecture.CompareTo(other.ExecutionArchitecture);
-                if(result != 0) { return result; }
-            }
-
-            return 0;
-        }
-
         public override String ToString() => $"[{AssemblyName.Format()};{TargetRuntime.Format()};{TargetArchitecture.Format()};{ExecutionRuntime.Format()};{ExecutionArchitecture.Format()}]";
 
         #endregion

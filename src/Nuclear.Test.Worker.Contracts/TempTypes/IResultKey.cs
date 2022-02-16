@@ -5,7 +5,7 @@ namespace Nuclear.Test.Worker.TempTypes {
     /// <summary>
     /// Defines the key structure that identifies test method results.
     /// </summary>
-    public interface IResultKey : IEquatable<IResultKey>, IComparable<IResultKey> {
+    public interface IResultKey : IEquatable<IResultKey> {
 
         #region properties
 

@@ -54,21 +54,6 @@ namespace Nuclear.Test.Worker.TempTypes {
             && FileName == other.FileName
             && MethodName == other.MethodName;
 
-        public Int32 CompareTo(IResultKey other) {
-            if(!Equals(other)) {
-                Int32 result = Scenario.CompareTo(other.Scenario);
-                if(result != 0) { return result; }
-
-                result = FileName.CompareTo(other.FileName);
-                if(result != 0) { return result; }
-
-                result = MethodName.CompareTo(other.MethodName);
-                if(result != 0) { return result; }
-            }
-
-            return 0;
-        }
-
         public override String ToString() => $"[{Scenario.Format()};{FileName.Format()};{MethodName.Format()}]";
 
         #endregion

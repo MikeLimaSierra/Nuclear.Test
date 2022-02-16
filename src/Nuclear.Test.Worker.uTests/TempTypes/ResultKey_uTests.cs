@@ -62,7 +62,6 @@ namespace Nuclear.Test.Worker.TempTypes {
         void TestImplementation() {
 
             TestX.If.Type.Implements<IResultKey, IEquatable<IResultKey>>();
-            TestX.If.Type.Implements<IResultKey, IComparable<IResultKey>>();
             TestX.If.Type.Implements<ResultKey, IResultKey>();
 
         }
@@ -111,14 +110,33 @@ namespace Nuclear.Test.Worker.TempTypes {
         #region Equals
 
         [TestMethod]
+        [TestData(nameof(Equals_WrongTypeData))]
         [TestData(nameof(Equals_Data))]
-        void Equals(IResultKey key, IResultKey other, Boolean expected) {
+        void Equals(IResultKey sut, Object other, Boolean expected) {
 
-            Boolean result = false;
+            Boolean result = default;
 
-            TestX.IfNot.Action.ThrowsException(() => result = key.Equals(other), out Exception ex);
+            TestX.IfNot.Action.ThrowsException(() => result = sut.Equals(other), out Exception ex);
+
             TestX.If.Value.IsEqual(result, expected);
 
+        }
+
+        [TestMethod]
+        [TestData(nameof(Equals_Data))]
+        void Equals(IResultKey sut, IResultKey other, Boolean expected) {
+
+            Boolean result = default;
+
+            TestX.IfNot.Action.ThrowsException(() => result = sut.Equals(other), out Exception ex);
+
+            TestX.If.Value.IsEqual(result, expected);
+
+        }
+
+        IEnumerable<Object[]> Equals_WrongTypeData() {
+            yield return new Object[] { _matchAssemblyName, new Object(), false };
+            yield return new Object[] { _matchAssemblyName, DateTime.Now, false };
         }
 
         IEnumerable<Object[]> Equals_Data() {
