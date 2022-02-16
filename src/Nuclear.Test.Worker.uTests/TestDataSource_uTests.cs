@@ -51,7 +51,7 @@ namespace Nuclear.Test.Worker {
         void GetDataThrows() {
 
             TestDataSource sut = new TestDataSource(() => new TestDataSources().TripleReturnWithDummyException(), "SomeTestDataSource");
-            IEnumerable<TestDataSet> dataSets = null;
+            IEnumerable<TestDataSet> dataSets = default;
 
             TestX.If.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Dummies.TestException _);
 
@@ -64,7 +64,7 @@ namespace Nuclear.Test.Worker {
         void GetData(GetTestData in1, IEnumerable<Object[]> expected) {
 
             TestDataSource sut = new TestDataSource(in1, "SomeTestDataSource");
-            IEnumerable<TestDataSet> dataSets = null;
+            IEnumerable<TestDataSet> dataSets = default;
 
             TestX.IfNot.Action.ThrowsException(() => dataSets = sut.GetData().ToArray(), out Exception _);
             IEnumerable<Object[]> dataObjects = dataSets.Select(_ => { _.GetObjects(out Object[] data); return data; });

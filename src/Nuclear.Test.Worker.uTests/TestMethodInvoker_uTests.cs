@@ -35,7 +35,7 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(Ctor_Data))]
         void Ctor(TestMethodInfo in1) {
 
-            TestMethodInvoker sut = null;
+            TestMethodInvoker sut = default;
 
             TestX.IfNot.Action.ThrowsException(() => sut = new TestMethodInvoker(in1, new ResultsSink()), out Exception _);
 

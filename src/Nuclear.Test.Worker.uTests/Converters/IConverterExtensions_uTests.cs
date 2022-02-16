@@ -14,7 +14,7 @@ namespace Nuclear.Test.Worker.Converters {
         [TestData(nameof(Convert_Data))]
         void Convert(Attribute in1, String expected) {
 
-            String result = null;
+            String result = default;
 
             TestX.IfNot.Action.ThrowsException(() => result = IConverterExtensions.Convert(in1), out Exception _);
 

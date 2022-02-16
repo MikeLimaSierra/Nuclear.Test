@@ -23,7 +23,7 @@ namespace Nuclear.Test.Worker {
         [TestData(nameof(Ctor_Data))]
         void Ctor(Object[] in1, (Boolean hasData, Int32 count, Int32 tCount) expected) {
 
-            TestDataSet sut = null;
+            TestDataSet sut = default;
 
             TestX.IfNot.Action.ThrowsException(() => sut = new TestDataSet(in1), out Exception _);
 
@@ -64,8 +64,8 @@ namespace Nuclear.Test.Worker {
         void GetObjects(Object[] in1, (Boolean result, Object[] data) expected) {
 
             TestDataSet sut = new TestDataSet(in1);
-            Boolean result = false;
-            Object[] data = null;
+            Boolean result = default;
+            Object[] data = default;
 
             TestX.IfNot.Action.ThrowsException(() => result = sut.GetObjects(out data), out Exception _);
 
@@ -103,9 +103,9 @@ namespace Nuclear.Test.Worker {
         void GetSplitObjects(Object[] in1, UInt32 in2, (Boolean result, Type[] types, Object[] data) expected) {
 
             TestDataSet sut = new TestDataSet(in1);
-            Boolean result = false;
-            Type[] types = null;
-            Object[] data = null;
+            Boolean result = default;
+            Type[] types = default;
+            Object[] data = default;
 
             TestX.IfNot.Action.ThrowsException(() => result = sut.GetObjects(in2, out types, out data), out Exception _);
 

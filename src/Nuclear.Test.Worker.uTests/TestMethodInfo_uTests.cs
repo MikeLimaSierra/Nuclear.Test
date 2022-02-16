@@ -27,7 +27,7 @@ namespace Nuclear.Test.Worker.Core.uTests {
         [TestData(nameof(Ctor_Data))]
         void Ctor(MethodInfo in1, (String file, String method, Boolean hasParams, Int32 @params, Boolean isGeneric, Int32 genParams, Int32 repeat, TestMode mode) expected) {
 
-            TestMethodInfo sut = null;
+            TestMethodInfo sut = default;
 
             TestX.IfNot.Action.ThrowsException(() => sut = new TestMethodInfo(in1), out Exception _);
 
