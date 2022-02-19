@@ -11,6 +11,14 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         public Boolean IsIgnored => !String.IsNullOrWhiteSpace(IgnoreReason);
 
+        public TimeSpan RunTime { get; internal set; }
+
+        public TimeSpan ConstructionTime { get; internal set; }
+
+        public TimeSpan InvokationTime { get; internal set; }
+
+        public TimeSpan DestructionTime { get; internal set; }
+
         #endregion
 
         #region ctors

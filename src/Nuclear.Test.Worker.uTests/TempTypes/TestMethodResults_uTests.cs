@@ -28,6 +28,10 @@ namespace Nuclear.Test.Worker.TempTypes {
             TestX.If.Enumerable.IsEmpty(sut.Entries);
             TestX.If.Value.IsEqual(sut.IgnoreReason, expected.reason);
             TestX.If.Value.IsEqual(sut.IsIgnored, expected.isIgnored);
+            TestX.If.Value.IsEqual(sut.RunTime.Ticks, 0);
+            TestX.If.Value.IsEqual(sut.ConstructionTime.Ticks, 0);
+            TestX.If.Value.IsEqual(sut.InvokationTime.Ticks, 0);
+            TestX.If.Value.IsEqual(sut.DestructionTime.Ticks, 0);
 
         }
 

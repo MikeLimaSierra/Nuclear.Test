@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Nuclear.Test.Worker.TempTypes {
 
@@ -23,6 +24,26 @@ namespace Nuclear.Test.Worker.TempTypes {
         /// Gets if the test method was ignored.
         /// </summary>
         Boolean IsIgnored { get; }
+
+        /// <summary>
+        /// Gets the total amount of time that was spent executing the test method.
+        /// </summary>
+        TimeSpan RunTime { get; }
+
+        /// <summary>
+        /// Gets the aggregated time that was spent with the creation of test class instances.
+        /// </summary>
+        TimeSpan ConstructionTime { get; }
+
+        /// <summary>
+        /// Gets the aggregated time that was spent with invoking the test method.
+        /// </summary>
+        TimeSpan InvokationTime { get; }
+
+        /// <summary>
+        /// Gets the aggregated time that was spent with destruction and disposition of test class instances.
+        /// </summary>
+        TimeSpan DestructionTime { get; }
 
         #endregion
 
