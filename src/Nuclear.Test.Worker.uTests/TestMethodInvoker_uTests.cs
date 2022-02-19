@@ -6,6 +6,8 @@ using Nuclear.Extensions;
 using Nuclear.TestSite;
 
 using TestClass = Nuclear.Test.Worker.Dummies.TestClass;
+using ShortRunningTestClass = Nuclear.Test.Worker.Dummies.ShortRunningTestClass;
+using LongRunningTestClass = Nuclear.Test.Worker.Dummies.LongRunningTestClass;
 using TestDataSources = Nuclear.Test.Worker.Dummies.TestDataSources;
 using TestInvokationResult = Nuclear.Test.Worker.Dummies.TestInvokationResult;
 using TestX = Nuclear.TestSite.Test;
@@ -248,6 +250,45 @@ namespace Nuclear.Test.Worker {
 
             #endregion
 
+        }
+
+        [TestMethod]
+        [TestData(nameof(InvokeRuntimes_Data))]
+        void InvokeRuntimes(TestMethodInfo in1,
+            TimeSpan expectedRTime,
+            TimeSpan xpectedCTime,
+            TimeSpan expectedITime,
+            TimeSpan expectedDTime) {
+
+            ResultsSink resultsSink = new ResultsSink();
+            TestMethodInvoker sut = new TestMethodInvoker(in1, resultsSink);
+
+            TestX.IfNot.Action.ThrowsException(() => sut.Invoke(), out Exception _);
+
+        }
+
+        IEnumerable<Object[]> InvokeRuntimes_Data() {
+            yield return new Object[] {
+                new TestMethodInfo(ShortRunningTestClass.MethodInfo_Do),
+                TimeSpan.FromMilliseconds(1),
+                TimeSpan.FromMilliseconds(1),
+                TimeSpan.FromMilliseconds(1),
+                TimeSpan.FromMilliseconds(1)
+            };
+            yield return new Object[] {
+                new TestMethodInfo(ShortRunningTestClass.MethodInfo_Do),
+                TimeSpan.FromMilliseconds(3000),
+                TimeSpan.FromMilliseconds(500),
+                TimeSpan.FromMilliseconds(1000),
+                TimeSpan.FromMilliseconds(1500)
+            };
+            yield return new Object[] {
+                new TestMethodInfo(LongRunningTestClass.MethodInfo_Do),
+                TimeSpan.FromMilliseconds(6000),
+                TimeSpan.FromMilliseconds(1000),
+                TimeSpan.FromMilliseconds(2000),
+                TimeSpan.FromMilliseconds(3000)
+            };
         }
 
         #endregion
