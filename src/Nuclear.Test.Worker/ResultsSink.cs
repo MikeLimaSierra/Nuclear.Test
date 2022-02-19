@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
 
+using Nuclear.Test.Worker.TempTypes;
+
 namespace Nuclear.Test.Worker {
     internal class ResultsSink : IResultsSink {
 
