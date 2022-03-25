@@ -21,9 +21,6 @@ namespace Nuclear.Test.Worker.Factories.Internal {
         private static ICreator<ITestMethodResults, String> _testMethodResults =
             Factory.Instance.Creator.Create<ITestMethodResults, String>((in1) => new TestMethodResults(in1));
 
-        private static ICreator<IResultKey, Scenario, String, String> _resultKey =
-            Factory.Instance.Creator.Create<IResultKey, Scenario, String, String>((in1, in2, in3) => new ResultKey(in1, in2, in3));
-
         #endregion
 
         #region IResultEntry
@@ -71,19 +68,6 @@ namespace Nuclear.Test.Worker.Factories.Internal {
 
         public override Boolean TryCreate(out ITestMethodResults obj, String in1, out Exception ex)
             => _testMethodResults.TryCreate(out obj, in1, out ex);
-
-        #endregion
-
-        #region IResultKey
-
-        public override void Create(out IResultKey obj, Scenario in1, String in2, String in3)
-            => _resultKey.Create(out obj, in1, in2, in3);
-
-        public override Boolean TryCreate(out IResultKey obj, Scenario in1, String in2, String in3)
-            => _resultKey.TryCreate(out obj, in1, in2, in3);
-
-        public override Boolean TryCreate(out IResultKey obj, Scenario in1, String in2, String in3, out Exception ex)
-            => _resultKey.TryCreate(out obj, in1, in2, in3, out ex);
 
         #endregion
 

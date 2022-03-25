@@ -5,24 +5,37 @@ using System.Reflection;
 using Nuclear.Extensions;
 
 namespace Nuclear.Test.Worker.TempTypes {
-    internal class ResultKey : IResultKey {
+
+    /// <summary>
+    /// Defines the key structure that identifies test method results.
+    /// </summary>
+    public class ResultKey : IEquatable<ResultKey> {
 
         #region properties
 
+        /// <summary>
+        /// Gets the test scenario.
+        /// </summary>
         public Scenario Scenario { get; }
 
+        /// <summary>
+        /// Gets the file name of the test.
+        /// </summary>
         public String FileName { get; }
 
+        /// <summary>
+        /// Gets the calling method name of the test.
+        /// </summary>
         public String MethodName { get; }
 
         #endregion
 
         #region ctors
 
-        internal ResultKey(Scenario scenario, MethodInfo methodInfo)
+        public ResultKey(Scenario scenario, MethodInfo methodInfo)
             : this(scenario, methodInfo.DeclaringType.Name, methodInfo.Name) { }
 
-        internal ResultKey(Scenario scenario, String fileName, String methodName) {
+        public ResultKey(Scenario scenario, String fileName, String methodName) {
             Scenario = scenario;
             FileName = fileName;
             MethodName = methodName;
@@ -33,7 +46,7 @@ namespace Nuclear.Test.Worker.TempTypes {
         #region methods
 
         public override Boolean Equals(Object obj) {
-            if(obj != null && obj is IResultKey other) {
+            if(obj != null && obj is ResultKey other) {
                 return Equals(other);
             }
 
@@ -48,7 +61,7 @@ namespace Nuclear.Test.Worker.TempTypes {
             return hashCode;
         }
 
-        public Boolean Equals(IResultKey other) =>
+        public Boolean Equals(ResultKey other) =>
             other != null
             && Scenario == other.Scenario
             && FileName == other.FileName

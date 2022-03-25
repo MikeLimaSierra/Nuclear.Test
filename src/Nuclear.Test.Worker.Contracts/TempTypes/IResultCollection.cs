@@ -6,7 +6,7 @@ namespace Nuclear.Test.Worker.TempTypes {
     /// <summary>
     /// Defines a collection of <see cref="ValueTuple{IResultKey, ITestMethodResults}"/>.
     /// </summary>
-    interface IResultCollection : IEnumerable<(IResultKey, ITestMethodResults)> {
+    interface IResultCollection : IEnumerable<(ResultKey, ITestMethodResults)> {
 
         #region properties
 
@@ -29,13 +29,13 @@ namespace Nuclear.Test.Worker.TempTypes {
         /// </summary>
         /// <param name="key">The key.</param>
         /// <param name="results">The new results.</param>
-        void Add(IResultKey key, ITestMethodResults results);
+        void Add(ResultKey key, ITestMethodResults results);
 
         /// <summary>
         /// Adds a range of entries to the collection.
         /// </summary>
         /// <param name="collection">The collection to add.</param>
-        void AddRange(IEnumerable<(IResultKey, ITestMethodResults)> collection);
+        void AddRange(IEnumerable<(ResultKey, ITestMethodResults)> collection);
 
         #endregion
 

@@ -13,8 +13,7 @@ namespace Nuclear.Test.Worker.Factories {
         ICreator<IResultEntry, EntryTypes, String, String>,
         ICreator<IResultEntryCollection>,
         ICreator<IResultEntryCollection, IEnumerable<IResultEntry>>,
-        ICreator<ITestMethodResults, String>,
-        ICreator<IResultKey, Scenario, String, String> {
+        ICreator<ITestMethodResults, String> {
 
         #region IResultEntry
 
@@ -124,40 +123,6 @@ namespace Nuclear.Test.Worker.Factories {
         /// <param name="ex">The caught exception.</param>
         /// <returns>True if the object was created.</returns>
         public abstract Boolean TryCreate(out ITestMethodResults obj, String ignoreReason, out Exception ex);
-
-        #endregion
-
-        #region IResultKey
-
-        /// <summary>
-        /// Creates an instance of <see cref="ITestMethodResults"/> and returns it via the out parameter obj.
-        /// </summary>
-        /// <param name="obj">The created instance.</param>
-        /// <param name="scenario">The test scenario.</param>
-        /// <param name="fileName">The file name of the test.</param>
-        /// <param name="methodName">The calling method name of the test.</param>
-        public abstract void Create(out IResultKey obj, Scenario scenario, String fileName, String methodName);
-
-        /// <summary>
-        /// Tries to create an instance of <see cref="ITestMethodResults"/> and returns it via the out parameter obj.
-        /// </summary>
-        /// <param name="obj">The created instance.</param>
-        /// <param name="scenario">The test scenario.</param>
-        /// <param name="fileName">The file name of the test.</param>
-        /// <param name="methodName">The calling method name of the test.</param>
-        /// <returns>True if the object was created.</returns>
-        public abstract Boolean TryCreate(out IResultKey obj, Scenario scenario, String fileName, String methodName);
-
-        /// <summary>
-        /// Tries to create an instance of <see cref="ITestMethodResults"/> and returns it via the out parameter obj.
-        /// </summary>
-        /// <param name="obj">The created instance.</param>
-        /// <param name="scenario">The test scenario.</param>
-        /// <param name="fileName">The file name of the test.</param>
-        /// <param name="methodName">The calling method name of the test.</param>
-        /// <param name="ex">The caught exception.</param>
-        /// <returns>True if the object was created.</returns>
-        public abstract Boolean TryCreate(out IResultKey obj, Scenario scenario, String fileName, String methodName, out Exception ex);
 
         #endregion
 

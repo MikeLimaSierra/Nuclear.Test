@@ -12,7 +12,7 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         #region statics
 
-        private static readonly IResultKey _isFullyQualified =
+        private static readonly ResultKey _isFullyQualified =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
                  new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", "MethodA");
 
@@ -20,39 +20,39 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         #region matchValue statics
 
-        private static readonly IResultKey _matchAssemblyName =
+        private static readonly ResultKey _matchAssemblyName =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None,
               new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), null, null);
 
-        private static readonly IResultKey _matchTargetFrameworkIdentifier =
+        private static readonly ResultKey _matchTargetFrameworkIdentifier =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version()), ProcessorArchitecture.None,
            new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), null, null);
 
-        private static readonly IResultKey _matchTargetFrameworkVersion =
+        private static readonly ResultKey _matchTargetFrameworkVersion =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.None,
            new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), null, null);
 
-        private static readonly IResultKey _matchTargetArchitecture =
+        private static readonly ResultKey _matchTargetArchitecture =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
            new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()), ProcessorArchitecture.None), null, null);
 
-        private static readonly IResultKey _matchExecutionFrameworkIdentifier =
+        private static readonly ResultKey _matchExecutionFrameworkIdentifier =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
             new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version()), ProcessorArchitecture.None), null, null);
 
-        private static readonly IResultKey _matchExecutionFrameworkVersion =
+        private static readonly ResultKey _matchExecutionFrameworkVersion =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
            new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.None), null, null);
 
-        private static readonly IResultKey _matchExecutionArchitecture =
+        private static readonly ResultKey _matchExecutionArchitecture =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
           new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), null, null);
 
-        private static readonly IResultKey _matchFileName =
+        private static readonly ResultKey _matchFileName =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
           new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", null);
 
-        private static readonly IResultKey _matchMethodName =
+        private static readonly ResultKey _matchMethodName =
             new ResultKey(new Scenario("asm", new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)), ProcessorArchitecture.X86,
            new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)), ProcessorArchitecture.X86), "FileA", "MethodA");
 
@@ -61,8 +61,7 @@ namespace Nuclear.Test.Worker.TempTypes {
         [TestMethod]
         void TestImplementation() {
 
-            TestX.If.Type.Implements<IResultKey, IEquatable<IResultKey>>();
-            TestX.If.Type.Implements<ResultKey, IResultKey>();
+            TestX.If.Type.Implements<ResultKey, IEquatable<ResultKey>>();
 
         }
 
@@ -72,7 +71,7 @@ namespace Nuclear.Test.Worker.TempTypes {
         [TestData(nameof(Ctor_Data))]
         void Ctor(Scenario in1, String in2, String in3) {
 
-            IResultKey sut = default;
+            ResultKey sut = default;
 
             TestX.IfNot.Action.ThrowsException(() => sut = new ResultKey(in1, in2, in3), out Exception ex);
 
@@ -102,7 +101,7 @@ namespace Nuclear.Test.Worker.TempTypes {
         [TestMethod]
         [TestData(nameof(Equals_WrongTypeData))]
         [TestData(nameof(Equals_Data))]
-        void Equals(IResultKey sut, Object other, Boolean expected) {
+        void Equals(ResultKey sut, Object other, Boolean expected) {
 
             Boolean result = default;
 
@@ -114,7 +113,7 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         [TestMethod]
         [TestData(nameof(Equals_Data))]
-        void Equals(IResultKey sut, IResultKey other, Boolean expected) {
+        void Equals(ResultKey sut, ResultKey other, Boolean expected) {
 
             Boolean result = default;
 
