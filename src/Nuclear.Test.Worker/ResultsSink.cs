@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Reflection;
 
+using Nuclear.Exceptions;
 using Nuclear.Test.Worker.TempTypes;
 
 namespace Nuclear.Test.Worker {
@@ -10,6 +11,18 @@ namespace Nuclear.Test.Worker {
         #region fields
 
         internal readonly ConcurrentDictionary<ResultKey, TestMethodResults> _results = new ConcurrentDictionary<ResultKey, TestMethodResults>();
+
+        internal readonly Scenario _scenario;
+
+        #endregion
+
+        #region ctors
+
+        public ResultsSink(Scenario scenario) {
+            Throw.If.Object.IsNull(scenario, nameof(scenario));
+
+            _scenario = scenario;
+        }
 
         #endregion
 

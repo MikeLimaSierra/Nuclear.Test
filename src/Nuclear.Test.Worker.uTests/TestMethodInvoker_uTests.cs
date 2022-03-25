@@ -5,9 +5,9 @@ using System.Linq;
 using Nuclear.Extensions;
 using Nuclear.TestSite;
 
-using TestClass = Nuclear.Test.Worker.Dummies.TestClass;
-using ShortRunningTestClass = Nuclear.Test.Worker.Dummies.ShortRunningTestClass;
 using LongRunningTestClass = Nuclear.Test.Worker.Dummies.LongRunningTestClass;
+using ShortRunningTestClass = Nuclear.Test.Worker.Dummies.ShortRunningTestClass;
+using TestClass = Nuclear.Test.Worker.Dummies.TestClass;
 using TestDataSources = Nuclear.Test.Worker.Dummies.TestDataSources;
 using TestInvokationResult = Nuclear.Test.Worker.Dummies.TestInvokationResult;
 using TestX = Nuclear.TestSite.Test;
@@ -29,7 +29,7 @@ namespace Nuclear.Test.Worker {
 
         IEnumerable<Object[]> CtorThrows_Data() {
             yield return new Object[] { null, null, "testMethod" };
-            yield return new Object[] { null, new ResultsSink(), "testMethod" };
+            yield return new Object[] { null, new ResultsSink(Statics.DefaultScenario), "testMethod" };
             yield return new Object[] { new TestMethodInfo(TestClass.MethodInfo_NoA), null, "resultsSink" };
         }
 
@@ -39,7 +39,7 @@ namespace Nuclear.Test.Worker {
 
             TestMethodInvoker sut = default;
 
-            TestX.IfNot.Action.ThrowsException(() => sut = new TestMethodInvoker(in1, new ResultsSink()), out Exception _);
+            TestX.IfNot.Action.ThrowsException(() => sut = new TestMethodInvoker(in1, new ResultsSink(Statics.DefaultScenario)), out Exception _);
 
             TestX.If.Value.IsEqual(sut.TestMethod, in1);
 
@@ -63,7 +63,7 @@ namespace Nuclear.Test.Worker {
         void Invoke(TestMethodInfo in1, IEnumerable<GetTestData> in2, IEnumerable<String> expected) {
 
             in2.Foreach(_ => in1.AddData(new TestDataSource(_, "SomeTestDataSource")));
-            TestMethodInvoker sut = new TestMethodInvoker(in1, new ResultsSink());
+            TestMethodInvoker sut = new TestMethodInvoker(in1, new ResultsSink(Statics.DefaultScenario));
             TestInvokationResult.ActionResult.Clear();
             TestInvokationResult.InvokationHashCodes.Clear();
             TestInvokationResult.DisposeHashCodes.Clear();
@@ -260,7 +260,7 @@ namespace Nuclear.Test.Worker {
             TimeSpan expectedITime,
             TimeSpan expectedDTime) {
 
-            ResultsSink resultsSink = new ResultsSink();
+            ResultsSink resultsSink = new ResultsSink(Statics.DefaultScenario);
             TestMethodInvoker sut = new TestMethodInvoker(in1, resultsSink);
 
             TestX.IfNot.Action.ThrowsException(() => sut.Invoke(), out Exception _);

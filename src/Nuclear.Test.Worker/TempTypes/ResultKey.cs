@@ -9,7 +9,7 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         #region properties
 
-        public IScenario Scenario { get; }
+        public Scenario Scenario { get; }
 
         public String FileName { get; }
 
@@ -19,10 +19,10 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         #region ctors
 
-        internal ResultKey(IScenario scenario, MethodInfo methodInfo)
+        internal ResultKey(Scenario scenario, MethodInfo methodInfo)
             : this(scenario, methodInfo.DeclaringType.Name, methodInfo.Name) { }
 
-        internal ResultKey(IScenario scenario, String fileName, String methodName) {
+        internal ResultKey(Scenario scenario, String fileName, String methodName) {
             Scenario = scenario;
             FileName = fileName;
             MethodName = methodName;
@@ -42,7 +42,7 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         public override Int32 GetHashCode() {
             Int32 hashCode = 436215418;
-            hashCode = hashCode * -1521134295 + DynamicEqualityComparer.FromIEquatable<IScenario>().GetHashCode(Scenario);
+            hashCode = hashCode * -1521134295 + DynamicEqualityComparer.FromIEquatable<Scenario>().GetHashCode(Scenario);
             hashCode = hashCode * -1521134295 + EqualityComparer<String>.Default.GetHashCode(FileName);
             hashCode = hashCode * -1521134295 + EqualityComparer<String>.Default.GetHashCode(MethodName);
             return hashCode;

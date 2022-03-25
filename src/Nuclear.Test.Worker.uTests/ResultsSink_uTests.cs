@@ -10,17 +10,39 @@ namespace Nuclear.Test.Worker {
         #region ctor
 
         [TestMethod]
+        void CtorThrows() {
+
+            TestX.If.Action.ThrowsException(() => new ResultsSink(null), out ArgumentNullException ex);
+
+            TestX.If.Value.IsEqual(ex.ParamName, "scenario");
+
+        }
+
+        [TestMethod]
         void Ctor() {
 
             ResultsSink sut = default;
 
-            TestX.IfNot.Action.ThrowsException(() => sut = new ResultsSink(), out Exception _);
+            TestX.IfNot.Action.ThrowsException(() => sut = new ResultsSink(Statics.DefaultScenario), out Exception _);
 
             TestX.IfNot.Object.IsNull(sut);
             TestX.IfNot.Object.IsNull(sut._results);
             TestX.If.Enumerable.IsEmpty(sut._results);
 
         }
+
+        #endregion
+
+        #region Prepare
+
+        //[TestMethod]
+        //void Prepare(Scenario in1, MethodInfo in2) {
+
+        //    ResultsSink sut = new ResultsSink(in1);
+
+        //    TestX.IfNot.Action.ThrowsException(() => sut.Prepare(in2), out Exception _);
+
+        //}
 
         #endregion
 

@@ -3,33 +3,67 @@ using System.Collections.Generic;
 using System.Reflection;
 
 using Nuclear.Assemblies.Runtimes;
+using Nuclear.Exceptions;
 using Nuclear.Extensions;
 
 namespace Nuclear.Test.Worker.TempTypes {
-    internal class Scenario : IScenario {
+
+    /// <summary>
+    /// Defines a scenario relevant to running tests.
+    /// </summary>
+    public class Scenario : IEquatable<Scenario> {
 
         #region properties
 
+        /// <summary>
+        /// Gets the name of the test assembly.
+        /// </summary>
         public String AssemblyName { get; private set; }
 
+        /// <summary>
+        /// Gets the targeted runtime version.
+        /// </summary>
         public RuntimeInfo TargetRuntime { get; private set; }
 
+        /// <summary>
+        /// Gets the targeted processor architecture.
+        /// </summary>
         public ProcessorArchitecture TargetArchitecture { get; private set; }
 
+        /// <summary>
+        /// Gets the executing runtime version.
+        /// </summary>
         public RuntimeInfo ExecutionRuntime { get; private set; }
 
+        /// <summary>
+        /// Gets the executing processor architecture.
+        /// </summary>
         public ProcessorArchitecture ExecutionArchitecture { get; private set; }
 
         #endregion
 
         #region ctors
 
-        internal Scenario(
+        /// <summary>
+        /// Creates a new instance of <see cref="Scenario"/>.
+        /// </summary>
+        /// <param name="assemblyName">The name of the test assembly.</param>
+        /// <param name="targetRuntime">The targeted runtime version.</param>
+        /// <param name="targetArchitecture">The targeted processor architecture.</param>
+        /// <param name="executionRuntime">The executing runtime version.</param>
+        /// <param name="executionArchitecture">The executing processor architecture.</param>
+        public Scenario(
             String assemblyName,
             RuntimeInfo targetRuntime,
             ProcessorArchitecture targetArchitecture,
             RuntimeInfo executionRuntime,
             ProcessorArchitecture executionArchitecture) {
+
+            Throw.If.String.IsNullOrWhiteSpace(assemblyName, nameof(assemblyName));
+            Throw.If.Object.IsNull(targetRuntime, nameof(targetRuntime));
+            Throw.IfNot.Enum.IsDefined<ProcessorArchitecture>(targetArchitecture, nameof(targetArchitecture));
+            Throw.If.Object.IsNull(executionRuntime, nameof(executionRuntime));
+            Throw.IfNot.Enum.IsDefined<ProcessorArchitecture>(executionArchitecture, nameof(executionArchitecture));
 
             AssemblyName = assemblyName;
             TargetRuntime = targetRuntime;
@@ -43,7 +77,7 @@ namespace Nuclear.Test.Worker.TempTypes {
         #region methods
 
         public override Boolean Equals(Object obj) {
-            if(obj != null && obj is IScenario other) {
+            if(obj != null && obj is Scenario other) {
                 return Equals(other);
             }
 
@@ -60,7 +94,7 @@ namespace Nuclear.Test.Worker.TempTypes {
             return hashCode;
         }
 
-        public Boolean Equals(IScenario other) =>
+        public Boolean Equals(Scenario other) =>
             other != null
             && AssemblyName == other.AssemblyName
             && TargetRuntime == other.TargetRuntime

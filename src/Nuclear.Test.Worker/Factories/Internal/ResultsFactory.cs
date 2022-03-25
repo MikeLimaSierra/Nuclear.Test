@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 
-using Nuclear.Assemblies.Runtimes;
 using Nuclear.Creation;
 using Nuclear.Test.Worker.TempTypes;
 
@@ -23,12 +21,8 @@ namespace Nuclear.Test.Worker.Factories.Internal {
         private static ICreator<ITestMethodResults, String> _testMethodResults =
             Factory.Instance.Creator.Create<ITestMethodResults, String>((in1) => new TestMethodResults(in1));
 
-        private static ICreator<IScenario, String, RuntimeInfo, ProcessorArchitecture, RuntimeInfo, ProcessorArchitecture> _scenario =
-            Factory.Instance.Creator.Create<IScenario, String, RuntimeInfo, ProcessorArchitecture, RuntimeInfo, ProcessorArchitecture>(
-                (in1, in2, in3, in4, in5) => new Scenario(in1, in2, in3, in4, in5));
-
-        private static ICreator<IResultKey, IScenario, String, String> _resultKey =
-            Factory.Instance.Creator.Create<IResultKey, IScenario, String, String>((in1, in2, in3) => new ResultKey(in1, in2, in3));
+        private static ICreator<IResultKey, Scenario, String, String> _resultKey =
+            Factory.Instance.Creator.Create<IResultKey, Scenario, String, String>((in1, in2, in3) => new ResultKey(in1, in2, in3));
 
         #endregion
 
@@ -80,28 +74,15 @@ namespace Nuclear.Test.Worker.Factories.Internal {
 
         #endregion
 
-        #region IScenario
-
-        public override void Create(out IScenario obj, String in1, RuntimeInfo in2, ProcessorArchitecture in3, RuntimeInfo in4, ProcessorArchitecture in5)
-            => _scenario.Create(out obj, in1, in2, in3, in4, in5);
-
-        public override Boolean TryCreate(out IScenario obj, String in1, RuntimeInfo in2, ProcessorArchitecture in3, RuntimeInfo in4, ProcessorArchitecture in5)
-            => _scenario.TryCreate(out obj, in1, in2, in3, in4, in5);
-
-        public override Boolean TryCreate(out IScenario obj, String in1, RuntimeInfo in2, ProcessorArchitecture in3, RuntimeInfo in4, ProcessorArchitecture in5, out Exception ex)
-            => _scenario.TryCreate(out obj, in1, in2, in3, in4, in5, out ex);
-
-        #endregion
-
         #region IResultKey
 
-        public override void Create(out IResultKey obj, IScenario in1, String in2, String in3)
+        public override void Create(out IResultKey obj, Scenario in1, String in2, String in3)
             => _resultKey.Create(out obj, in1, in2, in3);
 
-        public override Boolean TryCreate(out IResultKey obj, IScenario in1, String in2, String in3)
+        public override Boolean TryCreate(out IResultKey obj, Scenario in1, String in2, String in3)
             => _resultKey.TryCreate(out obj, in1, in2, in3);
 
-        public override Boolean TryCreate(out IResultKey obj, IScenario in1, String in2, String in3, out Exception ex)
+        public override Boolean TryCreate(out IResultKey obj, Scenario in1, String in2, String in3, out Exception ex)
             => _resultKey.TryCreate(out obj, in1, in2, in3, out ex);
 
         #endregion

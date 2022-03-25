@@ -12,7 +12,7 @@ namespace Nuclear.Test.Worker.TempTypes {
         /// <summary>
         /// Gets the test scenario.
         /// </summary>
-        IScenario Scenario { get; }
+        Scenario Scenario { get; }
 
         /// <summary>
         /// Gets the file name of the test.

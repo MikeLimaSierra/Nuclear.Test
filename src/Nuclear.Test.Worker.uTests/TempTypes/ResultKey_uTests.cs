@@ -70,7 +70,7 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         [TestMethod]
         [TestData(nameof(Ctor_Data))]
-        void Ctor(IScenario in1, String in2, String in3) {
+        void Ctor(Scenario in1, String in2, String in3) {
 
             IResultKey sut = default;
 
@@ -84,22 +84,12 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         IEnumerable<Object[]> Ctor_Data() {
             yield return new Object[] {
-                new Scenario(
-                    null,
-                    new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()),
-                    ProcessorArchitecture.None,
-                    new RuntimeInfo(FrameworkIdentifiers.Unsupported, new Version()),
-                    ProcessorArchitecture.None),
+                Statics.DefaultScenario,
                 null,
                 null
             };
             yield return new Object[] {
-                new Scenario(
-                    "asm",
-                    new RuntimeInfo(FrameworkIdentifiers.NETStandard, new Version(1, 0)),
-                    ProcessorArchitecture.X86,
-                    new RuntimeInfo(FrameworkIdentifiers.NETFramework, new Version(1, 0)),
-                    ProcessorArchitecture.X86),
+                Statics.DefaultScenario,
                 "FileA",
                 "MethodA"
             };
