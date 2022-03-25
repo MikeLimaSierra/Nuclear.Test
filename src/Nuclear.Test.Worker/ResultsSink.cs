@@ -1,10 +1,17 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Reflection;
 
 using Nuclear.Test.Worker.TempTypes;
 
 namespace Nuclear.Test.Worker {
     internal class ResultsSink : IResultsSink {
+
+        #region fields
+
+        internal readonly ConcurrentDictionary<ResultKey, TestMethodResults> _results = new ConcurrentDictionary<ResultKey, TestMethodResults>();
+
+        #endregion
 
         #region method
 
