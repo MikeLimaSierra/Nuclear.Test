@@ -45,13 +45,7 @@ namespace Nuclear.Test.Worker.TempTypes {
 
         #region methods
 
-        public override Boolean Equals(Object obj) {
-            if(obj != null && obj is ResultKey other) {
-                return Equals(other);
-            }
-
-            return false;
-        }
+        public override Boolean Equals(Object obj) => obj is ResultKey other && Equals(other);
 
         public override Int32 GetHashCode() {
             Int32 hashCode = 436215418;
